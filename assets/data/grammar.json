@@ -1,0 +1,4872 @@
+{
+  "verbs": [
+    {
+      "id": "essere",
+      "title": "ESSERE — být",
+      "rows": [
+        [
+          "io",
+          "sono",
+          "jsem",
+          "[sono]"
+        ],
+        [
+          "tu",
+          "sei",
+          "jsi",
+          "[sei]"
+        ],
+        [
+          "lui/lei",
+          "è",
+          "je",
+          "[é]"
+        ],
+        [
+          "noi",
+          "siamo",
+          "jsme",
+          "[sjamo]"
+        ],
+        [
+          "voi",
+          "siete",
+          "jste",
+          "[sjete]"
+        ],
+        [
+          "loro",
+          "sono",
+          "jsou",
+          "[sono]"
+        ]
+      ]
+    },
+    {
+      "id": "avere",
+      "title": "AVERE — mít",
+      "rows": [
+        [
+          "io",
+          "ho",
+          "mám",
+          "[o]"
+        ],
+        [
+          "tu",
+          "hai",
+          "máš",
+          "[ai]"
+        ],
+        [
+          "lui/lei",
+          "ha",
+          "má",
+          "[a]"
+        ],
+        [
+          "noi",
+          "abbiamo",
+          "máme",
+          "[abbjamo]"
+        ],
+        [
+          "voi",
+          "avete",
+          "máte",
+          "[avete]"
+        ],
+        [
+          "loro",
+          "hanno",
+          "mají",
+          "[anno]"
+        ]
+      ]
+    },
+    {
+      "id": "andare",
+      "title": "ANDARE — jít",
+      "rows": [
+        [
+          "io",
+          "vado",
+          "jdu",
+          "[vado]"
+        ],
+        [
+          "tu",
+          "vai",
+          "jdeš",
+          "[vai]"
+        ],
+        [
+          "lui/lei",
+          "va",
+          "jde",
+          "[va]"
+        ],
+        [
+          "noi",
+          "andiamo",
+          "jdeme",
+          "[andjamo]"
+        ],
+        [
+          "voi",
+          "andate",
+          "jdete",
+          "[andate]"
+        ],
+        [
+          "loro",
+          "vanno",
+          "jdou",
+          "[vanno]"
+        ]
+      ]
+    },
+    {
+      "id": "dare",
+      "title": "DARE — dát",
+      "rows": [
+        [
+          "io",
+          "do",
+          "dávám",
+          "[do]"
+        ],
+        [
+          "tu",
+          "dai",
+          "dáváš",
+          "[dai]"
+        ],
+        [
+          "lui/lei",
+          "dà",
+          "dává",
+          "[dá]"
+        ],
+        [
+          "noi",
+          "diamo",
+          "dáváme",
+          "[djamo]"
+        ],
+        [
+          "voi",
+          "date",
+          "dáváte",
+          "[date]"
+        ],
+        [
+          "loro",
+          "danno",
+          "dávají",
+          "[danno]"
+        ]
+      ]
+    },
+    {
+      "id": "fare",
+      "title": "FARE — dělat",
+      "rows": [
+        [
+          "io",
+          "faccio",
+          "dělám",
+          "[fačo]"
+        ],
+        [
+          "tu",
+          "fai",
+          "děláš",
+          "[fai]"
+        ],
+        [
+          "lui/lei",
+          "fa",
+          "dělá",
+          "[fa]"
+        ],
+        [
+          "noi",
+          "facciamo",
+          "děláme",
+          "[fačamo]"
+        ],
+        [
+          "voi",
+          "fate",
+          "děláte",
+          "[fate]"
+        ],
+        [
+          "loro",
+          "fanno",
+          "dělají",
+          "[fanno]"
+        ]
+      ]
+    },
+    {
+      "id": "stare",
+      "title": "STARE — být (stav) / stát",
+      "rows": [
+        [
+          "io",
+          "sto",
+          "jsem / stojím",
+          "[sto]"
+        ],
+        [
+          "tu",
+          "stai",
+          "jsi / stojíš",
+          "[stai]"
+        ],
+        [
+          "lui/lei",
+          "sta",
+          "je / stojí",
+          "[sta]"
+        ],
+        [
+          "noi",
+          "stiamo",
+          "jsme / stojíme",
+          "[stjamo]"
+        ],
+        [
+          "voi",
+          "state",
+          "jste / stojíte",
+          "[state]"
+        ],
+        [
+          "loro",
+          "stanno",
+          "jsou / stojí",
+          "[stanno]"
+        ]
+      ]
+    },
+    {
+      "id": "dire",
+      "title": "DIRE — říct",
+      "rows": [
+        [
+          "io",
+          "dico",
+          "říkám",
+          "[diko]"
+        ],
+        [
+          "tu",
+          "dici",
+          "říkáš",
+          "[diči]"
+        ],
+        [
+          "lui/lei",
+          "dice",
+          "říká",
+          "[diče]"
+        ],
+        [
+          "noi",
+          "diciamo",
+          "říkáme",
+          "[dičamo]"
+        ],
+        [
+          "voi",
+          "dite",
+          "říkáte",
+          "[dite]"
+        ],
+        [
+          "loro",
+          "dicono",
+          "říkají",
+          "[dikono]"
+        ]
+      ]
+    },
+    {
+      "id": "uscire",
+      "title": "USCÍRE — vyjít",
+      "rows": [
+        [
+          "io",
+          "esco",
+          "vyjdu",
+          "[esko]"
+        ],
+        [
+          "tu",
+          "esci",
+          "vyjdeš",
+          "[eši]"
+        ],
+        [
+          "lui/lei",
+          "esce",
+          "vyjde",
+          "[eše]"
+        ],
+        [
+          "noi",
+          "usciamo",
+          "vyjdeme",
+          "[ušamo]"
+        ],
+        [
+          "voi",
+          "uscite",
+          "vyjdete",
+          "[ušite]"
+        ],
+        [
+          "loro",
+          "escono",
+          "vyjdou",
+          "[eskono]"
+        ]
+      ]
+    },
+    {
+      "id": "venire",
+      "title": "VENIRE — přijít",
+      "rows": [
+        [
+          "io",
+          "vengo",
+          "přicházím",
+          "[vengo]"
+        ],
+        [
+          "tu",
+          "vieni",
+          "přicházíš",
+          "[vjeni]"
+        ],
+        [
+          "lui/lei",
+          "viene",
+          "přichází",
+          "[vjene]"
+        ],
+        [
+          "noi",
+          "veniamo",
+          "přicházíme",
+          "[venjamo]"
+        ],
+        [
+          "voi",
+          "venite",
+          "přicházíte",
+          "[venite]"
+        ],
+        [
+          "loro",
+          "vengono",
+          "přicházejí",
+          "[vengono]"
+        ]
+      ]
+    },
+    {
+      "id": "bere",
+      "title": "BERE — pít",
+      "rows": [
+        [
+          "io",
+          "bevo",
+          "piju",
+          "[bevo]"
+        ],
+        [
+          "tu",
+          "bevi",
+          "piješ",
+          "[bevi]"
+        ],
+        [
+          "lui/lei",
+          "beve",
+          "pije",
+          "[beve]"
+        ],
+        [
+          "noi",
+          "beviamo",
+          "pijeme",
+          "[bevjamo]"
+        ],
+        [
+          "voi",
+          "bevete",
+          "pijete",
+          "[bevete]"
+        ],
+        [
+          "loro",
+          "bevono",
+          "pijí",
+          "[bevono]"
+        ]
+      ]
+    },
+    {
+      "id": "sapere",
+      "title": "SAPERE — vědět / umět",
+      "rows": [
+        [
+          "io",
+          "so",
+          "vím",
+          "[so]"
+        ],
+        [
+          "tu",
+          "sai",
+          "víš",
+          "[sai]"
+        ],
+        [
+          "lui/lei",
+          "sa",
+          "ví",
+          "[sa]"
+        ],
+        [
+          "noi",
+          "sappiamo",
+          "víme",
+          "[sappjamo]"
+        ],
+        [
+          "voi",
+          "sapete",
+          "víte",
+          "[sapete]"
+        ],
+        [
+          "loro",
+          "sanno",
+          "vědí",
+          "[sanno]"
+        ]
+      ]
+    },
+    {
+      "id": "dovere",
+      "title": "DOVERE — muset",
+      "rows": [
+        [
+          "io",
+          "devo",
+          "musím",
+          "[devo]"
+        ],
+        [
+          "tu",
+          "devi",
+          "musíš",
+          "[devi]"
+        ],
+        [
+          "lui/lei",
+          "deve",
+          "musí",
+          "[deve]"
+        ],
+        [
+          "noi",
+          "dobbiamo",
+          "musíme",
+          "[dobbjamo]"
+        ],
+        [
+          "voi",
+          "dovete",
+          "musíte",
+          "[dovete]"
+        ],
+        [
+          "loro",
+          "devono",
+          "musí",
+          "[devono]"
+        ]
+      ]
+    },
+    {
+      "id": "potere",
+      "title": "POTERE — moci",
+      "rows": [
+        [
+          "io",
+          "posso",
+          "mohu",
+          "[posso]"
+        ],
+        [
+          "tu",
+          "puoi",
+          "můžeš",
+          "[puoi]"
+        ],
+        [
+          "lui/lei",
+          "può",
+          "může",
+          "[puó]"
+        ],
+        [
+          "noi",
+          "possiamo",
+          "můžeme",
+          "[possjamo]"
+        ],
+        [
+          "voi",
+          "potete",
+          "můžete",
+          "[potete]"
+        ],
+        [
+          "loro",
+          "possono",
+          "mohou",
+          "[possono]"
+        ]
+      ]
+    },
+    {
+      "id": "volere",
+      "title": "VOLERE — chtít",
+      "rows": [
+        [
+          "io",
+          "voglio",
+          "chci",
+          "[voljo]"
+        ],
+        [
+          "tu",
+          "vuoi",
+          "chceš",
+          "[vuoi]"
+        ],
+        [
+          "lui/lei",
+          "vuole",
+          "chce",
+          "[vuole]"
+        ],
+        [
+          "noi",
+          "vogliamo",
+          "chceme",
+          "[voljamo]"
+        ],
+        [
+          "voi",
+          "volete",
+          "chcete",
+          "[volete]"
+        ],
+        [
+          "loro",
+          "vogliono",
+          "chtějí",
+          "[voljono]"
+        ]
+      ]
+    },
+    {
+      "id": "vedere",
+      "title": "VEDERE — vidět",
+      "rows": [
+        [
+          "io",
+          "vedo",
+          "vidím",
+          "[vedo]"
+        ],
+        [
+          "tu",
+          "vedi",
+          "vidíš",
+          "[vedi]"
+        ],
+        [
+          "lui/lei",
+          "vede",
+          "vidí",
+          "[vede]"
+        ],
+        [
+          "noi",
+          "vediamo",
+          "vidíme",
+          "[vedjamo]"
+        ],
+        [
+          "voi",
+          "vedete",
+          "vidíte",
+          "[vedete]"
+        ],
+        [
+          "loro",
+          "vedono",
+          "vidí",
+          "[vedono]"
+        ]
+      ]
+    },
+    {
+      "id": "tenere",
+      "title": "TENERE — držet / mít",
+      "rows": [
+        [
+          "io",
+          "tengo",
+          "držím",
+          "[tengo]"
+        ],
+        [
+          "tu",
+          "tieni",
+          "držíš",
+          "[tjeni]"
+        ],
+        [
+          "lui/lei",
+          "tiene",
+          "drží",
+          "[tjene]"
+        ],
+        [
+          "noi",
+          "teniamo",
+          "držíme",
+          "[tenjamo]"
+        ],
+        [
+          "voi",
+          "tenete",
+          "držíte",
+          "[tenete]"
+        ],
+        [
+          "loro",
+          "tengono",
+          "drží",
+          "[tengono]"
+        ]
+      ]
+    },
+    {
+      "id": "rimanere",
+      "title": "RIMANERE — zůstat",
+      "rows": [
+        [
+          "io",
+          "rimango",
+          "zůstávám",
+          "[rimango]"
+        ],
+        [
+          "tu",
+          "rimani",
+          "zůstáváš",
+          "[rimani]"
+        ],
+        [
+          "lui/lei",
+          "rimane",
+          "zůstává",
+          "[rimane]"
+        ],
+        [
+          "noi",
+          "rimaniamo",
+          "zůstáváme",
+          "[rimanjamo]"
+        ],
+        [
+          "voi",
+          "rimanete",
+          "zůstáváte",
+          "[rimanete]"
+        ],
+        [
+          "loro",
+          "rimangono",
+          "zůstávají",
+          "[rimangono]"
+        ]
+      ]
+    },
+    {
+      "id": "salire",
+      "title": "SALIRE — stoupat / nastoupit",
+      "rows": [
+        [
+          "io",
+          "salgo",
+          "stoupám",
+          "[salgo]"
+        ],
+        [
+          "tu",
+          "sali",
+          "stoupáš",
+          "[sali]"
+        ],
+        [
+          "lui/lei",
+          "sale",
+          "stoupá",
+          "[sale]"
+        ],
+        [
+          "noi",
+          "saliamo",
+          "stoupáme",
+          "[saljamo]"
+        ],
+        [
+          "voi",
+          "salite",
+          "stoupáte",
+          "[salite]"
+        ],
+        [
+          "loro",
+          "salgono",
+          "stoupají",
+          "[salgono]"
+        ]
+      ]
+    },
+    {
+      "id": "morire",
+      "title": "MORIRE — umírat",
+      "rows": [
+        [
+          "io",
+          "muoio",
+          "umírám",
+          "[muojo]"
+        ],
+        [
+          "tu",
+          "muori",
+          "umíráš",
+          "[muori]"
+        ],
+        [
+          "lui/lei",
+          "muore",
+          "umírá",
+          "[muore]"
+        ],
+        [
+          "noi",
+          "moriamo",
+          "umíráme",
+          "[morjamo]"
+        ],
+        [
+          "voi",
+          "morite",
+          "umíráte",
+          "[morite]"
+        ],
+        [
+          "loro",
+          "muoiono",
+          "umírají",
+          "[muojono]"
+        ]
+      ]
+    },
+    {
+      "id": "scegliere",
+      "title": "SCEGLIERE — vybrat",
+      "rows": [
+        [
+          "io",
+          "scelgo",
+          "vybírám",
+          "[šelgo]"
+        ],
+        [
+          "tu",
+          "scegli",
+          "vybíráš",
+          "[šelji]"
+        ],
+        [
+          "lui/lei",
+          "sceglie",
+          "vybírá",
+          "[šelje]"
+        ],
+        [
+          "noi",
+          "scegliamo",
+          "vybíráme",
+          "[šeljamo]"
+        ],
+        [
+          "voi",
+          "scegliete",
+          "vybíráte",
+          "[šeljete]"
+        ],
+        [
+          "loro",
+          "scelgono",
+          "vybírají",
+          "[šelgono]"
+        ]
+      ]
+    },
+    {
+      "id": "cogliere",
+      "title": "COGLIERE — sklidit",
+      "rows": [
+        [
+          "io",
+          "colgo",
+          "sklízím",
+          "[kolgo]"
+        ],
+        [
+          "tu",
+          "cogli",
+          "sklízíš",
+          "[kolji]"
+        ],
+        [
+          "lui/lei",
+          "coglie",
+          "sklízí",
+          "[kolje]"
+        ],
+        [
+          "noi",
+          "cogliamo",
+          "sklízíme",
+          "[koljamo]"
+        ],
+        [
+          "voi",
+          "cogliete",
+          "sklízíte",
+          "[koljete]"
+        ],
+        [
+          "loro",
+          "colgono",
+          "sklízejí",
+          "[kolgono]"
+        ]
+      ]
+    },
+    {
+      "id": "porre",
+      "title": "PORRE — položit",
+      "rows": [
+        [
+          "io",
+          "pongo",
+          "kladu",
+          "[pongo]"
+        ],
+        [
+          "tu",
+          "poni",
+          "kladeš",
+          "[poni]"
+        ],
+        [
+          "lui/lei",
+          "pone",
+          "klade",
+          "[pone]"
+        ],
+        [
+          "noi",
+          "poniamo",
+          "klademe",
+          "[ponjamo]"
+        ],
+        [
+          "voi",
+          "ponete",
+          "kláděte",
+          "[ponete]"
+        ],
+        [
+          "loro",
+          "pongono",
+          "kladou",
+          "[pongono]"
+        ]
+      ]
+    },
+    {
+      "id": "trarre",
+      "title": "TRARRE — táhnout / vytáhnout",
+      "rows": [
+        [
+          "io",
+          "traggo",
+          "táhnu",
+          "[traggo]"
+        ],
+        [
+          "tu",
+          "trai",
+          "táhneš",
+          "[trai]"
+        ],
+        [
+          "lui/lei",
+          "trae",
+          "táhne",
+          "[trae]"
+        ],
+        [
+          "noi",
+          "traiamo",
+          "táhneme",
+          "[trajamo]"
+        ],
+        [
+          "voi",
+          "traete",
+          "táhnete",
+          "[traete]"
+        ],
+        [
+          "loro",
+          "traggono",
+          "táhnou",
+          "[traggono]"
+        ]
+      ]
+    },
+    {
+      "id": "piacere",
+      "title": "PIACERE — líbit se",
+      "rows": [
+        [
+          "io",
+          "piaccio",
+          "líbím se",
+          "[pjačo]"
+        ],
+        [
+          "tu",
+          "piaci",
+          "líbíš se",
+          "[pjači]"
+        ],
+        [
+          "lui/lei",
+          "piace",
+          "líbí se",
+          "[pjače]"
+        ],
+        [
+          "noi",
+          "piacciamo",
+          "líbíme se",
+          "[pjačamo]"
+        ],
+        [
+          "voi",
+          "piacete",
+          "líbíte se",
+          "[pjačete]"
+        ],
+        [
+          "loro",
+          "piacciono",
+          "líbí se",
+          "[pjačono]"
+        ]
+      ]
+    },
+    {
+      "id": "valere",
+      "title": "VALERE — mít cenu",
+      "rows": [
+        [
+          "io",
+          "valgo",
+          "mám cenu",
+          "[valgo]"
+        ],
+        [
+          "tu",
+          "vali",
+          "máš cenu",
+          "[vali]"
+        ],
+        [
+          "lui/lei",
+          "vale",
+          "má cenu",
+          "[vale]"
+        ],
+        [
+          "noi",
+          "valiamo",
+          "máme cenu",
+          "[valjamo]"
+        ],
+        [
+          "voi",
+          "valete",
+          "máte cenu",
+          "[valete]"
+        ],
+        [
+          "loro",
+          "valgono",
+          "mají cenu",
+          "[valgono]"
+        ]
+      ]
+    },
+    {
+      "id": "cuocere",
+      "title": "CUOCERE — vařit / péci",
+      "rows": [
+        [
+          "io",
+          "cuocio",
+          "vařím",
+          "[kuočo]"
+        ],
+        [
+          "tu",
+          "cuoci",
+          "vaříš",
+          "[kuoči]"
+        ],
+        [
+          "lui/lei",
+          "cuoce",
+          "vaří",
+          "[kuoče]"
+        ],
+        [
+          "noi",
+          "cociamo",
+          "vaříme",
+          "[kočamo]"
+        ],
+        [
+          "voi",
+          "cocete",
+          "vaříte",
+          "[kočete]"
+        ],
+        [
+          "loro",
+          "cuociono",
+          "vaří",
+          "[kuočono]"
+        ]
+      ]
+    },
+    {
+      "id": "giungere",
+      "title": "GIUNGERE — dorazit",
+      "rows": [
+        [
+          "io",
+          "giungo",
+          "dorazím",
+          "[džungo]"
+        ],
+        [
+          "tu",
+          "giungi",
+          "dorazíš",
+          "[džundži]"
+        ],
+        [
+          "lui/lei",
+          "giunge",
+          "dorazí",
+          "[džundže]"
+        ],
+        [
+          "noi",
+          "giungiamo",
+          "dorazíme",
+          "[džundžamo]"
+        ],
+        [
+          "voi",
+          "giungete",
+          "dorazíte",
+          "[džundžete]"
+        ],
+        [
+          "loro",
+          "giungono",
+          "dorazí",
+          "[džungono]"
+        ]
+      ]
+    },
+    {
+      "id": "cadere",
+      "title": "CADERE — padat",
+      "rows": [
+        [
+          "io",
+          "cado",
+          "padám",
+          "[kado]"
+        ],
+        [
+          "tu",
+          "cadi",
+          "padáš",
+          "[kadi]"
+        ],
+        [
+          "lui/lei",
+          "cade",
+          "padá",
+          "[kade]"
+        ],
+        [
+          "noi",
+          "cadiamo",
+          "padáme",
+          "[kadjamo]"
+        ],
+        [
+          "voi",
+          "cadete",
+          "padáte",
+          "[kadete]"
+        ],
+        [
+          "loro",
+          "cadono",
+          "padají",
+          "[kadono]"
+        ]
+      ]
+    },
+    {
+      "id": "conoscere",
+      "title": "CONOSCERE — znát",
+      "rows": [
+        [
+          "io",
+          "conosco",
+          "znám",
+          "[konosko]"
+        ],
+        [
+          "tu",
+          "conosci",
+          "znáš",
+          "[konoši]"
+        ],
+        [
+          "lui/lei",
+          "conosce",
+          "zná",
+          "[konoše]"
+        ],
+        [
+          "noi",
+          "conosciamo",
+          "známe",
+          "[konošamo]"
+        ],
+        [
+          "voi",
+          "conoscete",
+          "znáte",
+          "[konošete]"
+        ],
+        [
+          "loro",
+          "conoscono",
+          "znají",
+          "[konoskono]"
+        ]
+      ]
+    },
+    {
+      "id": "parere",
+      "title": "PARERE — zdát se",
+      "rows": [
+        [
+          "io",
+          "paio",
+          "zdám se",
+          "[pajo]"
+        ],
+        [
+          "tu",
+          "pari",
+          "zdáš se",
+          "[pari]"
+        ],
+        [
+          "lui/lei",
+          "pare",
+          "zdá se",
+          "[pare]"
+        ],
+        [
+          "noi",
+          "paiamo",
+          "zdáme se",
+          "[pajamo]"
+        ],
+        [
+          "voi",
+          "parete",
+          "zdáte se",
+          "[parete]"
+        ],
+        [
+          "loro",
+          "paiono",
+          "zdají se",
+          "[pajono]"
+        ]
+      ]
+    },
+    {
+      "id": "correre",
+      "title": "CORRERE — běžet",
+      "rows": [
+        [
+          "io",
+          "corro",
+          "běžím",
+          "[korro]"
+        ],
+        [
+          "tu",
+          "corri",
+          "běžíš",
+          "[korri]"
+        ],
+        [
+          "lui/lei",
+          "corre",
+          "běží",
+          "[korre]"
+        ],
+        [
+          "noi",
+          "corriamo",
+          "běžíme",
+          "[korrjamo]"
+        ],
+        [
+          "voi",
+          "correte",
+          "běžíte",
+          "[korrete]"
+        ],
+        [
+          "loro",
+          "corrono",
+          "běží",
+          "[korrono]"
+        ]
+      ]
+    },
+    {
+      "id": "accendere",
+      "title": "ACCENDERE — zapnout",
+      "rows": [
+        [
+          "io",
+          "accendo",
+          "zapínám",
+          "[ačendo]"
+        ],
+        [
+          "tu",
+          "accendi",
+          "zapínáš",
+          "[ačendi]"
+        ],
+        [
+          "lui/lei",
+          "accende",
+          "zapíná",
+          "[ačende]"
+        ],
+        [
+          "noi",
+          "accendiamo",
+          "zapínáme",
+          "[ačendjamo]"
+        ],
+        [
+          "voi",
+          "accendete",
+          "zapínáte",
+          "[ačendete]"
+        ],
+        [
+          "loro",
+          "accendono",
+          "zapínají",
+          "[ačendono]"
+        ]
+      ]
+    },
+    {
+      "id": "spegnere",
+      "title": "SPEGNERE — vypnout",
+      "rows": [
+        [
+          "io",
+          "spengo",
+          "vypínám",
+          "[spengo]"
+        ],
+        [
+          "tu",
+          "spegni",
+          "vypínáš",
+          "[speňi]"
+        ],
+        [
+          "lui/lei",
+          "spegne",
+          "vypíná",
+          "[speňe]"
+        ],
+        [
+          "noi",
+          "spegniamo",
+          "vypínáme",
+          "[speňjamo]"
+        ],
+        [
+          "voi",
+          "spegnete",
+          "vypínáte",
+          "[speňete]"
+        ],
+        [
+          "loro",
+          "spengono",
+          "vypínají",
+          "[spengono]"
+        ]
+      ]
+    },
+    {
+      "id": "nascere",
+      "title": "NASCERE — narodit se / vzniknout",
+      "rows": [
+        [
+          "io",
+          "nasco",
+          "rodím se",
+          "[nasko]"
+        ],
+        [
+          "tu",
+          "nasci",
+          "rodíš se",
+          "[naši]"
+        ],
+        [
+          "lui/lei",
+          "nasce",
+          "rodí se",
+          "[naše]"
+        ],
+        [
+          "noi",
+          "nasciamo",
+          "rodíme se",
+          "[našamo]"
+        ],
+        [
+          "voi",
+          "nascete",
+          "rodíte se",
+          "[našete]"
+        ],
+        [
+          "loro",
+          "nascono",
+          "rodí se",
+          "[naskono]"
+        ]
+      ]
+    },
+    {
+      "id": "vincere",
+      "title": "VINCERE — vyhrát",
+      "rows": [
+        [
+          "io",
+          "vinco",
+          "vyhrávám",
+          "[vinko]"
+        ],
+        [
+          "tu",
+          "vinci",
+          "vyhráváš",
+          "[vinči]"
+        ],
+        [
+          "lui/lei",
+          "vince",
+          "vyhrává",
+          "[vinče]"
+        ],
+        [
+          "noi",
+          "vinciamo",
+          "vyhráváme",
+          "[vinčamo]"
+        ],
+        [
+          "voi",
+          "vincete",
+          "vyhráváte",
+          "[vinčete]"
+        ],
+        [
+          "loro",
+          "vincono",
+          "vyhrávají",
+          "[vinkono]"
+        ]
+      ]
+    },
+    {
+      "id": "apparire",
+      "title": "APPARIRE — objevit se",
+      "rows": [
+        [
+          "io",
+          "appaio",
+          "objevuji se",
+          "[appajo]"
+        ],
+        [
+          "tu",
+          "appari",
+          "objevuješ se",
+          "[appari]"
+        ],
+        [
+          "lui/lei",
+          "appare",
+          "objevuje se",
+          "[appare]"
+        ],
+        [
+          "noi",
+          "appariamo",
+          "objevujeme se",
+          "[apparjamo]"
+        ],
+        [
+          "voi",
+          "apparite",
+          "objevujete se",
+          "[apparite]"
+        ],
+        [
+          "loro",
+          "appaiono",
+          "objevují se",
+          "[appajono]"
+        ]
+      ]
+    },
+    {
+      "id": "condurre",
+      "title": "CONDURRE — vést / řídit",
+      "rows": [
+        [
+          "io",
+          "conduco",
+          "vedu",
+          "[konduko]"
+        ],
+        [
+          "tu",
+          "conduci",
+          "vedeš",
+          "[konduči]"
+        ],
+        [
+          "lui/lei",
+          "conduce",
+          "vede",
+          "[konduče]"
+        ],
+        [
+          "noi",
+          "conduciamo",
+          "vedeme",
+          "[kondučamo]"
+        ],
+        [
+          "voi",
+          "conducete",
+          "vedete",
+          "[kondučete]"
+        ],
+        [
+          "loro",
+          "conducono",
+          "vedou",
+          "[kondukono]"
+        ]
+      ]
+    },
+    {
+      "id": "tradurre",
+      "title": "TRADURRE — přeložit",
+      "rows": [
+        [
+          "io",
+          "traduco",
+          "překládám",
+          "[traduko]"
+        ],
+        [
+          "tu",
+          "traduci",
+          "překládáš",
+          "[traduči]"
+        ],
+        [
+          "lui/lei",
+          "traduce",
+          "překládá",
+          "[traduče]"
+        ],
+        [
+          "noi",
+          "traduciamo",
+          "překládáme",
+          "[tradučamo]"
+        ],
+        [
+          "voi",
+          "traducete",
+          "překládáte",
+          "[tradučete]"
+        ],
+        [
+          "loro",
+          "traducono",
+          "překládají",
+          "[tradukono]"
+        ]
+      ]
+    },
+    {
+      "id": "produrre",
+      "title": "PRODURRE — vyrábět",
+      "rows": [
+        [
+          "io",
+          "produco",
+          "vyrábím",
+          "[produko]"
+        ],
+        [
+          "tu",
+          "produci",
+          "vyrábíš",
+          "[produči]"
+        ],
+        [
+          "lui/lei",
+          "produce",
+          "vyrábí",
+          "[produče]"
+        ],
+        [
+          "noi",
+          "produciamo",
+          "vyrábíme",
+          "[produčamo]"
+        ],
+        [
+          "voi",
+          "producete",
+          "vyrábíte",
+          "[produčete]"
+        ],
+        [
+          "loro",
+          "producono",
+          "vyrábějí",
+          "[produkono]"
+        ]
+      ]
+    },
+    {
+      "id": "piangere",
+      "title": "PIANGERE — plakat",
+      "rows": [
+        [
+          "io",
+          "piango",
+          "pláču",
+          "[pjango]"
+        ],
+        [
+          "tu",
+          "piangi",
+          "pláčeš",
+          "[pjandži]"
+        ],
+        [
+          "lui/lei",
+          "piange",
+          "pláče",
+          "[pjandže]"
+        ],
+        [
+          "noi",
+          "piangiamo",
+          "pláčeme",
+          "[pjandžamo]"
+        ],
+        [
+          "voi",
+          "piangete",
+          "pláčete",
+          "[pjandžete]"
+        ],
+        [
+          "loro",
+          "piangono",
+          "pláčou",
+          "[pjangono]"
+        ]
+      ]
+    },
+    {
+      "id": "decidere",
+      "title": "DECIDERE — rozhodnout se",
+      "rows": [
+        [
+          "io",
+          "decido",
+          "rozhodnu se",
+          "[dečido]"
+        ],
+        [
+          "tu",
+          "decidi",
+          "rozhodneš se",
+          "[dečidi]"
+        ],
+        [
+          "lui/lei",
+          "decide",
+          "rozhodne se",
+          "[dečide]"
+        ],
+        [
+          "noi",
+          "decidiamo",
+          "rozhodneme se",
+          "[dečidjamo]"
+        ],
+        [
+          "voi",
+          "decidete",
+          "rozhodnete se",
+          "[dečidete]"
+        ],
+        [
+          "loro",
+          "decidono",
+          "rozhodnou se",
+          "[dečidono]"
+        ]
+      ]
+    },
+    {
+      "id": "cercare",
+      "title": "CERCARE (-care) — hledat",
+      "rows": [
+        [
+          "io",
+          "cerco",
+          "hledám",
+          "[čerko]"
+        ],
+        [
+          "tu",
+          "cerchi",
+          "hledáš",
+          "[čerki]"
+        ],
+        [
+          "lui/lei",
+          "cerca",
+          "hledá",
+          "[čerka]"
+        ],
+        [
+          "noi",
+          "cerchiamo",
+          "hledáme",
+          "[čerkjamo]"
+        ],
+        [
+          "voi",
+          "cercate",
+          "hledáte",
+          "[čerkate]"
+        ],
+        [
+          "loro",
+          "cercano",
+          "hledají",
+          "[čerkano]"
+        ]
+      ]
+    },
+    {
+      "id": "pagare",
+      "title": "PAGARE (-gare) — platit",
+      "rows": [
+        [
+          "io",
+          "pago",
+          "platím",
+          "[pago]"
+        ],
+        [
+          "tu",
+          "paghi",
+          "platíš",
+          "[pagi]"
+        ],
+        [
+          "lui/lei",
+          "paga",
+          "platí",
+          "[paga]"
+        ],
+        [
+          "noi",
+          "paghiamo",
+          "platíme",
+          "[pagjamo]"
+        ],
+        [
+          "voi",
+          "pagate",
+          "platíte",
+          "[pagate]"
+        ],
+        [
+          "loro",
+          "pagano",
+          "platí",
+          "[pagano]"
+        ]
+      ]
+    },
+    {
+      "id": "dimenticare",
+      "title": "DIMENTICARE (-care) — zapomenout",
+      "rows": [
+        [
+          "io",
+          "dimentico",
+          "zapomínám",
+          "[dimentiko]"
+        ],
+        [
+          "tu",
+          "dimentichi",
+          "zapomínáš",
+          "[dimentiki]"
+        ],
+        [
+          "lui/lei",
+          "dimentica",
+          "zapomíná",
+          "[dimentika]"
+        ],
+        [
+          "noi",
+          "dimentichiamo",
+          "zapomínáme",
+          "[dimentikjamo]"
+        ],
+        [
+          "voi",
+          "dimenticate",
+          "zapomínáte",
+          "[dimentikate]"
+        ],
+        [
+          "loro",
+          "dimenticano",
+          "zapomínají",
+          "[dimentikano]"
+        ]
+      ]
+    },
+    {
+      "id": "indicare",
+      "title": "INDICARE (-care) — ukázat",
+      "rows": [
+        [
+          "io",
+          "indico",
+          "ukazuji",
+          "[indiko]"
+        ],
+        [
+          "tu",
+          "indichi",
+          "ukazuješ",
+          "[indiki]"
+        ],
+        [
+          "lui/lei",
+          "indica",
+          "ukazuje",
+          "[indika]"
+        ],
+        [
+          "noi",
+          "indichiamo",
+          "ukazujeme",
+          "[indikjamo]"
+        ],
+        [
+          "voi",
+          "indicate",
+          "ukazujete",
+          "[indikate]"
+        ],
+        [
+          "loro",
+          "indicano",
+          "ukazují",
+          "[indikano]"
+        ]
+      ]
+    },
+    {
+      "id": "giocare",
+      "title": "GIOCARE (-care) — hrát",
+      "rows": [
+        [
+          "io",
+          "gioco",
+          "hraji",
+          "[džoko]"
+        ],
+        [
+          "tu",
+          "giochi",
+          "hraješ",
+          "[džoki]"
+        ],
+        [
+          "lui/lei",
+          "gioca",
+          "hraje",
+          "[džoka]"
+        ],
+        [
+          "noi",
+          "giochiamo",
+          "hrajeme",
+          "[džokjamo]"
+        ],
+        [
+          "voi",
+          "giocate",
+          "hrajete",
+          "[džokate]"
+        ],
+        [
+          "loro",
+          "giocano",
+          "hrají",
+          "[džokano]"
+        ]
+      ]
+    },
+    {
+      "id": "parlare",
+      "title": "PARLARE (-are) — mluvit",
+      "rows": [
+        [
+          "io",
+          "parlo",
+          "mluvím",
+          "[parlo]"
+        ],
+        [
+          "tu",
+          "parli",
+          "mluvíš",
+          "[parli]"
+        ],
+        [
+          "lui/lei",
+          "parla",
+          "mluví",
+          "[parla]"
+        ],
+        [
+          "noi",
+          "parliamo",
+          "mluvíme",
+          "[parljamo]"
+        ],
+        [
+          "voi",
+          "parlate",
+          "mluvíte",
+          "[parlate]"
+        ],
+        [
+          "loro",
+          "parlano",
+          "mluví",
+          "[parlano]"
+        ]
+      ]
+    },
+    {
+      "id": "amare",
+      "title": "AMARE (-are) — milovat",
+      "rows": [
+        [
+          "io",
+          "amo",
+          "miluji",
+          "[amo]"
+        ],
+        [
+          "tu",
+          "ami",
+          "miluješ",
+          "[ami]"
+        ],
+        [
+          "lui/lei",
+          "ama",
+          "miluje",
+          "[ama]"
+        ],
+        [
+          "noi",
+          "amiamo",
+          "milujeme",
+          "[amjamo]"
+        ],
+        [
+          "voi",
+          "amate",
+          "milujete",
+          "[amate]"
+        ],
+        [
+          "loro",
+          "amano",
+          "milují",
+          "[amano]"
+        ]
+      ]
+    },
+    {
+      "id": "lavorare",
+      "title": "LAVORARE (-are) — pracovat",
+      "rows": [
+        [
+          "io",
+          "lavoro",
+          "pracuji",
+          "[lavoro]"
+        ],
+        [
+          "tu",
+          "lavori",
+          "pracuješ",
+          "[lavori]"
+        ],
+        [
+          "lui/lei",
+          "lavora",
+          "pracuje",
+          "[lavora]"
+        ],
+        [
+          "noi",
+          "lavoriamo",
+          "pracujeme",
+          "[lavorjamo]"
+        ],
+        [
+          "voi",
+          "lavorate",
+          "pracujete",
+          "[lavorate]"
+        ],
+        [
+          "loro",
+          "lavorano",
+          "pracují",
+          "[lavorano]"
+        ]
+      ]
+    },
+    {
+      "id": "studiare",
+      "title": "STUDIARE (-are) — studovat",
+      "rows": [
+        [
+          "io",
+          "studio",
+          "studuji",
+          "[studjo]"
+        ],
+        [
+          "tu",
+          "studii",
+          "studuješ",
+          "[studii]"
+        ],
+        [
+          "lui/lei",
+          "studia",
+          "studuje",
+          "[studja]"
+        ],
+        [
+          "noi",
+          "studiiamo",
+          "studujeme",
+          "[studiiamo]"
+        ],
+        [
+          "voi",
+          "studiate",
+          "studujete",
+          "[studjate]"
+        ],
+        [
+          "loro",
+          "studiano",
+          "studují",
+          "[studjano]"
+        ]
+      ]
+    },
+    {
+      "id": "mangiare",
+      "title": "MANGIARE (-are) — jíst",
+      "rows": [
+        [
+          "io",
+          "mangio",
+          "jím",
+          "[mandžo]"
+        ],
+        [
+          "tu",
+          "mangii",
+          "jíš",
+          "[mandžii]"
+        ],
+        [
+          "lui/lei",
+          "mangia",
+          "jí",
+          "[mandža]"
+        ],
+        [
+          "noi",
+          "mangiiamo",
+          "jíme",
+          "[mandžiiamo]"
+        ],
+        [
+          "voi",
+          "mangiate",
+          "jíte",
+          "[mandžate]"
+        ],
+        [
+          "loro",
+          "mangiano",
+          "jedí",
+          "[mandžano]"
+        ]
+      ]
+    },
+    {
+      "id": "cambiare",
+      "title": "CAMBIARE (-are) — měnit",
+      "rows": [
+        [
+          "io",
+          "cambio",
+          "měním",
+          "[kambjo]"
+        ],
+        [
+          "tu",
+          "cambii",
+          "měníš",
+          "[kambii]"
+        ],
+        [
+          "lui/lei",
+          "cambia",
+          "mění",
+          "[kambja]"
+        ],
+        [
+          "noi",
+          "cambiiamo",
+          "měníme",
+          "[kambiiamo]"
+        ],
+        [
+          "voi",
+          "cambiate",
+          "měníte",
+          "[kambjate]"
+        ],
+        [
+          "loro",
+          "cambiano",
+          "mění",
+          "[kambjano]"
+        ]
+      ]
+    },
+    {
+      "id": "comprare",
+      "title": "COMPRARE (-are) — kupovat",
+      "rows": [
+        [
+          "io",
+          "compro",
+          "kupuji",
+          "[kompro]"
+        ],
+        [
+          "tu",
+          "compri",
+          "kupuješ",
+          "[kompri]"
+        ],
+        [
+          "lui/lei",
+          "compra",
+          "kupuje",
+          "[kompra]"
+        ],
+        [
+          "noi",
+          "compriamo",
+          "kupujeme",
+          "[komprjamo]"
+        ],
+        [
+          "voi",
+          "comprate",
+          "kupujete",
+          "[komprate]"
+        ],
+        [
+          "loro",
+          "comprano",
+          "kupují",
+          "[komprano]"
+        ]
+      ]
+    },
+    {
+      "id": "aspettare",
+      "title": "ASPETTARE (-are) — čekat",
+      "rows": [
+        [
+          "io",
+          "aspetto",
+          "čekám",
+          "[aspetto]"
+        ],
+        [
+          "tu",
+          "aspetti",
+          "čekáš",
+          "[aspetti]"
+        ],
+        [
+          "lui/lei",
+          "aspetta",
+          "čeká",
+          "[aspetta]"
+        ],
+        [
+          "noi",
+          "aspettiamo",
+          "čekáme",
+          "[aspettjamo]"
+        ],
+        [
+          "voi",
+          "aspettate",
+          "čekáte",
+          "[aspettate]"
+        ],
+        [
+          "loro",
+          "aspettano",
+          "čekají",
+          "[aspettano]"
+        ]
+      ]
+    },
+    {
+      "id": "trovare",
+      "title": "TROVARE (-are) — nacházet",
+      "rows": [
+        [
+          "io",
+          "trovo",
+          "nacházím",
+          "[trovo]"
+        ],
+        [
+          "tu",
+          "trovi",
+          "nacházíš",
+          "[trovi]"
+        ],
+        [
+          "lui/lei",
+          "trova",
+          "nachází",
+          "[trova]"
+        ],
+        [
+          "noi",
+          "troviamo",
+          "nacházíme",
+          "[trovjamo]"
+        ],
+        [
+          "voi",
+          "trovate",
+          "nacházíte",
+          "[trovate]"
+        ],
+        [
+          "loro",
+          "trovano",
+          "nacházejí",
+          "[trovano]"
+        ]
+      ]
+    },
+    {
+      "id": "abitare",
+      "title": "ABITARE (-are) — bydlet",
+      "rows": [
+        [
+          "io",
+          "abito",
+          "bydlím",
+          "[abito]"
+        ],
+        [
+          "tu",
+          "abiti",
+          "bydlíš",
+          "[abiti]"
+        ],
+        [
+          "lui/lei",
+          "abita",
+          "bydlí",
+          "[abita]"
+        ],
+        [
+          "noi",
+          "abitiamo",
+          "bydlíme",
+          "[abitjamo]"
+        ],
+        [
+          "voi",
+          "abitate",
+          "bydlíte",
+          "[abitate]"
+        ],
+        [
+          "loro",
+          "abitano",
+          "bydlí",
+          "[abitano]"
+        ]
+      ]
+    },
+    {
+      "id": "entrare",
+      "title": "ENTRARE (-are) — vstoupit",
+      "rows": [
+        [
+          "io",
+          "entro",
+          "vstupuji",
+          "[entro]"
+        ],
+        [
+          "tu",
+          "entri",
+          "vstupuješ",
+          "[entri]"
+        ],
+        [
+          "lui/lei",
+          "entra",
+          "vstupuje",
+          "[entra]"
+        ],
+        [
+          "noi",
+          "entriamo",
+          "vstupujeme",
+          "[entrjamo]"
+        ],
+        [
+          "voi",
+          "entrate",
+          "vstupujete",
+          "[entrate]"
+        ],
+        [
+          "loro",
+          "entrano",
+          "vstupují",
+          "[entrano]"
+        ]
+      ]
+    },
+    {
+      "id": "tornare",
+      "title": "TORNARE (-are) — vracet se",
+      "rows": [
+        [
+          "io",
+          "torno",
+          "vracím se",
+          "[torno]"
+        ],
+        [
+          "tu",
+          "torni",
+          "vracíš se",
+          "[torni]"
+        ],
+        [
+          "lui/lei",
+          "torna",
+          "vrací se",
+          "[torna]"
+        ],
+        [
+          "noi",
+          "torniamo",
+          "vracíme se",
+          "[tornjamo]"
+        ],
+        [
+          "voi",
+          "tornate",
+          "vracíte se",
+          "[tornate]"
+        ],
+        [
+          "loro",
+          "tornano",
+          "vrací se",
+          "[tornano]"
+        ]
+      ]
+    },
+    {
+      "id": "chiamare",
+      "title": "CHIAMARE (-are) — volat",
+      "rows": [
+        [
+          "io",
+          "chiamo",
+          "volám",
+          "[kjamo]"
+        ],
+        [
+          "tu",
+          "chiami",
+          "voláš",
+          "[kjami]"
+        ],
+        [
+          "lui/lei",
+          "chiama",
+          "volá",
+          "[kjama]"
+        ],
+        [
+          "noi",
+          "chiamiamo",
+          "voláme",
+          "[kjamjamo]"
+        ],
+        [
+          "voi",
+          "chiamate",
+          "voláte",
+          "[kjamate]"
+        ],
+        [
+          "loro",
+          "chiamano",
+          "volají",
+          "[kjamano]"
+        ]
+      ]
+    },
+    {
+      "id": "lasciare",
+      "title": "LASCIARE (-are) — nechat",
+      "rows": [
+        [
+          "io",
+          "lascio",
+          "nechávám",
+          "[lašo]"
+        ],
+        [
+          "tu",
+          "lascii",
+          "necháváš",
+          "[lašii]"
+        ],
+        [
+          "lui/lei",
+          "lascia",
+          "nechává",
+          "[laša]"
+        ],
+        [
+          "noi",
+          "lasciiamo",
+          "necháváme",
+          "[lašiiamo]"
+        ],
+        [
+          "voi",
+          "lasciate",
+          "necháváte",
+          "[lašate]"
+        ],
+        [
+          "loro",
+          "lasciano",
+          "nechávají",
+          "[lašano]"
+        ]
+      ]
+    },
+    {
+      "id": "spiegare",
+      "title": "SPIEGARE (-are) — vysvětlovat",
+      "rows": [
+        [
+          "io",
+          "spiego",
+          "vysvětluji",
+          "[spjego]"
+        ],
+        [
+          "tu",
+          "spiegi",
+          "vysvětluješ",
+          "[spjedži]"
+        ],
+        [
+          "lui/lei",
+          "spiega",
+          "vysvětluje",
+          "[spjega]"
+        ],
+        [
+          "noi",
+          "spiegiamo",
+          "vysvětlujeme",
+          "[spjedžamo]"
+        ],
+        [
+          "voi",
+          "spiegate",
+          "vysvětlujete",
+          "[spjegate]"
+        ],
+        [
+          "loro",
+          "spiegano",
+          "vysvětlují",
+          "[spjegano]"
+        ]
+      ]
+    },
+    {
+      "id": "organizzare",
+      "title": "ORGANIZZARE (-are) — organizovat",
+      "rows": [
+        [
+          "io",
+          "organizzo",
+          "organizuji",
+          "[organicco]"
+        ],
+        [
+          "tu",
+          "organizzi",
+          "organizuješ",
+          "[organicci]"
+        ],
+        [
+          "lui/lei",
+          "organizza",
+          "organizuje",
+          "[organicca]"
+        ],
+        [
+          "noi",
+          "organizziamo",
+          "organizujeme",
+          "[organiccjamo]"
+        ],
+        [
+          "voi",
+          "organizzate",
+          "organizujete",
+          "[organiccate]"
+        ],
+        [
+          "loro",
+          "organizzano",
+          "organizují",
+          "[organiccano]"
+        ]
+      ]
+    },
+    {
+      "id": "viaggiare",
+      "title": "VIAGGIARE (-are) — cestovat",
+      "rows": [
+        [
+          "io",
+          "viaggio",
+          "cestuji",
+          "[vjadžo]"
+        ],
+        [
+          "tu",
+          "viaggii",
+          "cestuješ",
+          "[vjadžii]"
+        ],
+        [
+          "lui/lei",
+          "viaggia",
+          "cestuje",
+          "[vjadža]"
+        ],
+        [
+          "noi",
+          "viaggiiamo",
+          "cestujeme",
+          "[vjadžiiamo]"
+        ],
+        [
+          "voi",
+          "viaggiate",
+          "cestujete",
+          "[vjadžate]"
+        ],
+        [
+          "loro",
+          "viaggiano",
+          "cestují",
+          "[vjadžano]"
+        ]
+      ]
+    },
+    {
+      "id": "visitare",
+      "title": "VISITARE (-are) — navštěvovat",
+      "rows": [
+        [
+          "io",
+          "visito",
+          "navštěvuji",
+          "[visito]"
+        ],
+        [
+          "tu",
+          "visiti",
+          "navštěvuješ",
+          "[visiti]"
+        ],
+        [
+          "lui/lei",
+          "visita",
+          "navštěvuje",
+          "[visita]"
+        ],
+        [
+          "noi",
+          "visitiamo",
+          "navštěvujeme",
+          "[visitjamo]"
+        ],
+        [
+          "voi",
+          "visitate",
+          "navštěvujete",
+          "[visitate]"
+        ],
+        [
+          "loro",
+          "visitano",
+          "navštěvují",
+          "[visitano]"
+        ]
+      ]
+    },
+    {
+      "id": "lavare",
+      "title": "LAVARE (-are) — mýt",
+      "rows": [
+        [
+          "io",
+          "lavo",
+          "myji",
+          "[lavo]"
+        ],
+        [
+          "tu",
+          "lavi",
+          "myješ",
+          "[lavi]"
+        ],
+        [
+          "lui/lei",
+          "lava",
+          "myje",
+          "[lava]"
+        ],
+        [
+          "noi",
+          "laviamo",
+          "myjeme",
+          "[lavjamo]"
+        ],
+        [
+          "voi",
+          "lavate",
+          "myjete",
+          "[lavate]"
+        ],
+        [
+          "loro",
+          "lavano",
+          "myjí",
+          "[lavano]"
+        ]
+      ]
+    },
+    {
+      "id": "cucinare",
+      "title": "CUCINARE (-are) — vařit",
+      "rows": [
+        [
+          "io",
+          "cucino",
+          "vařím",
+          "[kučino]"
+        ],
+        [
+          "tu",
+          "cucini",
+          "vaříš",
+          "[kučini]"
+        ],
+        [
+          "lui/lei",
+          "cucina",
+          "vaří",
+          "[kučina]"
+        ],
+        [
+          "noi",
+          "cuciniamo",
+          "vaříme",
+          "[kučinjamo]"
+        ],
+        [
+          "voi",
+          "cucinate",
+          "vaříte",
+          "[kučinate]"
+        ],
+        [
+          "loro",
+          "cucinano",
+          "vaří",
+          "[kučinano]"
+        ]
+      ]
+    },
+    {
+      "id": "desiderare",
+      "title": "DESIDERARE (-are) — přát si",
+      "rows": [
+        [
+          "io",
+          "desidero",
+          "přeji si",
+          "[desidero]"
+        ],
+        [
+          "tu",
+          "desideri",
+          "přeješ si",
+          "[desideri]"
+        ],
+        [
+          "lui/lei",
+          "desidera",
+          "přeje si",
+          "[desidera]"
+        ],
+        [
+          "noi",
+          "desideriamo",
+          "přejeme si",
+          "[desiderjamo]"
+        ],
+        [
+          "voi",
+          "desiderate",
+          "přejete si",
+          "[desiderate]"
+        ],
+        [
+          "loro",
+          "desiderano",
+          "přejí si",
+          "[desiderano]"
+        ]
+      ]
+    },
+    {
+      "id": "diventare",
+      "title": "DIVENTARE (-are) — stávat se",
+      "rows": [
+        [
+          "io",
+          "divento",
+          "stávám se",
+          "[divento]"
+        ],
+        [
+          "tu",
+          "diventi",
+          "stáváš se",
+          "[diventi]"
+        ],
+        [
+          "lui/lei",
+          "diventa",
+          "stává se",
+          "[diventa]"
+        ],
+        [
+          "noi",
+          "diventiamo",
+          "stáváme se",
+          "[diventjamo]"
+        ],
+        [
+          "voi",
+          "diventate",
+          "stáváte se",
+          "[diventate]"
+        ],
+        [
+          "loro",
+          "diventano",
+          "stávají se",
+          "[diventano]"
+        ]
+      ]
+    },
+    {
+      "id": "pensare",
+      "title": "PENSARE (-are) — myslet",
+      "rows": [
+        [
+          "io",
+          "penso",
+          "myslím",
+          "[penso]"
+        ],
+        [
+          "tu",
+          "pensi",
+          "myslíš",
+          "[pensi]"
+        ],
+        [
+          "lui/lei",
+          "pensa",
+          "myslí",
+          "[pensa]"
+        ],
+        [
+          "noi",
+          "pensiamo",
+          "myslíme",
+          "[pensjamo]"
+        ],
+        [
+          "voi",
+          "pensate",
+          "myslíte",
+          "[pensate]"
+        ],
+        [
+          "loro",
+          "pensano",
+          "myslí",
+          "[pensano]"
+        ]
+      ]
+    },
+    {
+      "id": "sperare",
+      "title": "SPERARE (-are) — doufat",
+      "rows": [
+        [
+          "io",
+          "spero",
+          "doufám",
+          "[spero]"
+        ],
+        [
+          "tu",
+          "speri",
+          "doufáš",
+          "[speri]"
+        ],
+        [
+          "lui/lei",
+          "spera",
+          "doufá",
+          "[spera]"
+        ],
+        [
+          "noi",
+          "speriamo",
+          "doufáme",
+          "[sperjamo]"
+        ],
+        [
+          "voi",
+          "sperate",
+          "doufáte",
+          "[sperate]"
+        ],
+        [
+          "loro",
+          "sperano",
+          "doufají",
+          "[sperano]"
+        ]
+      ]
+    },
+    {
+      "id": "iniziare",
+      "title": "INIZIARE (-are) — začínat",
+      "rows": [
+        [
+          "io",
+          "inizio",
+          "začínám",
+          "[inicjo]"
+        ],
+        [
+          "tu",
+          "inizii",
+          "začínáš",
+          "[inicii]"
+        ],
+        [
+          "lui/lei",
+          "inizia",
+          "začíná",
+          "[inicja]"
+        ],
+        [
+          "noi",
+          "iniziiamo",
+          "začínáme",
+          "[iniciiamo]"
+        ],
+        [
+          "voi",
+          "iniziate",
+          "začínáte",
+          "[inicjate]"
+        ],
+        [
+          "loro",
+          "iniziano",
+          "začínají",
+          "[inicjano]"
+        ]
+      ]
+    },
+    {
+      "id": "continuare",
+      "title": "CONTINUARE (-are) — pokračovat",
+      "rows": [
+        [
+          "io",
+          "continuo",
+          "pokračuji",
+          "[kontinuo]"
+        ],
+        [
+          "tu",
+          "continui",
+          "pokračuješ",
+          "[kontinui]"
+        ],
+        [
+          "lui/lei",
+          "continua",
+          "pokračuje",
+          "[kontinua]"
+        ],
+        [
+          "noi",
+          "continuiamo",
+          "pokračujeme",
+          "[kontinujamo]"
+        ],
+        [
+          "voi",
+          "continuate",
+          "pokračujete",
+          "[kontinuate]"
+        ],
+        [
+          "loro",
+          "continuano",
+          "pokračují",
+          "[kontinuano]"
+        ]
+      ]
+    },
+    {
+      "id": "arrivare",
+      "title": "ARRIVARE (-are) — přijíždět",
+      "rows": [
+        [
+          "io",
+          "arrivo",
+          "přijíždím",
+          "[arrivo]"
+        ],
+        [
+          "tu",
+          "arrivi",
+          "přijíždíš",
+          "[arrivi]"
+        ],
+        [
+          "lui/lei",
+          "arriva",
+          "přijíždí",
+          "[arriva]"
+        ],
+        [
+          "noi",
+          "arriviamo",
+          "přijíždíme",
+          "[arrivjamo]"
+        ],
+        [
+          "voi",
+          "arrivate",
+          "přijíždíte",
+          "[arrivate]"
+        ],
+        [
+          "loro",
+          "arrivano",
+          "přijíždějí",
+          "[arrivano]"
+        ]
+      ]
+    },
+    {
+      "id": "ascoltare",
+      "title": "ASCOLTARE (-are) — poslouchat",
+      "rows": [
+        [
+          "io",
+          "ascolto",
+          "poslouchám",
+          "[askolto]"
+        ],
+        [
+          "tu",
+          "ascolti",
+          "posloucháš",
+          "[askolti]"
+        ],
+        [
+          "lui/lei",
+          "ascolta",
+          "poslouchá",
+          "[askolta]"
+        ],
+        [
+          "noi",
+          "ascoltiamo",
+          "posloucháme",
+          "[askoltjamo]"
+        ],
+        [
+          "voi",
+          "ascoltate",
+          "posloucháte",
+          "[askoltate]"
+        ],
+        [
+          "loro",
+          "ascoltano",
+          "poslouchají",
+          "[askoltano]"
+        ]
+      ]
+    },
+    {
+      "id": "cantare",
+      "title": "CANTARE (-are) — zpívat",
+      "rows": [
+        [
+          "io",
+          "canto",
+          "zpívám",
+          "[kanto]"
+        ],
+        [
+          "tu",
+          "canti",
+          "zpíváš",
+          "[kanti]"
+        ],
+        [
+          "lui/lei",
+          "canta",
+          "zpívá",
+          "[kanta]"
+        ],
+        [
+          "noi",
+          "cantiamo",
+          "zpíváme",
+          "[kantjamo]"
+        ],
+        [
+          "voi",
+          "cantate",
+          "zpíváte",
+          "[kantate]"
+        ],
+        [
+          "loro",
+          "cantano",
+          "zpívají",
+          "[kantano]"
+        ]
+      ]
+    },
+    {
+      "id": "ballare",
+      "title": "BALLARE (-are) — tancovat",
+      "rows": [
+        [
+          "io",
+          "ballo",
+          "tancuji",
+          "[ballo]"
+        ],
+        [
+          "tu",
+          "balli",
+          "tancuješ",
+          "[balli]"
+        ],
+        [
+          "lui/lei",
+          "balla",
+          "tancuje",
+          "[balla]"
+        ],
+        [
+          "noi",
+          "balliamo",
+          "tancujeme",
+          "[balljamo]"
+        ],
+        [
+          "voi",
+          "ballate",
+          "tancujete",
+          "[ballate]"
+        ],
+        [
+          "loro",
+          "ballano",
+          "tancují",
+          "[ballano]"
+        ]
+      ]
+    },
+    {
+      "id": "cenare",
+      "title": "CENARE (-are) — večeřet",
+      "rows": [
+        [
+          "io",
+          "ceno",
+          "večeřím",
+          "[čeno]"
+        ],
+        [
+          "tu",
+          "ceni",
+          "večeříš",
+          "[čeni]"
+        ],
+        [
+          "lui/lei",
+          "cena",
+          "večeří",
+          "[čena]"
+        ],
+        [
+          "noi",
+          "ceniamo",
+          "večeříme",
+          "[čenjamo]"
+        ],
+        [
+          "voi",
+          "cenate",
+          "večeříte",
+          "[čenate]"
+        ],
+        [
+          "loro",
+          "cenano",
+          "večeří",
+          "[čenano]"
+        ]
+      ]
+    },
+    {
+      "id": "guidare",
+      "title": "GUIDARE (-are) — řídit",
+      "rows": [
+        [
+          "io",
+          "guido",
+          "řídím",
+          "[guido]"
+        ],
+        [
+          "tu",
+          "guidi",
+          "řídíš",
+          "[guidi]"
+        ],
+        [
+          "lui/lei",
+          "guida",
+          "řídí",
+          "[guida]"
+        ],
+        [
+          "noi",
+          "guidiamo",
+          "řídíme",
+          "[guidjamo]"
+        ],
+        [
+          "voi",
+          "guidate",
+          "řídíte",
+          "[guidate]"
+        ],
+        [
+          "loro",
+          "guidano",
+          "řídí",
+          "[guidano]"
+        ]
+      ]
+    },
+    {
+      "id": "usare",
+      "title": "USARE (-are) — používat",
+      "rows": [
+        [
+          "io",
+          "uso",
+          "používám",
+          "[uso]"
+        ],
+        [
+          "tu",
+          "usi",
+          "používáš",
+          "[usi]"
+        ],
+        [
+          "lui/lei",
+          "usa",
+          "používá",
+          "[usa]"
+        ],
+        [
+          "noi",
+          "usiamo",
+          "používáme",
+          "[usjamo]"
+        ],
+        [
+          "voi",
+          "usate",
+          "používáte",
+          "[usate]"
+        ],
+        [
+          "loro",
+          "usano",
+          "používají",
+          "[usano]"
+        ]
+      ]
+    },
+    {
+      "id": "vendere",
+      "title": "VENDERE (-ere) — prodávat",
+      "rows": [
+        [
+          "io",
+          "vendo",
+          "prodávám",
+          "[vendo]"
+        ],
+        [
+          "tu",
+          "vendi",
+          "prodáváš",
+          "[vendi]"
+        ],
+        [
+          "lui/lei",
+          "vende",
+          "prodává",
+          "[vende]"
+        ],
+        [
+          "noi",
+          "vendiamo",
+          "prodáváme",
+          "[vendjamo]"
+        ],
+        [
+          "voi",
+          "vendete",
+          "prodáváte",
+          "[vendete]"
+        ],
+        [
+          "loro",
+          "vendono",
+          "prodávají",
+          "[vendono]"
+        ]
+      ]
+    },
+    {
+      "id": "credere",
+      "title": "CREDERE (-ere) — věřit",
+      "rows": [
+        [
+          "io",
+          "credo",
+          "věřím",
+          "[kredo]"
+        ],
+        [
+          "tu",
+          "credi",
+          "věříš",
+          "[kredi]"
+        ],
+        [
+          "lui/lei",
+          "crede",
+          "věří",
+          "[krede]"
+        ],
+        [
+          "noi",
+          "crediamo",
+          "věříme",
+          "[kredjamo]"
+        ],
+        [
+          "voi",
+          "credete",
+          "věříte",
+          "[kredete]"
+        ],
+        [
+          "loro",
+          "credono",
+          "věří",
+          "[kredono]"
+        ]
+      ]
+    },
+    {
+      "id": "ricevere",
+      "title": "RICEVERE (-ere) — dostávat",
+      "rows": [
+        [
+          "io",
+          "ricevo",
+          "dostávám",
+          "[ričevo]"
+        ],
+        [
+          "tu",
+          "ricevi",
+          "dostáváš",
+          "[ričevi]"
+        ],
+        [
+          "lui/lei",
+          "riceve",
+          "dostává",
+          "[ričeve]"
+        ],
+        [
+          "noi",
+          "riceviamo",
+          "dostáváme",
+          "[ričevjamo]"
+        ],
+        [
+          "voi",
+          "ricevete",
+          "dostáváte",
+          "[ričevete]"
+        ],
+        [
+          "loro",
+          "ricevono",
+          "dostávají",
+          "[ričevono]"
+        ]
+      ]
+    },
+    {
+      "id": "mettere",
+      "title": "METTERE (-ere) — klást",
+      "rows": [
+        [
+          "io",
+          "metto",
+          "pokládám",
+          "[metto]"
+        ],
+        [
+          "tu",
+          "metti",
+          "pokládáš",
+          "[metti]"
+        ],
+        [
+          "lui/lei",
+          "mette",
+          "pokládá",
+          "[mette]"
+        ],
+        [
+          "noi",
+          "mettiamo",
+          "pokládáme",
+          "[mettjamo]"
+        ],
+        [
+          "voi",
+          "mettete",
+          "pokládáte",
+          "[mettete]"
+        ],
+        [
+          "loro",
+          "mettono",
+          "pokládají",
+          "[mettono]"
+        ]
+      ]
+    },
+    {
+      "id": "prendere",
+      "title": "PRENDERE (-ere) — brát",
+      "rows": [
+        [
+          "io",
+          "prendo",
+          "beru",
+          "[prendo]"
+        ],
+        [
+          "tu",
+          "prendi",
+          "bereš",
+          "[prendi]"
+        ],
+        [
+          "lui/lei",
+          "prende",
+          "bere",
+          "[prende]"
+        ],
+        [
+          "noi",
+          "prendiamo",
+          "bereme",
+          "[prendjamo]"
+        ],
+        [
+          "voi",
+          "prendete",
+          "berete",
+          "[prendete]"
+        ],
+        [
+          "loro",
+          "prendono",
+          "berou",
+          "[prendono]"
+        ]
+      ]
+    },
+    {
+      "id": "scrivere",
+      "title": "SCRIVERE (-ere) — psát",
+      "rows": [
+        [
+          "io",
+          "scrivo",
+          "píšu",
+          "[skrivo]"
+        ],
+        [
+          "tu",
+          "scrivi",
+          "píšeš",
+          "[skrivi]"
+        ],
+        [
+          "lui/lei",
+          "scrive",
+          "píše",
+          "[skrive]"
+        ],
+        [
+          "noi",
+          "scriviamo",
+          "píšeme",
+          "[skrivjamo]"
+        ],
+        [
+          "voi",
+          "scrivete",
+          "píšete",
+          "[skrivete]"
+        ],
+        [
+          "loro",
+          "scrivono",
+          "píší",
+          "[skrivono]"
+        ]
+      ]
+    },
+    {
+      "id": "vivere",
+      "title": "VIVERE (-ere) — žít",
+      "rows": [
+        [
+          "io",
+          "vivo",
+          "žiji",
+          "[vivo]"
+        ],
+        [
+          "tu",
+          "vivi",
+          "žiješ",
+          "[vivi]"
+        ],
+        [
+          "lui/lei",
+          "vive",
+          "žije",
+          "[vive]"
+        ],
+        [
+          "noi",
+          "viviamo",
+          "žijeme",
+          "[vivjamo]"
+        ],
+        [
+          "voi",
+          "vivete",
+          "žijete",
+          "[vivete]"
+        ],
+        [
+          "loro",
+          "vivono",
+          "žijí",
+          "[vivono]"
+        ]
+      ]
+    },
+    {
+      "id": "chiedere",
+      "title": "CHIEDERE (-ere) — ptát se",
+      "rows": [
+        [
+          "io",
+          "chiedo",
+          "ptám se",
+          "[kjedo]"
+        ],
+        [
+          "tu",
+          "chiedi",
+          "ptáš se",
+          "[kjedi]"
+        ],
+        [
+          "lui/lei",
+          "chiede",
+          "ptá se",
+          "[kjede]"
+        ],
+        [
+          "noi",
+          "chiediamo",
+          "ptáme se",
+          "[kjedjamo]"
+        ],
+        [
+          "voi",
+          "chiedete",
+          "ptáte se",
+          "[kjedete]"
+        ],
+        [
+          "loro",
+          "chiedono",
+          "ptají se",
+          "[kjedono]"
+        ]
+      ]
+    },
+    {
+      "id": "perdere",
+      "title": "PERDERE (-ere) — ztrácet",
+      "rows": [
+        [
+          "io",
+          "perdo",
+          "ztrácím",
+          "[perdo]"
+        ],
+        [
+          "tu",
+          "perdi",
+          "ztrácíš",
+          "[perdi]"
+        ],
+        [
+          "lui/lei",
+          "perde",
+          "ztrácí",
+          "[perde]"
+        ],
+        [
+          "noi",
+          "perdiamo",
+          "ztrácíme",
+          "[perdjamo]"
+        ],
+        [
+          "voi",
+          "perdete",
+          "ztrácíte",
+          "[perdete]"
+        ],
+        [
+          "loro",
+          "perdono",
+          "ztrácejí",
+          "[perdono]"
+        ]
+      ]
+    },
+    {
+      "id": "leggere",
+      "title": "LEGGERE (-ere) — číst",
+      "rows": [
+        [
+          "io",
+          "leggo",
+          "čtu",
+          "[leggo]"
+        ],
+        [
+          "tu",
+          "leggi",
+          "čteš",
+          "[ledži]"
+        ],
+        [
+          "lui/lei",
+          "legge",
+          "čte",
+          "[ledže]"
+        ],
+        [
+          "noi",
+          "leggiamo",
+          "čteme",
+          "[ledžamo]"
+        ],
+        [
+          "voi",
+          "leggete",
+          "čtete",
+          "[ledžete]"
+        ],
+        [
+          "loro",
+          "leggono",
+          "čtou",
+          "[leggono]"
+        ]
+      ]
+    },
+    {
+      "id": "battere",
+      "title": "BATTERE (-ere) — tlouci",
+      "rows": [
+        [
+          "io",
+          "batto",
+          "buším",
+          "[batto]"
+        ],
+        [
+          "tu",
+          "batti",
+          "bušíš",
+          "[batti]"
+        ],
+        [
+          "lui/lei",
+          "batte",
+          "buší",
+          "[batte]"
+        ],
+        [
+          "noi",
+          "battiamo",
+          "bušíme",
+          "[battjamo]"
+        ],
+        [
+          "voi",
+          "battete",
+          "bušíte",
+          "[battete]"
+        ],
+        [
+          "loro",
+          "battono",
+          "bují",
+          "[battono]"
+        ]
+      ]
+    },
+    {
+      "id": "temere",
+      "title": "TEMERE (-ere) — bát se",
+      "rows": [
+        [
+          "io",
+          "temo",
+          "bojím se",
+          "[temo]"
+        ],
+        [
+          "tu",
+          "temi",
+          "bojíš se",
+          "[temi]"
+        ],
+        [
+          "lui/lei",
+          "teme",
+          "bojí se",
+          "[teme]"
+        ],
+        [
+          "noi",
+          "temiamo",
+          "bojíme se",
+          "[temjamo]"
+        ],
+        [
+          "voi",
+          "temete",
+          "bojíte se",
+          "[temete]"
+        ],
+        [
+          "loro",
+          "temono",
+          "bojí se",
+          "[temono]"
+        ]
+      ]
+    },
+    {
+      "id": "ripetere",
+      "title": "RIPETERE (-ere) — opakovat",
+      "rows": [
+        [
+          "io",
+          "ripeto",
+          "opakuji",
+          "[ripeto]"
+        ],
+        [
+          "tu",
+          "ripeti",
+          "opakuješ",
+          "[ripeti]"
+        ],
+        [
+          "lui/lei",
+          "ripete",
+          "opakuje",
+          "[ripete]"
+        ],
+        [
+          "noi",
+          "ripetiamo",
+          "opakujeme",
+          "[ripetjamo]"
+        ],
+        [
+          "voi",
+          "ripetete",
+          "opakujete",
+          "[ripetete]"
+        ],
+        [
+          "loro",
+          "ripetono",
+          "opakují",
+          "[ripetono]"
+        ]
+      ]
+    },
+    {
+      "id": "dormire",
+      "title": "DORMIRE (-ire) — spat",
+      "rows": [
+        [
+          "io",
+          "dormo",
+          "spím",
+          "[dormo]"
+        ],
+        [
+          "tu",
+          "dormi",
+          "spíš",
+          "[dormi]"
+        ],
+        [
+          "lui/lei",
+          "dorme",
+          "spí",
+          "[dorme]"
+        ],
+        [
+          "noi",
+          "dormiamo",
+          "spíme",
+          "[dormjamo]"
+        ],
+        [
+          "voi",
+          "dormite",
+          "spíte",
+          "[dormite]"
+        ],
+        [
+          "loro",
+          "dormono",
+          "spí",
+          "[dormono]"
+        ]
+      ]
+    },
+    {
+      "id": "aprire",
+      "title": "APRIRE (-ire) — otevřít",
+      "rows": [
+        [
+          "io",
+          "apro",
+          "otevírám",
+          "[apro]"
+        ],
+        [
+          "tu",
+          "apri",
+          "otevíráš",
+          "[apri]"
+        ],
+        [
+          "lui/lei",
+          "apre",
+          "otevírá",
+          "[apre]"
+        ],
+        [
+          "noi",
+          "apriamo",
+          "otevíráme",
+          "[aprjamo]"
+        ],
+        [
+          "voi",
+          "aprite",
+          "otevíráte",
+          "[aprite]"
+        ],
+        [
+          "loro",
+          "aprono",
+          "otevírají",
+          "[aprono]"
+        ]
+      ]
+    },
+    {
+      "id": "sentire",
+      "title": "SENTIRE (-ire) — slyšet / cítit",
+      "rows": [
+        [
+          "io",
+          "sento",
+          "cítím",
+          "[sento]"
+        ],
+        [
+          "tu",
+          "senti",
+          "cítíš",
+          "[senti]"
+        ],
+        [
+          "lui/lei",
+          "sente",
+          "cítí",
+          "[sente]"
+        ],
+        [
+          "noi",
+          "sentiamo",
+          "cítíme",
+          "[sentjamo]"
+        ],
+        [
+          "voi",
+          "sentite",
+          "cítíte",
+          "[sentite]"
+        ],
+        [
+          "loro",
+          "sentono",
+          "cítí",
+          "[sentono]"
+        ]
+      ]
+    },
+    {
+      "id": "partire",
+      "title": "PARTIRE (-ire) — odjet",
+      "rows": [
+        [
+          "io",
+          "parto",
+          "odjíždím",
+          "[parto]"
+        ],
+        [
+          "tu",
+          "parti",
+          "odjíždíš",
+          "[parti]"
+        ],
+        [
+          "lui/lei",
+          "parte",
+          "odjíždí",
+          "[parte]"
+        ],
+        [
+          "noi",
+          "partiamo",
+          "odjíždíme",
+          "[partjamo]"
+        ],
+        [
+          "voi",
+          "partite",
+          "odjíždíte",
+          "[partite]"
+        ],
+        [
+          "loro",
+          "partono",
+          "odjíždějí",
+          "[partono]"
+        ]
+      ]
+    },
+    {
+      "id": "seguire",
+      "title": "SEGUIRE (-ire) — následovat",
+      "rows": [
+        [
+          "io",
+          "seguo",
+          "následuji",
+          "[seguo]"
+        ],
+        [
+          "tu",
+          "segui",
+          "následuješ",
+          "[segui]"
+        ],
+        [
+          "lui/lei",
+          "segue",
+          "následuje",
+          "[segue]"
+        ],
+        [
+          "noi",
+          "seguiamo",
+          "následujeme",
+          "[segujamo]"
+        ],
+        [
+          "voi",
+          "seguite",
+          "následujete",
+          "[seguite]"
+        ],
+        [
+          "loro",
+          "seguono",
+          "následují",
+          "[seguono]"
+        ]
+      ]
+    },
+    {
+      "id": "servire",
+      "title": "SERVIRE (-ire) — sloužit",
+      "rows": [
+        [
+          "io",
+          "servo",
+          "sloužím",
+          "[servo]"
+        ],
+        [
+          "tu",
+          "servi",
+          "sloužíš",
+          "[servi]"
+        ],
+        [
+          "lui/lei",
+          "serve",
+          "slouží",
+          "[serve]"
+        ],
+        [
+          "noi",
+          "serviamo",
+          "sloužíme",
+          "[servjamo]"
+        ],
+        [
+          "voi",
+          "servite",
+          "sloužíte",
+          "[servite]"
+        ],
+        [
+          "loro",
+          "servono",
+          "slouží",
+          "[servono]"
+        ]
+      ]
+    },
+    {
+      "id": "vestire",
+      "title": "VESTIRE (-ire) — oblékat",
+      "rows": [
+        [
+          "io",
+          "vesto",
+          "oblékám",
+          "[vesto]"
+        ],
+        [
+          "tu",
+          "vesti",
+          "oblékáš",
+          "[vesti]"
+        ],
+        [
+          "lui/lei",
+          "veste",
+          "obléká",
+          "[veste]"
+        ],
+        [
+          "noi",
+          "vestiamo",
+          "oblékáme",
+          "[vestjamo]"
+        ],
+        [
+          "voi",
+          "vestite",
+          "oblékáte",
+          "[vestite]"
+        ],
+        [
+          "loro",
+          "vestono",
+          "oblékají",
+          "[vestono]"
+        ]
+      ]
+    },
+    {
+      "id": "offrire",
+      "title": "OFFRIRE (-ire) — nabídnout",
+      "rows": [
+        [
+          "io",
+          "offro",
+          "nabídnu",
+          "[offro]"
+        ],
+        [
+          "tu",
+          "offri",
+          "nabídneš",
+          "[offri]"
+        ],
+        [
+          "lui/lei",
+          "offre",
+          "nabídne",
+          "[offre]"
+        ],
+        [
+          "noi",
+          "offriamo",
+          "nabídneme",
+          "[offrjamo]"
+        ],
+        [
+          "voi",
+          "offrite",
+          "nabídnete",
+          "[offrite]"
+        ],
+        [
+          "loro",
+          "offrono",
+          "nabídnou",
+          "[offrono]"
+        ]
+      ]
+    },
+    {
+      "id": "finire",
+      "title": "FINIRE (-ire, -isco) — dokončit",
+      "rows": [
+        [
+          "io",
+          "finisco",
+          "dokončuji",
+          "[finisko]"
+        ],
+        [
+          "tu",
+          "finisci",
+          "dokončuješ",
+          "[finiši]"
+        ],
+        [
+          "lui/lei",
+          "finisce",
+          "dokončuje",
+          "[finiše]"
+        ],
+        [
+          "noi",
+          "finiamo",
+          "dokončujeme",
+          "[finjamo]"
+        ],
+        [
+          "voi",
+          "finite",
+          "dokončujete",
+          "[finite]"
+        ],
+        [
+          "loro",
+          "finiscono",
+          "dokončují",
+          "[finiskono]"
+        ]
+      ]
+    },
+    {
+      "id": "capire",
+      "title": "CAPIRE (-ire, -isco) — rozumět",
+      "rows": [
+        [
+          "io",
+          "capisco",
+          "rozumím",
+          "[kapisko]"
+        ],
+        [
+          "tu",
+          "capisci",
+          "rozumíš",
+          "[kapiši]"
+        ],
+        [
+          "lui/lei",
+          "capisce",
+          "rozumí",
+          "[kapiše]"
+        ],
+        [
+          "noi",
+          "capiamo",
+          "rozumíme",
+          "[kapjamo]"
+        ],
+        [
+          "voi",
+          "capite",
+          "rozumíte",
+          "[kapite]"
+        ],
+        [
+          "loro",
+          "capiscono",
+          "rozumějí",
+          "[kapiskono]"
+        ]
+      ]
+    },
+    {
+      "id": "preferire",
+      "title": "PREFERIRE (-ire, -isco) — preferovat",
+      "rows": [
+        [
+          "io",
+          "preferisco",
+          "preferuji",
+          "[preferisko]"
+        ],
+        [
+          "tu",
+          "preferisci",
+          "preferuješ",
+          "[preferiši]"
+        ],
+        [
+          "lui/lei",
+          "preferisce",
+          "preferuje",
+          "[preferiše]"
+        ],
+        [
+          "noi",
+          "preferiamo",
+          "preferujeme",
+          "[preferjamo]"
+        ],
+        [
+          "voi",
+          "preferite",
+          "preferujete",
+          "[preferite]"
+        ],
+        [
+          "loro",
+          "preferiscono",
+          "preferují",
+          "[preferiskono]"
+        ]
+      ]
+    },
+    {
+      "id": "pulire",
+      "title": "PULIRE (-ire, -isco) — čistit",
+      "rows": [
+        [
+          "io",
+          "pulisco",
+          "čistím",
+          "[pulisko]"
+        ],
+        [
+          "tu",
+          "pulisci",
+          "čistíš",
+          "[puliši]"
+        ],
+        [
+          "lui/lei",
+          "pulisce",
+          "čistí",
+          "[puliše]"
+        ],
+        [
+          "noi",
+          "puliamo",
+          "čistíme",
+          "[puljamo]"
+        ],
+        [
+          "voi",
+          "pulite",
+          "čistíte",
+          "[pulite]"
+        ],
+        [
+          "loro",
+          "puliscono",
+          "čistí",
+          "[puliskono]"
+        ]
+      ]
+    },
+    {
+      "id": "costruire",
+      "title": "COSTRUIRE (-ire, -isco) — stavět",
+      "rows": [
+        [
+          "io",
+          "costruisco",
+          "stavím",
+          "[kostruisko]"
+        ],
+        [
+          "tu",
+          "costruisci",
+          "stavíš",
+          "[kostruiši]"
+        ],
+        [
+          "lui/lei",
+          "costruisce",
+          "staví",
+          "[kostruiše]"
+        ],
+        [
+          "noi",
+          "costruiamo",
+          "stavíme",
+          "[kostrujamo]"
+        ],
+        [
+          "voi",
+          "costruite",
+          "stavíte",
+          "[kostruite]"
+        ],
+        [
+          "loro",
+          "costruiscono",
+          "staví",
+          "[kostruiskono]"
+        ]
+      ]
+    },
+    {
+      "id": "spedire",
+      "title": "SPEDIRE (-ire, -isco) — odeslat",
+      "rows": [
+        [
+          "io",
+          "spedisco",
+          "odesílám",
+          "[spedisko]"
+        ],
+        [
+          "tu",
+          "spedisci",
+          "odesíláš",
+          "[spediši]"
+        ],
+        [
+          "lui/lei",
+          "spedisce",
+          "odesílá",
+          "[spediše]"
+        ],
+        [
+          "noi",
+          "spediamo",
+          "odesíláme",
+          "[spedjamo]"
+        ],
+        [
+          "voi",
+          "spedite",
+          "odesíláte",
+          "[spedite]"
+        ],
+        [
+          "loro",
+          "spediscono",
+          "odesílají",
+          "[spediskono]"
+        ]
+      ]
+    }
+  ],
+  "rules": [
+    {
+      "rule": "Rod podstatných jmen (m. / ž.)",
+      "example": "Il libro — la penna.",
+      "translation": "Kniha — pero.",
+      "p": "[il libro — la penna.]"
+    },
+    {
+      "rule": "Článek určitý (il, lo, l', la, i, gli, le)",
+      "example": "Lo studente — gli uomini.",
+      "translation": "Student — muži.",
+      "p": "[lo studente — lji uomini.]"
+    },
+    {
+      "rule": "Článek neurčitý (un, uno, una, un')",
+      "example": "Una pizza — un'idea.",
+      "translation": "Pizza — nápad.",
+      "p": "[una picca — un'idea.]"
+    },
+    {
+      "rule": "Partitivní člen (del, della, dei…)",
+      "example": "Vorrei del pane.",
+      "translation": "Chtěl bych trochu chleba.",
+      "p": "[vorrei del pane.]"
+    },
+    {
+      "rule": "Množné číslo podstatných jmen",
+      "example": "I libri — le donne.",
+      "translation": "Knihy — ženy.",
+      "p": "[i libri — le donne.]"
+    },
+    {
+      "rule": "Shoda přídavného jména",
+      "example": "Una casa grande — due case grandi.",
+      "translation": "Velký dům — dvě velké domy.",
+      "p": "[una kasa grande — due kase grandi.]"
+    },
+    {
+      "rule": "Pozice adjektiva (význam)",
+      "example": "Una grande casa — una casa grande.",
+      "translation": "Velký dům vs dům, který je velký.",
+      "p": "[una grande kasa — una kasa grande.]"
+    },
+    {
+      "rule": "Zájmena osobní (subjekt)",
+      "example": "Io e tu andiamo.",
+      "translation": "Ty a já jdeme.",
+      "p": "[io e tu andjamo.]"
+    },
+    {
+      "rule": "Tonická zájmena",
+      "example": "Vengo con te.",
+      "translation": "Jdu s tebou.",
+      "p": "[vengo kon te.]"
+    },
+    {
+      "rule": "Přivlastňovací zájmena",
+      "example": "Il mio libro — la sua casa.",
+      "translation": "Moje kniha — jeho/její dům.",
+      "p": "[il mjo libro — la sua kasa.]"
+    },
+    {
+      "rule": "Ukazovací zájmena",
+      "example": "Questo / quello / codesto.",
+      "translation": "Tento / tamten.",
+      "p": "[kvesto / kvello / kodesto.]"
+    },
+    {
+      "rule": "Záporná zájmena (nessuno, niente, mai)",
+      "example": "Non ho niente.",
+      "translation": "Nemám nic.",
+      "p": "[non o njente.]"
+    },
+    {
+      "rule": "Stavba věty SVO",
+      "example": "Io mangio la pizza.",
+      "translation": "Jím pizzu.",
+      "p": "[io mandžo la picca.]"
+    },
+    {
+      "rule": "Předložka a (směr, čas)",
+      "example": "Vado a scuola.",
+      "translation": "Jdu do školy.",
+      "p": "[vado a skuola.]"
+    },
+    {
+      "rule": "Předložka in (místo, stát)",
+      "example": "Vivo in Italia.",
+      "translation": "Žiju v Itálii.",
+      "p": "[vivo in italja.]"
+    },
+    {
+      "rule": "Předložka di (původ, obsah)",
+      "example": "Il libro di Marco.",
+      "translation": "Markova kniha.",
+      "p": "[il libro di marko.]"
+    },
+    {
+      "rule": "Předložka da (odkud, od koho)",
+      "example": "Vengo da Praga.",
+      "translation": "Jsem z Prahy.",
+      "p": "[vengo da praga.]"
+    },
+    {
+      "rule": "Předložka su (na, o tématu)",
+      "example": "Il libro sul tavolo.",
+      "translation": "Kniha na stole.",
+      "p": "[il libro sul tavolo.]"
+    },
+    {
+      "rule": "Předložka per (účel, doprava)",
+      "example": "Studio per l'esame.",
+      "translation": "Učím se na zkoušku.",
+      "p": "[studjo per l'esame.]"
+    },
+    {
+      "rule": "Tra / fra (mezi, za čas)",
+      "example": "Tra due ore.",
+      "translation": "Za dvě hodiny.",
+      "p": "[tra due ore.]"
+    },
+    {
+      "rule": "Artiklované předložky",
+      "example": "Vado al cinema — torno dal lavoro.",
+      "translation": "Jdu do kina — vracím se z práce.",
+      "p": "[vado al činema — torno dal lavoro.]"
+    },
+    {
+      "rule": "Negace non",
+      "example": "Non capisco.",
+      "translation": "Nerozumím.",
+      "p": "[non kapisko.]"
+    },
+    {
+      "rule": "Negace s mica / più",
+      "example": "Non è mica vero.",
+      "translation": "To přece není pravda.",
+      "p": "[non é mika vero.]"
+    },
+    {
+      "rule": "Otázka intonací",
+      "example": "Parli italiano?",
+      "translation": "Mluvíš italsky?",
+      "p": "[parli italjano?]"
+    },
+    {
+      "rule": "Wh-slova",
+      "example": "Dove — quando — perché — come.",
+      "translation": "Kde — kdy — proč — jak.",
+      "p": "[dove — kvando — perké — kome.]"
+    },
+    {
+      "rule": "Comparativo (più … di / che)",
+      "example": "Roma è più grande di Firenze.",
+      "translation": "Řím je větší než Florencie.",
+      "p": "[roma é piú grande di firence.]"
+    },
+    {
+      "rule": "Superlativ relativní",
+      "example": "Il film più bello.",
+      "translation": "Nejkrásnější film.",
+      "p": "[il film piú bello.]"
+    },
+    {
+      "rule": "Superlativ absolutní (-issimo)",
+      "example": "Buonissimo!",
+      "translation": "Výborné!",
+      "p": "[buonissimo!]"
+    },
+    {
+      "rule": "Číslovky: cardinali / ordinals",
+      "example": "Tre — terzo.",
+      "translation": "Tři — třetí.",
+      "p": "[tre — terco.]"
+    },
+    {
+      "rule": "Passato prossimo: avere vs essere",
+      "example": "Ho mangiato — sono andato.",
+      "translation": "Snědl jsem — šel jsem.",
+      "p": "[o mandžato — sono andato.]"
+    },
+    {
+      "rule": "Shoda participia s essere",
+      "example": "Maria è arrivata.",
+      "translation": "Marie přijela.",
+      "p": "[marja é arrivata.]"
+    },
+    {
+      "rule": "Imperfetto (popis, zvyk)",
+      "example": "Da bambino giocavo.",
+      "translation": "Jako dítě jsem hrával.",
+      "p": "[da bambino džokavo.]"
+    },
+    {
+      "rule": "Imperfetto vs passato prossimo",
+      "example": "Mentre studiavo, è squillato il telefono.",
+      "translation": "Zatímco jsem studoval, zazvonil telefon.",
+      "p": "[mentre studjavo, é skvillato il telefono.]"
+    },
+    {
+      "rule": "Futuro semplice",
+      "example": "Domani partiremo.",
+      "translation": "Zítra vyrazíme.",
+      "p": "[domani partiremo.]"
+    },
+    {
+      "rule": "Condizionale (zdvořilost)",
+      "example": "Vorrei un caffè.",
+      "translation": "Chtěl bych kávu.",
+      "p": "[vorrei un kaffé.]"
+    },
+    {
+      "rule": "Periodo ipotetico (stručně)",
+      "example": "Se avessi tempo, viaggerei.",
+      "translation": "Kdybych měl čas, cestoval bych.",
+      "p": "[se avessi tempo, vjadžerei.]"
+    },
+    {
+      "rule": "Presente congiuntivo",
+      "example": "Penso che sia vero.",
+      "translation": "Myslím, že je to pravda.",
+      "p": "[penso ke sja vero.]"
+    },
+    {
+      "rule": "Imperfetto congiuntivo",
+      "example": "Speravo che potessi venire.",
+      "translation": "Doufal jsem, že můžeš přijít.",
+      "p": "[speravo ke potessi venire.]"
+    },
+    {
+      "rule": "Imperativo (tu, voi, Lei)",
+      "example": "Parla! — Parlate! — Parli!",
+      "translation": "Mluv! — Mluvte! — Mluvte (vykání).",
+      "p": "[parla! — parlate! — parli!]"
+    },
+    {
+      "rule": "Imperativo se zájmeny",
+      "example": "Dimmelo — non farlo.",
+      "translation": "Řekni mi to — nedělej to.",
+      "p": "[dimmelo — non farlo.]"
+    },
+    {
+      "rule": "Infinito",
+      "example": "Voglio imparare.",
+      "translation": "Chci se naučit.",
+      "p": "[voljo imparare.]"
+    },
+    {
+      "rule": "Gerundio",
+      "example": "Sto mangiando.",
+      "translation": "Právě jím.",
+      "p": "[sto mandžando.]"
+    },
+    {
+      "rule": "Participio passato",
+      "example": "mangiato — scritto — detto",
+      "translation": "tvary příčestí.",
+      "p": "[mandžato — skritto — detto]"
+    },
+    {
+      "rule": "Reflexivní slovesa (si)",
+      "example": "Mi alzo alle sette.",
+      "translation": "Vstávám v sedm.",
+      "p": "[mi alco alle sette.]"
+    },
+    {
+      "rule": "Ci (místo / náhrada)",
+      "example": "Ci vado spesso.",
+      "translation": "Často tam chodím.",
+      "p": "[či vado spesso.]"
+    },
+    {
+      "rule": "Ne (předmět / partitiva)",
+      "example": "Ne ho comprati due.",
+      "translation": "Koupil jsem jich dva.",
+      "p": "[ne o komprati due.]"
+    },
+    {
+      "rule": "Bisogna + infinito",
+      "example": "Bisogna studiare.",
+      "translation": "Je třeba studovat.",
+      "p": "[bisoňa studjare.]"
+    },
+    {
+      "rule": "Piacere (3. osoba)",
+      "example": "Mi piace la pizza.",
+      "translation": "Líbí se mi pizza.",
+      "p": "[mi pjače la picca.]"
+    },
+    {
+      "rule": "Stare + gerundio",
+      "example": "Sto leggendo.",
+      "translation": "Právě čtu.",
+      "p": "[sto ledžendo.]"
+    },
+    {
+      "rule": "Andare a + infinito",
+      "example": "Vado a comprare il pane.",
+      "translation": "Jdu koupit chleba.",
+      "p": "[vado a komprare il pane.]"
+    },
+    {
+      "rule": "Modální slovesa + infinito",
+      "example": "Devo — posso — voglio.",
+      "translation": "Musím — mohu — chci.",
+      "p": "[devo — posso — voljo.]"
+    },
+    {
+      "rule": "Oslovení (Lei vs tu)",
+      "example": "Come sta? — Come stai?",
+      "translation": "Jak se máte? — Jak se máš?",
+      "p": "[kome sta? — kome stai?]"
+    },
+    {
+      "rule": "Sì / no u záporné otázky",
+      "example": "Non hai fame? — Sì, ho fame.",
+      "translation": "Pozor na význam ano/ne v italštině.",
+      "p": "[non ai fame? — sí, o fame.]"
+    },
+    {
+      "rule": "Spojky",
+      "example": "Ma, però, quindi, perché.",
+      "translation": "Ale, avšak, proto, protože.",
+      "p": "[ma, peró, kvindi, perké.]"
+    },
+    {
+      "rule": "Relativní věta (che, cui)",
+      "example": "Il libro che leggo.",
+      "translation": "Kniha, kterou čtu.",
+      "p": "[il libro ke leggo.]"
+    },
+    {
+      "rule": "Diskurzní částice",
+      "example": "Allora, dunque, insomma.",
+      "translation": "Takže, tedy, zkrátka.",
+      "p": "[allora, dunkve, insomma.]"
+    },
+    {
+      "rule": "A + město / in + region",
+      "example": "Vado a Roma — vivo in Toscana.",
+      "translation": "Jedu do Říma — žiju v Toskánsku.",
+      "p": "[vado a roma — vivo in toskana.]"
+    },
+    {
+      "rule": "Časové výrazy",
+      "example": "Ieri — oggi — domani — già — ancora.",
+      "translation": "Včera — dnes — zítra — už — ještě.",
+      "p": "[ieri — odži — domani — džiá — ankora.]"
+    },
+    {
+      "rule": "Slovesné vazby (pensare a / di)",
+      "example": "Penso a te.",
+      "translation": "Myslím na tebe.",
+      "p": "[penso a te.]"
+    },
+    {
+      "rule": "Koncovka -isco u -ire",
+      "example": "Capisco — finisco.",
+      "translation": "Rozumím — dokončuji.",
+      "p": "[kapisko — finisko.]"
+    },
+    {
+      "rule": "Ortografie c/g + e/i",
+      "example": "Cena — chiave — ghiaccio.",
+      "translation": "Výslovnostní pravidla.",
+      "p": "[čena — kjave — gjačo.]"
+    },
+    {
+      "rule": "Aggettivi e avverbi (-mente)",
+      "example": "Lenta — lentamente.",
+      "translation": "Pomalý — pomalu.",
+      "p": "[lenta — lentamente.]"
+    },
+    {
+      "rule": "Avverbi di frequenza",
+      "example": "Sempre — spesso — qualche volta — mai.",
+      "translation": "Vždy — často — někdy — nikdy.",
+      "p": "[sempre — spesso — kvalke volta — mai.]"
+    },
+    {
+      "rule": "Pronomi combinati (me lo)",
+      "example": "Te lo dico.",
+      "translation": "Řeknu ti to.",
+      "p": "[te lo diko.]"
+    },
+    {
+      "rule": "Si passivante / impersonale",
+      "example": "Si parla italiano.",
+      "translation": "Mluví se italsky.",
+      "p": "[si parla italjano.]"
+    },
+    {
+      "rule": "Trapassato prossimo",
+      "example": "Avevo già mangiato.",
+      "translation": "Už jsem byl snědl (předminulý).",
+      "p": "[avevo džiá mandžato.]"
+    },
+    {
+      "rule": "Futuro anteriore (souvislost)",
+      "example": "Quando avrò finito, uscirò.",
+      "translation": "Až skončím, vyjdu.",
+      "p": "[kvando avró finito, uširó.]"
+    },
+    {
+      "rule": "Discorso indiretto",
+      "example": "Dice che viene.",
+      "translation": "Říká, že přijde.",
+      "p": "[diče ke vjene.]"
+    },
+    {
+      "rule": "Congiuntivo v nezávislé větě",
+      "example": "Benché sia stanco, studia.",
+      "translation": "Ačkoliv je unavený, studuje.",
+      "p": "[benké sja stanko, studja.]"
+    }
+  ]
+}

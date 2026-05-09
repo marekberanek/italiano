@@ -1,0 +1,78 @@
+{
+  "months": [
+    {
+      "it": "gennaio",
+      "cz": "leden",
+      "p": "[džennajo]"
+    },
+    {
+      "it": "febbraio",
+      "cz": "únor",
+      "p": "[febbrajo]"
+    },
+    {
+      "it": "marzo",
+      "cz": "březen",
+      "p": "[marco]"
+    },
+    {
+      "it": "aprile",
+      "cz": "duben",
+      "p": "[aprile]"
+    },
+    {
+      "it": "maggio",
+      "cz": "květen",
+      "p": "[madžo]"
+    },
+    {
+      "it": "giugno",
+      "cz": "červen",
+      "p": "[džuňo]"
+    },
+    {
+      "it": "luglio",
+      "cz": "červenec",
+      "p": "[luljo]"
+    },
+    {
+      "it": "agosto",
+      "cz": "srpen",
+      "p": "[agosto]"
+    },
+    {
+      "it": "settembre",
+      "cz": "září",
+      "p": "[settembre]"
+    },
+    {
+      "it": "ottobre",
+      "cz": "říjen",
+      "p": "[ottobre]"
+    },
+    {
+      "it": "novembre",
+      "cz": "listopad",
+      "p": "[novembre]"
+    },
+    {
+      "it": "dicembre",
+      "cz": "prosinec",
+      "p": "[dičembre]"
+    }
+  ],
+  "notes": [
+    {
+      "title": "V měsíci (in + měsíc)",
+      "it": "Sono nato in maggio. — Partiamo in agosto.",
+      "cz": "Narodil jsem se v květnu. — Vyrážíme v srpnu.",
+      "p": "[sono nato in madžo. — partjamo in agosto.]"
+    },
+    {
+      "title": "Datum (den + měsíc)",
+      "it": "Il primo giugno — il quindici aprile.",
+      "cz": "Prvního června — patnáctého dubna.",
+      "p": "[il primo džuňo — il kvindiči aprile.]"
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "sections": [
+    {
+      "title": "Časté pasti",
+      "subtitle": "Slovo vypadá „známě“, význam je jiný",
+      "items": [
+        {
+          "it": "i parenti",
+          "cz": "příbuzní",
+          "hint": "„Rodiče“ jsou i genitori — parenti ≠ parents!",
+          "p": "[i parenti]"
+        },
+        {
+          "it": "l'educazione",
+          "cz": "výchova, slušnost",
+          "hint": "education (školní vzdělání) = istruzione / formazione",
+          "p": "[l'edukacjone]"
+        },
+        {
+          "it": "la libreria",
+          "cz": "knihkupectví nebo knihovna (police)",
+          "hint": "free library (veřejná knihovna) = la biblioteca",
+          "p": "[la librerja]"
+        },
+        {
+          "it": "il cameriere",
+          "cz": "číšník",
+          "hint": "camera = pokoj; cameriere není „kameraman“",
+          "p": "[il kamerjere]"
+        },
+        {
+          "it": "il preservativo",
+          "cz": "kondom",
+          "hint": "food preservative = conservante / additivo",
+          "p": "[il preservativo]"
+        },
+        {
+          "it": "annoioso",
+          "cz": "nudný",
+          "hint": "annoyed (otrávený) = seccato / irritato",
+          "p": "[annojoso]"
+        },
+        {
+          "it": "argomento",
+          "cz": "téma (diskuse)",
+          "hint": "argument (hádka) = discussione / litigio",
+          "p": "[argomento]"
+        },
+        {
+          "it": "fabrica",
+          "cz": "továrna",
+          "hint": "fabric (látka) = il tessuto",
+          "p": "[fabrika]"
+        }
+      ]
+    },
+    {
+      "title": "Krátká věta",
+      "items": [
+        {
+          "it": "I miei parenti abitano a Torino.",
+          "cz": "Moji příbuzní žijí v Turíně (ne nutně rodiče).",
+          "p": "[i mjei parenti abitano a torino.]"
+        },
+        {
+          "it": "Vado in libreria a comprare un libro.",
+          "cz": "Jdu do knihkupectví koupit knihu.",
+          "p": "[vado in librerja a komprare un libro.]"
+        }
+      ]
+    }
+  ]
+}

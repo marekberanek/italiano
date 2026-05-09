@@ -1,0 +1,17 @@
+{
+  "name": "italiano-translate-proxy",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@supabase/supabase-js": "^2.105.4"
+  },
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel deploy"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.5.0",
+    "vercel": "^39.0.0"
+  }
+}

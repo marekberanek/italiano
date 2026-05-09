@@ -1,0 +1,86 @@
+{
+  "categories": [
+    {
+      "id": "restaurace",
+      "title": "Restaurace",
+      "icon": "restaurant",
+      "phrases": [
+        { "it": "Un tavolo per due, per favore.", "cz": "Stůl pro dva, prosím.", "p": "[un távolo per due per favóre]" },
+        { "it": "Il menù, per favore.", "cz": "Jídelní lístek, prosím.", "p": "[il menú per favóre]" },
+        { "it": "Vorrei una pizza margherita.", "cz": "Chtěl bych pizzu margherita.", "p": "[voréj una pica margerita]" },
+        { "it": "Il conto, per favore.", "cz": "Účet, prosím.", "p": "[il konto per favóre]" },
+        { "it": "Sono allergico a…", "cz": "Jsem alergický na…", "p": "[sono alérdžiko a]" },
+        { "it": "Era buonissimo!", "cz": "Bylo to vynikající!", "p": "[éra buoníssimo]" }
+      ]
+    },
+    {
+      "id": "cestovani",
+      "title": "Cestování",
+      "icon": "flight",
+      "phrases": [
+        { "it": "Dov'è la stazione?", "cz": "Kde je nádraží?", "p": "[dovè la staciónne]" },
+        { "it": "Un biglietto per Roma, per favore.", "cz": "Jednu jízdenku do Říma, prosím.", "p": "[un bilijétto per róma per favóre]" },
+        { "it": "A che ora parte il treno?", "cz": "V kolik jede vlak?", "p": "[a ke óra párte il tréno]" },
+        { "it": "Quanto costa il biglietto?", "cz": "Kolik stojí jízdenka?", "p": "[kvánto kósta il bilijétto]" },
+        { "it": "Mi sono perso.", "cz": "Ztratil jsem se.", "p": "[mi sóno pérso]" }
+      ]
+    },
+    {
+      "id": "nakup",
+      "title": "Nákup",
+      "icon": "shopping-cart",
+      "phrases": [
+        { "it": "Quanto costa?", "cz": "Kolik to stojí?", "p": "[kvánto kósta]" },
+        { "it": "Posso provarlo?", "cz": "Můžu si to vyzkoušet?", "p": "[pósso provárlo]" },
+        { "it": "Avete una taglia più grande?", "cz": "Máte větší velikost?", "p": "[avéte una tálja pjù gránde]" },
+        { "it": "Pago con carta.", "cz": "Platím kartou.", "p": "[págo kon kárta]" },
+        { "it": "Vorrei un sacchetto.", "cz": "Chtěl bych tašku.", "p": "[voréj un sakkétto]" }
+      ]
+    },
+    {
+      "id": "ubytovani",
+      "title": "Ubytování",
+      "icon": "hotel",
+      "phrases": [
+        { "it": "Ho una prenotazione.", "cz": "Mám rezervaci.", "p": "[o úna prenotacjóne]" },
+        { "it": "A che ora è la colazione?", "cz": "V kolik je snídaně?", "p": "[a ke óra è la kolacjóne]" },
+        { "it": "C'è il Wi-Fi gratuito?", "cz": "Je Wi-Fi zdarma?", "p": "[čè il vajfaj gratúito]" },
+        { "it": "Posso avere la chiave?", "cz": "Mohu dostat klíč?", "p": "[pósso avére la kjáve]" }
+      ]
+    },
+    {
+      "id": "predstaveni",
+      "title": "Představení",
+      "icon": "person",
+      "phrases": [
+        { "it": "Mi chiamo…", "cz": "Jmenuji se…", "p": "[mi kjámo]" },
+        { "it": "Piacere di conoscerti.", "cz": "Těší mě.", "p": "[pjačére di konóšerti]" },
+        { "it": "Sono di Praga.", "cz": "Jsem z Prahy.", "p": "[sóno di prága]" },
+        { "it": "Parlo un po' di italiano.", "cz": "Mluvím trochu italsky.", "p": "[párlo un pò di italjáno]" },
+        { "it": "Quanti anni hai?", "cz": "Kolik je ti let?", "p": "[kvánti ánni áj]" }
+      ]
+    },
+    {
+      "id": "zdravi",
+      "title": "Zdraví",
+      "icon": "favorite",
+      "phrases": [
+        { "it": "Non mi sento bene.", "cz": "Necítím se dobře.", "p": "[non mi sénto béne]" },
+        { "it": "Mi fa male qui.", "cz": "Tady mě to bolí.", "p": "[mi fa mále kvi]" },
+        { "it": "Ho bisogno di un dottore.", "cz": "Potřebuji doktora.", "p": "[o bizóňo di un dottóre]" },
+        { "it": "Dov'è la farmacia più vicina?", "cz": "Kde je nejbližší lékárna?", "p": "[dovè la farmačía pjù vičína]" }
+      ]
+    },
+    {
+      "id": "nouzove",
+      "title": "Nouzové",
+      "icon": "warning",
+      "phrases": [
+        { "it": "Aiuto!", "cz": "Pomoc!", "p": "[ajúto]" },
+        { "it": "Chiamate la polizia!", "cz": "Zavolejte policii!", "p": "[kjamáte la policía]" },
+        { "it": "Mi hanno rubato il portafoglio.", "cz": "Někdo mi ukradl peněženku.", "p": "[mi ánno rubáto il portafóljo]" },
+        { "it": "Non capisco. Parla più lentamente.", "cz": "Nerozumím. Mluvte pomaleji.", "p": "[non kapísko párla pjù lentamente]" }
+      ]
+    }
+  ]
+}

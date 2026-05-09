@@ -1,0 +1,89 @@
+{
+  "sections": [
+    {
+      "title": "Základní rodina",
+      "items": [
+        {
+          "it": "la madre",
+          "cz": "matka",
+          "p": "[la madre]"
+        },
+        {
+          "it": "il padre",
+          "cz": "otec",
+          "p": "[il padre]"
+        },
+        {
+          "it": "i genitori",
+          "cz": "rodiče",
+          "p": "[i dženitori]"
+        },
+        {
+          "it": "il figlio",
+          "cz": "syn",
+          "p": "[il filjo]"
+        },
+        {
+          "it": "la figlia",
+          "cz": "dcera",
+          "p": "[la filja]"
+        },
+        {
+          "it": "il marito",
+          "cz": "manžel",
+          "p": "[il marito]"
+        },
+        {
+          "it": "la moglie",
+          "cz": "manželka",
+          "p": "[la molje]"
+        },
+        {
+          "it": "il fratello",
+          "cz": "bratr",
+          "p": "[il fratello]"
+        },
+        {
+          "it": "la sorella",
+          "cz": "sestra",
+          "p": "[la sorella]"
+        },
+        {
+          "it": "il nonno / la nonna",
+          "cz": "dědeček / babička",
+          "p": "[il nonno / la nonna]"
+        },
+        {
+          "it": "lo zio / la zia",
+          "cz": "strýc / teta",
+          "p": "[lo cjo / la cja]"
+        },
+        {
+          "it": "il cugino / la cugina",
+          "cz": "bratranec / sestřenice",
+          "p": "[il kudžino / la kudžina]"
+        }
+      ]
+    },
+    {
+      "title": "Vztahy a domácnost",
+      "items": [
+        {
+          "it": "Vivo con la mia famiglia.",
+          "cz": "Žiju se svou rodinou.",
+          "p": "[vivo kon la mja familja.]"
+        },
+        {
+          "it": "Siamo sposati da dieci anni.",
+          "cz": "Jsme manželé deset let.",
+          "p": "[sjamo sposati da dječi anni.]"
+        },
+        {
+          "it": "Ho due figli.",
+          "cz": "Mám dvě děti.",
+          "p": "[o due filji.]"
+        }
+      ]
+    }
+  ]
+}

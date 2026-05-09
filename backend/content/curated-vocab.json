@@ -1,0 +1,29 @@
+{
+  "items": [
+    {
+      "it": "buongiorno",
+      "cz": "dobrý den",
+      "tags": ["pozdrav"]
+    },
+    {
+      "it": "buonasera",
+      "cz": "dobrý večer",
+      "tags": ["pozdrav"]
+    },
+    {
+      "it": "per favore",
+      "cz": "prosím",
+      "tags": ["zdvořilost"]
+    },
+    {
+      "it": "scusi",
+      "cz": "promiňte",
+      "tags": ["zdvořilost"]
+    },
+    {
+      "it": "dove si trova…?",
+      "cz": "kde se nachází…?",
+      "tags": ["orientace"]
+    }
+  ]
+}

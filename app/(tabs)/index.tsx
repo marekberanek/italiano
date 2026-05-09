@@ -1,98 +1,209 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { useState } from "react";
+import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+import type { LookupResult } from "@/assets/data/types";
+import { AppLogo } from "@/components/app-logo";
+import { PlayButton } from "@/components/play-button";
+import { PrimaryButton } from "@/components/primary-button";
+import { Screen } from "@/components/screen";
+import { ScreenHeader } from "@/components/screen-header";
+import { Palette, Radius, Shadow, Spacing, Typography } from "@/constants/theme";
+import { useItalianTts } from "@/hooks/use-italian-tts";
+import { useVocabStore } from "@/hooks/use-vocab-store";
+import { TranslateError, lookupWord } from "@/lib/api/translate";
 
-export default function HomeScreen() {
+export default function LookupScreen() {
+  const tts = useItalianTts();
+  const { addWord } = useVocabStore();
+  const [query, setQuery] = useState("");
+  const [result, setResult] = useState<LookupResult | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [added, setAdded] = useState(false);
+
+  const submit = async () => {
+    if (!query.trim()) return;
+    setLoading(true);
+    setError(null);
+    setAdded(false);
+    setResult(null);
+    try {
+      const data = await lookupWord(query.trim());
+      setResult(data);
+    } catch (err) {
+      setError(
+        err instanceof TranslateError
+          ? "Nepodařilo se přeložit. Zkus to znovu."
+          : "Něco se pokazilo. Zkus to znovu.",
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onAdd = () => {
+    if (!result || added) return;
+    addWord({ it: result.it, cz: result.cz, p: result.p ?? "" });
+    setAdded(true);
+  };
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+    <Screen>
+      <ScreenHeader title="Hledat" subtitle="Zadej slovo, přeložím a přečtu." />
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+      <View style={styles.searchRow}>
+        <View style={styles.input}>
+          <MaterialIcons name="search" size={20} color={Palette.textMuted} />
+          <TextInput
+            value={query}
+            onChangeText={setQuery}
+            onSubmitEditing={submit}
+            placeholder="napiš slovo česky nebo italsky"
+            placeholderTextColor={Palette.textMuted}
+            autoCapitalize="none"
+            autoCorrect={false}
+            returnKeyType="search"
+            style={styles.inputField}
+          />
+        </View>
+        <PrimaryButton label="Hledat" onPress={submit} loading={loading} />
+      </View>
+
+      {error ? (
+        <View style={styles.errorBox}>
+          <MaterialIcons name="error-outline" size={18} color={Palette.danger} />
+          <Text style={styles.errorText}>{error}</Text>
+        </View>
+      ) : null}
+
+      {result ? (
+        <View style={styles.resultCard}>
+          <View style={styles.resultTopRow}>
+            <Text style={styles.resultIt}>{result.it}</Text>
+            <PlayButton onPress={() => tts.speak(result.it)} size="md" tone="onDark" />
+          </View>
+          {result.p ? <Text style={styles.resultPron}>{result.p}</Text> : null}
+          <Text style={styles.resultCz}>{result.cz}</Text>
+          {result.ex_it ? (
+            <View style={styles.exampleBox}>
+              <Text style={styles.exampleIt}>{result.ex_it}</Text>
+              {result.ex_cz ? <Text style={styles.exampleCz}>{result.ex_cz}</Text> : null}
+            </View>
+          ) : null}
+        </View>
+      ) : null}
+
+      {result ? (
+        <View style={styles.actionsRow}>
+          <PrimaryButton
+            label={added ? "✓ Přidáno" : "+ Přidat do slovíček"}
+            onPress={onAdd}
+            disabled={added}
+            style={{ flex: 1 }}
+          />
+          {result.ex_it ? (
+            <PrimaryButton
+              label="Přehrát větu"
+              variant="secondary"
+              onPress={() => tts.speak(result.ex_it!)}
+              style={{ flex: 1 }}
+            />
+          ) : null}
+        </View>
+      ) : null}
+
+      {!result && !loading && !error ? (
+        <Pressable style={styles.emptyState} onPress={() => setQuery("buongiorno")}>
+          <AppLogo variant="badge" size={88} />
+          <Text style={styles.emptyTitle}>Začni jedním slovem</Text>
+          <Text style={styles.emptyHint}>např. „pizza“, „buongiorno“, „prosím“</Text>
+        </Pressable>
+      ) : null}
+    </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  searchRow: { flexDirection: "row", gap: Spacing.sm + 2, alignItems: "stretch" },
+  input: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: Spacing.sm + 2,
+    paddingHorizontal: Spacing.lg,
+    backgroundColor: Palette.surface,
+    borderRadius: Radius.pill,
+    borderWidth: 1.5,
+    borderColor: Palette.border,
+    minHeight: 52,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  inputField: {
+    flex: 1,
+    ...Typography.body,
+    color: Palette.textStrong,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  errorBox: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: Spacing.sm,
+    padding: Spacing.md,
+    borderRadius: Radius.md,
+    backgroundColor: Palette.accentSoft,
   },
+  errorText: { ...Typography.smallStrong, color: Palette.danger, flex: 1 },
+  resultCard: {
+    backgroundColor: Palette.brand,
+    borderRadius: Radius.lg,
+    padding: Spacing.xl,
+    gap: Spacing.md,
+    ...Shadow.brand,
+  },
+  resultTopRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: Spacing.md,
+  },
+  resultIt: {
+    flex: 1,
+    fontFamily: Typography.display.fontFamily,
+    fontSize: 32,
+    color: Palette.textInverse,
+    lineHeight: 36,
+  },
+  resultPron: {
+    ...Typography.bodyStrong,
+    color: Palette.textOnDark,
+    fontStyle: "italic",
+  },
+  resultCz: {
+    fontFamily: Typography.display.fontFamily,
+    fontSize: 22,
+    color: Palette.textInverse,
+  },
+  exampleBox: {
+    backgroundColor: Palette.overlayLight,
+    borderRadius: Radius.md,
+    padding: Spacing.md,
+    gap: 4,
+  },
+  exampleIt: {
+    ...Typography.bodyStrong,
+    color: Palette.textInverse,
+    fontStyle: "italic",
+  },
+  exampleCz: { ...Typography.small, color: Palette.textOnDark },
+  actionsRow: { flexDirection: "row", gap: Spacing.sm + 2 },
+  emptyState: {
+    alignItems: "center",
+    paddingVertical: Spacing.xxl,
+    gap: Spacing.md,
+  },
+  emptyTitle: {
+    ...Typography.bodyStrong,
+    color: Palette.textMuted,
+    fontSize: 16,
+  },
+  emptyHint: { ...Typography.small, color: Palette.textMuted, fontStyle: "italic" },
 });

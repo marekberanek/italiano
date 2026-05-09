@@ -1,0 +1,99 @@
+{
+  "sections": [
+    {
+      "title": "Řadová čísla 1–10",
+      "items": [
+        {
+          "it": "primo / prima",
+          "cz": "první",
+          "p": "[primo / prima]"
+        },
+        {
+          "it": "secondo / seconda",
+          "cz": "druhý / druhá",
+          "p": "[sekondo / sekonda]"
+        },
+        {
+          "it": "terzo / terza",
+          "cz": "třetí",
+          "p": "[terco / terca]"
+        },
+        {
+          "it": "quarto / quarta",
+          "cz": "čtvrtý",
+          "p": "[kvarto / kvarta]"
+        },
+        {
+          "it": "quinto / quinta",
+          "cz": "pátý",
+          "p": "[kvinto / kvinta]"
+        },
+        {
+          "it": "sesto / sesta",
+          "cz": "šestý",
+          "p": "[sesto / sesta]"
+        },
+        {
+          "it": "settimo / settima",
+          "cz": "sedmý",
+          "p": "[settimo / settima]"
+        },
+        {
+          "it": "ottavo / ottava",
+          "cz": "osmý",
+          "p": "[ottavo / ottava]"
+        },
+        {
+          "it": "nono / nona",
+          "cz": "devátý",
+          "p": "[nono / nona]"
+        },
+        {
+          "it": "decimo / decima",
+          "cz": "desátý",
+          "p": "[dečimo / dečima]"
+        }
+      ]
+    },
+    {
+      "title": "Datum (den v měsíci)",
+      "items": [
+        {
+          "it": "Il primo maggio è festa.",
+          "cz": "Prvního května je svátek.",
+          "p": "[il primo madžo é festa.]"
+        },
+        {
+          "it": "Il quindici aprile.",
+          "cz": "Patnáctého dubna.",
+          "p": "[il kvindiči aprile.]"
+        },
+        {
+          "it": "Siamo il venti giugno.",
+          "cz": "Je dvacátého června.",
+          "p": "[sjamo il venti džuňo.]"
+        }
+      ]
+    },
+    {
+      "title": "Patro a pořadí",
+      "items": [
+        {
+          "it": "Abito al secondo piano.",
+          "cz": "Bydlím ve druhém patře.",
+          "p": "[abito al sekondo pjano.]"
+        },
+        {
+          "it": "È la prima volta che vengo.",
+          "cz": "Je to poprvé, co přicházím.",
+          "p": "[é la prima volta ke vengo.]"
+        },
+        {
+          "it": "Arrivo per secondo.",
+          "cz": "Přijdu jako druhý / na druhém místě.",
+          "p": "[arrivo per sekondo.]"
+        }
+      ]
+    }
+  ]
+}

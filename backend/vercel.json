@@ -1,0 +1,13 @@
+{
+  "functions": {
+    "api/content-bundle.ts": {
+      "runtime": "nodejs22.x"
+    },
+    "api/account/delete.ts": {
+      "runtime": "nodejs22.x"
+    },
+    "api/account/export.ts": {
+      "runtime": "nodejs22.x"
+    }
+  }
+}

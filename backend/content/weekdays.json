@@ -1,0 +1,53 @@
+{
+  "days": [
+    {
+      "it": "lunedì",
+      "cz": "pondělí",
+      "p": "[lunedí]"
+    },
+    {
+      "it": "martedì",
+      "cz": "úterý",
+      "p": "[martedí]"
+    },
+    {
+      "it": "mercoledì",
+      "cz": "středa",
+      "p": "[merkoledí]"
+    },
+    {
+      "it": "giovedì",
+      "cz": "čtvrtek",
+      "p": "[džovedí]"
+    },
+    {
+      "it": "venerdì",
+      "cz": "pátek",
+      "p": "[venerdí]"
+    },
+    {
+      "it": "sabato",
+      "cz": "sobota",
+      "p": "[sabato]"
+    },
+    {
+      "it": "domenica",
+      "cz": "neděle",
+      "p": "[domenika]"
+    }
+  ],
+  "notes": [
+    {
+      "title": "Člen u dnů (typicky)",
+      "it": "Il lunedì non lavoro. — Venerdì sera usciamo.",
+      "cz": "V pondělí nepracuji. — V pátek večer jdeme ven.",
+      "p": "[il lunedí non lavoro. — venerdí sera ušamo.]"
+    },
+    {
+      "title": "Dnes / zítra / včera",
+      "it": "Oggi è lunedì. — Domani è martedì. — Ieri era domenica.",
+      "cz": "Dnes je pondělí. — Zítra je úterý. — Včera byla neděle.",
+      "p": "[odži é lunedí. — domani é martedí. — ieri era domenika.]"
+    }
+  ]
+}
