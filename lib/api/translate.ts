@@ -2,6 +2,7 @@ import Constants from "expo-constants";
 import { Platform } from "react-native";
 
 import type { LookupResult } from "@/assets/data/types";
+import { getAccessToken } from "@/lib/auth/supabase";
 import { italianToCzechPron } from "@/lib/pronunciation/italian-pron";
 
 type Extra = {
@@ -25,9 +26,18 @@ const fallback = async (query: string): Promise<LookupResult> => {
 };
 
 export class TranslateError extends Error {
-  constructor(message: string, public readonly cause?: unknown) {
-    super(message);
+  /**
+   * `true` when the failure is due to missing/expired authentication. UI uses
+   * this to render a "sign in to use search" prompt instead of a generic error.
+   */
+  public readonly requiresAuth: boolean;
+  constructor(
+    message: string,
+    options?: { cause?: unknown; requiresAuth?: boolean },
+  ) {
+    super(message, options?.cause !== undefined ? { cause: options.cause } : undefined);
     this.name = "TranslateError";
+    this.requiresAuth = options?.requiresAuth ?? false;
   }
 }
 
@@ -53,6 +63,18 @@ export async function lookupWord(query: string): Promise<LookupResult> {
     );
   }
 
+  // Backend requires a Supabase Bearer token — DeepL costs money per call so
+  // anonymous traffic would blow our quota. Bail out early with a friendly,
+  // typed error so the UI can show a "sign in to use search" prompt instead
+  // of waiting on a 401.
+  const accessToken = await getAccessToken();
+  if (!accessToken) {
+    throw new TranslateError(
+      "Vyhledávání slovíček vyžaduje přihlášení. Přihlas se v záložce Profil.",
+      { requiresAuth: true },
+    );
+  }
+
   // Hard timeout so a wrong endpoint (e.g. stale LAN IP) cannot leave the UI
   // spinning forever; user gets a real error instead.
   const controller = new AbortController();
@@ -62,7 +84,10 @@ export async function lookupWord(query: string): Promise<LookupResult> {
   try {
     response = await fetch(ENDPOINT, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
       body: JSON.stringify({ query: trimmed }),
       signal: controller.signal,
     });
@@ -72,13 +97,22 @@ export async function lookupWord(query: string): Promise<LookupResult> {
       aborted
         ? "Vypršel čas (10 s). Zkontroluj, že backend běží a že EXPO_PUBLIC_TRANSLATE_ENDPOINT sedí (LAN IP / Vercel)."
         : "Síťová chyba — backend nejspíš neběží nebo je špatná adresa v .env.",
-      err,
+      { cause: err },
     );
   } finally {
     clearTimeout(timeoutId);
   }
 
   if (!response.ok) {
+    // 401 means the token expired between our `getAccessToken()` call and the
+    // server's verification (rare but possible) — surface it as an auth error
+    // so the UI can prompt for re-login instead of showing a generic 4xx.
+    if (response.status === 401) {
+      throw new TranslateError(
+        "Přihlášení vypršelo. Přihlas se znovu v záložce Profil.",
+        { requiresAuth: true },
+      );
+    }
     let detail = "";
     try {
       const t = await response.text();
@@ -97,7 +131,7 @@ export async function lookupWord(query: string): Promise<LookupResult> {
   try {
     data = (await response.json()) as LookupResult;
   } catch (err) {
-    throw new TranslateError("Neplatná odpověď serveru (není JSON).", err);
+    throw new TranslateError("Neplatná odpověď serveru (není JSON).", { cause: err });
   }
 
   if (!data?.it || !data?.cz) {

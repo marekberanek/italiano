@@ -9,6 +9,8 @@ import {
   View,
 } from "react-native";
 
+import { AboutCard } from "@/components/about-card";
+import { RemindersCard } from "@/components/reminders-card";
 import { Screen } from "@/components/screen";
 import { ScreenHeader } from "@/components/screen-header";
 import { UserAvatar } from "@/components/user-avatar";
@@ -122,6 +124,10 @@ export default function ProfileScreen() {
         </View>
       )}
 
+      {/* Reminder settings are sign-in only — they tie into the user's vocab
+          and we don't want anonymous installs to schedule background work. */}
+      {user ? <RemindersCard /> : null}
+
       {!user ? (
         <View style={styles.actions}>
           <Pressable
@@ -157,6 +163,10 @@ export default function ProfileScreen() {
           </Pressable>
         </View>
       )}
+
+      <View style={styles.aboutWrap}>
+        <AboutCard />
+      </View>
     </Screen>
   );
 }
@@ -222,4 +232,5 @@ const styles = StyleSheet.create({
   primaryLabel: { fontFamily: "Nunito_700Bold", fontSize: 16, color: Palette.textInverse },
   pressed: { opacity: 0.88 },
   disabled: { opacity: 0.55 },
+  aboutWrap: { marginTop: Spacing.xl },
 });

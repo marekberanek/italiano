@@ -1,4 +1,5 @@
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { useRouter } from "expo-router";
 import { useMemo, useState } from "react";
 import {
   ActivityIndicator,
@@ -12,6 +13,7 @@ import {
 
 import type { LookupResult } from "@/assets/data/types";
 import { PlayButton } from "@/components/play-button";
+import { PrimaryButton } from "@/components/primary-button";
 import { Screen } from "@/components/screen";
 import { ScreenHeader } from "@/components/screen-header";
 import { StatTile } from "@/components/stat-tile";
@@ -20,10 +22,14 @@ import { Palette, Radius, Shadow, Spacing, Typography } from "@/constants/theme"
 import { useItalianTts } from "@/hooks/use-italian-tts";
 import { useVocabStore, type AddWordInput } from "@/hooks/use-vocab-store";
 import { TranslateError, lookupWord } from "@/lib/api/translate";
+import { useAuth } from "@/lib/auth/use-auth";
 import { foldForSearch } from "@/lib/text/normalize";
 
 export default function VocabScreen() {
   const tts = useItalianTts();
+  const router = useRouter();
+  const { user } = useAuth();
+  const isSignedIn = !!user;
   const { state, addWord, hasItalian, removeWord, stats, learnedThreshold } = useVocabStore();
   const [showAdd, setShowAdd] = useState(false);
   const [search, setSearch] = useState("");
@@ -47,13 +53,27 @@ export default function VocabScreen() {
       </View>
 
       <View style={styles.actionRow}>
-        <Pressable
-          onPress={() => setShowAdd(true)}
-          style={({ pressed }) => [styles.addButton, pressed && styles.pressed]}
-        >
-          <MaterialIcons name="add" size={20} color={Palette.brandDark} />
-          <Text style={styles.addLabel}>Přidat slovíčko</Text>
-        </Pressable>
+        {/* Adding new words requires the (auth-gated) translate proxy, so for
+            anonymous users we replace the "Přidat slovíčko" button with a
+            sign-in CTA that routes to /(tabs)/profile instead of opening a
+            modal that wouldn't work anyway. */}
+        {isSignedIn ? (
+          <Pressable
+            onPress={() => setShowAdd(true)}
+            style={({ pressed }) => [styles.addButton, pressed && styles.pressed]}
+          >
+            <MaterialIcons name="add" size={20} color={Palette.brandDark} />
+            <Text style={styles.addLabel}>Přidat slovíčko</Text>
+          </Pressable>
+        ) : (
+          <Pressable
+            onPress={() => router.push("/(tabs)/profile")}
+            style={({ pressed }) => [styles.addButton, pressed && styles.pressed]}
+          >
+            <MaterialIcons name="login" size={20} color={Palette.brandDark} />
+            <Text style={styles.addLabel}>Přihlas se pro přidávání</Text>
+          </Pressable>
+        )}
         <Pressable
           onPress={() => setSearch(search ? "" : " ")}
           style={({ pressed }) => [styles.iconButton, pressed && styles.pressed]}
@@ -84,7 +104,11 @@ export default function VocabScreen() {
       {visible.length === 0 ? (
         <View style={styles.empty}>
           <Text style={styles.emptyText}>
-            {state.vocab.length === 0 ? "Žádná slovíčka. Přidej první." : "Nic nenalezeno."}
+            {state.vocab.length === 0
+              ? isSignedIn
+                ? "Žádná slovíčka. Přidej první."
+                : "Žádná slovíčka. Přihlas se a přidej první."
+              : "Nic nenalezeno."}
           </Text>
         </View>
       ) : (
@@ -133,15 +157,20 @@ function AddWordModal({
   isOwned: (italian: string) => boolean;
 }) {
   const tts = useItalianTts();
+  const router = useRouter();
   const [query, setQuery] = useState("");
   const [result, setResult] = useState<LookupResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // Distinguishes auth gate failures (which surface a "go to profile" CTA)
+  // from generic translate failures (network, DeepL down, etc.).
+  const [errorRequiresAuth, setErrorRequiresAuth] = useState(false);
 
   const reset = () => {
     setQuery("");
     setResult(null);
     setError(null);
+    setErrorRequiresAuth(false);
     setLoading(false);
   };
   const close = () => {
@@ -154,19 +183,23 @@ function AddWordModal({
     if (!trimmed) return;
     setLoading(true);
     setError(null);
+    setErrorRequiresAuth(false);
     setResult(null);
     try {
       const data = await lookupWord(trimmed);
       setResult(data);
     } catch (err) {
-      setError(
-        err instanceof TranslateError
-          ? err.message
-          : "Něco se pokazilo. Zkus to znovu.",
-      );
+      const isTranslate = err instanceof TranslateError;
+      setError(isTranslate ? err.message : "Něco se pokazilo. Zkus to znovu.");
+      setErrorRequiresAuth(isTranslate && err.requiresAuth);
     } finally {
       setLoading(false);
     }
+  };
+
+  const goToProfile = () => {
+    close();
+    router.push("/(tabs)/profile");
   };
 
   const alreadyOwned = !!result && isOwned(result.it);
@@ -233,8 +266,17 @@ function AddWordModal({
 
           {error ? (
             <View style={styles.errorBox}>
-              <MaterialIcons name="error-outline" size={18} color={Palette.danger} />
-              <Text style={styles.errorText}>{error}</Text>
+              <View style={styles.errorRow}>
+                <MaterialIcons name="error-outline" size={18} color={Palette.danger} />
+                <Text style={styles.errorText}>{error}</Text>
+              </View>
+              {errorRequiresAuth ? (
+                <PrimaryButton
+                  label="Přejít na profil"
+                  variant="secondary"
+                  onPress={goToProfile}
+                />
+              ) : null}
             </View>
           ) : null}
 
@@ -377,12 +419,15 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   errorBox: {
-    flexDirection: "row",
-    alignItems: "center",
     gap: Spacing.sm,
     padding: Spacing.md,
     borderRadius: Radius.md,
     backgroundColor: Palette.accentSoft,
+  },
+  errorRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: Spacing.sm,
   },
   errorText: { ...Typography.smallStrong, color: Palette.danger, flex: 1 },
   previewCard: {

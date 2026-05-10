@@ -5,7 +5,8 @@ import {
   Nunito_800ExtraBold,
   useFonts,
 } from "@expo-google-fonts/nunito";
-import { Stack } from "expo-router";
+import * as Notifications from "expo-notifications";
+import { router, Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
@@ -13,10 +14,23 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { Palette } from "@/constants/theme";
+import { useVocabReminders } from "@/hooks/use-vocab-reminders";
 import { AuthProvider } from "@/lib/auth/auth-context";
 import { syncRemoteContent } from "@/lib/content/sync-content";
+import { installNotificationHandler } from "@/lib/notifications/scheduler";
+
+installNotificationHandler();
 
 SplashScreen.preventAutoHideAsync().catch(() => undefined);
+
+/** Routes the user to the quiz screen with the word from the tapped notification. */
+function openQuizForNotification(notification: Notifications.Notification | null | undefined) {
+  if (!notification) return;
+  const data = notification.request.content.data as { clientUuid?: unknown } | null;
+  const uuid = typeof data?.clientUuid === "string" ? data.clientUuid : null;
+  if (!uuid) return;
+  router.push({ pathname: "/(tabs)/quiz", params: { startWord: uuid } });
+}
 
 export const unstable_settings = {
   anchor: "(tabs)",
@@ -42,12 +56,27 @@ export default function RootLayout() {
     return () => clearTimeout(t);
   }, [loaded]);
 
+  useEffect(() => {
+    if (!loaded) return;
+    // Cold-start case: app was opened by tapping a notification while killed.
+    Notifications.getLastNotificationResponseAsync()
+      .then((res) => openQuizForNotification(res?.notification))
+      .catch(() => undefined);
+    const sub = Notifications.addNotificationResponseReceivedListener((response) => {
+      openQuizForNotification(response.notification);
+    });
+    return () => sub.remove();
+  }, [loaded]);
+
   if (!loaded) return null;
 
   return (
     <GestureHandlerRootView style={{ flex: 1, backgroundColor: Palette.background }}>
       <SafeAreaProvider>
         <AuthProvider>
+          {/* Reminder scheduler must live INSIDE AuthProvider — it reads the
+              session via useAuth() and cancels notifications on sign-out. */}
+          <RemindersScheduler />
           <Stack screenOptions={{ contentStyle: { backgroundColor: Palette.background } }}>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen
@@ -99,4 +128,13 @@ export default function RootLayout() {
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );
+}
+
+/**
+ * Renders nothing; exists only so `useVocabReminders` runs INSIDE the
+ * AuthProvider tree (the hook calls `useAuth()`).
+ */
+function RemindersScheduler(): null {
+  useVocabReminders();
+  return null;
 }

@@ -2,7 +2,6 @@
   "expo": {
     "name": "italiano",
     "slug": "italiano",
-    "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "italiano",
@@ -44,7 +43,16 @@
       ],
       "expo-secure-store",
       "expo-web-browser",
-      "expo-apple-authentication"
+      "expo-apple-authentication",
+      "@react-native-community/datetimepicker",
+      [
+        "expo-notifications",
+        {
+          "color": "#009246",
+          "defaultChannel": "italiano-default",
+          "enableBackgroundRemoteNotifications": false
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,
@@ -55,6 +63,10 @@
       "contentBaseUrl": "https://italiano-api.vercel.app",
       "supabaseUrl": "https://akxtiooloqgpksffermk.supabase.co",
       "supabaseAnonKey": "sb_publishable_6CZBK9q-0IFqYJ1rLPw1Hg_tOBZ6PBf",
+      "displayName": "Italiano",
+      "tagline": "Procvičuj italská slovíčka",
+      "author": "Marek Beránek",
+      "repositoryUrl": "https://github.com/marekberanek/italiano",
       "router": {},
       "eas": {
         "projectId": "cbb1f571-c3f5-49bc-b3b0-6b80478427fb"

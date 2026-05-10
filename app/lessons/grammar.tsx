@@ -19,6 +19,21 @@ function shortLabel(verb: VerbConjugation): string {
   return head && head.length > 0 ? head : verb.title;
 }
 
+/**
+ * Builds a TTS-friendly phrase out of a conjugation row.
+ *
+ * Why: very short Italian forms (`è`, `ho`, `ha`, `va`, `fa`, `do`) are read
+ * by iOS Speech as the letter name (e.g. "è" → "e accento grave"). Speaking
+ * the full pronoun + form ("lui è") is natural Italian, more educational, and
+ * forces the engine to treat the verb as a word, not a letter.
+ *
+ * `lui/lei` is collapsed to `lui` because Speech can't pronounce the slash.
+ */
+function speakablePhrase(pronoun: string, form: string): string {
+  const cleanedPronoun = pronoun.split("/")[0]?.trim() ?? pronoun;
+  return `${cleanedPronoun} ${form}`.trim();
+}
+
 export default function GrammarScreen() {
   const { data } = useSyncedJson("grammar", grammarFallback as GrammarData);
   const tts = useItalianTts();
@@ -90,7 +105,10 @@ export default function GrammarScreen() {
                 {row[3] ? <Text style={styles.cellPron}>{row[3]}</Text> : null}
               </View>
               <View style={styles.cellAction}>
-                <PlayButton size="sm" onPress={() => tts.speak(row[1])} />
+                <PlayButton
+                  size="sm"
+                  onPress={() => tts.speak(speakablePhrase(row[0], row[1]))}
+                />
               </View>
             </View>
           ))}

@@ -1,4 +1,5 @@
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { useRouter } from "expo-router";
 import { useState } from "react";
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
@@ -8,18 +9,27 @@ import { PlayButton } from "@/components/play-button";
 import { PrimaryButton } from "@/components/primary-button";
 import { Screen } from "@/components/screen";
 import { ScreenHeader } from "@/components/screen-header";
+import { SignInRequiredCard } from "@/components/sign-in-required";
 import { Palette, Radius, Shadow, Spacing, Typography } from "@/constants/theme";
 import { useItalianTts } from "@/hooks/use-italian-tts";
 import { useVocabStore } from "@/hooks/use-vocab-store";
 import { TranslateError, lookupWord } from "@/lib/api/translate";
+import { useAuth } from "@/lib/auth/use-auth";
 
 export default function LookupScreen() {
   const tts = useItalianTts();
+  const router = useRouter();
+  const { user } = useAuth();
   const { addWord, hasItalian } = useVocabStore();
   const [query, setQuery] = useState("");
   const [result, setResult] = useState<LookupResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // Tracks whether the most recent error came from the auth gate so we can
+  // render a "Přejít na profil" CTA next to the error message. Reachable only
+  // in the rare case the session expires between this render and the request
+  // (the screen is otherwise gated by `user` below).
+  const [errorRequiresAuth, setErrorRequiresAuth] = useState(false);
   const [added, setAdded] = useState(false);
 
   // Word can be already in vocab from a previous session — treat that the same
@@ -34,6 +44,7 @@ export default function LookupScreen() {
     if (!next.trim()) {
       setResult(null);
       setError(null);
+      setErrorRequiresAuth(false);
       setAdded(false);
     }
   };
@@ -42,17 +53,16 @@ export default function LookupScreen() {
     if (!query.trim()) return;
     setLoading(true);
     setError(null);
+    setErrorRequiresAuth(false);
     setAdded(false);
     setResult(null);
     try {
       const data = await lookupWord(query.trim());
       setResult(data);
     } catch (err) {
-      setError(
-        err instanceof TranslateError
-          ? err.message
-          : "Něco se pokazilo. Zkus to znovu.",
-      );
+      const isTranslate = err instanceof TranslateError;
+      setError(isTranslate ? err.message : "Něco se pokazilo. Zkus to znovu.");
+      setErrorRequiresAuth(isTranslate && err.requiresAuth);
     } finally {
       setLoading(false);
     }
@@ -69,6 +79,21 @@ export default function LookupScreen() {
     });
     setAdded(true);
   };
+
+  if (!user) {
+    return (
+      <Screen>
+        <ScreenHeader
+          title="Hledat"
+          subtitle="Vyhledávání slov je dostupné po přihlášení."
+        />
+        <SignInRequiredCard
+          title="Přihlaš se pro vyhledávání"
+          description="Překlady slovíček posíláme přes naši DeepL kvótu, takže ji nabízíme jen přihlášeným. Tvá slovíčka se navíc budou synchronizovat mezi zařízeními."
+        />
+      </Screen>
+    );
+  }
 
   return (
     <Screen>
@@ -105,8 +130,17 @@ export default function LookupScreen() {
 
       {error ? (
         <View style={styles.errorBox}>
-          <MaterialIcons name="error-outline" size={18} color={Palette.danger} />
-          <Text style={styles.errorText}>{error}</Text>
+          <View style={styles.errorRow}>
+            <MaterialIcons name="error-outline" size={18} color={Palette.danger} />
+            <Text style={styles.errorText}>{error}</Text>
+          </View>
+          {errorRequiresAuth ? (
+            <PrimaryButton
+              label="Přejít na profil"
+              variant="secondary"
+              onPress={() => router.push("/(tabs)/profile")}
+            />
+          ) : null}
         </View>
       ) : null}
 
@@ -191,12 +225,15 @@ const styles = StyleSheet.create({
     backgroundColor: Palette.surfaceMuted,
   },
   errorBox: {
-    flexDirection: "row",
-    alignItems: "center",
     gap: Spacing.sm,
     padding: Spacing.md,
     borderRadius: Radius.md,
     backgroundColor: Palette.accentSoft,
+  },
+  errorRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: Spacing.sm,
   },
   errorText: { ...Typography.smallStrong, color: Palette.danger, flex: 1 },
   resultCard: {

@@ -257,7 +257,28 @@ npm run generate:grammar   # regenerate assets/data/grammar.json
 
 ---
 
-## 5. Repository layout (short)
+## 5. Releases (semver)
+
+The marketing version shown in the **About** card and on stores comes from
+**`package.json` → `"version"`**. Root `app.config.ts` injects it into
+`expo.version`, so `app.json` deliberately has **no** `version` field.
+
+Bump it explicitly before a store-facing build (each command updates
+`package.json`, creates a git commit and a `vX.Y.Z` tag):
+
+```bash
+npm run release:patch   # 1.0.0 → 1.0.1  bugfixes
+npm run release:minor   # 1.0.0 → 1.1.0  new features
+npm run release:major   # 1.0.0 → 2.0.0  breaking changes
+git push --follow-tags
+```
+
+Native build numbers (iOS `CFBundleVersion`, Android `versionCode`) are bumped
+**automatically** by EAS — see [docs/DEPLOYMENT.md §5.0](./docs/DEPLOYMENT.md).
+
+---
+
+## 6. Repository layout (short)
 
 
 | Path                   | Purpose                                        |

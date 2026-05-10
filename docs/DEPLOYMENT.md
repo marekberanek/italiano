@@ -314,8 +314,8 @@ These are the variables every deployed function will read at runtime:
 |-----|-------|---------|
 | `DEEPL_API_KEY` | DeepL API key (`xxxxxxx:fx`) | `api/translate.ts` |
 | `CONTENT_VERSION` | `2` for the first deploy; bump (`3`, `4`, …) every time you change `backend/content/*.json` | `api/content-manifest.ts` |
-| `SUPABASE_URL` | `https://<ref>.supabase.co` | `api/account/*` |
-| `SUPABASE_ANON_KEY` | Supabase **anon** key | `api/account/*` (verifies user JWT) |
+| `SUPABASE_URL` | `https://<ref>.supabase.co` | `api/translate.ts` (auth gate) and `api/account/*` |
+| `SUPABASE_ANON_KEY` | Supabase **anon** key | `api/translate.ts` and `api/account/*` (verifies user JWT) |
 | `SUPABASE_SERVICE_ROLE_KEY` | Supabase **service role** key | `api/account/*` (admin actions) |
 
 > **What is `CONTENT_VERSION`?** A short string (typically a monotonically
@@ -400,9 +400,22 @@ In `backend/vercel.json` add `"regions": ["fra1"]` for lower EU latency.
 
 ### 3.5 Smoke-test the live API
 
+`/api/translate` requires a Supabase Bearer JWT (DeepL is a paid quota — only
+signed-in mobile users get a translation). Grab a token with the supabase CLI
+or sign in inside the app and read it from `expo-secure-store`:
+
 ```bash
+# Anonymous request → 401 (expected behaviour)
+curl -isS -X POST https://italiano-api.vercel.app/api/translate \
+  -H "Content-Type: application/json" \
+  -d '{"query":"postel"}'
+# HTTP/1.1 401  …  {"error":"Missing Authorization Bearer token"}
+
+# Signed-in request → 200 with translation
+JWT="<paste a fresh Supabase access token here>"
 curl -sS -X POST https://italiano-api.vercel.app/api/translate \
   -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $JWT" \
   -d '{"query":"postel"}' | jq .
 # expected: { "it": "letto", "cz": "postel", "p": "letto", ... }
 
@@ -411,6 +424,9 @@ curl -sS https://italiano-api.vercel.app/api/content-manifest | jq .
 ```
 
 If `/api/translate` returns **500 / 503**, `DEEPL_API_KEY` is missing or wrong.
+If it returns **401** even with a valid-looking token, check that
+`SUPABASE_URL` and `SUPABASE_ANON_KEY` are set on Vercel (the endpoint uses
+them to call `auth.getUser`).
 
 If `/api/content-manifest` returns `version: "fallback"` and a short cache,
 the DB is unreachable or empty — run `npm run content:push` (see § 2.6).
@@ -418,15 +434,19 @@ A successful seed flips the version to an ISO timestamp.
 
 ### 3.6 Existing endpoints (reference)
 
-| Endpoint | Purpose |
-|----------|---------|
-| `POST /api/translate` | DeepL proxy (no auth) |
-| `GET /api/content-manifest` | Bundle manifest (versions) |
-| `GET /api/content-bundle?bundle=…` | Single JSON bundle |
-| `POST/DELETE /api/account/delete` | Delete user (verifies JWT, then `auth.admin.deleteUser` with service role) |
-| `GET /api/account/export` | Export profile + vocab — verified by Bearer JWT |
-| `GET /api/openapi` | OpenAPI 3.1 spec (machine-readable) |
-| `GET /api/docs` | Interactive **Scalar API Reference** UI |
+| Endpoint | Purpose | Auth |
+|----------|---------|------|
+| `POST /api/translate` | DeepL proxy used by Hledat (Search) screen | **Bearer JWT** (Supabase) — protects paid DeepL quota |
+| `GET /api/content-manifest` | Bundle manifest (versions) | Public |
+| `GET /api/content-bundle?bundle=…` | Single JSON bundle | Public |
+| `POST/DELETE /api/account/delete` | Delete user (verifies JWT, then `auth.admin.deleteUser` with service role) | **Bearer JWT** |
+| `GET /api/account/export` | Export profile + vocab | **Bearer JWT** |
+| `GET /api/openapi` | OpenAPI 3.1 spec (machine-readable) | Public |
+| `GET /api/docs` | Interactive **Scalar API Reference** UI | Public |
+
+> JWT verification logic is shared in `backend/api/_lib/auth.ts`
+> (`requireSupabaseUser`). Endpoints just call it and return the typed
+> `{ status, error }` envelope on failure.
 | `GET /api/` | Tiny landing page with links to the above |
 
 > **Live docs:** open <https://italiano-api.vercel.app/api/docs> (or
@@ -490,11 +510,64 @@ different vocab data, and OAuth callbacks have to be configured twice.
 > secret into the mobile config — both `.env` and `expo.extra` end up inside
 > the binary that anyone can decompile.
 
+### 4.3 Local notification reminders
+
+The app schedules **local-only** notifications (`expo-notifications`) to nudge
+the user to revise a random word from their vocabulary. There is **no push
+service**, no Expo push token, no Supabase table — everything is planned on
+the device based on the user's preferences in **Profile → Připomínky**:
+
+- **Vlastní rozvrh** — pick weekdays (Po–Ne) + an exact time (one notification
+  per selected day at that time).
+- **Náhodně** — pick 1×/2×/3× a day; the app spreads notifications randomly
+  inside the **9:00–21:00** window.
+
+Every time the user adds/removes a word, opens the app, or saves new settings,
+the scheduler cancels all previously planned notifications and re-plans the
+next batch (up to ~8 weeks ahead for `schedule`, ~14 days for `random`,
+capped well below the iOS 64-notification limit). Tapping a notification
+deep-links into the quiz screen with `?startWord=<clientUuid>` and runs a
+**single-card mini quiz** for that word.
+
+> **iOS + Expo Go (SDK 53+):** local notifications are no longer supported in
+> Expo Go on iOS — testing on iPhone requires a **development build**:
+> `eas build --profile development --platform ios` and reinstall on the device.
+> Android continues to work in Expo Go.
+
+The `expo-notifications` plugin is already wired in `app.json`. No EAS secrets
+need to change.
+
 ---
 
 ## 5. EAS — build & install on your phone
 
 This is the step that makes the app run on a phone **without your laptop**.
+
+### 5.0 Marketing version (single source of truth)
+
+The user-visible **semver** (`1.2.3` in the About screen, App Store listing, etc.)
+comes only from **`package.json` → `"version"`**. Root `app.config.ts` merges
+`app.json` and injects that value into Expo’s `expo.version` — you do **not**
+maintain a duplicate `version` field inside `app.json`.
+
+Before a store-facing build, bump semver explicitly (pick one):
+
+```bash
+npm run release:patch   # 1.0.0 → 1.0.1  (bugfixes)
+npm run release:minor   # 1.0.0 → 1.1.0  (new features, backwards compatible)
+npm run release:major   # 1.0.0 → 2.0.0  (breaking / big milestone)
+```
+
+Each script runs `npm version …`, which updates `package.json` + `package-lock.json`,
+creates a **git commit** and a **git tag** `vX.Y.Z`. Your working tree must be clean.
+
+**Native build numbers** (iOS `CFBundleVersion`, Android `versionCode`) are separate:
+`eas.json` uses `"autoIncrement": true` on the `production` profile and
+`"appVersionSource": "remote"` so EAS bumps them on the server for every
+production build — no manual edits.
+
+Workflow in practice: `npm run release:minor` → `git push --follow-tags` →
+`eas build -p ios --profile production` (and/or Android).
 
 ### 5.1 Tooling
 
@@ -518,13 +591,18 @@ eas build:configure       # generates eas.json
 
 ```json
 {
+  "cli": { "appVersionSource": "remote" },
   "build": {
     "preview":    { "distribution": "internal", "channel": "preview" },
-    "production": { "channel": "production" }
+    "production": { "channel": "production", "autoIncrement": true }
   },
   "submit": { "production": {} }
 }
 ```
+
+`autoIncrement` + remote `appVersionSource` let EAS bump iOS/Android **build
+numbers** on the server; the marketing semver still comes from `package.json`
+(see §5.0).
 
 `distribution: "internal"` is the magic flag — EAS gives you a download link
 (or TestFlight invite) usable from the phone, no store review needed.
@@ -630,6 +708,8 @@ Info.plist) still require a fresh `eas build`.
 |---------|--------------|-----|
 | *Hledat* spinner forever, then "Vypršel čas (10 s)" | App points at a host the phone can't reach | Use the Vercel HTTPS URL in `.env`, then `npx expo start -c` (or rebuild with EAS). |
 | "Server vrátil 500/503" on translate | Missing `DEEPL_API_KEY` on Vercel | Add it under Settings → Env Vars and **Redeploy**. |
+| *Hledat* shows "Vyhledávání slovíček vyžaduje přihlášení" | User isn't signed in (translate endpoint requires Bearer JWT) | Tap **Přejít na profil** and sign in with Google. |
+| Translate returns 401 even when signed in | `SUPABASE_URL` / `SUPABASE_ANON_KEY` missing on Vercel, or token expired | Add the env vars and **Redeploy**; in the app sign out and back in. |
 | Google sign-in returns *Unsupported provider* | Provider not enabled or wrong project | Re-check §2.3 (toggle ON, Web Client ID + Secret). |
 | *Invalid redirect URL* after Google login | Redirect not in allow-list | Add `italiano://` for builds; in **Expo Go** add the matching `exp://…` URL or wildcard (§2.4). |
 | Google login **spins forever** after confirming in the browser | Expo Go uses `exp://…`, not `italiano://` | Add `exp://…` / wildcard to Supabase Redirect URLs (§2.4), or test Google sign-in in a **development build**. |

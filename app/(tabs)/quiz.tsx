@@ -1,5 +1,6 @@
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
+import { router, useLocalSearchParams } from "expo-router";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Alert, Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 
@@ -126,7 +127,8 @@ export default function QuizScreen() {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
   const tts = useItalianTts();
-  const { state, addWord, recordAnswer, learnedThreshold } = useVocabStore();
+  const { state, addWord, hydrated: vocabHydrated, recordAnswer, learnedThreshold } = useVocabStore();
+  const { startWord } = useLocalSearchParams<{ startWord?: string }>();
   const { data: weekdays } = useSyncedJson("weekdays", weekdaysFallback as WeekdaysData);
   const { data: months } = useSyncedJson("months", monthsFallback as MonthsData);
   const { data: numbers } = useSyncedJson("numbers", numbersFallback as NumbersData);
@@ -160,6 +162,15 @@ export default function QuizScreen() {
   const [sessionStyle, setSessionStyle] = useState<QuizStyle | null>(null);
   const [sessionSource, setSessionSource] = useState<QuizSource | null>(null);
   const [sessionPool, setSessionPool] = useState<QuizCard[]>([]);
+  /**
+   * Pool used only for MCQ distractor generation. Normally identical to
+   * `sessionPool`. In single-card mode (notification deep-link) the session
+   * pool is just one card, but MCQ options still need 3 plausible distractors,
+   * so we widen this to include the full personal+lesson pool.
+   */
+  const [sessionMcqPool, setSessionMcqPool] = useState<QuizCard[]>([]);
+  /** Normally `QUIZ_LENGTH`. Set to `1` for single-word notification quizzes. */
+  const [sessionLength, setSessionLength] = useState<number>(QUIZ_LENGTH);
   const [active, setActive] = useState(false);
   const [card, setCard] = useState<QuizCard | null>(null);
   const [revealed, setRevealed] = useState(false);
@@ -235,8 +246,8 @@ export default function QuizScreen() {
 
   const mcqOptions = useMemo(() => {
     if (!card || currentFormat !== "mcq") return [];
-    return buildMcqOptions(card, sessionPool, direction, mcqItalianOptions);
-  }, [card, currentFormat, direction, mcqItalianOptions, sessionPool]);
+    return buildMcqOptions(card, sessionMcqPool, direction, mcqItalianOptions);
+  }, [card, currentFormat, direction, mcqItalianOptions, sessionMcqPool]);
 
   /** Picks a random card from `sessionPool`, avoiding the previously shown one. */
   const drawFromSession = useCallback(
@@ -302,6 +313,8 @@ export default function QuizScreen() {
     setSessionStyle(null);
     setSessionSource(null);
     setSessionPool([]);
+    setSessionMcqPool([]);
+    setSessionLength(QUIZ_LENGTH);
     setTypedInput("");
     setTypedRevealWrong(false);
     setMcqPicked(null);
@@ -313,10 +326,22 @@ export default function QuizScreen() {
   }, [saveSessionToHistory, tts]);
 
   const start = useCallback(
-    (overrides?: { style?: QuizStyle; source?: QuizSource }) => {
+    (overrides?: {
+      style?: QuizStyle;
+      source?: QuizSource;
+      /** When set, the round draws from a one-card pool and ends after a single question. */
+      singleCard?: QuizCard;
+    }) => {
       let style = overrides?.style ?? quizStyle;
       const src = overrides?.source ?? source;
-      const pool = buildPoolForSource(src, state.vocab, lessonPool);
+      const singleCard = overrides?.singleCard;
+      // In singleCard mode the *drawing* pool is just one card, but MCQ
+      // distractors come from the widest possible source so options stay
+      // plausible.
+      const distractorPool = singleCard
+        ? buildPoolForSource("all", state.vocab, lessonPool)
+        : buildPoolForSource(src, state.vocab, lessonPool);
+      const pool = singleCard ? [singleCard] : distractorPool;
       if (pool.length === 0) {
         Alert.alert(
           "Opakování",
@@ -326,8 +351,10 @@ export default function QuizScreen() {
         );
         return;
       }
-      if ((style === "mcq" || style === "mixed") && pool.length < 2) {
-        if (style === "mcq") {
+      // Need ≥2 viable options to render MCQ. Without distractors fall back to typed
+      // (or refuse outright if the user explicitly picked MCQ in normal mode).
+      if ((style === "mcq" || style === "mixed") && distractorPool.length < 2) {
+        if (style === "mcq" && !singleCard) {
           Alert.alert(
             "Opakování",
             "Pro výběr ze čtyř možností potřebuješ aspoň dvě slovíčka. Přepni zdroj nebo zvol jiný režim.",
@@ -336,9 +363,11 @@ export default function QuizScreen() {
         }
         style = "typed";
       }
-      const next = pool[Math.floor(Math.random() * pool.length)] ?? null;
+      const next = singleCard ?? pool[Math.floor(Math.random() * pool.length)] ?? null;
       if (!next) return;
       setSessionPool(pool);
+      setSessionMcqPool(distractorPool);
+      setSessionLength(singleCard ? 1 : QUIZ_LENGTH);
       setSessionStyle(style);
       setSessionSource(src);
       setSessionDoneIds(new Set());
@@ -365,6 +394,21 @@ export default function QuizScreen() {
     saveSessionToHistory();
     if (prevStyle && prevSource) start({ style: prevStyle, source: prevSource });
   }, [saveSessionToHistory, sessionSource, sessionStyle, start]);
+
+  // Notification deep-link: open a one-card mini-quiz for the word the user
+  // tapped. We consume the param immediately (router.setParams undefined) so
+  // navigating back to /quiz later doesn't re-trigger the same single-card
+  // round.
+  const lastConsumedStartWordRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (!startWord || !vocabHydrated) return;
+    if (lastConsumedStartWordRef.current === startWord) return;
+    lastConsumedStartWordRef.current = startWord;
+    const word = state.vocab.find((w) => w.clientUuid === startWord);
+    router.setParams({ startWord: undefined });
+    if (!word) return;
+    start({ singleCard: personalCardFromVocab(word) });
+  }, [startWord, vocabHydrated, state.vocab, start]);
 
   const advanceAfterAnswer = useCallback(
     (correct: boolean, answered: QuizCard, given?: string) => {
@@ -396,7 +440,7 @@ export default function QuizScreen() {
       setSessionQuestions(nextCount);
       if (correct) setSessionCorrect((n) => n + 1);
       if (eff === "mixed") setMixedFormat(Math.random() < 0.5 ? "mcq" : "typed");
-      if (nextCount >= QUIZ_LENGTH) {
+      if (nextCount >= sessionLength) {
         setFinished(true);
         return;
       }
@@ -411,7 +455,16 @@ export default function QuizScreen() {
       setTypedRevealWrong(false);
       setMcqPicked(null);
     },
-    [currentFormat, drawFromSession, eff, learnedThreshold, recordAnswer, sessionQuestions, state.vocab],
+    [
+      currentFormat,
+      drawFromSession,
+      eff,
+      learnedThreshold,
+      recordAnswer,
+      sessionLength,
+      sessionQuestions,
+      state.vocab,
+    ],
   );
 
   const answerFlashcard = (correct: boolean) => {
@@ -451,9 +504,9 @@ export default function QuizScreen() {
 
   // Round progress is intentionally tied to *questions answered* (not to
   // long-term learned-streak), so the bar moves on every answer.
-  const progress = Math.min(1, sessionQuestions / QUIZ_LENGTH);
-  /** 1-indexed position of the question currently displayed (caps at QUIZ_LENGTH). */
-  const currentQuestionIndex = Math.min(QUIZ_LENGTH, sessionQuestions + 1);
+  const progress = Math.min(1, sessionQuestions / sessionLength);
+  /** 1-indexed position of the question currently displayed (caps at session length). */
+  const currentQuestionIndex = Math.min(sessionLength, sessionQuestions + 1);
 
   if (active && finished && sessionStyle && sessionSource) {
     const accuracy =
@@ -679,7 +732,7 @@ export default function QuizScreen() {
         <View style={styles.progressMeta}>
           <Text style={styles.progressLabel}>Postup kvízu</Text>
           <Text style={styles.progressCount}>
-            Otázka {currentQuestionIndex} z {QUIZ_LENGTH}
+            Otázka {currentQuestionIndex} z {sessionLength}
           </Text>
         </View>
 
@@ -749,7 +802,7 @@ export default function QuizScreen() {
         <View style={styles.progressMeta}>
           <Text style={styles.progressLabel}>Postup kvízu</Text>
           <Text style={styles.progressCount}>
-            Otázka {currentQuestionIndex} z {QUIZ_LENGTH}
+            Otázka {currentQuestionIndex} z {sessionLength}
           </Text>
         </View>
 
@@ -870,12 +923,12 @@ export default function QuizScreen() {
       <View style={styles.progressMeta}>
         <Text style={styles.progressLabel}>Postup kvízu</Text>
         <Text style={styles.progressCount}>
-          Otázka {currentQuestionIndex} z {QUIZ_LENGTH}
-        </Text>
-      </View>
+            Otázka {currentQuestionIndex} z {sessionLength}
+          </Text>
+        </View>
 
-      <View style={styles.card}>
-        <Text style={styles.hint}>{hintTyped}</Text>
+        <View style={styles.card}>
+          <Text style={styles.hint}>{hintTyped}</Text>
         {hasCloze ? (
           <>
             <Text style={styles.clozeText}>{clozeIt}</Text>

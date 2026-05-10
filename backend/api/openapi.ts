@@ -47,9 +47,9 @@ const spec = {
     { url: "http://localhost:3000", description: "Local (vercel dev)" },
   ],
   tags: [
-    { name: "Translation", description: "DeepL proxy used by the Hledat (Search) screen." },
-    { name: "Content", description: "Lesson bundle manifest + JSON downloads." },
-    { name: "Account", description: "User-scoped admin endpoints (require Supabase JWT)." },
+    { name: "Translation", description: "DeepL proxy used by the Hledat (Search) screen. Requires a Supabase Bearer JWT." },
+    { name: "Content", description: "Lesson bundle manifest + JSON downloads (public)." },
+    { name: "Account", description: "User-scoped admin endpoints. Require a Supabase Bearer JWT." },
     { name: "Meta", description: "Spec + Swagger / Scalar UI." },
   ],
   components: {
@@ -149,11 +149,13 @@ const spec = {
     "/api/translate": {
       post: {
         tags: ["Translation"],
-        summary: "Translate a single word/phrase via DeepL.",
+        summary: "Translate a single word/phrase via DeepL (requires sign-in).",
         description:
           "Auto-detects direction. Czech diacritics short-circuit the detection; otherwise " +
           "calls DeepL once toward Italian and uses DeepL's source detection to decide if a " +
-          "second IT→CS call is needed.",
+          "second IT→CS call is needed. **Requires a valid Supabase Bearer JWT** — the DeepL " +
+          "quota is paid per character, so we restrict the proxy to authenticated mobile users.",
+        security: [{ BearerJwt: [] }],
         requestBody: {
           required: true,
           content: {
@@ -168,7 +170,9 @@ const spec = {
             },
           },
           "400": { description: "Missing or invalid `query`.", content: { "application/json": { schema: { $ref: "#/components/schemas/Error" } } } },
+          "401": { description: "Missing or invalid Bearer JWT.", content: { "application/json": { schema: { $ref: "#/components/schemas/Error" } } } },
           "405": { description: "Method other than POST." },
+          "500": { description: "Server misconfigured (Supabase env missing).", content: { "application/json": { schema: { $ref: "#/components/schemas/Error" } } } },
           "502": { description: "Upstream DeepL failure or missing API key.", content: { "application/json": { schema: { $ref: "#/components/schemas/Error" } } } },
         },
       },
