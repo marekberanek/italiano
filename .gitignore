@@ -29,6 +29,8 @@ yarn-error.*
 # macOS
 .DS_Store
 *.pem
+.history
+.history/*
 
 # local env files
 .env
@@ -42,3 +44,7 @@ app-example
 # generated native folders
 /ios
 /android
+
+# credentials
+/credentials
+/credentials/*

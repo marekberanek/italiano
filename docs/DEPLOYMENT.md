@@ -1,322 +1,408 @@
-# Deployment — Italiano
+# Deployment — Italiano (cloud-only)
 
-Konkrétní plán „co kam nasadit“ pro projekt **Italiano**. Cíl: **free tier**, EU region, přihlášení **Google + Apple** přes **Supabase Auth**, vlastní API na **Vercelu**, mobilní binárky přes **Expo / EAS**.
+This document is a **linear recipe** that takes you from a fresh laptop to a
+working build of the **Italiano** app on your phone, with **everything in the
+cloud** — no `vercel dev`, no Metro, no Mac in the loop while you test.
 
-Architektura projektu: **[ARCHITECTURE.md](../ARCHITECTURE.md)**.  
-Plán autentizace + syncu: **[PLAN-auth-sync-offline.md](./PLAN-auth-sync-offline.md)**.
+By the end you will have:
 
----
+- backend (DeepL proxy + content + account API) running on **Vercel**,
+- auth + DB on **Supabase** (Google sign-in),
+- mobile binaries built by **EAS** and installed via **TestFlight** /
+  **Internal app sharing** so you can use the phone alone.
 
-## 1. Mapa služeb
-
-| Vrstva | Provider | Region | Free tier (orientačně) |
-|--------|----------|--------|--------------------------|
-| Mobilní aplikace (binárky) | **Expo / EAS** (build), **App Store** + **Google Play** (distribuce) | — | EAS: omezený počet buildů/měsíc. Store: iOS Apple Developer Program $99/rok, Android jednorázově $25. |
-| Auth + DB + Storage | **Supabase** | EU (Frankfurt nebo Ireland) | 1 projekt zdarma; cca 50 000 MAU, 500 MB DB; pauza po 7 dnech neaktivity. |
-| API proxy (DeepL, content) | **Vercel** | EU prefer | Hobby plán zdarma; bandwidth a počet invocations limitované. |
-| OAuth Google | **Google Cloud Console** | — | Zdarma. |
-| OAuth Apple Sign In | **Apple Developer** | — | Vyžaduje Apple Developer Program ($99/rok) pro reálné iOS buildy/podpis. |
-| Doména (volitelné) | **Cloudflare / Namecheap / …** | — | Doména ~$10–15/rok; pro dev stačí `*.vercel.app`. |
-| (Volitelné) Překlad bez DeepL | místní fallback v appce | — | $0. |
-| Kód / repo | **GitHub** | — | Zdarma. |
+> Architecture: **[ARCHITECTURE.md](../ARCHITECTURE.md)** ·
+> Sync design: **[PLAN-auth-sync-offline.md](./PLAN-auth-sync-offline.md)**
+> Local dev (Metro, `vercel dev`): **[../README.md](../README.md)**
 
 ---
 
-## 2. Logická topologie
+## 0. What you'll set up (once)
 
-```
-┌─────────────┐  OAuth (Google/Apple, redirect přes Supabase)
-│   Mobile    │ ─────────────────────────────────► Supabase Auth
-│  (Expo/EAS) │ ◄── access + refresh JWT ────────
-│             │
-│             │   PostgREST (RLS)
-│             │ ─────────────────────────────────► Supabase Postgres
-│             │
-│             │   Bearer JWT
-│             │ ─────────────────► Vercel Functions
-│             │                    ├─ /api/translate (DeepL)
-│             │                    ├─ /api/content-manifest
-│             │                    ├─ /api/content-bundle
-│             │                    └─ /api/account/* (admin)
-└─────────────┘
-```
+| # | Service | Purpose | Cost (free tier) |
+|---|---------|---------|------------------|
+| 1 | **GitHub** | source of truth | $0 |
+| 2 | **Supabase** (EU) | Auth + Postgres + RLS | $0 (1 project, ~50k MAU) |
+| 3 | **Google Cloud Console** | OAuth client for Google sign-in | $0 |
+| 4 | **DeepL API** | translation source | $0 (500k chars/month) |
+| 5 | **Vercel** | serverless API + content bundle | $0 (hobby plan) |
+| 6 | **Expo / EAS** | mobile build pipeline | $0 (limited builds/month) |
+| 7 | **Apple Developer** ($99/yr) | only if you want **TestFlight** on iOS | paid |
+| 8 | **Google Play console** ($25 once) | only if you want a **Play track** on Android | paid |
+
+> Apple Sign-In is currently **hidden** in the app (see `app/(tabs)/profile.tsx`).
+> The recipe below sets up **Google sign-in only**. To re-enable Apple later,
+> follow §2.5 (kept at the end for reference).
 
 ---
 
-## 3. Zdrojový repozitář a větve
-
-- **GitHub repo** = jediný zdroj pravdy.  
-- Doporučené větve:
-  - `main` → produkční nasazení (Vercel + EAS prod profil).
-  - `dev` → preview (Vercel preview URL, EAS preview channel).
-- **Tagy** `vX.Y.Z` pro store releases.
-
----
-
-## 4. Supabase — projekt a Auth
-
-### 4.1 Vytvoření
-
-1. Vytvořit účet na [supabase.com](https://supabase.com) (přihlas se přes GitHub).
-2. **New project** → název `italiano-prod`, region `eu-central-1` (Frankfurt) nebo `eu-west-1` (Ireland).
-3. Uložit **Project URL** a **anon key** + **service_role key** (do trezoru, nedávat do gitu).
-
-### 4.2 Schéma DB (později migrací — viz § 9)
-
-Tabulky `profiles`, `vocab_items`, `study_events` + RLS politiky. Detail v plánu.
-
-### 4.3 Auth providery
-
-V Supabase Dashboard → **Authentication → Providers**:
-
-#### Google
-
-1. **Google Cloud Console** → projekt `italiano`.
-2. **APIs & Services → OAuth consent screen** → External, vyplnit produkt + e-mail.
-3. **Credentials → Create OAuth Client ID**:
-   - **Web application** (pro Supabase callback)
-     - Authorized redirect URI: `https://<project>.supabase.co/auth/v1/callback`
-   - **iOS** Client ID (bundle id z Expo).
-   - **Android** Client ID (package name + SHA-1 podpisu z EAS — `eas credentials`).
-4. V Supabase **Google provider** → vložit Web Client ID + Secret.
-5. Volitelně doplnit „Skip nonce check“ pokud má Expo OAuth potíže (viz Supabase docs — Expo Google).
-
-#### Apple Sign In
-
-1. **Apple Developer**:
-   - **Identifiers → Services IDs** → vytvořit Service ID `com.italiano.web`.
-   - V detailu Service ID povolit *Sign In with Apple*, **Configure**:
-     - Domain: `<project>.supabase.co`
-     - Return URL: `https://<project>.supabase.co/auth/v1/callback`
-   - **Keys** → New Key, povolit *Sign In with Apple*, stáhnout `.p8` privátní klíč (jen jednou!).
-2. V Supabase **Apple provider**:
-   - Service ID = `com.italiano.web`
-   - Team ID = z Apple Dev (Membership)
-   - Key ID = z vytvořeného `.p8`
-   - Private key = obsah `.p8`
-3. Pro nativní iOS flow stačí v appce **`expo-apple-authentication`** + předat `id_token` Supabase klientovi (`signInWithIdToken({ provider: "apple", token })`).
-
-### 4.4 Site URL & redirecty
-
-- **Authentication → URL Configuration**:
-  - Site URL: `italiano://auth-callback` (deep link tvojí appky).
-  - Additional redirect URLs: `italiano://auth-callback`, `https://italiano.example/auth-callback` (pokud bys měl web).
-
----
-
-## 5. Mobilní aplikace (Expo / EAS)
-
-### 5.1 Lokální vývoj
+## 1. GitHub — push the repo
 
 ```bash
-npm install
-npx expo start          # Metro
-i / a                   # iOS / Android
+git remote -v   # confirm origin = git@github.com:<you>/italiano.git
+git push -u origin main
 ```
 
-### 5.2 Konfigurace
+Branch convention:
 
-`app.json` → `expo.extra` (commitnuté výchozí hodnoty) + `.env` (lokálně, **negitovat**):
-
-```env
-EXPO_PUBLIC_TRANSLATE_ENDPOINT=https://italiano-api.vercel.app/api/translate
-EXPO_PUBLIC_CONTENT_BASE_URL=https://italiano-api.vercel.app
-EXPO_PUBLIC_SUPABASE_URL=https://<project>.supabase.co
-EXPO_PUBLIC_SUPABASE_ANON_KEY=<anon-key>
-```
-
-### 5.3 EAS (build služba)
-
-```bash
-npm install -g eas-cli
-eas login
-eas init --id italiano                # vytvoří projekt na Expo
-eas build:configure                   # vytvoří eas.json
-```
-
-`eas.json` (návrh, doplníš později):
-
-```json
-{
-  "build": {
-    "preview": { "distribution": "internal", "channel": "preview" },
-    "production": { "channel": "production" }
-  },
-  "submit": {
-    "production": {}
-  }
-}
-```
-
-Build:
-
-```bash
-eas build -p ios --profile preview        # internal TestFlight build
-eas build -p android --profile preview    # AAB pro internal track
-eas build -p ios --profile production
-eas build -p android --profile production
-```
-
-Submit do storů (volitelné):
-
-```bash
-eas submit -p ios --latest
-eas submit -p android --latest
-```
-
-### 5.4 Konstanty v EAS
-
-Citlivé (none — `EXPO_PUBLIC_*` jdou do binárky) i veřejné `EXPO_PUBLIC_*` lze:
-
-- nastavit přímo v `app.json` `expo.extra`,
-- nebo přes `eas secret` (`eas secret:create --scope project --name EXPO_PUBLIC_SUPABASE_URL --value https://...`) a v `eas.json` `env`.
-
-> **Pozor:** `EXPO_PUBLIC_*` se ZAPÉČOU do binárky. Service-role keys ani DeepL klíč tam **nedávat**.
+- `main` → Vercel **Production** + EAS `production` profile.
+- `dev`  → Vercel **Preview** URLs (each PR has its own).
 
 ---
 
-## 6. Backend na Vercelu
+## 2. Supabase — project, auth, DB
 
-### 6.1 Projekt
+### 2.1 Create the project
 
-V `backend/` je už `vercel.json` a `package.json`. První deploy:
+1. [supabase.com](https://supabase.com) → **New project** → name `italiano-prod`,
+   region `eu-central-1` (Frankfurt) or `eu-west-1` (Ireland).
+2. From **Settings → API** copy:
+   - `Project URL` → `https://<ref>.supabase.co`
+   - `anon` public key (**safe** to ship in the mobile binary, RLS protects
+     data),
+   - `service_role` secret key (**never** ships to mobile; server-only).
 
-```bash
-cd backend
-vercel login
-vercel link              # připojí složku k Vercel projektu
-vercel --prod            # první produkční deploy
-```
+### 2.2 Apply DB migrations
 
-### 6.2 Environment variables
-
-V Vercel Dashboard → **Project → Settings → Environment Variables** (nastavit pro `Production` i `Preview`):
-
-| Klíč | Hodnota | Kde se používá |
-|------|---------|----------------|
-| `DEEPL_API_KEY` | DeepL API klíč | `api/translate.ts` |
-| `CONTENT_VERSION` | `2` (nebo vyšší při změně obsahu) | `api/content-manifest.ts` |
-| `SUPABASE_URL` | `https://<project>.supabase.co` | `api/account/*` (admin) |
-| `SUPABASE_SERVICE_ROLE_KEY` | service role key (jen na serveru!) | `api/account/*` |
-| `SUPABASE_JWT_AUDIENCE` | `authenticated` | volitelné při ověřování JWT |
-
-### 6.3 Region
-
-V `vercel.json` lze přidat `"regions": ["fra1"]` (Frankfurt) pro nižší latenci v EU.
-
-### 6.4 Stávající endpointy
-
-| Endpoint | Co dělá |
-|----------|---------|
-| `POST /api/translate` | DeepL proxy (žádný uživatel) |
-| `GET /api/content-manifest` | Manifest bundlů (verze) |
-| `GET /api/content-bundle?bundle=…` | Vrátí konkrétní JSON |
-
-### 6.5 Plánované endpointy (s Auth)
-
-| Endpoint | Účel | Klíče |
-|----------|------|-------|
-| `POST /api/account/delete` | Smazat účet (auth.admin.deleteUser + cascade DELETE v tabulkách) | `SUPABASE_SERVICE_ROLE_KEY` |
-| `GET /api/account/export` | Export uživatelských dat (JSON download) | service role + ověření Bearer JWT volajícího |
-
----
-
-## 7. Doménové jméno (volitelné)
-
-- Začni s **`*.vercel.app`** a **deep linkem** `italiano://` (nepotřebuješ doménu).
-- Pro produkci doporučeno vlastní:
-  - `italiano-api.example.com` → Vercel project domain.
-  - `italiano-app.example.com` → Universal Link / App Link (až později).
-- DNS: A/AAAA nebo CNAME na Vercel; certifikát Vercel řídí automaticky.
-
----
-
-## 8. Stručný release flow
-
-1. PR → review → merge do `main`.
-2. **Backend:** GitHub → Vercel auto-deploy `main` → produkce; preview pro PR (Vercel Preview).
-3. **Frontend:** vyrobit `eas build --profile production` (může běžet manuálně nebo přes GitHub Action).
-4. **Supabase:** migrace přes `supabase db push` z lokálu (viz § 9). Žádné automatické tagování verzí přes Vercel.
-5. **Bump `CONTENT_VERSION`** v Vercel envs, když měníš obsah JSON lekcí (`backend/content/*.json`).
-
----
-
-## 9. Migrace databáze (Supabase CLI)
+Repo already contains the SQL in `supabase/migrations/`.
 
 ```bash
 brew install supabase/tap/supabase
 supabase login
-cd <repo-root>
-supabase init                       # vytvoří supabase/ folder
-supabase link --project-ref <ref>   # ID z dashboardu
-supabase db diff -f init_schema     # vytvoří první migraci
-supabase db push                    # aplikuje na cloudový projekt
+supabase link --project-ref <ref>
+supabase db push
 ```
 
-Migrace jdou do gitu (`supabase/migrations/*.sql`). RLS politiky a trigger pro automatické vytvoření `profiles` při `auth.users` insertu se píšou tady.
+This creates `profiles`, `vocab_items`, `study_events` with RLS and the
+auto-create-profile trigger.
+
+### 2.3 Enable Google as auth provider
+
+1. **Google Cloud Console** → create project `italiano`.
+2. **APIs & Services → OAuth consent screen** → External, fill product info +
+   support e-mail.
+3. **Credentials → Create OAuth Client ID**:
+   - **Web application** (this one ends up in Supabase) — Authorized redirect URI:
+     `https://<ref>.supabase.co/auth/v1/callback`.
+   - (Later, when you build with EAS) add **iOS** Client ID with the bundle id
+     from `app.json`, and **Android** Client ID with the package name + the
+     SHA-1 you get from `eas credentials`.
+4. **Supabase Dashboard → Authentication → Providers → Google**:
+   - **Enable**,
+   - paste **Client ID** + **Client Secret** of the Web application.
+5. (Optional) toggle **Skip nonce check** if Expo's Google flow complains.
+
+### 2.4 Auth → URL configuration
+
+The app comes back from OAuth via the **deep link** `italiano://`. Both URLs
+have to be on Supabase's allow-list, otherwise sign-in fails with
+*Invalid redirect URL*.
+
+**Supabase Dashboard → Authentication → URL Configuration**:
+
+- **Site URL**: `italiano://`
+- **Redirect URLs** → add: `italiano://`
+  (matches `expo.scheme` in `app.json` and what `makeRedirectUri({ scheme: "italiano" })` produces in `lib/auth/auth-context.tsx`).
+- If you ever ship a **web build**, add the matching `https://…/auth-callback`
+  URL too.
+
+### 2.5 (Optional, later) Apple Sign-In
+
+Apple Sign-In is **disabled in the UI** for now. To turn it on you also need:
+
+1. **Apple Developer → Identifiers → Services IDs** → create
+   `com.italiano.web`. In the Service ID detail enable *Sign In with Apple*,
+   **Configure** → Domain `<ref>.supabase.co`, Return URL
+   `https://<ref>.supabase.co/auth/v1/callback`.
+2. **Apple Developer → Keys** → New Key, enable *Sign In with Apple*, download
+   the `.p8` (only once!).
+3. **Supabase → Apple provider** → Service ID, Team ID, Key ID, paste `.p8`
+   contents.
+4. In `app/(tabs)/profile.tsx` un-hide the *Přihlásit přes Apple* button
+   (currently commented out).
 
 ---
 
-## 10. Sekrety — kam patří
+## 3. Vercel — deploy the backend
 
-| Klíč | Mobile (`.env`/`extra`) | Vercel env | Supabase | Git |
-|------|--------------------------|------------|----------|-----|
-| `EXPO_PUBLIC_TRANSLATE_ENDPOINT` | ano | — | — | ano (jen URL) |
-| `EXPO_PUBLIC_CONTENT_BASE_URL` | ano | — | — | ano |
-| `EXPO_PUBLIC_SUPABASE_URL` | ano | — | — | ano |
-| `EXPO_PUBLIC_SUPABASE_ANON_KEY` | ano | — | — | ano (anon key není tajný) |
-| `DEEPL_API_KEY` | NE | ano | — | NE |
-| `SUPABASE_SERVICE_ROLE_KEY` | NE NIKDY | ano (jen serverless) | — | NE |
-| Apple `.p8` privátní klíč | NE | NE (jen Supabase) | ano | NE |
-| Google OAuth Client Secret | NE | NE (jen Supabase) | ano | NE |
+The Expo app talks to `https://<your-app>.vercel.app/api/...` for translation,
+content, and account endpoints. **`DEEPL_API_KEY` and the Supabase
+service-role key never leave Vercel** — that's why they live on the server.
 
-> **Service role key** = plný přístup k DB **bez RLS**. Patří **jen** na server (Vercel env).
+### 3.1 Get a DeepL key
+
+1. Sign up at [DeepL API](https://www.deepl.com/pro-api), pick the **Free**
+   plan.
+2. Copy the API key. **Free** keys end with `:fx`; the proxy
+   (`backend/api/translate.ts`) auto-picks `api-free.deepl.com` from that
+   suffix.
+
+### 3.2 First deploy
+
+```bash
+cd backend
+npm i -g vercel@latest
+vercel login
+vercel link        # creates / links a Vercel project (use the suggested name or change it)
+vercel --prod      # first production deploy
+```
+
+When Vercel asks for the **project name**, pick something free, e.g.
+`italiano-app`. That gives you `https://italiano-app.vercel.app`. If the name
+is taken, Vercel adds a suffix; you can rename later in **Settings → General →
+Project Name** (the old subdomain stops working immediately, so update the app
+`.env` right after).
+
+### 3.3 Set env vars (Production **and** Preview)
+
+**Vercel Dashboard → Project → Settings → Environment Variables**:
+
+| Key | Value | Used by |
+|-----|-------|---------|
+| `DEEPL_API_KEY` | DeepL API key (`xxxxxxx:fx`) | `api/translate.ts` |
+| `CONTENT_VERSION` | `2` (bump on lesson JSON changes) | `api/content-manifest.ts` |
+| `SUPABASE_URL` | `https://<ref>.supabase.co` | `api/account/*` |
+| `SUPABASE_ANON_KEY` | Supabase **anon** key | `api/account/*` (verifies user JWT) |
+| `SUPABASE_SERVICE_ROLE_KEY` | Supabase **service role** key | `api/account/*` (admin actions) |
+
+Set the same values for **Production** and **Preview** environments. After
+saving, redeploy: **Deployments → … → Redeploy** (or push a new commit).
+
+### 3.4 (Optional) Region
+
+In `backend/vercel.json` add `"regions": ["fra1"]` for lower EU latency.
+
+### 3.5 Smoke-test the live API
+
+```bash
+curl -sS -X POST https://italiano-app.vercel.app/api/translate \
+  -H "Content-Type: application/json" \
+  -d '{"query":"postel"}' | jq .
+# expected: { "it": "letto", "cz": "postel", "p": "letto", ... }
+
+curl -sS https://italiano-app.vercel.app/api/content-manifest | jq .
+# expected: { "version": 2, "bundles": [...] }
+```
+
+If `/api/translate` returns **500 / 503**, `DEEPL_API_KEY` is missing or wrong.
+
+### 3.6 Existing endpoints (reference)
+
+| Endpoint | Purpose |
+|----------|---------|
+| `POST /api/translate` | DeepL proxy (no auth) |
+| `GET /api/content-manifest` | Bundle manifest (versions) |
+| `GET /api/content-bundle?bundle=…` | Single JSON bundle |
+| `POST/DELETE /api/account/delete` | Delete user (verifies JWT, then `auth.admin.deleteUser` with service role) |
+| `GET /api/account/export` | Export profile + vocab — verified by Bearer JWT |
+
+### 3.7 (Optional) Custom domain
+
+Free plan allows unlimited domains in **Settings → Domains**:
+
+- add `api.italiano.tld` → Vercel prints the DNS record (CNAME / A) to add at
+  your registrar, manages the certificate automatically.
+- update the mobile `.env` with `https://api.italiano.tld`.
 
 ---
 
-## 11. Monitoring a kvóty
+## 4. Mobile app — point it at the cloud
 
-- **Supabase**: Dashboard → Project → Reports (DB, Auth, Storage). E-mail alert před 80 % limitu free tier.
-- **Vercel**: Dashboard → Project → Analytics + Logs (otevřené i na free).
-- **Expo**: web dashboard pro EAS buildy a OTA updates.
-- **DeepL**: dashboard ukáže zbylé znaky free planu.
+`EXPO_PUBLIC_*` values are **baked into the JS bundle** at build time, both for
+Metro dev builds and EAS production builds. Two places need to match:
 
----
+### 4.1 Local `.env` (used by `npx expo start` and EAS builds)
 
-## 12. Costs check (přibližné, pro orientaci)
+```env
+EXPO_PUBLIC_TRANSLATE_ENDPOINT=https://italiano-app.vercel.app/api/translate
+EXPO_PUBLIC_CONTENT_BASE_URL=https://italiano-app.vercel.app
+EXPO_PUBLIC_SUPABASE_URL=https://<ref>.supabase.co
+EXPO_PUBLIC_SUPABASE_ANON_KEY=sb_publishable_xxxxxxxx
+```
 
-| Položka | Free | Placené až když |
-|---------|------|-----------------|
-| Supabase | $0 | > 50k MAU nebo > 500 MB DB |
-| Vercel | $0 | velký traffic, > 100 GB bandwidth/měs |
-| Expo / EAS | $0 (limity) | více souběžných buildů, prioritní fronta |
-| Apple Developer | $99/rok | povinné pro App Store |
-| Google Play | $25 jednorázově | povinné pro Play Store |
-| DeepL Free | $0 | > 500 000 znaků/měs |
+Then **always restart Metro with `-c`** after touching `.env`:
 
----
+```bash
+npx expo start -c
+```
 
-## 13. Checklist „MVP do produkce“
+### 4.2 (Optional) `app.json` defaults
 
-- [ ] Supabase projekt v EU + zapnuté Google a Apple providery (Section § 4).
-- [ ] Vercel projekt s `DEEPL_API_KEY`, `CONTENT_VERSION`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`.
-- [ ] `app.json` doplněn o `EXPO_PUBLIC_SUPABASE_*`; `.env.example` aktualizovaný.
-- [ ] Migrace `supabase/migrations/0001_init.sql` aplikovaná, RLS zapnuté.
-- [ ] EAS účet, `eas init`, build profily `preview` a `production`.
-- [ ] Apple Developer účet (pokud iOS), Google Play konzole (pokud Android).
-- [ ] TestFlight + interní Android track funkční.
-- [ ] Plán smazání účtu (`/api/account/delete`) implementován.
-- [ ] README a ARCHITECTURE odkazují na tento dokument.
+If you don't want to ship a `.env` (e.g. on CI), put the **same** values into
+`app.json → expo.extra`:
 
----
+```jsonc
+"extra": {
+  "translateEndpoint": "https://italiano-app.vercel.app/api/translate",
+  "contentBaseUrl": "https://italiano-app.vercel.app",
+  "supabaseUrl": "https://<ref>.supabase.co",
+  "supabaseAnonKey": "sb_publishable_xxxxxxxx"
+}
+```
 
-## 14. Co nemusíš (zatím) řešit
-
-- Vlastní Postgres mimo Supabase (Neon / RDS) — Supabase free stačí.
-- Vlastní container / Docker — vše běží serverless.
-- CDN pro JSON — Vercel už dělá `Cache-Control` (nastavený v `content-bundle`).
-- Real-time (WebSocket) sync — periodický pull stačí; Supabase Realtime se dá zapnout později.
+> ❗ **Never** put `DEEPL_API_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, or any other
+> secret into the mobile config — both `.env` and `expo.extra` end up inside
+> the binary that anyone can decompile.
 
 ---
 
-*Tento dokument udržuj aktuální při každé změně cloudového stacku. Pro implementační kroky (migrace, RLS, hooky) viz [PLAN-auth-sync-offline.md](./PLAN-auth-sync-offline.md).*
+## 5. EAS — build & install on your phone
+
+This is the step that makes the app run on a phone **without your laptop**.
+
+### 5.1 Tooling
+
+```bash
+npm i -g eas-cli
+eas login
+```
+
+In the **repo root**:
+
+```bash
+eas init                  # creates a new Expo project, fills app.json → extra.eas.projectId
+eas build:configure       # generates eas.json
+```
+
+> If you previously ran `eas init --id italiano` and got *Invalid UUID
+> appId*, delete the bogus block from `app.json` (`extra.eas.projectId`) and
+> run `eas init` **without** `--id` so EAS can mint a real UUID.
+
+### 5.2 `eas.json` (sketch)
+
+```json
+{
+  "build": {
+    "preview":    { "distribution": "internal", "channel": "preview" },
+    "production": { "channel": "production" }
+  },
+  "submit": { "production": {} }
+}
+```
+
+`distribution: "internal"` is the magic flag — EAS gives you a download link
+(or TestFlight invite) usable from the phone, no store review needed.
+
+### 5.3 iOS — TestFlight (requires Apple Developer $99/yr)
+
+```bash
+eas build -p ios --profile preview
+```
+
+EAS handles signing (`eas credentials`), uploads to App Store Connect, and
+prints a TestFlight link. On the phone:
+
+1. Install **TestFlight** from App Store.
+2. Open the e-mail invite → **Accept** → **Install**.
+3. Launch *italiano*, tap **Přihlásit Googlem**, search *postel* → expect
+   `letto`.
+
+> No Apple Developer account yet? Use the **iOS Simulator build**:
+> `eas build -p ios --profile preview --simulator`, then drag the resulting
+> `.app.tar.gz` onto a running simulator. Real-device install is not possible
+> without a paid account.
+
+### 5.4 Android — Internal app sharing (no Play console required)
+
+```bash
+eas build -p android --profile preview
+```
+
+EAS prints an **APK download URL**:
+
+1. Open the link **on the phone** (Wi-Fi is enough).
+2. Allow installs from unknown sources for your browser, install the APK.
+3. Launch *italiano* and verify Google sign-in + search.
+
+> For Play **Internal track** later: `eas submit -p android --latest` (needs a
+> Play console one-off $25).
+
+### 5.5 OTA updates (later)
+
+After the first binary is on the phone, JS-only changes can be pushed in
+seconds:
+
+```bash
+eas update --branch preview --message "fix grammar layout"
+```
+
+The phone picks up the bundle on next launch. Native changes (new plugin,
+Info.plist) still require a fresh `eas build`.
+
+---
+
+## 6. End-to-end smoke test (on the phone)
+
+1. Open *italiano*.
+2. **Hledat → "postel"** → result `letto` (proves Vercel + DeepL).
+3. **+ Přidat do slovíček** → switch to **Slovíčka** → row appears (proves
+   AsyncStorage).
+4. **Profil → Přihlásit Googlem** → opens system browser, returns to the app
+   signed-in (proves Supabase URL config + Google client + deep link).
+5. **Profil → Synchronizovat** → no error (proves Postgres + RLS +
+   `EXPO_PUBLIC_SUPABASE_*`).
+6. Close + relaunch the app offline — vocab + lessons still work (proves
+   bundled JSON + cache).
+
+---
+
+## 7. Iterating after go-live
+
+| What changed | What to do |
+|--------------|------------|
+| Backend code (`backend/api/*.ts`) | `git push` — Vercel auto-redeploys `main` to production, PRs get preview URLs. |
+| Lesson JSON (`backend/content/*.json`) | Bump `CONTENT_VERSION` in Vercel envs **and** redeploy, so manifest hash changes and clients refetch. |
+| Mobile JS (UI, hooks) | `eas update --branch preview` — instant. |
+| Native deps / new plugin | `eas build` again. |
+| Supabase schema | Add a new file in `supabase/migrations/`, `supabase db push`. |
+
+---
+
+## 8. Secrets — where each value belongs
+
+| Key | Mobile (`.env` / `extra`) | Vercel env | Supabase | Git |
+|-----|---------------------------|------------|----------|-----|
+| `EXPO_PUBLIC_TRANSLATE_ENDPOINT` | ✅ | — | — | ✅ (URL only) |
+| `EXPO_PUBLIC_CONTENT_BASE_URL` | ✅ | — | — | ✅ |
+| `EXPO_PUBLIC_SUPABASE_URL` | ✅ | — | — | ✅ |
+| `EXPO_PUBLIC_SUPABASE_ANON_KEY` | ✅ | — | — | ✅ (anon key is not secret) |
+| `DEEPL_API_KEY` | ❌ | ✅ | — | ❌ |
+| `SUPABASE_URL` (server) | — | ✅ | — | ❌ |
+| `SUPABASE_ANON_KEY` (server) | — | ✅ | — | ❌ |
+| `SUPABASE_SERVICE_ROLE_KEY` | ❌❌ NEVER | ✅ (serverless only) | — | ❌ |
+| Google OAuth Client Secret | ❌ | ❌ | ✅ | ❌ |
+| Apple `.p8` (later) | ❌ | ❌ | ✅ | ❌ |
+
+> **Service role key** = full DB access, **bypasses RLS**. It belongs **only**
+> on the server (Vercel env).
+
+---
+
+## 9. Troubleshooting
+
+| Symptom | Likely cause | Fix |
+|---------|--------------|-----|
+| *Hledat* spinner forever, then "Vypršel čas (10 s)" | App points at a host the phone can't reach | Use the Vercel HTTPS URL in `.env`, then `npx expo start -c` (or rebuild with EAS). |
+| "Server vrátil 500/503" on translate | Missing `DEEPL_API_KEY` on Vercel | Add it under Settings → Env Vars and **Redeploy**. |
+| Google sign-in returns *Unsupported provider* | Provider not enabled or wrong project | Re-check §2.3 (toggle ON, Web Client ID + Secret). |
+| *Invalid redirect URL* after Google login | `italiano://` not in allow-list | Add it under Auth → URL Configuration (§2.4). |
+| EAS build fails: *Invalid UUID appId* | `app.json` has a bogus `extra.eas.projectId` | Remove that block, run `eas init` (no `--id`). |
+| Vocab not syncing across devices | User signed-in on only one device, or RLS blocks | Profile → Synchronizovat; check Supabase logs. |
+
+---
+
+## 10. Cost ballpark
+
+| Service | Free tier suffices when… | Paid kicks in at |
+|---------|--------------------------|------------------|
+| Supabase | <50k monthly active users, <500 MB DB | bigger usage |
+| Vercel | <100 GB bandwidth/month, hobby usage | high traffic |
+| Expo / EAS | a few builds/month | priority queue, more concurrency |
+| DeepL Free | <500k characters/month | DeepL Pro |
+| Apple Dev | — | $99/year (TestFlight + App Store) |
+| Google Play | — | $25 one-off (Play Store) |
+
+---
+
+*Keep this doc in sync with every cloud-stack change. For day-to-day local
+development (Metro, `vercel dev`, hot reload) see [README.md](../README.md).*

@@ -10,6 +10,8 @@ export type RemoteVocabRow = {
   it: string;
   cz: string;
   p: string;
+  ex_it?: string;
+  ex_cz?: string;
   learned: boolean;
   streak: number;
   updated_at: string;
@@ -34,12 +36,16 @@ export function mergeRemoteRowsIntoState(local: VocabState, remote: RemoteVocabR
     const existing = byUuid.get(row.client_uuid);
     if (!existing) {
       maxId += 1;
+      const exItNew = (row.ex_it ?? "").trim();
+      const exCzNew = (row.ex_cz ?? "").trim();
       byUuid.set(row.client_uuid, {
         id: maxId,
         clientUuid: row.client_uuid,
         it: row.it,
         cz: row.cz,
         p: row.p ?? "",
+        ...(exItNew ? { exIt: exItNew } : {}),
+        ...(exCzNew ? { exCz: exCzNew } : {}),
         learned: row.learned,
         streak: row.streak,
         updatedAt: row.updated_at,
@@ -51,15 +57,34 @@ export function mergeRemoteRowsIntoState(local: VocabState, remote: RemoteVocabR
     const streak = Math.max(existing.streak, row.streak);
     const learned = existing.learned || row.learned;
     const textFromRemote = remoteT > localT;
-    byUuid.set(row.client_uuid, {
+    const exItRemote = (row.ex_it ?? "").trim();
+    const exCzRemote = (row.ex_cz ?? "").trim();
+    const exItLocal = existing.exIt?.trim() ?? "";
+    const exCzLocal = existing.exCz?.trim() ?? "";
+
+    const examplePatch: Partial<Pick<VocabWord, "exIt" | "exCz">> = {};
+    if (textFromRemote) {
+      if (exItRemote) examplePatch.exIt = exItRemote;
+      if (exCzRemote) examplePatch.exCz = exCzRemote;
+    } else {
+      if (exItLocal) examplePatch.exIt = exItLocal;
+      if (exCzLocal) examplePatch.exCz = exCzLocal;
+    }
+
+    const merged: VocabWord = {
       ...existing,
       streak,
       learned,
       it: textFromRemote ? row.it : existing.it,
       cz: textFromRemote ? row.cz : existing.cz,
       p: textFromRemote ? (row.p ?? "") : existing.p,
+      ...examplePatch,
       updatedAt: (remoteT > localT ? remoteT : existing.updatedAt) ?? remoteT,
-    });
+    };
+    if (textFromRemote && !exItRemote) delete merged.exIt;
+    if (textFromRemote && !exCzRemote) delete merged.exCz;
+
+    byUuid.set(row.client_uuid, merged);
   }
 
   const vocab = [...byUuid.values()].sort((a, b) => b.id - a.id);
@@ -70,7 +95,7 @@ export function mergeRemoteRowsIntoState(local: VocabState, remote: RemoteVocabR
 export async function pullVocabRows(supabase: SupabaseClient): Promise<RemoteVocabRow[] | null> {
   const { data, error } = await supabase
     .from("vocab_items")
-    .select("client_uuid,it,cz,p,learned,streak,updated_at,deleted_at")
+    .select("client_uuid,it,cz,p,ex_it,ex_cz,learned,streak,updated_at,deleted_at")
     .order("updated_at", { ascending: false });
   if (error) {
     console.warn("pullVocabRows", error.message);
@@ -101,6 +126,8 @@ export async function pushVocabToRemote(supabase: SupabaseClient, state: VocabSt
     it: w.it,
     cz: w.cz,
     p: w.p ?? "",
+    ex_it: w.exIt?.trim() ?? "",
+    ex_cz: w.exCz?.trim() ?? "",
     learned: w.learned,
     streak: w.streak,
     updated_at: w.updatedAt ?? now,

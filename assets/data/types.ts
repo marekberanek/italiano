@@ -125,6 +125,9 @@ export type VocabWord = {
   it: string;
   cz: string;
   p: string;
+  /** Optional example sentence (usually from lookup); used for cloze-style prompts in quiz. */
+  exIt?: string;
+  exCz?: string;
   learned: boolean;
   streak: number;
   /** ISO 8601; used for last-write-wins text merge with server `updated_at`. */

@@ -67,7 +67,8 @@ export default async function handler(req: Request): Promise<Response> {
     return new Response("Method Not Allowed", { status: 405 });
   }
 
-  const url = new URL(req.url);
+  // Vercel / Node may pass path-only `req.url` (e.g. `/api/content-bundle?bundle=…`).
+  const url = new URL(req.url, "http://localhost");
   const bundle = url.searchParams.get("bundle")?.trim();
   if (!bundle || !ALLOW.has(bundle)) {
     return new Response(JSON.stringify({ error: "Unknown or missing bundle" }), {

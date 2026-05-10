@@ -50,7 +50,8 @@
       "translateEndpoint": "",
       "contentBaseUrl": "",
       "supabaseUrl": "",
-      "supabaseAnonKey": ""
+      "supabaseAnonKey": "",
+      "router": {}
     }
   }
 }

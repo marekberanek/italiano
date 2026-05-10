@@ -39,7 +39,7 @@ export default async function handler(req: Request): Promise<Response> {
     supabase.from("profiles").select("id,created_at,display_name,locale").eq("id", user.id).maybeSingle(),
     supabase
       .from("vocab_items")
-      .select("client_uuid,it,cz,p,learned,streak,updated_at,deleted_at")
+      .select("client_uuid,it,cz,p,ex_it,ex_cz,learned,streak,updated_at,deleted_at")
       .eq("user_id", user.id),
   ]);
 

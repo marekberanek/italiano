@@ -6,8 +6,8 @@
     "@supabase/supabase-js": "^2.105.4"
   },
   "scripts": {
-    "dev": "vercel dev",
-    "deploy": "vercel deploy"
+    "start": "vercel dev",
+    "release": "vercel deploy --prod"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

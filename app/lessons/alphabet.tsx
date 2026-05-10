@@ -1,9 +1,11 @@
+import { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 import alphabetFallback from "@/assets/data/alphabet.json";
 import pronRulesFallback from "@/assets/data/pron-rules.json";
 import type { AlphabetData, PronunciationData } from "@/assets/data/types";
 import { BackLink } from "@/components/back-link";
+import { CategoryChip } from "@/components/category-chip";
 import { PlayButton } from "@/components/play-button";
 import { Screen } from "@/components/screen";
 import { ScreenHeader } from "@/components/screen-header";
@@ -12,51 +14,77 @@ import { Palette, Radius, Spacing, Typography } from "@/constants/theme";
 import { useItalianTts } from "@/hooks/use-italian-tts";
 import { useSyncedJson } from "@/hooks/use-synced-json";
 
+type Section = "letters" | "rules";
+
 export default function AlphabetScreen() {
   const { data: alphabetData } = useSyncedJson("alphabet", alphabetFallback as AlphabetData);
   const { data: pronData } = useSyncedJson("pron-rules", pronRulesFallback as PronunciationData);
   const letters = alphabetData.letters;
   const rules = pronData.rules;
   const tts = useItalianTts();
+  const [section, setSection] = useState<Section>("letters");
+
   return (
     <Screen>
       <BackLink />
-      <ScreenHeader title="Abeceda" subtitle="21 italských písmen" />
+      <ScreenHeader title="Abeceda" subtitle="21 italských písmen + pravidla výslovnosti" />
 
-      <SectionCard title="Italská abeceda" tone="navy">
-        <View style={styles.grid}>
-          {letters.map(([letter, name, pron]) => (
-            <View key={letter} style={styles.tile}>
-              <Text style={styles.letter}>{letter}</Text>
-              <Text style={styles.name}>{name}</Text>
-              {pron ? <Text style={styles.pron}>{pron}</Text> : null}
-              <PlayButton size="sm" onPress={() => tts.speak(name)} />
-            </View>
-          ))}
-        </View>
-      </SectionCard>
+      <View style={styles.chipsRow}>
+        <CategoryChip
+          label="Abeceda"
+          count={letters.length}
+          active={section === "letters"}
+          onPress={() => setSection("letters")}
+        />
+        <CategoryChip
+          label="Výslovnost"
+          count={rules.length}
+          active={section === "rules"}
+          onPress={() => setSection("rules")}
+        />
+      </View>
 
-      <SectionCard title="Pravidla výslovnosti" tone="brand">
-        <View style={{ gap: Spacing.sm + 2 }}>
-          {rules.map((r) => (
-            <View key={r.combo} style={styles.ruleRow}>
-              <View style={styles.ruleCombo}>
-                <Text style={styles.ruleComboText}>{r.combo}</Text>
+      {section === "letters" ? (
+        <SectionCard title="Italská abeceda" tone="navy">
+          <View style={styles.grid}>
+            {letters.map(([letter, name, pron]) => (
+              <View key={letter} style={styles.tile}>
+                <Text style={styles.letter}>{letter}</Text>
+                <Text style={styles.name}>{name}</Text>
+                {pron ? <Text style={styles.pron}>{pron}</Text> : null}
+                <PlayButton size="sm" onPress={() => tts.speak(name)} />
               </View>
-              <View style={{ flex: 1, gap: 2 }}>
-                <Text style={styles.rulePron}>= {r.pronunciation}</Text>
-                <Text style={styles.ruleExample}>{r.example}</Text>
+            ))}
+          </View>
+        </SectionCard>
+      ) : (
+        <SectionCard title="Pravidla výslovnosti" tone="brand">
+          <View style={{ gap: Spacing.sm + 2 }}>
+            {rules.map((r) => (
+              <View key={r.combo} style={styles.ruleRow}>
+                <View style={styles.ruleCombo}>
+                  <Text style={styles.ruleComboText}>{r.combo}</Text>
+                </View>
+                <View style={{ flex: 1, gap: 2 }}>
+                  <Text style={styles.rulePron}>= {r.pronunciation}</Text>
+                  <Text style={styles.ruleExample}>{r.example}</Text>
+                </View>
+                <PlayButton size="sm" onPress={() => tts.speak(r.example.split("→")[0].trim())} />
               </View>
-              <PlayButton size="sm" onPress={() => tts.speak(r.example.split("→")[0].trim())} />
-            </View>
-          ))}
-        </View>
-      </SectionCard>
+            ))}
+          </View>
+        </SectionCard>
+      )}
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
+  chipsRow: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: Spacing.sm,
+  },
   grid: {
     flexDirection: "row",
     flexWrap: "wrap",

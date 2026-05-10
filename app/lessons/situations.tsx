@@ -1,10 +1,10 @@
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useEffect, useState } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
 import situationsFallback from "@/assets/data/situations.json";
 import type { SituationsData } from "@/assets/data/types";
 import { BackLink } from "@/components/back-link";
+import { CategoryChip } from "@/components/category-chip";
 import { PlayButton } from "@/components/play-button";
 import { Screen } from "@/components/screen";
 import { ScreenHeader } from "@/components/screen-header";
@@ -31,25 +31,15 @@ export default function SituationsScreen() {
       <ScreenHeader title="Situace" subtitle="Užitečné fráze pro každý den" />
 
       <View style={styles.chipsRow}>
-        {data.categories.map((cat) => {
-          const isActive = cat.id === activeId;
-          return (
-            <Pressable
-              key={cat.id}
-              onPress={() => setActiveId(cat.id)}
-              style={[styles.chip, isActive && styles.chipActive]}
-            >
-              <MaterialIcons
-                name={cat.icon as keyof typeof MaterialIcons.glyphMap}
-                size={16}
-                color={isActive ? Palette.textInverse : Palette.brandDark}
-              />
-              <Text style={[styles.chipLabel, isActive && styles.chipLabelActive]}>
-                {cat.title}
-              </Text>
-            </Pressable>
-          );
-        })}
+        {data.categories.map((cat) => (
+          <CategoryChip
+            key={cat.id}
+            label={cat.title}
+            icon={cat.icon as Parameters<typeof CategoryChip>[0]["icon"]}
+            active={cat.id === activeId}
+            onPress={() => setActiveId(cat.id)}
+          />
+        ))}
       </View>
 
       {active ? (
@@ -78,24 +68,6 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     gap: Spacing.sm,
   },
-  chip: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 6,
-    paddingHorizontal: Spacing.md + 2,
-    paddingVertical: 8,
-    borderRadius: Radius.pill,
-    backgroundColor: Palette.brandSoft,
-    borderWidth: 1,
-    borderColor: Palette.brand,
-  },
-  chipActive: { backgroundColor: Palette.brand },
-  chipLabel: {
-    fontFamily: Typography.bodyStrong.fontFamily,
-    color: Palette.brandDark,
-    fontSize: 13,
-  },
-  chipLabelActive: { color: Palette.textInverse },
   row: {
     flexDirection: "row",
     alignItems: "center",

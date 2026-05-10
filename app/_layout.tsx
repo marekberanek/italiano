@@ -52,7 +52,11 @@ export default function RootLayout() {
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen
             name="lessons/grammar"
-            options={{ title: "Gramatika", headerShown: false }}
+            options={{ title: "Slovesa", headerShown: false }}
+          />
+          <Stack.Screen
+            name="lessons/sentence-structure"
+            options={{ title: "Stavba věty", headerShown: false }}
           />
           <Stack.Screen
             name="lessons/situations"
@@ -78,7 +82,6 @@ export default function RootLayout() {
             name="lessons/curated-vocab"
             options={{ title: "Výběr slovíček", headerShown: false }}
           />
-          <Stack.Screen name="lessons/basics-quiz" options={{ title: "Mini kvíz", headerShown: false }} />
           <Stack.Screen name="lessons/time" options={{ title: "Čas a hodiny", headerShown: false }} />
           <Stack.Screen name="lessons/seasons" options={{ title: "Roční období", headerShown: false }} />
           <Stack.Screen name="lessons/colors-shapes" options={{ title: "Barvy a tvary", headerShown: false }} />

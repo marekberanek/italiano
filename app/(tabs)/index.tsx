@@ -15,12 +15,28 @@ import { TranslateError, lookupWord } from "@/lib/api/translate";
 
 export default function LookupScreen() {
   const tts = useItalianTts();
-  const { addWord } = useVocabStore();
+  const { addWord, hasItalian } = useVocabStore();
   const [query, setQuery] = useState("");
   const [result, setResult] = useState<LookupResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [added, setAdded] = useState(false);
+
+  // Word can be already in vocab from a previous session — treat that the same
+  // way as "right after I clicked Add" so the button is disabled and labelled.
+  const alreadyOwned = !!result && hasItalian(result.it);
+  const isAdded = added || alreadyOwned;
+
+  // When the user clears the input (or starts typing something new), drop the
+  // previous result/error so the screen doesn't keep showing a stale translation.
+  const onChangeQuery = (next: string) => {
+    setQuery(next);
+    if (!next.trim()) {
+      setResult(null);
+      setError(null);
+      setAdded(false);
+    }
+  };
 
   const submit = async () => {
     if (!query.trim()) return;
@@ -34,7 +50,7 @@ export default function LookupScreen() {
     } catch (err) {
       setError(
         err instanceof TranslateError
-          ? "Nepodařilo se přeložit. Zkus to znovu."
+          ? err.message
           : "Něco se pokazilo. Zkus to znovu.",
       );
     } finally {
@@ -43,8 +59,14 @@ export default function LookupScreen() {
   };
 
   const onAdd = () => {
-    if (!result || added) return;
-    addWord({ it: result.it, cz: result.cz, p: result.p ?? "" });
+    if (!result || isAdded) return;
+    addWord({
+      it: result.it,
+      cz: result.cz,
+      p: result.p ?? "",
+      exIt: result.ex_it,
+      exCz: result.ex_cz,
+    });
     setAdded(true);
   };
 
@@ -57,7 +79,7 @@ export default function LookupScreen() {
           <MaterialIcons name="search" size={20} color={Palette.textMuted} />
           <TextInput
             value={query}
-            onChangeText={setQuery}
+            onChangeText={onChangeQuery}
             onSubmitEditing={submit}
             placeholder="napiš slovo česky nebo italsky"
             placeholderTextColor={Palette.textMuted}
@@ -66,6 +88,17 @@ export default function LookupScreen() {
             returnKeyType="search"
             style={styles.inputField}
           />
+          {query ? (
+            <Pressable
+              onPress={() => onChangeQuery("")}
+              hitSlop={10}
+              accessibilityRole="button"
+              accessibilityLabel="Vymazat hledání"
+              style={({ pressed }) => [styles.clearBtn, pressed && { opacity: 0.5 }]}
+            >
+              <MaterialIcons name="close" size={16} color={Palette.textMuted} />
+            </Pressable>
+          ) : null}
         </View>
         <PrimaryButton label="Hledat" onPress={submit} loading={loading} />
       </View>
@@ -97,9 +130,15 @@ export default function LookupScreen() {
       {result ? (
         <View style={styles.actionsRow}>
           <PrimaryButton
-            label={added ? "✓ Přidáno" : "+ Přidat do slovíček"}
+            label={
+              isAdded
+                ? alreadyOwned && !added
+                  ? "✓ Už máš ve slovíčkách"
+                  : "✓ Přidáno"
+                : "+ Přidat do slovíček"
+            }
             onPress={onAdd}
-            disabled={added}
+            disabled={isAdded}
             style={{ flex: 1 }}
           />
           {result.ex_it ? (
@@ -142,6 +181,14 @@ const styles = StyleSheet.create({
     flex: 1,
     ...Typography.body,
     color: Palette.textStrong,
+  },
+  clearBtn: {
+    width: 22,
+    height: 22,
+    borderRadius: 11,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: Palette.surfaceMuted,
   },
   errorBox: {
     flexDirection: "row",

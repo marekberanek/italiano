@@ -2,14 +2,16 @@ type TranslateRequest = {
   query?: string;
 };
 
+type DeepLTranslation = { detected_source_language: string; text: string };
+
 type DeepLResponse = {
-  translations: { detected_source_language: string; text: string }[];
+  translations: DeepLTranslation[];
 };
 
 const FREE_HOST = "https://api-free.deepl.com";
 const PRO_HOST = "https://api.deepl.com";
 
-const callDeepL = async (text: string, target: "EN" | "CS" | "IT") => {
+const callDeepL = async (text: string, target: "CS" | "IT"): Promise<DeepLTranslation> => {
   const apiKey = process.env.DEEPL_API_KEY;
   if (!apiKey) {
     throw new Error("DEEPL_API_KEY is not configured.");
@@ -26,11 +28,46 @@ const callDeepL = async (text: string, target: "EN" | "CS" | "IT") => {
   if (!res.ok) {
     throw new Error(`DeepL ${res.status}`);
   }
-  return (await res.json()) as DeepLResponse;
+  const data = (await res.json()) as DeepLResponse;
+  const t = data.translations[0];
+  if (!t) throw new Error("DeepL returned no translation.");
+  return t;
 };
 
-const isLikelyCzech = (text: string) =>
-  /[áčďéěíňóřšťúůýž]/i.test(text) || /[a-z]+(at|ovat|out|et|it|nout)$/i.test(text);
+const HAS_CZECH_DIACRITICS = /[áčďéěíňóřšťúůýž]/i;
+
+type SmartResult = { it: string; cz: string; detected: string };
+
+/**
+ * Decides direction from DeepL's own language detection instead of brittle
+ * regex heuristics. Words like "postel", "voda", "kniha" don't have Czech
+ * diacritics but are still Czech — DeepL knows that, so we ask it.
+ *
+ * Strategy:
+ *   1) If input has Czech diacritics, it's certainly Czech → 1 call (CZ → IT).
+ *   2) Otherwise try CZ → IT first. If DeepL detects the source as IT,
+ *      the input was actually Italian → second call IT → CS.
+ */
+async function smartTranslate(query: string): Promise<SmartResult> {
+  if (HAS_CZECH_DIACRITICS.test(query)) {
+    const t = await callDeepL(query, "IT");
+    return {
+      it: t.text,
+      cz: query,
+      detected: t.detected_source_language?.toUpperCase() || "CS",
+    };
+  }
+
+  const first = await callDeepL(query, "IT");
+  const detected = first.detected_source_language?.toUpperCase() ?? "";
+
+  if (detected === "IT") {
+    const second = await callDeepL(query, "CS");
+    return { it: query, cz: second.text, detected: "IT" };
+  }
+
+  return { it: first.text, cz: query, detected: detected || "CS" };
+}
 
 export default async function handler(req: Request): Promise<Response> {
   if (req.method !== "POST") {
@@ -55,33 +92,16 @@ export default async function handler(req: Request): Promise<Response> {
     });
   }
 
-  // Pre-detect direction; DeepL would also detect on its own, but we want to
-  // know whether to translate to IT or to CS.
-  const targetLang = isLikelyCzech(query) ? "IT" : "CS";
-
   try {
-    const data = await callDeepL(query, targetLang);
-    const translation = data.translations[0];
-    if (!translation) {
-      return new Response(JSON.stringify({ error: "No translation" }), {
-        status: 502,
-        headers: { "Content-Type": "application/json" },
-      });
-    }
-
-    const detectedSource = translation.detected_source_language?.toUpperCase();
-    const targetIsItalian = targetLang === "IT";
-    const it = targetIsItalian ? translation.text : query;
-    const cz = targetIsItalian ? query : translation.text;
-
+    const result = await smartTranslate(query);
     return new Response(
       JSON.stringify({
-        it,
-        cz,
+        it: result.it,
+        cz: result.cz,
         p: "",
         ex_it: undefined,
         ex_cz: undefined,
-        detected: detectedSource,
+        detected: result.detected,
       }),
       {
         status: 200,

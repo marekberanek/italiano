@@ -19,7 +19,7 @@ import { getAccessToken, getSupabase } from "@/lib/auth/supabase";
 import { fullVocabSync } from "@/lib/sync/vocab-sync";
 
 export default function ProfileScreen() {
-  const { user, loading, configured, signInWithGoogle, signInWithApple, signOut } = useAuth();
+  const { user, loading, configured, signInWithGoogle, signOut } = useAuth();
   const [busy, setBusy] = useState<null | "sync" | "export" | "delete">(null);
 
   const onSync = useCallback(async () => {
@@ -142,13 +142,6 @@ export default function ProfileScreen() {
           >
             <MaterialIcons name="login" size={20} color={Palette.textInverse} />
             <Text style={styles.primaryLabel}>Přihlásit Googlem</Text>
-          </Pressable>
-          <Pressable
-            onPress={() => void signInWithApple()}
-            style={({ pressed }) => [styles.secondaryBtn, pressed && styles.pressed]}
-          >
-            <MaterialIcons name="apple" size={20} color={Palette.textStrong} />
-            <Text style={styles.secondaryLabel}>Přihlásit přes Apple</Text>
           </Pressable>
         </View>
       ) : (

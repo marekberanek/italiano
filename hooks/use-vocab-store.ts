@@ -2,8 +2,12 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 
 import type { VocabState, VocabWord } from "@/assets/data/types";
 import { getSupabase } from "@/lib/auth/supabase";
+import { italianToCzechPron } from "@/lib/pronunciation/italian-pron";
 import { enqueueDeletion } from "@/lib/storage/vocab-deletions";
-import { subscribeVocabExternalChange } from "@/lib/storage/vocab-events";
+import {
+  emitVocabExternalChange,
+  subscribeVocabExternalChange,
+} from "@/lib/storage/vocab-events";
 import { loadVocabState, saveVocabState } from "@/lib/storage/vocab-store";
 import { bumpWordUpdatedAt, pushVocabToRemote } from "@/lib/sync/vocab-sync";
 import { randomUuid } from "@/lib/uuid";
@@ -12,9 +16,11 @@ export type AddWordInput = {
   it: string;
   cz: string;
   p?: string;
+  exIt?: string;
+  exCz?: string;
 };
 
-const LEARNED_THRESHOLD = 3;
+const LEARNED_THRESHOLD = 5;
 const PUSH_DEBOUNCE_MS = 2000;
 
 export function useVocabStore() {
@@ -36,7 +42,14 @@ export function useVocabStore() {
 
   useEffect(() => {
     return subscribeVocabExternalChange(() => {
-      void loadVocabState().then((loaded) => setState(loaded));
+      void loadVocabState().then((loaded) => {
+        // Skip update if storage matches current state — this is most likely
+        // *our own* write coming back via the cross-screen broadcast and would
+        // otherwise trigger an infinite save → emit → load loop.
+        setState((prev) =>
+          JSON.stringify(prev) === JSON.stringify(loaded) ? prev : loaded,
+        );
+      });
     });
   }, []);
 
@@ -55,20 +68,34 @@ export function useVocabStore() {
   }, [state, hydrated]);
 
   useEffect(() => {
-    if (hydrated) saveVocabState(state);
+    if (!hydrated) return;
+    // Persist, then notify other instances of the hook (e.g. Hledat → Slovíčka)
+    // so they reload from storage and re-render with the new data.
+    void saveVocabState(state).then(() => emitVocabExternalChange());
   }, [state, hydrated]);
 
   const addWord = useCallback((input: AddWordInput) => {
     const it = input.it.trim();
     const cz = input.cz.trim();
     if (!it || !cz) return;
+    const explicit = input.p?.trim() ?? "";
+    const p = explicit || italianToCzechPron(it);
+    const exIt = input.exIt?.trim();
+    const exCz = input.exCz?.trim();
+    const itKey = it.toLowerCase();
     setState((prev) => {
+      // Last-line-of-defense duplicate guard. UI also disables the button when
+      // the word is already there, but other call sites (quiz "Add to vocab",
+      // future imports) shouldn't be able to push duplicates either.
+      if (prev.vocab.some((w) => w.it.trim().toLowerCase() === itKey)) return prev;
       const word: VocabWord = {
         id: prev.nextId,
         clientUuid: randomUuid(),
         it,
         cz,
-        p: input.p?.trim() ?? "",
+        p,
+        ...(exIt ? { exIt } : {}),
+        ...(exCz ? { exCz } : {}),
         learned: false,
         streak: 0,
         updatedAt: new Date().toISOString(),
@@ -76,6 +103,15 @@ export function useVocabStore() {
       return { vocab: [word, ...prev.vocab], nextId: prev.nextId + 1 };
     });
   }, []);
+
+  const hasItalian = useCallback(
+    (word: string) => {
+      const key = word.trim().toLowerCase();
+      if (!key) return false;
+      return state.vocab.some((w) => w.it.trim().toLowerCase() === key);
+    },
+    [state.vocab],
+  );
 
   const removeWord = useCallback((id: number) => {
     setState((prev) => {
@@ -106,21 +142,13 @@ export function useVocabStore() {
     return { total, learned, remaining: total - learned };
   }, [state.vocab]);
 
-  const drawCard = useCallback((excludeId?: number) => {
-    const pool = state.vocab.filter((w) => !w.learned && w.id !== excludeId);
-    const fallback = state.vocab.filter((w) => w.id !== excludeId);
-    const source = pool.length > 0 ? pool : fallback;
-    if (source.length === 0) return null;
-    return source[Math.floor(Math.random() * source.length)];
-  }, [state.vocab]);
-
   return {
     state,
     hydrated,
     addWord,
+    hasItalian,
     removeWord,
     recordAnswer,
-    drawCard,
     stats,
     learnedThreshold: LEARNED_THRESHOLD,
   };

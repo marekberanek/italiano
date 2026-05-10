@@ -9,7 +9,9 @@ type Props = {
   style?: ViewStyle;
 };
 
-const TAB_BAR_SAFE_PADDING = 110;
+/** Floating tab bar height + bottom inset + breathing room so the last screen
+ * element (e.g. a "Stop" link) is not visually glued to the bar. */
+const TAB_BAR_SAFE_PADDING = 140;
 
 export function Screen({ children, scroll = true, style }: Props) {
   if (!scroll) {

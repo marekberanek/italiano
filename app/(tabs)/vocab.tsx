@@ -1,18 +1,29 @@
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useMemo, useState } from "react";
-import { Modal, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import {
+  ActivityIndicator,
+  Modal,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 
+import type { LookupResult } from "@/assets/data/types";
+import { PlayButton } from "@/components/play-button";
 import { Screen } from "@/components/screen";
 import { ScreenHeader } from "@/components/screen-header";
 import { StatTile } from "@/components/stat-tile";
 import { VocabRow } from "@/components/vocab-row";
 import { Palette, Radius, Shadow, Spacing, Typography } from "@/constants/theme";
 import { useItalianTts } from "@/hooks/use-italian-tts";
-import { useVocabStore } from "@/hooks/use-vocab-store";
+import { useVocabStore, type AddWordInput } from "@/hooks/use-vocab-store";
+import { TranslateError, lookupWord } from "@/lib/api/translate";
 
 export default function VocabScreen() {
   const tts = useItalianTts();
-  const { state, addWord, removeWord, stats, learnedThreshold } = useVocabStore();
+  const { state, addWord, hasItalian, removeWord, stats, learnedThreshold } = useVocabStore();
   const [showAdd, setShowAdd] = useState(false);
   const [search, setSearch] = useState("");
 
@@ -90,6 +101,7 @@ export default function VocabScreen() {
       <AddWordModal
         visible={showAdd}
         onClose={() => setShowAdd(false)}
+        isOwned={hasItalian}
         onSubmit={(input) => {
           addWord(input);
           setShowAdd(false);
@@ -99,28 +111,75 @@ export default function VocabScreen() {
   );
 }
 
-type AddInput = { it: string; cz: string; p: string };
+type AddInput = AddWordInput;
 
+/**
+ * Search-based add flow: user types one word in CZ or IT, the translate proxy
+ * fills the opposite side, the pronunciation generator fills `p`. Only the
+ * confirmed pair is written to the vocab store.
+ */
 function AddWordModal({
   visible,
   onClose,
   onSubmit,
+  isOwned,
 }: {
   visible: boolean;
   onClose: () => void;
   onSubmit: (input: AddInput) => void;
+  isOwned: (italian: string) => boolean;
 }) {
-  const [form, setForm] = useState<AddInput>({ it: "", cz: "", p: "" });
-  const reset = () => setForm({ it: "", cz: "", p: "" });
+  const tts = useItalianTts();
+  const [query, setQuery] = useState("");
+  const [result, setResult] = useState<LookupResult | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const reset = () => {
+    setQuery("");
+    setResult(null);
+    setError(null);
+    setLoading(false);
+  };
   const close = () => {
     reset();
     onClose();
   };
-  const submit = () => {
-    if (!form.it.trim() || !form.cz.trim()) return;
-    onSubmit({ it: form.it.trim(), cz: form.cz.trim(), p: form.p.trim() });
+
+  const search = async () => {
+    const trimmed = query.trim();
+    if (!trimmed) return;
+    setLoading(true);
+    setError(null);
+    setResult(null);
+    try {
+      const data = await lookupWord(trimmed);
+      setResult(data);
+    } catch (err) {
+      setError(
+        err instanceof TranslateError
+          ? err.message
+          : "Něco se pokazilo. Zkus to znovu.",
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const alreadyOwned = !!result && isOwned(result.it);
+
+  const confirm = () => {
+    if (!result || alreadyOwned) return;
+    onSubmit({
+      it: result.it,
+      cz: result.cz,
+      p: result.p ?? "",
+      exIt: result.ex_it,
+      exCz: result.ex_cz,
+    });
     reset();
   };
+
   return (
     <Modal visible={visible} animationType="slide" transparent onRequestClose={close}>
       <Pressable style={styles.modalScrim} onPress={close}>
@@ -131,37 +190,82 @@ function AddWordModal({
               <MaterialIcons name="close" size={22} color={Palette.textMuted} />
             </Pressable>
           </View>
-          <View style={styles.fieldRow}>
-            <TextInput
-              value={form.it}
-              onChangeText={(it) => setForm({ ...form, it })}
-              placeholder="Italsky"
-              placeholderTextColor={Palette.textMuted}
-              autoCapitalize="none"
-              style={styles.field}
-            />
-            <TextInput
-              value={form.cz}
-              onChangeText={(cz) => setForm({ ...form, cz })}
-              placeholder="Česky"
-              placeholderTextColor={Palette.textMuted}
-              style={styles.field}
-            />
+
+          <Text style={styles.modalHint}>
+            Napiš slovíčko česky nebo italsky — překlad i výslovnost dotáhneme.
+          </Text>
+
+          <View style={styles.searchRow}>
+            <View style={styles.searchInput}>
+              <MaterialIcons name="search" size={18} color={Palette.textMuted} />
+              <TextInput
+                value={query}
+                onChangeText={setQuery}
+                onSubmitEditing={search}
+                placeholder="např. „voda“ nebo „acqua“"
+                placeholderTextColor={Palette.textMuted}
+                autoCapitalize="none"
+                autoCorrect={false}
+                autoFocus
+                returnKeyType="search"
+                style={styles.modalSearchField}
+              />
+            </View>
+            <Pressable
+              onPress={search}
+              disabled={loading || !query.trim()}
+              style={({ pressed }) => [
+                styles.searchBtn,
+                (loading || !query.trim()) && styles.searchBtnDisabled,
+                pressed && styles.pressed,
+              ]}
+            >
+              {loading ? (
+                <ActivityIndicator color={Palette.textInverse} />
+              ) : (
+                <Text style={styles.searchBtnLabel}>Hledat</Text>
+              )}
+            </Pressable>
           </View>
-          <TextInput
-            value={form.p}
-            onChangeText={(p) => setForm({ ...form, p })}
-            placeholder="Výslovnost (volitelné)"
-            placeholderTextColor={Palette.textMuted}
-            autoCapitalize="none"
-            style={styles.fieldFull}
-          />
-          <Pressable
-            onPress={submit}
-            style={({ pressed }) => [styles.modalSubmit, pressed && styles.pressed]}
-          >
-            <Text style={styles.modalSubmitLabel}>+ Přidat</Text>
-          </Pressable>
+
+          {error ? (
+            <View style={styles.errorBox}>
+              <MaterialIcons name="error-outline" size={18} color={Palette.danger} />
+              <Text style={styles.errorText}>{error}</Text>
+            </View>
+          ) : null}
+
+          {result ? (
+            <View style={styles.previewCard}>
+              <View style={styles.previewTopRow}>
+                <Text style={styles.previewIt}>{result.it}</Text>
+                <PlayButton onPress={() => tts.speak(result.it)} size="md" tone="onDark" />
+              </View>
+              {result.p ? <Text style={styles.previewPron}>{result.p}</Text> : null}
+              <Text style={styles.previewCz}>{result.cz}</Text>
+            </View>
+          ) : null}
+
+          {result ? (
+            <Pressable
+              onPress={confirm}
+              disabled={alreadyOwned}
+              style={({ pressed }) => [
+                styles.modalSubmit,
+                alreadyOwned && styles.modalSubmitDisabled,
+                pressed && !alreadyOwned && styles.pressed,
+              ]}
+            >
+              <MaterialIcons
+                name={alreadyOwned ? "check" : "add"}
+                size={20}
+                color={Palette.textInverse}
+              />
+              <Text style={styles.modalSubmitLabel}>
+                {alreadyOwned ? "Už máš ve slovíčkách" : "Přidat do slovíček"}
+              </Text>
+            </Pressable>
+          ) : null}
         </Pressable>
       </Pressable>
     </Modal>
@@ -238,29 +342,85 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: Palette.textStrong,
   },
-  fieldRow: { flexDirection: "row", gap: Spacing.sm + 2 },
-  field: {
-    flex: 1,
-    backgroundColor: Palette.surfaceMuted,
-    borderRadius: Radius.md,
-    paddingHorizontal: Spacing.md,
-    paddingVertical: 12,
-    ...Typography.body,
-    color: Palette.textStrong,
+  modalHint: {
+    ...Typography.small,
+    color: Palette.textMuted,
   },
-  fieldFull: {
-    backgroundColor: Palette.surfaceMuted,
-    borderRadius: Radius.md,
+  searchRow: { flexDirection: "row", gap: Spacing.sm + 2, alignItems: "stretch" },
+  searchInput: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: Spacing.sm,
     paddingHorizontal: Spacing.md,
-    paddingVertical: 12,
-    ...Typography.body,
-    color: Palette.textStrong,
+    backgroundColor: Palette.surfaceMuted,
+    borderRadius: Radius.pill,
+    minHeight: 48,
+  },
+  modalSearchField: { flex: 1, ...Typography.body, color: Palette.textStrong },
+  searchBtn: {
+    backgroundColor: Palette.brand,
+    paddingHorizontal: Spacing.lg,
+    minHeight: 48,
+    minWidth: 88,
+    borderRadius: Radius.pill,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  searchBtnDisabled: { opacity: 0.5 },
+  searchBtnLabel: {
+    fontFamily: Typography.display.fontFamily,
+    color: Palette.textInverse,
+    fontSize: 14,
+  },
+  errorBox: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: Spacing.sm,
+    padding: Spacing.md,
+    borderRadius: Radius.md,
+    backgroundColor: Palette.accentSoft,
+  },
+  errorText: { ...Typography.smallStrong, color: Palette.danger, flex: 1 },
+  previewCard: {
+    backgroundColor: Palette.brand,
+    borderRadius: Radius.lg,
+    padding: Spacing.lg,
+    gap: Spacing.sm,
+  },
+  previewTopRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: Spacing.md,
+  },
+  previewIt: {
+    flex: 1,
+    fontFamily: Typography.display.fontFamily,
+    fontSize: 24,
+    color: Palette.textInverse,
+  },
+  previewPron: {
+    ...Typography.bodyStrong,
+    color: Palette.textOnDark,
+    fontStyle: "italic",
+  },
+  previewCz: {
+    fontFamily: Typography.display.fontFamily,
+    fontSize: 18,
+    color: Palette.textInverse,
   },
   modalSubmit: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: Spacing.sm,
     backgroundColor: Palette.brand,
     paddingVertical: 14,
     borderRadius: Radius.pill,
-    alignItems: "center",
+  },
+  modalSubmitDisabled: {
+    backgroundColor: Palette.border,
   },
   modalSubmitLabel: {
     fontFamily: Typography.display.fontFamily,

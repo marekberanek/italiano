@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 import numbersFallback from "@/assets/data/numbers.json";
 import type { NumbersData } from "@/assets/data/types";
 import { BackLink } from "@/components/back-link";
+import { CategoryChip } from "@/components/category-chip";
 import { PlayButton } from "@/components/play-button";
 import { Screen } from "@/components/screen";
 import { ScreenHeader } from "@/components/screen-header";
@@ -11,48 +13,74 @@ import { Palette, Radius, Spacing, Typography } from "@/constants/theme";
 import { useItalianTts } from "@/hooks/use-italian-tts";
 import { useSyncedJson } from "@/hooks/use-synced-json";
 
+type Section = "basic" | "composition";
+
 export default function NumbersScreen() {
   const { data } = useSyncedJson("numbers", numbersFallback as NumbersData);
   const tts = useItalianTts();
+  const [section, setSection] = useState<Section>("basic");
+
   return (
     <Screen>
       <BackLink />
       <ScreenHeader title="Číslovky" subtitle="0–1000 + skládání" />
 
-      <SectionCard title="Základní čísla" tone="ochre">
-        <View style={styles.grid}>
-          {data.list.map(([num, label, pron]) => (
-            <View key={num} style={styles.cell}>
-              <View style={{ flex: 1 }}>
-                <Text style={styles.num}>{num}</Text>
-                <Text style={styles.label}>{label}</Text>
-                {pron ? <Text style={styles.pron}>{pron}</Text> : null}
-              </View>
-              <PlayButton size="sm" onPress={() => tts.speak(label)} />
-            </View>
-          ))}
-        </View>
-      </SectionCard>
+      <View style={styles.chipsRow}>
+        <CategoryChip
+          label="Základní"
+          count={data.list.length}
+          active={section === "basic"}
+          onPress={() => setSection("basic")}
+        />
+        <CategoryChip
+          label="Skládání"
+          count={data.composition.length}
+          active={section === "composition"}
+          onPress={() => setSection("composition")}
+        />
+      </View>
 
-      <SectionCard title="Skládání čísel" tone="brand">
-        <View style={{ gap: Spacing.sm }}>
-          {data.composition.map(([num, label, pron]) => (
-            <View key={num} style={styles.compRow}>
-              <Text style={styles.compNum}>{num}</Text>
-              <View style={{ flex: 1 }}>
-                <Text style={styles.compLabel}>{label}</Text>
-                {pron ? <Text style={styles.pron}>{pron}</Text> : null}
+      {section === "basic" ? (
+        <SectionCard title="Základní čísla" tone="ochre">
+          <View style={styles.grid}>
+            {data.list.map(([num, label, pron]) => (
+              <View key={num} style={styles.cell}>
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.num}>{num}</Text>
+                  <Text style={styles.label}>{label}</Text>
+                  {pron ? <Text style={styles.pron}>{pron}</Text> : null}
+                </View>
+                <PlayButton size="sm" onPress={() => tts.speak(label)} />
               </View>
-              <PlayButton size="sm" onPress={() => tts.speak(label)} />
-            </View>
-          ))}
-        </View>
-      </SectionCard>
+            ))}
+          </View>
+        </SectionCard>
+      ) : (
+        <SectionCard title="Skládání čísel" tone="brand">
+          <View style={{ gap: Spacing.sm }}>
+            {data.composition.map(([num, label, pron]) => (
+              <View key={num} style={styles.compRow}>
+                <Text style={styles.compNum}>{num}</Text>
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.compLabel}>{label}</Text>
+                  {pron ? <Text style={styles.pron}>{pron}</Text> : null}
+                </View>
+                <PlayButton size="sm" onPress={() => tts.speak(label)} />
+              </View>
+            ))}
+          </View>
+        </SectionCard>
+      )}
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
+  chipsRow: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: Spacing.sm,
+  },
   grid: {
     flexDirection: "row",
     flexWrap: "wrap",

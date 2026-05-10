@@ -1,15 +1,10 @@
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { useFocusEffect, useRouter } from "expo-router";
-import { useCallback, useEffect, useState } from "react";
-import { ActivityIndicator, Pressable, StyleSheet, Text, View } from "react-native";
+import { useRouter } from "expo-router";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import { Screen } from "@/components/screen";
 import { ScreenHeader } from "@/components/screen-header";
 import { Palette, Radius, Shadow, Spacing, Typography } from "@/constants/theme";
-import { readLastSyncAt } from "@/lib/content/cache";
-import { subscribeContentUpdated } from "@/lib/content/content-events";
-import { getContentBaseUrl } from "@/lib/content/config";
-import { syncRemoteContent } from "@/lib/content/sync-content";
 
 type CardSpec = {
   title: string;
@@ -22,12 +17,20 @@ type CardSpec = {
 
 const CARDS: CardSpec[] = [
   {
-    title: "Gramatika",
-    subtitle: "Časování sloves",
+    title: "Slovesa",
+    subtitle: "Časování v přítomném čase",
     icon: "menu-book",
     bg: Palette.brandSoft,
     fg: Palette.brandDark,
     href: "/lessons/grammar",
+  },
+  {
+    title: "Stavba věty",
+    subtitle: "Členy, předložky, časy, otázky…",
+    icon: "spellcheck",
+    bg: Palette.accentSoft,
+    fg: Palette.accent,
+    href: "/lessons/sentence-structure",
   },
   {
     title: "Situace",
@@ -76,14 +79,6 @@ const CARDS: CardSpec[] = [
     bg: Palette.accentSoft,
     fg: Palette.accent,
     href: "/lessons/months",
-  },
-  {
-    title: "Mini kvíz",
-    subtitle: "Dny, měsíce, čísla z lekcí",
-    icon: "quiz",
-    bg: Palette.ochreSoft,
-    fg: Palette.ochre,
-    href: "/lessons/basics-quiz",
   },
   {
     title: "Čas a hodiny",
@@ -175,57 +170,8 @@ const CARDS: CardSpec[] = [
   },
 ];
 
-function formatLastSync(iso: string | null): string {
-  if (!iso) return "Zatím žádná synchronizace";
-  try {
-    return `Naposledy: ${new Date(iso).toLocaleString("cs-CZ")}`;
-  } catch {
-    return "Naposledy synchronizováno";
-  }
-}
-
 export default function LessonsScreen() {
   const router = useRouter();
-  const [lastSync, setLastSync] = useState<string | null>(null);
-  const [syncing, setSyncing] = useState(false);
-  const [syncHint, setSyncHint] = useState("");
-
-  const refreshMeta = useCallback(async () => {
-    setLastSync(await readLastSyncAt());
-  }, []);
-
-  useFocusEffect(
-    useCallback(() => {
-      void refreshMeta();
-    }, [refreshMeta]),
-  );
-
-  useEffect(() => {
-    return subscribeContentUpdated(() => {
-      void refreshMeta();
-    });
-  }, [refreshMeta]);
-
-  const contentBase = getContentBaseUrl();
-
-  const onSyncPress = async () => {
-    if (!contentBase) {
-      setSyncHint("Nastav EXPO_PUBLIC_CONTENT_BASE_URL nebo expo.extra.contentBaseUrl.");
-      return;
-    }
-    setSyncing(true);
-    setSyncHint("");
-    try {
-      const r = await syncRemoteContent({ force: true });
-      if (!r.ok) setSyncHint("Synchronizace selhala (síť nebo server).");
-      else if (r.message === "offline") setSyncHint("Jste offline.");
-      else if (!r.updated) setSyncHint("Žádný nový obsah nebyl uložen.");
-      else setSyncHint("Staženo; lekce používají aktuální data z cache.");
-    } finally {
-      setSyncing(false);
-      await refreshMeta();
-    }
-  };
 
   return (
     <Screen>
@@ -239,32 +185,6 @@ export default function LessonsScreen() {
           <Text style={styles.streakTitle}>5 dní v řadě</Text>
           <Text style={styles.streakSub}>Pokračuj v učení denně</Text>
         </View>
-      </View>
-
-      <View style={styles.syncCard}>
-        <View style={styles.syncIcon}>
-          <MaterialIcons name="cloud-download" size={22} color={Palette.textInverse} />
-        </View>
-        <View style={{ flex: 1, gap: 4 }}>
-          <Text style={styles.syncTitle}>Obsah lekcí z internetu</Text>
-          <Text style={styles.syncSub}>
-            {contentBase ? formatLastSync(lastSync) : "Není nastavená URL backendu — jen vestavěná data v aplikaci."}
-          </Text>
-          {syncHint ? <Text style={styles.syncHint}>{syncHint}</Text> : null}
-        </View>
-        <Pressable
-          onPress={onSyncPress}
-          disabled={syncing}
-          style={({ pressed }) => [styles.syncBtn, pressed && styles.pressed, syncing && styles.syncBtnDisabled]}
-          accessibilityRole="button"
-          accessibilityLabel="Synchronizovat obsah lekcí"
-        >
-          {syncing ? (
-            <ActivityIndicator color={Palette.brandDark} />
-          ) : (
-            <MaterialIcons name="sync" size={26} color={Palette.brandDark} />
-          )}
-        </Pressable>
       </View>
 
       <View style={styles.grid}>
@@ -318,41 +238,6 @@ const styles = StyleSheet.create({
     color: Palette.textStrong,
   },
   streakSub: { ...Typography.body, color: Palette.text, fontSize: 13 },
-  syncCard: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: Spacing.md + 2,
-    backgroundColor: Palette.surface,
-    padding: Spacing.lg + 2,
-    borderRadius: Radius.lg,
-    borderWidth: 1,
-    borderColor: Palette.border,
-    ...Shadow.card,
-  },
-  syncIcon: {
-    width: 44,
-    height: 44,
-    borderRadius: Radius.pill,
-    backgroundColor: Palette.brandDark,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  syncTitle: {
-    fontFamily: Typography.display.fontFamily,
-    fontSize: 16,
-    color: Palette.textStrong,
-  },
-  syncSub: { ...Typography.body, color: Palette.textMuted, fontSize: 13 },
-  syncHint: { ...Typography.small, color: Palette.accent, fontSize: 12 },
-  syncBtn: {
-    width: 48,
-    height: 48,
-    borderRadius: Radius.md,
-    backgroundColor: Palette.brandSoft,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  syncBtnDisabled: { opacity: 0.6 },
   grid: {
     flexDirection: "row",
     flexWrap: "wrap",
@@ -363,10 +248,10 @@ const styles = StyleSheet.create({
     minHeight: 168,
     backgroundColor: Palette.surface,
     borderRadius: Radius.lg,
-    borderWidth: 1,
-    borderColor: Palette.border,
     padding: Spacing.lg + 4,
     justifyContent: "space-between",
+    borderWidth: 1,
+    borderColor: Palette.border,
     ...Shadow.card,
   },
   cardLeft: {},

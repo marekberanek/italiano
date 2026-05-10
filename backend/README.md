@@ -29,9 +29,11 @@ DeepL detects the source language automatically. Czech input → Italian output,
 ```bash
 cd backend
 npm install
-echo "DEEPL_API_KEY=your-key" > .env.local
+echo "DEEPL_API_KEY=your-key" > .env
 npx vercel dev
 ```
+
+Use **`backend/.env`** for local `vercel dev` (not committed to git). Older Vercel CLI builds may ignore `.env.local` for dev; `.env` is loaded reliably.
 
 In Expo, set `EXPO_PUBLIC_TRANSLATE_ENDPOINT=http://<lan-ip>:3000/api/translate` (or your deployed URL) in the project root `.env`.
 

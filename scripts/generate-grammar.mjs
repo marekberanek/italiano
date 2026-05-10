@@ -589,7 +589,7 @@ const rules = [
   { rule: "Časové výrazy", example: "Ieri — oggi — domani — già — ancora.", translation: "Včera — dnes — zítra — už — ještě." },
   { rule: "Slovesné vazby (pensare a / di)", example: "Penso a te.", translation: "Myslím na tebe." },
   { rule: "Koncovka -isco u -ire", example: "Capisco — finisco.", translation: "Rozumím — dokončuji." },
-  { rule: "Ortografie c/g + e/i", example: "Cena — chiave — ghiaccio.", translation: "Výslovnostní pravidla." },
+  { rule: "Pravopis c/g + e/i", example: "Cena — chiave — ghiaccio.", translation: "Výslovnostní pravidla." },
   { rule: "Aggettivi e avverbi (-mente)", example: "Lenta — lentamente.", translation: "Pomalý — pomalu." },
   { rule: "Avverbi di frequenza", example: "Sempre — spesso — qualche volta — mai.", translation: "Vždy — často — někdy — nikdy." },
   { rule: "Pronomi combinati (me lo)", example: "Te lo dico.", translation: "Řeknu ti to." },

@@ -1,43 +1,43 @@
-# Italiano — architektura aplikace
+# Italiano — Application Architecture
 
-Tento dokument popisuje účel jednotlivých částí projektu, tok dat a rozšíření mimo samotnou Expo aplikaci.
-
----
-
-## 1. Cíl produktu
-
-Aplikace podporuje **pasivní učení** (čtení lekcí, poslech TTS) a **aktivní** (vlastní slovíčka, opakování, vyhledávání). Překlad z češtiny do italštiny a zpět je řešen přes **DeepL** tak, aby se **API klíč neobjevil v mobilním klientovi**.
+This document describes the purpose of each part of the project, the data flow and any extensions outside of the Expo app itself.
 
 ---
 
-## 2. Hlavní technologie
+## 1. Product goal
 
-| Vrstva | Technologie |
-|--------|-------------|
+The app supports both **passive learning** (reading lessons, listening to TTS) and **active learning** (custom vocabulary, repetition, lookup). Translation between Czech and Italian is handled through **DeepL** in a way that **the API key never ships with the mobile binary**.
+
+---
+
+## 2. Main technologies
+
+| Layer | Technology |
+|-------|------------|
 | UI | React Native 0.81, Expo SDK ~54 |
-| Navigace | Expo Router (file-based routing) |
-| Styly | StyleSheet + centrální tokeny (`constants/theme.ts`), fonty Nunito (`@expo-google-fonts/nunito`) |
-| Lokální persist | `@react-native-async-storage/async-storage` |
-| TTS | `expo-speech` (jazyk `it-IT`) |
-| Překlad (síť) | `fetch` na vlastní HTTP endpoint |
-| Obsah lekcí (síť) | `GET` manifest + JSON bundly z backendu, cache v AsyncStorage (`italiano.content.*`) |
+| Navigation | Expo Router (file-based routing) |
+| Styles | StyleSheet + central tokens (`constants/theme.ts`), Nunito fonts (`@expo-google-fonts/nunito`) |
+| Local persistence | `@react-native-async-storage/async-storage` |
+| TTS | `expo-speech` (language `it-IT`) |
+| Translation (network) | `fetch` against a custom HTTP endpoint |
+| Lesson content (network) | `GET` manifest + JSON bundles from the backend, cached in AsyncStorage (`italiano.content.*`) |
 | Backend (proxy) | Vercel: `backend/api/translate.ts` (DeepL), `content-manifest` / `content-bundle` (JSON) |
 
 ---
 
-## 3. Struktura repozitáře
+## 3. Repository layout
 
 ```text
 italiano/
-├── app/                    # Expo Router — routy a obrazovky
-│   ├── _layout.tsx         # Kořen: fonty, Stack, SafeArea
-│   ├── (tabs)/             # Spodní navigace (4 záložky)
+├── app/                    # Expo Router — routes and screens
+│   ├── _layout.tsx         # Root: fonts, Stack, SafeArea
+│   ├── (tabs)/             # Bottom navigation (4 tabs)
 │   │   ├── _layout.tsx
-│   │   ├── index.tsx       # Hledat
-│   │   ├── vocab.tsx       # Slovíčka
-│   │   ├── quiz.tsx        # Opakování
-│   │   └── lessons.tsx     # Hub lekcí (mřížka karet)
-│   └── lessons/            # Stack obrazovky mimo tab bar
+│   │   ├── index.tsx       # Search
+│   │   ├── vocab.tsx       # Vocabulary
+│   │   ├── quiz.tsx        # Repetition
+│   │   └── lessons.tsx     # Lesson hub (grid of cards)
+│   └── lessons/            # Stack screens outside the tab bar
 │       ├── grammar.tsx
 │       ├── situations.tsx
 │       ├── numbers.tsx
@@ -45,7 +45,6 @@ italiano/
 │       ├── weekdays.tsx
 │       ├── months.tsx
 │       ├── curated-vocab.tsx
-│       ├── basics-quiz.tsx
 │       ├── time.tsx
 │       ├── seasons.tsx
 │       ├── colors-shapes.tsx
@@ -58,22 +57,22 @@ italiano/
 │       ├── false-friends.tsx
 │       └── abbreviations.tsx
 ├── assets/
-│   ├── data/               # JSON vestavěný do binárky + sdílené typy
-│   └── images/             # Ikona, splash, favicon, adaptive icon
+│   ├── data/               # JSON bundled into the binary + shared types
+│   └── images/             # Icon, splash, favicon, adaptive icon
 ├── backend/
 │   ├── api/translate.ts    # Edge handler → DeepL
 │   ├── api/content-manifest.ts
 │   ├── api/content-bundle.ts
-│   ├── content/            # JSON zdroje pro vzdálenou synchronizaci
+│   ├── content/            # JSON sources for remote sync
 │   ├── package.json
 │   └── README.md
-├── components/             # Znovupoužitelné UI (tlačítka, screen wrapper, …)
-├── constants/theme.ts      # Barvy, mezery, typografie, stíny
+├── components/             # Reusable UI (buttons, screen wrapper, …)
+├── constants/theme.ts      # Colors, spacing, typography, shadows
 ├── hooks/                  # useVocabStore, useItalianTts, useSyncedJson
 ├── lib/
-│   ├── api/translate.ts    # Klient překladu + fallback bez endpointu
-│   ├── content/            # Manifest, cache klíče, sync (AsyncStorage)
-│   └── storage/vocab-store.ts   # AsyncStorage serializace slovíček
+│   ├── api/translate.ts    # Translation client + offline fallback
+│   ├── content/            # Manifest, cache keys, sync (AsyncStorage)
+│   └── storage/vocab-store.ts   # AsyncStorage serialization for vocabulary
 ├── scripts/
 │   ├── generate-grammar.mjs
 │   ├── generate-pron.mjs
@@ -82,43 +81,43 @@ italiano/
 └── package.json
 ```
 
-Monorepo je v praxi **„mobilní kořen + podsložka backend“** — sdílený `package.json` je jen u mobilní části; `backend/` má vlastní závislosti pro Vercel CLI / deploy.
+In practice this is a **"mobile root + a backend subfolder"** monorepo — the shared `package.json` belongs to the mobile part; `backend/` has its own dependencies for the Vercel CLI / deploy.
 
 ---
 
-## 4. Navigace (uživatelský tok)
+## 4. Navigation (user flow)
 
-- **Tab navigator** (`app/(tabs)/`): čtyři záložky — *Hledat*, *Slovíčka*, *Opakování*, *Lekce*.
-- **Stack** (`app/_layout.tsx`): nad taby se otevírají obrazovky z `app/lessons/*` s tlačítkem zpět (`BackLink` → `router.back()`).
+- **Tab navigator** (`app/(tabs)/`): four tabs — *Search*, *Vocabulary*, *Repetition*, *Lessons*.
+- **Stack** (`app/_layout.tsx`): screens from `app/lessons/*` open above the tabs with a back action (`BackLink` → `router.back()`).
 
-Důvod: mobilní guideline „max ~5 tabů“ a přehlednost — statický obsah je pod *Lekce* jako karty.
+Reason: mobile guideline of "max ~5 tabs" and clarity — static content lives under *Lessons* as cards.
 
 ---
 
-## 5. Tok dat — překlad (DeepL)
+## 5. Data flow — translation (DeepL)
 
 ```mermaid
 sequenceDiagram
-  participant U as Uživatel
-  participant App as Expo aplikace
+  participant U as User
+  participant App as Expo app
   participant Proxy as backend/api/translate
   participant D as DeepL API
 
-  U->>App: Zadá text (Hledat)
+  U->>App: Types text (Search)
   App->>Proxy: POST /api/translate { query }
-  Proxy->>D: POST /v2/translate (s API klíčem)
+  Proxy->>D: POST /v2/translate (with API key)
   D-->>Proxy: detected_source_language, text
   Proxy-->>App: JSON { it, cz, p?, ... }
-  App-->>U: Zobrazení + TTS (expo-speech)
+  App-->>U: Display result + TTS (expo-speech)
 ```
 
-- **Konfigurace URL:** `process.env.EXPO_PUBLIC_TRANSLATE_ENDPOINT` nebo `expo.extra.translateEndpoint` (`app.json`).
-- **Bez URL:** `lookupWord()` vrátí lokální **fallback** (demo překlad), aplikace nespadne.
-- **Směr překladu:** proxy používá heuristiku „česky vs italsky“ a nastaví `target_lang` na `IT` nebo `CS`; DeepL současně detekuje zdroj.
+- **URL configuration:** `process.env.EXPO_PUBLIC_TRANSLATE_ENDPOINT` or `expo.extra.translateEndpoint` (`app.json`).
+- **Without a URL:** `lookupWord()` returns a local **fallback** (demo translation); the app does not crash.
+- **Translation direction:** the proxy uses a "Czech vs Italian" heuristic and sets `target_lang` to `IT` or `CS`; DeepL also detects the source.
 
 ---
 
-## 6. Tok dat — slovíčka a opakování
+## 6. Data flow — vocabulary and repetition
 
 ```mermaid
 flowchart LR
@@ -129,76 +128,76 @@ flowchart LR
     AS[(AsyncStorage)]
   end
   VS -->|load/save JSON| AS
-  AppScreens[Tab Slovíčka / Quiz / Hledat] --> VS
+  AppScreens[Tabs Vocabulary / Quiz / Search] --> VS
 ```
 
-- **Schéma dat:** `VocabWord` (id, it, cz, p, learned, streak) v `assets/data/types.ts`.
-- **Pravidlo „naučeno“:** po **třech** správných odpovědích za sebou (`streak >= 3`) se slovo označí jako `learned` (viz `hooks/use-vocab-store.ts`).
-- **Seed:** při prázdném úložišti se načte výchozí sada ze `vocab-store.ts`.
-- **Cloud / účet:** zatím **není** — slovíčka a postup studia **nejsou** na `backend/`; návrh přihlášení (Google, Apple přes Supabase Auth), sync a free tier je v **[docs/PLAN-auth-sync-offline.md](docs/PLAN-auth-sync-offline.md)**, deployment v **[docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)**.
+- **Data shape:** `VocabWord` (id, it, cz, p, learned, streak, clientUuid, updatedAt) in `assets/data/types.ts`.
+- **"Learned" rule:** after **three** correct answers in a row (`streak >= 3`) a word is marked `learned` (see `hooks/use-vocab-store.ts`).
+- **Seed:** when storage is empty the default set from `vocab-store.ts` is loaded.
+- **Cloud / account:** the app ships with a **Supabase Auth + Postgres** integration (Google + Apple) and offline-first sync of `vocab_items`. Plan: **[docs/PLAN-auth-sync-offline.md](docs/PLAN-auth-sync-offline.md)**, deployment: **[docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)**.
 
 ---
 
-## 7. Obsah lekcí (vestavěný + vzdálená synchronizace)
+## 7. Lesson content (bundled + remote sync)
 
-1. **Vestavěný fallback:** soubory v `assets/data/*.json` jsou součástí buildu — aplikace vždy něco zobrazí.
-2. **Cache po synci:** `lib/content/sync-content.ts` při online a nastavené `EXPO_PUBLIC_CONTENT_BASE_URL` (nebo `expo.extra.contentBaseUrl`) stáhne `GET /api/content-manifest` a jednotlivé `GET /api/content-bundle?bundle=…`, validuje JSON a uloží řetězce pod klíči z `lib/content/cache.ts`.
-3. **UI:** `hooks/use-synced-json.ts` drží stav z bundlu, po načtení cache přepíše data a po `emitContentUpdated()` znovu načte cache. Uživatelská slovíčka používají **jiné** klíče AsyncStorage — nejsou součástí syncu.
+1. **Bundled fallback:** files in `assets/data/*.json` are part of the build — the app always has something to show.
+2. **Cache after sync:** `lib/content/sync-content.ts` — when online and `EXPO_PUBLIC_CONTENT_BASE_URL` (or `expo.extra.contentBaseUrl`) is configured — fetches `GET /api/content-manifest` and individual `GET /api/content-bundle?bundle=…`, validates the JSON and stores the strings under keys defined in `lib/content/cache.ts`.
+3. **UI:** `hooks/use-synced-json.ts` keeps the bundle state, replaces data once cache loads and re-reads cache after `emitContentUpdated()`. User vocabulary uses **separate** AsyncStorage keys — it is not part of content sync.
 
-Bez konektivity nebo bez URL zůstane chování čistě lokální (fallback ± stará cache).
+Without connectivity or without the URL behaviour stays purely local (fallback ± stale cache).
 
-**Výslovnost (Czech-friendly):** italské tvary mají u tabulek a karet zobrazenou pomocnou transkripci v hranatých závorkách (např. `[kvattro]`, `[džennajo]`, `[fačamo]`). Generuje ji `scripts/lib/italian-pron.mjs` a v JSON datech ji udržuje `npm run generate:content` — výsledek se zapisuje paralelně do `assets/data/` (vestavěný fallback) i `backend/content/` (vzdálená synchronizace).
-
----
-
-## 8. UI vrstva
-
-- **`components/screen.tsx`:** `ScrollView` + odsazení kvůli plovoucímu tab baru.
-- **`components/screen-header.tsx`:** titul + logo.
-- **`components/primary-button.tsx`**, **`play-button.tsx`:** konzistentní akce a přehrání italštiny.
-- **Design tokeny** (`Palette`, `Spacing`, `Radius`, `Typography`) drží vizuální jednotu (italská paleta v `constants/theme.ts`).
+**Pronunciation (Czech-friendly):** Italian forms in tables and cards include a helper transcription in square brackets (e.g. `[kvattro]`, `[džennajo]`, `[fačamo]`). It is generated by `scripts/lib/italian-pron.mjs` and kept in sync inside the JSON data via `npm run generate:content` — the result is written in parallel to `assets/data/` (bundled fallback) and `backend/content/` (remote sync).
 
 ---
 
-## 9. Bezpečnost a provoz
+## 8. UI layer
 
-| Téma | Řešení v projektu |
-|------|-------------------|
-| DeepL klíč | Pouze na serveru (`DEEPL_API_KEY` u Vercelu / `.env.local` lokálně). |
-| Klientské tajemství | Žádné; jen veřejná URL proxy. |
-| HTTPS v produkci | Doporučeno pro deploy proxy; lokálně často HTTP + LAN IP. |
-
----
-
-## 10. Rozšíření (kam sahat při úpravách)
-
-| Funkce | Kam psát |
-|--------|-----------|
-| Nová lekce z JSON | `assets/data/*.json` + `backend/content/*.json` + `lib/content/bundle-ids.ts` + manifest na serveru + obrazovka v `app/lessons/` + karta v `app/(tabs)/lessons.tsx` + `Stack.Screen` v `app/_layout.tsx`. |
-| Vzdálený obsah / verze | `backend/api/content-manifest.ts`, `CONTENT_VERSION`, `lib/content/sync-content.ts`. |
-| Změna překladu / formátu API | `backend/api/translate.ts` + typ `LookupResult` + `lib/api/translate.ts`. |
-| Nová pravidla gramatiky / slovesa | Upravit `scripts/generate-grammar.mjs`, pak `npm run generate:grammar`. |
-| Pravidla fonetického přepisu | `scripts/lib/italian-pron.mjs` + spustit `npm run generate:content` (pře-vygeneruje `grammar.json` i číslovky/abecedu/dny/měsíce). |
-| Témata / barvy | `constants/theme.ts` + případně assety v `assets/images/`. |
+- **`components/screen.tsx`:** `ScrollView` + bottom padding for the floating tab bar.
+- **`components/screen-header.tsx`:** title + logo.
+- **`components/primary-button.tsx`**, **`play-button.tsx`:** consistent actions and Italian playback.
+- **Design tokens** (`Palette`, `Spacing`, `Radius`, `Typography`) keep visual unity (Italian palette in `constants/theme.ts`).
 
 ---
 
-## 11. Testování a kvalita
+## 9. Security and operations
+
+| Topic | Project decision |
+|-------|------------------|
+| DeepL key | Server-only (`DEEPL_API_KEY` in Vercel / `backend/.env` locally for `vercel dev`). |
+| Client secret | None; only the public proxy URL. |
+| HTTPS in production | Recommended for the proxy deploy; locally HTTP + LAN IP is fine. |
+
+---
+
+## 10. Extensions (where to make changes)
+
+| Feature | Where to edit |
+|---------|---------------|
+| New JSON-driven lesson | `assets/data/*.json` + `backend/content/*.json` + `lib/content/bundle-ids.ts` + manifest on the server + screen in `app/lessons/` + card in `app/(tabs)/lessons.tsx` + `Stack.Screen` in `app/_layout.tsx`. |
+| Remote content / version | `backend/api/content-manifest.ts`, `CONTENT_VERSION`, `lib/content/sync-content.ts`. |
+| Translation / API format | `backend/api/translate.ts` + the `LookupResult` type + `lib/api/translate.ts`. |
+| New grammar rules / verbs | Edit `scripts/generate-grammar.mjs`, then `npm run generate:grammar`. |
+| Phonetic transcription rules | `scripts/lib/italian-pron.mjs` + run `npm run generate:content` (regenerates `grammar.json`, numbers, alphabet, weekdays, months). |
+| Theme / colors | `constants/theme.ts` and optionally assets in `assets/images/`. |
+
+---
+
+## 11. Testing and quality
 
 - **TypeScript:** `npx tsc --noEmit`
 - **Lint:** `npm run lint` (Expo ESLint)
-- **Manuální:** Expo Go / simulátor — zejména TTS a síťové volání na vlastní IP
+- **Manual:** Expo Go / simulator — especially TTS and network calls against your own IP
 
-Automatické UI testy v repozitáři zatím nejsou součástí šablony.
-
----
-
-## 12. Známá omezení
-
-- DeepL nevrací fonetickou transkripci do pole `p` — pole je připravené pro ruční doplnění nebo budoucí LLM krok na proxy.
-- Heuristika směru překladu není 100% spolehlivá u krátkých nejednoznačných řetězců.
-- Velký `grammar.json` zpomaluje jen start bundleru nepatrně; pro extrémní růst zvaž split podle kapitol nebo lazy load (strategie: [docs/PLAN-auth-sync-offline.md](docs/PLAN-auth-sync-offline.md) § 6).
+Automated UI tests are not part of the template yet.
 
 ---
 
-Doplňky k tomuto dokumentu patří do **README.md** (instalace, DeepL, spuštění). Při větší změně architektury aktualizuj oba soubory.
+## 12. Known limitations
+
+- DeepL does not return phonetic transcription in the `p` field — the field is reserved for a manual fill-in or a future LLM step on the proxy.
+- The translation-direction heuristic is not 100% reliable for short ambiguous strings.
+- A large `grammar.json` only slightly slows the bundler startup; for extreme growth consider chapter-based splits or lazy loading (strategy: [docs/PLAN-auth-sync-offline.md](docs/PLAN-auth-sync-offline.md) § 6).
+
+---
+
+Additions to this document belong in **README.md** (installation, DeepL, running). When the architecture changes significantly, update both files.
