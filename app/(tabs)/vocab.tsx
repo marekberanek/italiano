@@ -20,6 +20,7 @@ import { Palette, Radius, Shadow, Spacing, Typography } from "@/constants/theme"
 import { useItalianTts } from "@/hooks/use-italian-tts";
 import { useVocabStore, type AddWordInput } from "@/hooks/use-vocab-store";
 import { TranslateError, lookupWord } from "@/lib/api/translate";
+import { foldForSearch } from "@/lib/text/normalize";
 
 export default function VocabScreen() {
   const tts = useItalianTts();
@@ -28,9 +29,11 @@ export default function VocabScreen() {
   const [search, setSearch] = useState("");
 
   const visible = useMemo(() => {
-    if (!search.trim()) return state.vocab;
-    const q = search.trim().toLowerCase();
-    return state.vocab.filter((w) => w.it.toLowerCase().includes(q) || w.cz.toLowerCase().includes(q));
+    const q = foldForSearch(search.trim());
+    if (!q) return state.vocab;
+    return state.vocab.filter(
+      (w) => foldForSearch(w.it).includes(q) || foldForSearch(w.cz).includes(q),
+    );
   }, [state.vocab, search]);
 
   return (

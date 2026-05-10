@@ -4,7 +4,6 @@ import {
   ActivityIndicator,
   Alert,
   Pressable,
-  Share,
   StyleSheet,
   Text,
   View,
@@ -13,51 +12,13 @@ import {
 import { Screen } from "@/components/screen";
 import { ScreenHeader } from "@/components/screen-header";
 import { Palette, Radius, Shadow, Spacing, Typography } from "@/constants/theme";
+import { getAccountDeleteUrl } from "@/lib/api/vercel-origin";
+import { getAccessToken } from "@/lib/auth/supabase";
 import { useAuth } from "@/lib/auth/use-auth";
-import { getAccountDeleteUrl, getAccountExportUrl } from "@/lib/api/vercel-origin";
-import { getAccessToken, getSupabase } from "@/lib/auth/supabase";
-import { fullVocabSync } from "@/lib/sync/vocab-sync";
 
 export default function ProfileScreen() {
   const { user, loading, configured, signInWithGoogle, signOut } = useAuth();
-  const [busy, setBusy] = useState<null | "sync" | "export" | "delete">(null);
-
-  const onSync = useCallback(async () => {
-    const supabase = getSupabase();
-    if (!supabase) return;
-    setBusy("sync");
-    try {
-      await fullVocabSync(supabase);
-      Alert.alert("Hotovo", "Slovíčka jsou synchronizovaná se serverem.");
-    } finally {
-      setBusy(null);
-    }
-  }, []);
-
-  const onExport = useCallback(async () => {
-    const url = getAccountExportUrl();
-    if (!url) {
-      Alert.alert("Export", "Není nastavený EXPO_PUBLIC_TRANSLATE_ENDPOINT (stejný backend jako účet).");
-      return;
-    }
-    const token = await getAccessToken();
-    if (!token) {
-      Alert.alert("Export", "Nejsi přihlášený.");
-      return;
-    }
-    setBusy("export");
-    try {
-      const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
-      const text = await res.text();
-      if (!res.ok) {
-        Alert.alert("Export", text || `Chyba ${res.status}`);
-        return;
-      }
-      await Share.share({ message: text, title: "Italiano export" });
-    } finally {
-      setBusy(null);
-    }
-  }, []);
+  const [busy, setBusy] = useState<null | "delete">(null);
 
   const onDeleteAccount = useCallback(() => {
     const url = getAccountDeleteUrl();
@@ -104,7 +65,7 @@ export default function ProfileScreen() {
   if (loading) {
     return (
       <Screen scroll={false}>
-        <ScreenHeader title="Profil" subtitle="Účet a synchronizace" />
+        <ScreenHeader title="Profil" subtitle="Účet" />
         <View style={styles.center}>
           <ActivityIndicator color={Palette.brand} />
         </View>
@@ -114,7 +75,10 @@ export default function ProfileScreen() {
 
   return (
     <Screen>
-      <ScreenHeader title="Profil" subtitle="Účet a synchronizace slovíček" />
+      <ScreenHeader
+        title="Profil"
+        subtitle={user ? "Slovíčka se synchronizují automaticky" : "Účet"}
+      />
 
       {!configured ? (
         <View style={styles.card}>
@@ -146,28 +110,6 @@ export default function ProfileScreen() {
         </View>
       ) : (
         <View style={styles.actions}>
-          <Pressable
-            onPress={() => void onSync()}
-            disabled={busy !== null}
-            style={({ pressed }) => [styles.primaryBtn, pressed && styles.pressed, busy && styles.disabled]}
-          >
-            {busy === "sync" ? (
-              <ActivityIndicator color={Palette.textInverse} />
-            ) : (
-              <MaterialIcons name="cloud-sync" size={20} color={Palette.textInverse} />
-            )}
-            <Text style={styles.primaryLabel}>Synchronizovat slovíčka</Text>
-          </Pressable>
-
-          <Pressable
-            onPress={() => void onExport()}
-            disabled={busy !== null}
-            style={({ pressed }) => [styles.secondaryBtn, pressed && styles.pressed, busy && styles.disabled]}
-          >
-            <MaterialIcons name="file-download" size={20} color={Palette.textStrong} />
-            <Text style={styles.secondaryLabel}>Export dat (JSON)</Text>
-          </Pressable>
-
           <Pressable
             onPress={() => void signOut()}
             disabled={busy !== null}

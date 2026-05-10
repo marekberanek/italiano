@@ -1,4 +1,5 @@
 import type { Session, User } from "@supabase/supabase-js";
+import Constants, { ExecutionEnvironment } from "expo-constants";
 import * as AppleAuthentication from "expo-apple-authentication";
 import { makeRedirectUri } from "expo-auth-session";
 import * as WebBrowser from "expo-web-browser";
@@ -11,7 +12,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { Alert, Platform } from "react-native";
+import { Alert, AppState, Platform } from "react-native";
 
 import { isSupabaseConfigured } from "@/lib/auth/config";
 import { getSupabase } from "@/lib/auth/supabase";
@@ -19,6 +20,67 @@ import { loadVocabState } from "@/lib/storage/vocab-store";
 import { fullVocabSync } from "@/lib/sync/vocab-sync";
 
 WebBrowser.maybeCompleteAuthSession();
+
+/**
+ * OAuth redirect that ASWebAuthenticationSession / Chrome tabs can return to.
+ *
+ * In **Expo Go** (`ExecutionEnvironment.StoreClient`) the running host is the
+ * Expo client — `expo-linking` therefore resolves deep links to `exp://…`
+ * (see `resolveScheme` in `expo-linking`). Passing `scheme: "italiano"` is
+ * ignored there, yet Supabase + Google still need the *actual* `redirectTo`
+ * we send in `signInWithOAuth` to appear on the Supabase allow-list. If the
+ * list only contains `italiano://`, the browser never hands control back to
+ * the app and `openAuthSessionAsync` spins forever.
+ *
+ * In **standalone / dev builds** we keep `makeRedirectUri({ scheme: "italiano" })`
+ * (no path) so Supabase allow-lists that already list `italiano://` keep working.
+ */
+function oauthRedirectUri(): string {
+  if (Constants.executionEnvironment === ExecutionEnvironment.StoreClient) {
+    return makeRedirectUri({ path: "auth/callback" });
+  }
+  return makeRedirectUri({ scheme: "italiano" });
+}
+
+/**
+ * `exchangeCodeForSession` must receive the **auth code string only** (GoTrue
+ * `grant_type=pkce` body field `auth_code`). Passing the full deep link
+ * (`exp://…?code=…`) makes the server respond with *no valid flow state*.
+ */
+function extractPkceAuthCode(callbackUrl: string): string | null {
+  try {
+    const u = new URL(callbackUrl);
+    const err =
+      u.searchParams.get("error_description")?.trim() ||
+      u.searchParams.get("error")?.trim();
+    if (err) return null;
+    const code = u.searchParams.get("code")?.trim();
+    if (code) return code;
+  } catch {
+    // non-standard URL — try hash fragment (some providers use #query)
+  }
+  const hash = callbackUrl.includes("#") ? callbackUrl.split("#")[1] : "";
+  if (!hash) return null;
+  try {
+    const qs = new URLSearchParams(hash.startsWith("?") ? hash.slice(1) : hash);
+    return qs.get("code")?.trim() ?? null;
+  } catch {
+    return null;
+  }
+}
+
+function extractOAuthRedirectError(callbackUrl: string): string | null {
+  try {
+    const u = new URL(callbackUrl);
+    return (
+      u.searchParams.get("error_description")?.trim() ||
+      u.searchParams.get("error")?.trim() ||
+      null
+    );
+  } catch {
+    return null;
+  }
+}
 
 type AuthContextValue = {
   session: Session | null;
@@ -93,8 +155,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const supabase = getSupabase();
     if (!supabase) return;
     const hadLocal = (await loadVocabState()).vocab.length > 0;
-    await fullVocabSync(supabase);
-    if (hadLocal && (await shouldShowMergeNotice())) {
+    const sync = await fullVocabSync(supabase);
+    if (hadLocal && sync.push.ok && (await shouldShowMergeNotice())) {
       await setMergeNoticeShown();
       Alert.alert(
         "Slovíčka",
@@ -108,13 +170,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     void runPostSignInSync();
   }, [session?.user?.id, configured, runPostSignInSync]);
 
+  // Auto-pull when the app returns to the foreground so changes made on
+  // another device land here without the user having to do anything. The
+  // local push that follows in `fullVocabSync` is debounced & idempotent so
+  // it's a no-op when there's nothing to send.
+  useEffect(() => {
+    if (!session?.user || !configured) return;
+    const sub = AppState.addEventListener("change", (next) => {
+      if (next !== "active") return;
+      const supabase = getSupabase();
+      if (!supabase) return;
+      void fullVocabSync(supabase).catch(() => undefined);
+    });
+    return () => sub.remove();
+  }, [session?.user?.id, configured]);
+
   const signInWithGoogle = useCallback(async () => {
     const supabase = getSupabase();
     if (!supabase) {
       Alert.alert("Chybí konfigurace", "Nastav EXPO_PUBLIC_SUPABASE_URL a EXPO_PUBLIC_SUPABASE_ANON_KEY.");
       return;
     }
-    const redirectTo = makeRedirectUri({ scheme: "italiano" });
+    const redirectTo = oauthRedirectUri();
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: { redirectTo, skipBrowserRedirect: true },
@@ -132,7 +209,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (result.type !== "success" || !("url" in result) || !result.url) {
       return;
     }
-    const { error: exErr } = await supabase.auth.exchangeCodeForSession(result.url);
+    const callbackUrl = result.url;
+    const oauthErr = extractOAuthRedirectError(callbackUrl);
+    if (oauthErr) {
+      Alert.alert("Přihlášení", oauthErr);
+      return;
+    }
+    const authCode = extractPkceAuthCode(callbackUrl);
+    if (!authCode) {
+      Alert.alert(
+        "Přihlášení",
+        "V návratové URL chybí parametr code. Zkus znovu nebo zkontroluj Redirect URLs v Supabase.",
+      );
+      return;
+    }
+    const { error: exErr } = await supabase.auth.exchangeCodeForSession(authCode);
     if (exErr) Alert.alert("Přihlášení", exErr.message);
   }, []);
 

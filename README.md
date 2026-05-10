@@ -2,7 +2,7 @@
 
 Mobile app (Expo / React Native) for learning Italian: vocabulary with repetition, dictionary lookup with translation, lessons (grammar, situations, numbers, alphabet, weekdays, months) and pronunciation via the system TTS.
 
-More detail: **[ARCHITECTURE.md](./ARCHITECTURE.md)** · Auth/sync design: **[docs/PLAN-auth-sync-offline.md](./docs/PLAN-auth-sync-offline.md)** · Full cloud setup (Supabase, Vercel, EAS, OAuth): **[docs/DEPLOYMENT.md](./docs/DEPLOYMENT.md)**
+More detail: **[ARCHITECTURE.md](./ARCHITECTURE.md)** · Auth/sync design: **[docs/PLAN-auth-sync-offline.md](./docs/PLAN-auth-sync-offline.md)** · Full cloud setup (Supabase, Vercel, EAS, OAuth): **[docs/DEPLOYMENT.md](./docs/DEPLOYMENT.md)** · **Expo Go on iPhone (tunnel, no Apple Dev fee):** **[docs/EXPO-GO-IOS-TUNNEL.md](./docs/EXPO-GO-IOS-TUNNEL.md)**
 
 ---
 

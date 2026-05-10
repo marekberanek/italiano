@@ -92,22 +92,63 @@ export function mergeRemoteRowsIntoState(local: VocabState, remote: RemoteVocabR
   return { vocab, nextId };
 }
 
-export async function pullVocabRows(supabase: SupabaseClient): Promise<RemoteVocabRow[] | null> {
-  const { data, error } = await supabase
+export async function pullVocabRows(supabase: SupabaseClient): Promise<RemoteVocabRow[]> {
+  const withExamples = await supabase
     .from("vocab_items")
     .select("client_uuid,it,cz,p,ex_it,ex_cz,learned,streak,updated_at,deleted_at")
     .order("updated_at", { ascending: false });
-  if (error) {
-    console.warn("pullVocabRows", error.message);
-    return null;
+
+  if (!withExamples.error) {
+    return (withExamples.data ?? []) as RemoteVocabRow[];
   }
-  return (data ?? []) as RemoteVocabRow[];
+
+  const msg = withExamples.error.message.toLowerCase();
+  const missingExampleCols =
+    msg.includes("ex_it") || msg.includes("ex_cz") || msg.includes("column") || msg.includes("schema cache");
+
+  if (!missingExampleCols) {
+    console.warn("pullVocabRows", withExamples.error.message);
+    return [];
+  }
+
+  const baseOnly = await supabase
+    .from("vocab_items")
+    .select("client_uuid,it,cz,p,learned,streak,updated_at,deleted_at")
+    .order("updated_at", { ascending: false });
+
+  if (baseOnly.error) {
+    console.warn("pullVocabRows (without examples)", baseOnly.error.message);
+    return [];
+  }
+
+  return (baseOnly.data ?? []) as RemoteVocabRow[];
 }
 
-export async function pushVocabToRemote(supabase: SupabaseClient, state: VocabState): Promise<void> {
+export type VocabPushResult = {
+  ok: boolean;
+  /** True when `getSession()` returned no user — nothing was sent. */
+  skippedNoSession: boolean;
+  /** Words in the state we tried to push (after merge). */
+  rowCount: number;
+  /** Set when at least one chunk failed after any retry. */
+  error?: string;
+};
+
+export async function pushVocabToRemote(
+  supabase: SupabaseClient,
+  state: VocabState,
+): Promise<VocabPushResult> {
+  const rowCount = state.vocab.length;
   const { data: sessionData } = await supabase.auth.getSession();
   const userId = sessionData.session?.user?.id;
-  if (!userId) return;
+  if (!userId) {
+    return {
+      ok: false,
+      skippedNoSession: true,
+      rowCount,
+      error: "Nejsi přihlášený — push na server se přeskočil.",
+    };
+  }
 
   const delQueue = await readDeletionQueue();
   for (const clientUuid of delQueue) {
@@ -134,24 +175,67 @@ export async function pushVocabToRemote(supabase: SupabaseClient, state: VocabSt
     deleted_at: null as string | null,
   }));
 
+  if (rows.length === 0) {
+    return { ok: true, skippedNoSession: false, rowCount: 0 };
+  }
+
   const chunk = 40;
+  let lastError: string | undefined;
+  let hadError = false;
   for (let i = 0; i < rows.length; i += chunk) {
     const slice = rows.slice(i, i + chunk);
-    const { error } = await supabase.from("vocab_items").upsert(slice, {
+    let { error } = await supabase.from("vocab_items").upsert(slice, {
       onConflict: "user_id,client_uuid",
     });
-    if (error) console.warn("pushVocabToRemote", error.message);
+    if (error && /ex_it|ex_cz|schema cache|column/i.test(error.message)) {
+      const slim = slice.map((r) => ({
+        user_id: r.user_id,
+        client_uuid: r.client_uuid,
+        it: r.it,
+        cz: r.cz,
+        p: r.p,
+        learned: r.learned,
+        streak: r.streak,
+        updated_at: r.updated_at,
+        deleted_at: r.deleted_at,
+      }));
+      ({ error } = await supabase.from("vocab_items").upsert(slim, {
+        onConflict: "user_id,client_uuid",
+      }));
+    }
+    if (error) {
+      hadError = true;
+      lastError = error.message;
+      console.warn("pushVocabToRemote", error.message);
+    }
   }
+
+  if (hadError) {
+    return { ok: false, skippedNoSession: false, rowCount, error: lastError };
+  }
+  return { ok: true, skippedNoSession: false, rowCount };
 }
 
-export async function fullVocabSync(supabase: SupabaseClient): Promise<void> {
-  const rows = await pullVocabRows(supabase);
-  if (rows === null) return;
+export type FullVocabSyncResult = {
+  localCount: number;
+  remoteCount: number;
+  mergedCount: number;
+  push: VocabPushResult;
+};
+
+export async function fullVocabSync(supabase: SupabaseClient): Promise<FullVocabSyncResult> {
+  const remote = await pullVocabRows(supabase);
   const local = await loadVocabState();
-  const merged = mergeRemoteRowsIntoState(local, rows);
+  const merged = mergeRemoteRowsIntoState(local, remote);
   await saveVocabState(merged);
   emitVocabExternalChange();
-  await pushVocabToRemote(supabase, merged);
+  const push = await pushVocabToRemote(supabase, merged);
+  return {
+    localCount: local.vocab.length,
+    remoteCount: remote.length,
+    mergedCount: merged.vocab.length,
+    push,
+  };
 }
 
 export function bumpWordUpdatedAt(word: VocabWord): VocabWord {

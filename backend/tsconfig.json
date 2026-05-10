@@ -10,5 +10,5 @@
     "noEmit": true,
     "resolveJsonModule": true
   },
-  "include": ["api/**/*.ts", "content/**/*.json"]
+  "include": ["api/**/*.ts"]
 }

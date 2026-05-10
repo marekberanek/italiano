@@ -1,7 +1,9 @@
 import { StyleSheet, Text, View } from "react-native";
 
 import { AppLogo } from "@/components/app-logo";
+import { UserAvatar } from "@/components/user-avatar";
 import { Palette, Spacing, Typography } from "@/constants/theme";
+import { useAuth } from "@/lib/auth/use-auth";
 
 type Props = {
   title: string;
@@ -9,13 +11,15 @@ type Props = {
 };
 
 export function ScreenHeader({ title, subtitle }: Props) {
+  const { user } = useAuth();
+
   return (
     <View style={styles.container}>
       <View style={styles.textWrap}>
         <Text style={styles.title}>{title}</Text>
         {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
       </View>
-      <AppLogo variant="badge" size={44} />
+      {user ? <UserAvatar size={44} /> : <AppLogo variant="badge" size={44} />}
     </View>
   );
 }

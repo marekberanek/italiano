@@ -56,25 +56,97 @@ Branch convention:
 
 1. [supabase.com](https://supabase.com) → **New project** → name `italiano-prod`,
    region `eu-central-1` (Frankfurt) or `eu-west-1` (Ireland).
-2. From **Settings → API** copy:
-   - `Project URL` → `https://<ref>.supabase.co`
-   - `anon` public key (**safe** to ship in the mobile binary, RLS protects
+2. From **Project Settings → API** copy and stash safely:
+   - **Project URL** → `https://<ref>.supabase.co`
+   - **`anon` public** key (**safe** to ship in the mobile binary, RLS protects
      data),
-   - `service_role` secret key (**never** ships to mobile; server-only).
+   - **`service_role` secret** key (**never** ships to mobile; server-only).
+
+> **What is `<ref>`?** A short alphanumeric **Project Reference ID** that
+> Supabase generates for every project. You can read it in three places:
+>
+> - in the **Project URL** itself — it's the subdomain before `.supabase.co`
+>   (e.g. `https://bkqoecnghxjrzasztbsz.supabase.co` → ref =
+>   `bkqoecnghxjrzasztbsz`),
+> - in the browser address bar on the dashboard:
+>   `https://supabase.com/dashboard/project/<ref>`,
+> - in **Project Settings → General → Reference ID** (the dashboard even has a
+>   little "copy" button next to it).
+>
+> You'll reuse the same `<ref>` everywhere below — in `supabase link`, in the
+> Google OAuth redirect URI, and in `EXPO_PUBLIC_SUPABASE_URL` (§4.1).
+
+> **Where exactly is the `service_role` key?** Supabase's UI changed in 2025;
+> use whichever path you see:
+>
+> - **Newer dashboard (2025+):** left sidebar **Project Settings (⚙)** →
+>   **API Keys** tab. You'll see two cards:
+>   - **Publishable** (`sb_publishable_…`) — same role as the old `anon`,
+>     *put it into the mobile app*.
+>   - **Secret** (`sb_secret_…`) — same role as the old `service_role`,
+>     **server-only**. Click **Reveal** to see it (it's hidden by default).
+> - **Legacy dashboard:** **Project Settings → API → Project API keys**, the
+>   row labelled **`service_role` (secret)** with a **Reveal / Copy** button.
+> - Direct link: `https://supabase.com/dashboard/project/<ref>/settings/api`.
+>
+> ⚠️ The `service_role` / `Secret` key bypasses **all** Row-Level Security.
+> It belongs **only** in Vercel env vars (`SUPABASE_SERVICE_ROLE_KEY`, §3.3).
+> Never paste it into `app.json`, `.env` of the Expo app, screenshots, chat,
+> or git. If you ever leak it, hit **Rotate** in the same screen and update
+> Vercel before re-deploy.
 
 ### 2.2 Apply DB migrations
 
-Repo already contains the SQL in `supabase/migrations/`.
+Repo already contains the SQL in `supabase/migrations/`. Pick **one** of:
+
+#### Option A — `npm run db:migrate` (no extra tools)
+
+The repo ships `scripts/db-migrate.mjs`, a small Node script that runs every
+file in `supabase/migrations/` in filename order over a direct Postgres
+connection. It only needs **one** env var:
+
+1. Supabase Dashboard → open the project → green **Connect** (top bar) →
+   **Session pooler** (URI, port `5432`, host `*.pooler.supabase.com`, user
+   `postgres.<ref>`). Copy it. Replace `[YOUR-PASSWORD]` with the database
+   password from project creation (or reset it under **Database** (left nav,
+   ikona válce) → **Settings** — *not* under ⚙ Project Settings; Supabase moved
+   connection strings out of Project Settings in 2025).
+2. Add to `backend/.env.local` (gitignored):
+
+   ```env
+   SUPABASE_DB_URL=postgresql://postgres.<ref>:<password>@<host>:6543/postgres
+   ```
+
+3. From the repo root run:
+
+   ```bash
+   npm run db:migrate
+   ```
+
+   The script is idempotent — every shipped migration uses
+   `create … if not exists` / `add column if not exists` / `drop policy if
+   exists` + `create policy`, so re-running it on an existing project is
+   safe.
+
+#### Option B — Supabase CLI
 
 ```bash
 brew install supabase/tap/supabase
 supabase login
+# Replace <ref> with your Project Reference ID, e.g.
+#   supabase link --project-ref bkqoecnghxjrzasztbsz
 supabase link --project-ref <ref>
 supabase db push
 ```
 
-This creates `profiles`, `vocab_items`, `study_events` with RLS and the
-auto-create-profile trigger.
+Either path creates `profiles`, `vocab_items`, `study_events` with RLS,
+the auto-create-profile trigger, **and explicit `GRANT`s** on the
+`authenticated` role (newer Supabase projects no longer auto-grant DML on
+`public.*`, which previously caused
+`permission denied for table vocab_items` at runtime).
+
+It also creates the `content_bundles` + `content_meta` tables that hold
+all lesson content (read-only for users) — see § 2.6 for how to seed them.
 
 ### 2.3 Enable Google as auth provider
 
@@ -94,15 +166,27 @@ auto-create-profile trigger.
 
 ### 2.4 Auth → URL configuration
 
-The app comes back from OAuth via the **deep link** `italiano://`. Both URLs
-have to be on Supabase's allow-list, otherwise sign-in fails with
-*Invalid redirect URL*.
+**Standalone / EAS builds** return from Google via the custom scheme
+`italiano://` (`expo.scheme` in `app.json`). That URL must be on Supabase's
+allow-list, otherwise sign-in fails with *Invalid redirect URL*.
+
+**Expo Go** is different: `expo-linking` resolves OAuth return URLs to
+`exp://…` (the Expo client), not `italiano://`. If Supabase only allows
+`italiano://`, the browser never hands control back to Expo Go and
+`openAuthSessionAsync` can spin indefinitely. The app therefore uses an
+`exp://…/--/auth/callback`-style redirect in the Expo Go client; add that
+pattern to **Redirect URLs** as well (see [Supabase redirect URL
+wildcards](https://supabase.com/docs/guides/auth/redirect-urls) — e.g.
+`exp://**` for local dev, or the exact URL Metro prints for your machine).
 
 **Supabase Dashboard → Authentication → URL Configuration**:
 
-- **Site URL**: `italiano://`
-- **Redirect URLs** → add: `italiano://`
-  (matches `expo.scheme` in `app.json` and what `makeRedirectUri({ scheme: "italiano" })` produces in `lib/auth/auth-context.tsx`).
+- **Site URL**: `italiano://` (or your production web origin if you ship web).
+- **Redirect URLs** → at minimum add:
+  - `italiano://` — matches `makeRedirectUri({ scheme: "italiano" })` for
+    standalone / dev builds (`lib/auth/auth-context.tsx`).
+  - One or more **`exp://…`** entries (or a documented wildcard) — required
+    when testing **Google sign-in inside Expo Go**.
 - If you ever ship a **web build**, add the matching `https://…/auth-callback`
   URL too.
 
@@ -120,6 +204,75 @@ Apple Sign-In is **disabled in the UI** for now. To turn it on you also need:
    contents.
 4. In `app/(tabs)/profile.tsx` un-hide the *Přihlásit přes Apple* button
    (currently commented out).
+
+### 2.6 Seed lesson content into the DB
+
+All lesson content (vocabulary, grammar, alphabet, pronunciation, situations,
+…) lives in `public.content_bundles` in Supabase. The mobile app downloads it
+via `/api/content-manifest` + `/api/content-bundle` and caches it in
+AsyncStorage. **Users cannot modify or delete this content** — RLS only
+grants `select` to `anon` / `authenticated`; writes require the service role
+key and only happen via the script below.
+
+Personal vocabulary (`public.vocab_items`) is a completely separate table —
+adding a word from a lesson via the *“+ přidat do slovíček”* button creates a
+row there, owned by the user. The lesson row itself stays untouched.
+
+#### Push the bundles
+
+The repo ships ~19 JSON files under `assets/data/` (the same files Expo
+Router would otherwise bundle into the app binary). They are uploaded to
+Supabase by `scripts/content-push.mjs`.
+
+1. `backend/.env.local` must already have `SUPABASE_URL` +
+   `SUPABASE_SERVICE_ROLE_KEY` (set during § 3.3 / dashboard *Project
+   Settings → API*). The service role key bypasses RLS and is the only way
+   to write to `content_bundles`.
+2. From the repo root run:
+
+   ```bash
+   npm run db:migrate     # one-off — creates tables
+   npm run content:push   # uploads/refreshes all bundles
+   ```
+
+   The script reads the bundle ID list from `lib/content/bundle-ids.ts`,
+   computes a SHA-256 short hash per payload (stored in
+   `content_bundles.version`) and bumps `content_meta.value` (key
+   `'version'`) to a fresh ISO timestamp so existing app installs notice the
+   change and re-pull on next sync.
+
+3. Verify in the Supabase SQL editor:
+
+   ```sql
+   select id, version, jsonb_typeof(payload), updated_at
+     from public.content_bundles
+     order by id;
+
+   select * from public.content_meta;
+   ```
+
+4. Re-run `npm run content:push` whenever you change an `assets/data/*.json`
+   file (e.g. after `npm run generate:content`). The script is idempotent —
+   only the changed payloads get a new hash and clients will re-download
+   only what they need.
+
+#### Adding a new bundle
+
+1. Add the JSON file to `assets/data/<id>.json`.
+2. Append the new ID to `CONTENT_BUNDLE_IDS` in `lib/content/bundle-ids.ts`
+   **and** to `CONTENT_BUNDLE_IDS_FALLBACK` in
+   `backend/api/_lib/bundle-ids.ts` (the latter is only used when DB is
+   empty / unreachable).
+3. Run `npm run content:push`.
+
+#### Fallback behaviour
+
+- DB unreachable / not yet seeded → `/api/content-manifest` returns the
+  static `CONTENT_BUNDLE_IDS_FALLBACK` list with a short cache (10 s) so the
+  client keeps working until the seed is done. `/api/content-bundle` will
+  return `503` for known-but-unseeded bundle IDs and `404` for unknown ones.
+- Mobile app offline → it keeps using whatever it cached in AsyncStorage,
+  and as a last resort the JSON files bundled into the app binary.
 
 ---
 
@@ -148,25 +301,98 @@ vercel --prod      # first production deploy
 ```
 
 When Vercel asks for the **project name**, pick something free, e.g.
-`italiano-app`. That gives you `https://italiano-app.vercel.app`. If the name
+`italiano-api`. That gives you `https://italiano-api.vercel.app`. If the name
 is taken, Vercel adds a suffix; you can rename later in **Settings → General →
 Project Name** (the old subdomain stops working immediately, so update the app
 `.env` right after).
 
 ### 3.3 Set env vars (Production **and** Preview)
 
-**Vercel Dashboard → Project → Settings → Environment Variables**:
+These are the variables every deployed function will read at runtime:
 
 | Key | Value | Used by |
 |-----|-------|---------|
 | `DEEPL_API_KEY` | DeepL API key (`xxxxxxx:fx`) | `api/translate.ts` |
-| `CONTENT_VERSION` | `2` (bump on lesson JSON changes) | `api/content-manifest.ts` |
+| `CONTENT_VERSION` | `2` for the first deploy; bump (`3`, `4`, …) every time you change `backend/content/*.json` | `api/content-manifest.ts` |
 | `SUPABASE_URL` | `https://<ref>.supabase.co` | `api/account/*` |
 | `SUPABASE_ANON_KEY` | Supabase **anon** key | `api/account/*` (verifies user JWT) |
 | `SUPABASE_SERVICE_ROLE_KEY` | Supabase **service role** key | `api/account/*` (admin actions) |
 
-Set the same values for **Production** and **Preview** environments. After
-saving, redeploy: **Deployments → … → Redeploy** (or push a new commit).
+> **What is `CONTENT_VERSION`?** A short string (typically a monotonically
+> increasing integer) that ships in the response of `GET /api/content-manifest`.
+> The mobile app caches the lesson bundles in `AsyncStorage` together with this
+> stamp; when the value differs from what the device remembers, the app
+> re-downloads every bundle in `lib/content/sync-content.ts`.
+>
+> - **Default in code** (when env is unset): `"2"`. For the **first deploy** just
+>   set it to `2` — that matches the JSON shipped in this repo.
+> - **Bump it (`3`, `4`, …) every time you edit any file in
+>   `backend/content/*.json`** (e.g. add new curated vocab, tweak numbers).
+>   Otherwise users keep the cached, stale lessons forever.
+> - Any string works (you could use `2026.05.10.1`), but a plain integer is
+>   easiest to keep monotonic.
+> - Don't set it to an empty value — clients then think "the version changed"
+>   on every launch and re-download bundles needlessly.
+
+You can put them in via **Dashboard** *or* **CLI** — pick one workflow:
+
+#### Option A — Dashboard (clicking)
+
+**Vercel Dashboard → Project → Settings → Environment Variables**, add each
+key, tick **Production** *and* **Preview**, save. Then redeploy from
+**Deployments → … → Redeploy** (or just push a new commit).
+
+#### Option B — CLI (recommended, easier to keep in sync)
+
+```bash
+cd backend
+
+# Push secrets into the cloud (you’ll be prompted for the value each time).
+# Repeat for every environment you want to populate.
+vercel env add DEEPL_API_KEY               production
+vercel env add DEEPL_API_KEY               preview
+vercel env add CONTENT_VERSION             production preview
+vercel env add SUPABASE_URL                production preview
+vercel env add SUPABASE_ANON_KEY           production preview
+vercel env add SUPABASE_SERVICE_ROLE_KEY   production preview
+
+# Re-deploy so the new envs take effect
+vercel --prod
+```
+
+#### What about local `.env.local` / `.env.production`?
+
+Vercel **does not upload** any `.env*` from your machine when deploying. The
+deployed functions only see what lives in the dashboard. The `.env*` files
+play a role only locally (`vercel dev`, lint/build):
+
+| File (in `backend/`) | Read by | Useful for |
+|----------------------|---------|------------|
+| `.env.local` | `vercel dev` (highest priority, **git-ignored**) | your laptop secrets |
+| `.env.development` | `vercel dev` | shared dev defaults |
+| `.env.production` | `next build` only on your laptop; **ignored** by cloud Vercel | rarely needed for an API-only project |
+| `.env` | fallback for all modes locally | non-secret defaults you can commit |
+
+Keep things in sync with two CLI helpers:
+
+```bash
+# Pull cloud values back to a local file (great for switching machines)
+cd backend
+vercel env pull .env.local                                # pulls "development" by default
+vercel env pull --environment=production .env.production  # only if you really need it locally
+
+# Inspect what's stored remotely
+vercel env ls
+```
+
+So the practical pattern is:
+
+- **Locally** (`vercel dev`): edit `backend/.env.local` (test DeepL key, dev
+  Supabase ref). Git-ignored.
+- **Cloud (Production/Preview):** push values via `vercel env add` (or
+  Dashboard) — they live only in Vercel.
+- Want to mirror cloud → local? `vercel env pull` writes them into
+  `.env.local` for you.
 
 ### 3.4 (Optional) Region
 
@@ -175,16 +401,20 @@ In `backend/vercel.json` add `"regions": ["fra1"]` for lower EU latency.
 ### 3.5 Smoke-test the live API
 
 ```bash
-curl -sS -X POST https://italiano-app.vercel.app/api/translate \
+curl -sS -X POST https://italiano-api.vercel.app/api/translate \
   -H "Content-Type: application/json" \
   -d '{"query":"postel"}' | jq .
 # expected: { "it": "letto", "cz": "postel", "p": "letto", ... }
 
-curl -sS https://italiano-app.vercel.app/api/content-manifest | jq .
-# expected: { "version": 2, "bundles": [...] }
+curl -sS https://italiano-api.vercel.app/api/content-manifest | jq .
+# expected: { "version": "<ISO timestamp>", "bundles": [...] }
 ```
 
 If `/api/translate` returns **500 / 503**, `DEEPL_API_KEY` is missing or wrong.
+
+If `/api/content-manifest` returns `version: "fallback"` and a short cache,
+the DB is unreachable or empty — run `npm run content:push` (see § 2.6).
+A successful seed flips the version to an ISO timestamp.
 
 ### 3.6 Existing endpoints (reference)
 
@@ -195,6 +425,15 @@ If `/api/translate` returns **500 / 503**, `DEEPL_API_KEY` is missing or wrong.
 | `GET /api/content-bundle?bundle=…` | Single JSON bundle |
 | `POST/DELETE /api/account/delete` | Delete user (verifies JWT, then `auth.admin.deleteUser` with service role) |
 | `GET /api/account/export` | Export profile + vocab — verified by Bearer JWT |
+| `GET /api/openapi` | OpenAPI 3.1 spec (machine-readable) |
+| `GET /api/docs` | Interactive **Scalar API Reference** UI |
+| `GET /api/` | Tiny landing page with links to the above |
+
+> **Live docs:** open <https://italiano-api.vercel.app/api/docs> (or
+> `http://localhost:3000/api/docs` while running `vercel dev`). The viewer
+> reads the spec from `/api/openapi` (kept in `backend/api/openapi.ts`). When
+> you add a new endpoint, update both the handler **and** the `paths` block in
+> the spec so the docs stay in sync.
 
 ### 3.7 (Optional) Custom domain
 
@@ -214,8 +453,8 @@ Metro dev builds and EAS production builds. Two places need to match:
 ### 4.1 Local `.env` (used by `npx expo start` and EAS builds)
 
 ```env
-EXPO_PUBLIC_TRANSLATE_ENDPOINT=https://italiano-app.vercel.app/api/translate
-EXPO_PUBLIC_CONTENT_BASE_URL=https://italiano-app.vercel.app
+EXPO_PUBLIC_TRANSLATE_ENDPOINT=https://italiano-api.vercel.app/api/translate
+EXPO_PUBLIC_CONTENT_BASE_URL=https://italiano-api.vercel.app
 EXPO_PUBLIC_SUPABASE_URL=https://<ref>.supabase.co
 EXPO_PUBLIC_SUPABASE_ANON_KEY=sb_publishable_xxxxxxxx
 ```
@@ -229,12 +468,19 @@ npx expo start -c
 ### 4.2 (Optional) `app.json` defaults
 
 If you don't want to ship a `.env` (e.g. on CI), put the **same** values into
-`app.json → expo.extra`:
+`app.json → expo.extra`. **`process.env.EXPO_PUBLIC_*` always wins over
+`Constants.expoConfig.extra` (see `lib/auth/config.ts`)** — so a `.env` value
+will override whatever you have in `app.json`.
+
+If you keep both a `.env` (local dev) and `.env.production` (EAS prod build),
+make sure both files **point at the same Supabase project** until you really
+want a separate dev/prod stack — otherwise dev runs and the shipped app see
+different vocab data, and OAuth callbacks have to be configured twice.
 
 ```jsonc
 "extra": {
-  "translateEndpoint": "https://italiano-app.vercel.app/api/translate",
-  "contentBaseUrl": "https://italiano-app.vercel.app",
+  "translateEndpoint": "https://italiano-api.vercel.app/api/translate",
+  "contentBaseUrl": "https://italiano-api.vercel.app",
   "supabaseUrl": "https://<ref>.supabase.co",
   "supabaseAnonKey": "sb_publishable_xxxxxxxx"
 }
@@ -385,9 +631,12 @@ Info.plist) still require a fresh `eas build`.
 | *Hledat* spinner forever, then "Vypršel čas (10 s)" | App points at a host the phone can't reach | Use the Vercel HTTPS URL in `.env`, then `npx expo start -c` (or rebuild with EAS). |
 | "Server vrátil 500/503" on translate | Missing `DEEPL_API_KEY` on Vercel | Add it under Settings → Env Vars and **Redeploy**. |
 | Google sign-in returns *Unsupported provider* | Provider not enabled or wrong project | Re-check §2.3 (toggle ON, Web Client ID + Secret). |
-| *Invalid redirect URL* after Google login | `italiano://` not in allow-list | Add it under Auth → URL Configuration (§2.4). |
+| *Invalid redirect URL* after Google login | Redirect not in allow-list | Add `italiano://` for builds; in **Expo Go** add the matching `exp://…` URL or wildcard (§2.4). |
+| Google login **spins forever** after confirming in the browser | Expo Go uses `exp://…`, not `italiano://` | Add `exp://…` / wildcard to Supabase Redirect URLs (§2.4), or test Google sign-in in a **development build**. |
 | EAS build fails: *Invalid UUID appId* | `app.json` has a bogus `extra.eas.projectId` | Remove that block, run `eas init` (no `--id`). |
 | Vocab not syncing across devices | User signed-in on only one device, or RLS blocks | Profile → Synchronizovat; check Supabase logs. |
+| Lessons empty / *Bundle not yet seeded* (HTTP 503) | `content_bundles` is empty | Run `npm run db:migrate && npm run content:push` (§ 2.6). |
+| `/api/content-manifest` returns `version: "fallback"` | DB unreachable or `SUPABASE_URL` / `SUPABASE_ANON_KEY` not set on Vercel | Add the env vars (§ 3.3) and redeploy; also re-run `content:push` if the table is empty. |
 
 ---
 

@@ -37,6 +37,11 @@ export function useItalianTts(): ItalianTts {
       language: LANGUAGE,
       rate: 0.9,
       pitch: 1.0,
+      // iOS-only: by default `AVSpeechSynthesizer` uses the app's audio session
+      // which is `.soloAmbient` (silenced by the physical Ring/Silent switch).
+      // Setting this to false lets the synthesizer use its own `.playback`
+      // session so TTS plays even when the phone is muted.
+      useApplicationAudioSession: false,
       onStart: () => setIsSpeaking(true),
       onDone: () => setIsSpeaking(false),
       onStopped: () => setIsSpeaking(false),

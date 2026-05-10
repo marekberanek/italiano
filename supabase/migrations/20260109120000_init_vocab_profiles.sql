@@ -10,6 +10,9 @@ create table if not exists public.profiles (
 
 alter table public.profiles enable row level security;
 
+drop policy if exists "profiles_select_own" on public.profiles;
+drop policy if exists "profiles_update_own" on public.profiles;
+
 create policy "profiles_select_own"
   on public.profiles for select
   using (auth.uid() = id);
@@ -56,6 +59,11 @@ create index if not exists vocab_items_user_updated_idx
 
 alter table public.vocab_items enable row level security;
 
+drop policy if exists "vocab_select_own" on public.vocab_items;
+drop policy if exists "vocab_insert_own" on public.vocab_items;
+drop policy if exists "vocab_update_own" on public.vocab_items;
+drop policy if exists "vocab_delete_own" on public.vocab_items;
+
 create policy "vocab_select_own"
   on public.vocab_items for select
   using (auth.uid() = user_id);
@@ -86,6 +94,9 @@ create index if not exists study_events_user_created_idx
   on public.study_events (user_id, created_at desc);
 
 alter table public.study_events enable row level security;
+
+drop policy if exists "study_events_select_own" on public.study_events;
+drop policy if exists "study_events_insert_own" on public.study_events;
 
 create policy "study_events_select_own"
   on public.study_events for select

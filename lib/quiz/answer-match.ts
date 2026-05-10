@@ -1,11 +1,8 @@
+import { foldForSearch } from "@/lib/text/normalize";
+
 /** Lowercase + strip combining marks (diacritics) + collapse whitespace. */
 export function normalizeAnswer(s: string): string {
-  return s
-    .trim()
-    .normalize("NFD")
-    .replace(/\p{M}/gu, "")
-    .toLowerCase()
-    .replace(/\s+/g, " ");
+  return foldForSearch(s.trim());
 }
 
 /** Split Czech/Italian gloss fields on common synonym separators. */

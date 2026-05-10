@@ -43,3 +43,25 @@ In Expo, set `EXPO_PUBLIC_TRANSLATE_ENDPOINT=http://<lan-ip>:3000/api/translate`
 - `GET /api/content-bundle?bundle=<id>` — raw JSON for one bundle. Bundle ids include `time`, `seasons`, `weather`, `food-drinks`, `false-friends`, etc. (full list: `lib/content/bundle-ids.ts` in the app repo).
 
 The handler reads files from `backend/content/`. Keep `assets/data/` in the app repo in sync for offline-first installs.
+
+## API documentation (OpenAPI 3.1)
+
+The backend ships its own machine-readable spec **and** a rendered viewer:
+
+- `GET /api/openapi` — OpenAPI 3.1 JSON (hand-maintained in `backend/api/openapi.ts`).
+- `GET /api/docs` — interactive [Scalar](https://scalar.com) reference UI.
+- `GET /api/` — landing page with a list of endpoints.
+
+Live URLs once deployed:
+
+- Production: `https://italiano-api.vercel.app/api/docs`
+- Local dev: `http://localhost:3000/api/docs`
+
+If you prefer classic Swagger UI, paste the spec URL into
+[editor.swagger.io](https://editor.swagger.io/?url=https://italiano-api.vercel.app/api/openapi).
+
+When you add or change an endpoint, update **two** files:
+
+1. The handler under `backend/api/`.
+2. The corresponding `paths` / `components.schemas` block in
+   `backend/api/openapi.ts`.

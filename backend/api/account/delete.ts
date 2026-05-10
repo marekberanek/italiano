@@ -48,4 +48,4 @@ export default async function handler(req: Request): Promise<Response> {
   return new Response(null, { status: 204 });
 }
 
-export const config = { runtime: "nodejs22.x" };
+export const config = { runtime: "nodejs" };

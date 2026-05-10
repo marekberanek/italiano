@@ -61,7 +61,10 @@ export function useVocabStore() {
         if (!supabase) return;
         const { data } = await supabase.auth.getSession();
         if (!data.session) return;
-        await pushVocabToRemote(supabase, state);
+        const push = await pushVocabToRemote(supabase, state);
+        if (!push.ok) {
+          console.warn("pushVocabToRemote", push.error ?? "failed");
+        }
       })();
     }, PUSH_DEBOUNCE_MS);
     return () => clearTimeout(t);
