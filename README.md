@@ -35,7 +35,7 @@ The app’s *Search* tab calls your backend; the backend holds `DEEPL_API_KEY` s
 
 1. Sign up at [DeepL API](https://www.deepl.com/pro-api).
 2. Create an **API key** in the dashboard.
-3. Free keys end with **`:fx`** — the proxy picks `api-free.deepl.com` vs `api.deepl.com` from that suffix.
+3. Free keys end with `**:fx*`* — the proxy picks `api-free.deepl.com` vs `api.deepl.com` from that suffix.
 4. Keep **Czech** and **Italian** enabled (default).
 
 ### 1.2 Install and configure `backend/`
@@ -45,13 +45,13 @@ cd backend
 npm install --registry https://registry.npmjs.org/
 ```
 
-Create **`backend/.env`** (this file is gitignored; do **not** commit secrets):
+Create `**backend/.env**` (this file is gitignored; do **not** commit secrets):
 
 ```bash
 echo "DEEPL_API_KEY=xxxxxxxx:fx" > .env
 ```
 
-Use **`.env`** (not `.env.local`) for `vercel dev` — older Vercel CLI versions load `.env` reliably for local dev. After editing `.env`, restart `vercel dev`.
+Use `**.env**` (not `.env.local`) for `vercel dev` — older Vercel CLI versions load `.env` reliably for local dev. After editing `.env`, restart `vercel dev`.
 
 ### 1.3 Log in to Vercel (first time only)
 
@@ -70,7 +70,7 @@ vercel dev
 # or: npm start   (same command, see backend/package.json)
 ```
 
-Default URL: **http://localhost:3000**. Smoke test:
+Default URL: **[http://localhost:3000](http://localhost:3000)**. Smoke test:
 
 ```bash
 curl -s -X POST http://127.0.0.1:3000/api/translate \
@@ -82,12 +82,14 @@ You should see JSON with `it` and `cz`. If you see `DEEPL_API_KEY is not configu
 
 ### 1.5 Backend troubleshooting
 
-| Problem | Likely cause |
-|---------|----------------|
-| `DEEPL_API_KEY is not configured` | Missing `backend/.env`, wrong variable name, or `vercel dev` not restarted after creating the file. |
-| `DeepL 403` / `456` | Invalid key, quota, or language not allowed on your plan. |
-| `vercel dev` recursive error | Do not name an npm script `dev` that runs `vercel dev` — this repo uses `npm start` instead. |
+
+| Problem                                    | Likely cause                                                                                                          |
+| ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------- |
+| `DEEPL_API_KEY is not configured`          | Missing `backend/.env`, wrong variable name, or `vercel dev` not restarted after creating the file.                   |
+| `DeepL 403` / `456`                        | Invalid key, quota, or language not allowed on your plan.                                                             |
+| `vercel dev` recursive error               | Do not name an npm script `dev` that runs `vercel dev` — this repo uses `npm start` instead.                          |
 | `npm install` timeout to `repo.plus4u.net` | Use `npm install --registry https://registry.npmjs.org/` or set `registry=https://registry.npmjs.org/` in `~/.npmrc`. |
+
 
 ### 1.6 Deploy backend to Vercel (production)
 
@@ -112,14 +114,14 @@ Skip this section if you only want offline lessons and local vocabulary.
 In the Supabase dashboard: **Project Settings → API**
 
 - **Project URL** → copy into `EXPO_PUBLIC_SUPABASE_URL` in the app root `.env`.
-- **`anon` `public` key** → copy into `EXPO_PUBLIC_SUPABASE_ANON_KEY`.  
-  Safe to ship in the app; **Row Level Security** protects data.
+- `**anon` `public` key** → copy into `EXPO_PUBLIC_SUPABASE_ANON_KEY`.  
+Safe to ship in the app; **Row Level Security** protects data.
 
 Never put the **service_role** key in the app — only on the server (Vercel env for `api/account/*`).
 
 ### 2.3 Database schema (migrations)
 
-SQL migrations live in **`supabase/migrations/`** (e.g. `profiles`, `vocab_items`, `study_events`, RLS).
+SQL migrations live in `**supabase/migrations/`** (e.g. `profiles`, `vocab_items`, `study_events`, RLS).
 
 **Option A — Supabase CLI (recommended for repeat deploys)**
 
@@ -144,17 +146,17 @@ Sign-in is opt-in: skip this section if you only need offline vocabulary. For fu
 1. **Google Cloud Console** ([console.cloud.google.com](https://console.cloud.google.com)) → create / pick a project (e.g. `italiano`).
 2. **APIs & Services → OAuth consent screen** → **External**, fill in app name and support e-mail, save.
 3. **APIs & Services → Credentials → Create credentials → OAuth client ID**:
-   - **Application type: Web application** (this is the one Supabase needs).
-   - **Authorized redirect URIs** → add **exactly**:  
-     `https://<your-project-ref>.supabase.co/auth/v1/callback`  
-     (replace `<your-project-ref>` with the host from Supabase **Project Settings → API → Project URL**).
-   - Save and copy **Client ID** and **Client Secret**.
+  - **Application type: Web application** (this is the one Supabase needs).
+  - **Authorized redirect URIs** → add **exactly**:  
+  `https://<your-project-ref>.supabase.co/auth/v1/callback`  
+  (replace `<your-project-ref>` with the host from Supabase **Project Settings → API → Project URL**).
+  - Save and copy **Client ID** and **Client Secret**.
 4. **Supabase Dashboard → Authentication → Providers → Google**:
-   - Toggle **Enable Sign in with Google** → **on**.
-   - Paste the Web **Client ID** and **Client Secret** from step 3, save.
+  - Toggle **Enable Sign in with Google** → **on**.
+  - Paste the Web **Client ID** and **Client Secret** from step 3, save.
 5. **Authentication → URL Configuration**:
-   - **Site URL**: `italiano://`
-   - **Redirect URLs** → add `italiano://` (the Expo deep-link scheme from `app.json` → `expo.scheme`).
+  - **Site URL**: `italiano://`
+  - **Redirect URLs** → add `italiano://` (the Expo deep-link scheme from `app.json` → `expo.scheme`).
 
 > If sign-in still returns `Unsupported provider: provider is not enabled`, the Google toggle is off in Supabase, or the app talks to a different Supabase project than the one you configured (check `EXPO_PUBLIC_SUPABASE_URL`).
 
@@ -162,17 +164,19 @@ Sign-in is opt-in: skip this section if you only need offline vocabulary. For fu
 
 Requires Apple Developer Program ($99/year). Full step-by-step: **[docs/DEPLOYMENT.md](./docs/DEPLOYMENT.md)** §4.3.
 
-The app uses **`expo-apple-authentication`** (native flow) and exchanges the `id_token` via `signInWithIdToken({ provider: "apple" })`. In Supabase you only need to enable the **Apple** provider with your Service ID, Team ID, Key ID and `.p8` private key contents.
+The app uses `**expo-apple-authentication`** (native flow) and exchanges the `id_token` via `signInWithIdToken({ provider: "apple" })`. In Supabase you only need to enable the **Apple** provider with your Service ID, Team ID, Key ID and `.p8` private key contents.
 
 ### 2.5 Wire the backend (Vercel) to Supabase
 
 For `GET /api/account/export` and `DELETE /api/account/delete`, set on the **same Vercel project** as the `backend/`:
 
-| Variable | Where to copy from |
-|----------|---------------------|
-| `SUPABASE_URL` | Same as `EXPO_PUBLIC_SUPABASE_URL` |
-| `SUPABASE_ANON_KEY` | Same as `EXPO_PUBLIC_SUPABASE_ANON_KEY` |
+
+| Variable                    | Where to copy from                                                    |
+| --------------------------- | --------------------------------------------------------------------- |
+| `SUPABASE_URL`              | Same as `EXPO_PUBLIC_SUPABASE_URL`                                    |
+| `SUPABASE_ANON_KEY`         | Same as `EXPO_PUBLIC_SUPABASE_ANON_KEY`                               |
 | `SUPABASE_SERVICE_ROLE_KEY` | Dashboard → **Project Settings → API** → `service_role` (server only) |
+
 
 ---
 
@@ -194,23 +198,27 @@ npm install --registry https://registry.npmjs.org/
 cp .env.example .env
 ```
 
-Edit **`.env`** in the project root:
+Edit `**.env**` in the project root:
 
-| Variable | Purpose |
-|----------|---------|
-| `EXPO_PUBLIC_TRANSLATE_ENDPOINT` | Full URL to `POST /api/translate`. See **host matrix** below. |
-| `EXPO_PUBLIC_SUPABASE_URL` | From Supabase §2.2 (leave empty to disable cloud auth/sync UI). |
-| `EXPO_PUBLIC_SUPABASE_ANON_KEY` | From Supabase §2.2. |
-| `EXPO_PUBLIC_CONTENT_BASE_URL` | Optional; same origin as your deployed backend without `/api/...` path, e.g. `https://your-project.vercel.app`, for remote lesson JSON. |
+
+| Variable                         | Purpose                                                                                                                                 |
+| -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `EXPO_PUBLIC_TRANSLATE_ENDPOINT` | Full URL to `POST /api/translate`. See **host matrix** below.                                                                           |
+| `EXPO_PUBLIC_SUPABASE_URL`       | From Supabase §2.2 (leave empty to disable cloud auth/sync UI).                                                                         |
+| `EXPO_PUBLIC_SUPABASE_ANON_KEY`  | From Supabase §2.2.                                                                                                                     |
+| `EXPO_PUBLIC_CONTENT_BASE_URL`   | Optional; same origin as your deployed backend without `/api/...` path, e.g. `https://your-project.vercel.app`, for remote lesson JSON. |
+
 
 **Pick the right host for your runtime** (otherwise the app spins forever waiting for a request that never lands):
 
-| Runtime | Use |
-|---------|-----|
-| iOS Simulator | `http://127.0.0.1:3000/api/translate` (simulator shares the Mac's `localhost`) |
-| Android Emulator | `http://10.0.2.2:3000/api/translate` (emulator alias for the host) |
+
+| Runtime                   | Use                                                                                                                 |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| iOS Simulator             | `http://127.0.0.1:3000/api/translate` (simulator shares the Mac's `localhost`)                                      |
+| Android Emulator          | `http://10.0.2.2:3000/api/translate` (emulator alias for the host)                                                  |
 | Physical phone in Expo Go | `http://<your-Mac-LAN-IP>:3000/api/translate` — get IP via `ipconfig getifaddr en0` (Wi-Fi). Same Wi-Fi as the Mac! |
-| Production | `https://<your-project>.vercel.app/api/translate` |
+| Production                | `https://<your-project>.vercel.app/api/translate`                                                                   |
+
 
 Restart Metro after any change: `Ctrl+C`, then `npm start`.
 
@@ -223,7 +231,7 @@ npm start
 # or: npx expo start
 ```
 
-Then press **`i`** (iOS simulator), **`a`** (Android), or scan the QR code in **Expo Go** (same Wi‑Fi as your PC, or use tunnel mode).
+Then press `**i**` (iOS simulator), `**a**` (Android), or scan the QR code in **Expo Go** (same Wi‑Fi as your PC, or use tunnel mode).
 
 ```bash
 npm run ios
@@ -251,16 +259,18 @@ npm run generate:grammar   # regenerate assets/data/grammar.json
 
 ## 5. Repository layout (short)
 
-| Path | Purpose |
-|------|---------|
-| `app/` | Expo Router — screens and navigation |
-| `assets/data/` | Bundled JSON lessons |
-| `components/` | Shared UI |
-| `constants/theme.ts` | Design tokens |
-| `hooks/` | `useVocabStore`, `useItalianTts`, … |
-| `lib/` | API clients, auth, vocab storage, content sync |
-| `backend/` | Vercel serverless: translate, content, account |
-| `supabase/migrations/` | Postgres schema for profiles / vocab / events |
+
+| Path                   | Purpose                                        |
+| ---------------------- | ---------------------------------------------- |
+| `app/`                 | Expo Router — screens and navigation           |
+| `assets/data/`         | Bundled JSON lessons                           |
+| `components/`          | Shared UI                                      |
+| `constants/theme.ts`   | Design tokens                                  |
+| `hooks/`               | `useVocabStore`, `useItalianTts`, …            |
+| `lib/`                 | API clients, auth, vocab storage, content sync |
+| `backend/`             | Vercel serverless: translate, content, account |
+| `supabase/migrations/` | Postgres schema for profiles / vocab / events  |
+
 
 ---
 

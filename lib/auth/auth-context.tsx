@@ -69,6 +69,17 @@ function extractPkceAuthCode(callbackUrl: string): string | null {
   }
 }
 
+function isInvalidRefreshTokenError(err: unknown): boolean {
+  if (!err) return false;
+  const msg =
+    typeof err === "string"
+      ? err
+      : err instanceof Error
+        ? err.message
+        : (err as { message?: unknown }).message;
+  return typeof msg === "string" && /refresh\s*token/i.test(msg);
+}
+
 function extractOAuthRedirectError(callbackUrl: string): string | null {
   try {
     const u = new URL(callbackUrl);
@@ -138,10 +149,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return;
     }
     let cancelled = false;
-    void supabase.auth.getSession().then(({ data }) => {
-      if (!cancelled) setSession(data.session ?? null);
-      if (!cancelled) setLoading(false);
-    });
+    void (async () => {
+      try {
+        const { data, error } = await supabase.auth.getSession();
+        if (cancelled) return;
+        if (error && isInvalidRefreshTokenError(error)) {
+          // Stale session left over from a previous Supabase project (or
+          // expired beyond the refresh window). Wipe it so the UI shows
+          // the sign-in button instead of looping with the same warning.
+          await supabase.auth.signOut().catch(() => undefined);
+          setSession(null);
+        } else {
+          setSession(data.session ?? null);
+        }
+      } catch (e) {
+        if (cancelled) return;
+        if (isInvalidRefreshTokenError(e)) {
+          await supabase.auth.signOut().catch(() => undefined);
+        }
+        setSession(null);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
     const { data: sub } = supabase.auth.onAuthStateChange((_event, next) => {
       setSession(next);
     });

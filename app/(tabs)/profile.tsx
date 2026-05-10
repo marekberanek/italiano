@@ -1,5 +1,5 @@
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
@@ -11,6 +11,7 @@ import {
 
 import { Screen } from "@/components/screen";
 import { ScreenHeader } from "@/components/screen-header";
+import { UserAvatar } from "@/components/user-avatar";
 import { Palette, Radius, Shadow, Spacing, Typography } from "@/constants/theme";
 import { getAccountDeleteUrl } from "@/lib/api/vercel-origin";
 import { getAccessToken } from "@/lib/auth/supabase";
@@ -19,6 +20,16 @@ import { useAuth } from "@/lib/auth/use-auth";
 export default function ProfileScreen() {
   const { user, loading, configured, signInWithGoogle, signOut } = useAuth();
   const [busy, setBusy] = useState<null | "delete">(null);
+
+  const displayName = useMemo<string | null>(() => {
+    if (!user) return null;
+    const meta = (user.user_metadata ?? {}) as Record<string, unknown>;
+    const candidates = [meta.full_name, meta.name, meta.user_name];
+    for (const c of candidates) {
+      if (typeof c === "string" && c.trim()) return c.trim();
+    }
+    return null;
+  }, [user]);
 
   const onDeleteAccount = useCallback(() => {
     const url = getAccountDeleteUrl();
@@ -91,12 +102,25 @@ export default function ProfileScreen() {
         </View>
       ) : null}
 
-      <View style={styles.card}>
-        <Text style={styles.label}>Stav</Text>
-        <Text style={styles.value}>
-          {user?.email ?? user?.id ?? "Nepřihlášený"}
-        </Text>
-      </View>
+      {user ? (
+        <View style={styles.identityCard}>
+          <UserAvatar size={64} navigateTo={null} />
+          <View style={styles.identityText}>
+            {displayName ? <Text style={styles.identityName}>{displayName}</Text> : null}
+            {user.email ? <Text style={styles.identityEmail}>{user.email}</Text> : null}
+            {!displayName && !user.email ? (
+              <Text style={styles.identityName}>Přihlášený uživatel</Text>
+            ) : null}
+          </View>
+        </View>
+      ) : (
+        <View style={styles.card}>
+          <Text style={styles.cardTitle}>Nejsi přihlášený</Text>
+          <Text style={styles.cardBody}>
+            Přihlas se a slovíčka se ti automaticky synchronizují mezi zařízeními.
+          </Text>
+        </View>
+      )}
 
       {!user ? (
         <View style={styles.actions}>
@@ -113,23 +137,23 @@ export default function ProfileScreen() {
           <Pressable
             onPress={() => void signOut()}
             disabled={busy !== null}
-            style={({ pressed }) => [styles.secondaryBtn, pressed && styles.pressed, busy && styles.disabled]}
+            style={({ pressed }) => [styles.primaryBtn, pressed && styles.pressed, busy && styles.disabled]}
           >
-            <MaterialIcons name="logout" size={20} color={Palette.textStrong} />
-            <Text style={styles.secondaryLabel}>Odhlásit</Text>
+            <MaterialIcons name="logout" size={20} color={Palette.textInverse} />
+            <Text style={styles.primaryLabel}>Odhlásit</Text>
           </Pressable>
 
           <Pressable
             onPress={onDeleteAccount}
             disabled={busy !== null}
-            style={({ pressed }) => [styles.dangerBtn, pressed && styles.pressed, busy && styles.disabled]}
+            style={({ pressed }) => [styles.dangerLink, pressed && styles.pressed, busy && styles.disabled]}
+            hitSlop={{ top: 8, bottom: 8, left: 16, right: 16 }}
           >
             {busy === "delete" ? (
-              <ActivityIndicator color={Palette.textInverse} />
+              <ActivityIndicator color={Palette.danger} />
             ) : (
-              <MaterialIcons name="delete-forever" size={20} color={Palette.textInverse} />
+              <Text style={styles.dangerLinkLabel}>Smazat účet trvale…</Text>
             )}
-            <Text style={styles.primaryLabel}>Smazat účet</Text>
           </Pressable>
         </View>
       )}
@@ -151,9 +175,30 @@ const styles = StyleSheet.create({
   },
   cardTitle: { ...Typography.sectionTitle, color: Palette.textStrong },
   cardBody: { ...Typography.body, color: Palette.textMuted },
-  label: { ...Typography.caption, color: Palette.textMuted, textTransform: "uppercase" },
-  value: { ...Typography.body, color: Palette.textStrong },
-  actions: { gap: Spacing.md, marginTop: Spacing.sm },
+  identityCard: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: Spacing.lg,
+    backgroundColor: Palette.surface,
+    borderRadius: Radius.lg,
+    borderWidth: 1,
+    borderColor: Palette.border,
+    padding: Spacing.lg,
+    marginBottom: Spacing.md,
+    ...Shadow.card,
+  },
+  identityText: { flex: 1, gap: 2 },
+  identityName: {
+    fontFamily: Typography.display.fontFamily,
+    fontSize: 18,
+    color: Palette.textStrong,
+    lineHeight: 22,
+  },
+  identityEmail: {
+    ...Typography.small,
+    color: Palette.textMuted,
+  },
+  actions: { gap: Spacing.lg, marginTop: Spacing.sm },
   primaryBtn: {
     flexDirection: "row",
     alignItems: "center",
@@ -164,30 +209,17 @@ const styles = StyleSheet.create({
     paddingVertical: Spacing.md,
     paddingHorizontal: Spacing.xl,
   },
-  secondaryBtn: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: Spacing.sm,
-    backgroundColor: Palette.surfaceMuted,
-    borderRadius: Radius.pill,
-    paddingVertical: Spacing.md,
-    paddingHorizontal: Spacing.xl,
-    borderWidth: 1,
-    borderColor: Palette.border,
+  dangerLink: {
+    alignSelf: "center",
+    paddingVertical: Spacing.sm,
+    paddingHorizontal: Spacing.md,
   },
-  dangerBtn: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: Spacing.sm,
-    backgroundColor: Palette.danger,
-    borderRadius: Radius.pill,
-    paddingVertical: Spacing.md,
-    paddingHorizontal: Spacing.xl,
+  dangerLinkLabel: {
+    ...Typography.smallStrong,
+    color: Palette.danger,
+    textDecorationLine: "underline",
   },
   primaryLabel: { fontFamily: "Nunito_700Bold", fontSize: 16, color: Palette.textInverse },
-  secondaryLabel: { fontFamily: "Nunito_700Bold", fontSize: 16, color: Palette.textStrong },
   pressed: { opacity: 0.88 },
   disabled: { opacity: 0.55 },
 });

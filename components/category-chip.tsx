@@ -3,6 +3,8 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import { Palette, Radius, Spacing, Typography } from "@/constants/theme";
 
+type ChipTone = "brand" | "danger";
+
 type Props = {
   label: string;
   onPress: () => void;
@@ -13,6 +15,12 @@ type Props = {
   count?: number;
   /** Render label uppercase + slightly tracked. Useful for short labels (verbs). */
   uppercase?: boolean;
+  /**
+   * Color used for the active fill / icon / inactive icon hint.
+   * - `brand` (default) – green (italské zaměření, OK akce, neutrální filtr)
+   * - `danger` – red (chybné odpovědi, „Špatně" filtr, varování)
+   */
+  tone?: ChipTone;
   /** Reports the chip's x-position so the parent can `scrollTo` it. */
   onLayoutX?: (x: number) => void;
 };
@@ -23,7 +31,7 @@ type Props = {
  *
  * Visual contract:
  *   - inactive  → neutral surface, muted border, muted label
- *   - active    → brand fill, white label, brandDark border, NO drop shadow
+ *   - active    → tone fill, white label, tone-dark border, NO drop shadow
  *   - pressed   → 0.85 opacity (only when not already active)
  */
 export function CategoryChip({
@@ -33,15 +41,17 @@ export function CategoryChip({
   icon,
   count,
   uppercase = false,
+  tone = "brand",
   onLayoutX,
 }: Props) {
+  const palette = tone === "danger" ? DANGER_PALETTE : BRAND_PALETTE;
   return (
     <Pressable
       onPress={onPress}
       onLayout={onLayoutX ? (e) => onLayoutX(e.nativeEvent.layout.x) : undefined}
       style={({ pressed }) => [
         styles.chip,
-        active && styles.chipActive,
+        active && { backgroundColor: palette.fill, borderColor: palette.border },
         pressed && !active && styles.chipPressed,
       ]}
     >
@@ -49,7 +59,7 @@ export function CategoryChip({
         <MaterialIcons
           name={icon}
           size={16}
-          color={active ? Palette.textInverse : Palette.brandDark}
+          color={active ? Palette.textInverse : palette.iconIdle}
         />
       ) : null}
       <Text
@@ -63,13 +73,32 @@ export function CategoryChip({
         {label}
       </Text>
       {count !== undefined ? (
-        <View style={[styles.badge, active && styles.badgeActive]}>
+        <View
+          style={[
+            styles.badge,
+            active && { backgroundColor: palette.badgeActive },
+          ]}
+        >
           <Text style={[styles.badgeText, active && styles.badgeTextActive]}>{count}</Text>
         </View>
       ) : null}
     </Pressable>
   );
 }
+
+const BRAND_PALETTE = {
+  fill: Palette.brand,
+  border: Palette.brandDark,
+  iconIdle: Palette.brandDark,
+  badgeActive: Palette.brandDark,
+};
+
+const DANGER_PALETTE = {
+  fill: Palette.danger,
+  border: Palette.danger,
+  iconIdle: Palette.danger,
+  badgeActive: "rgba(0,0,0,0.18)",
+};
 
 const styles = StyleSheet.create({
   chip: {
@@ -82,10 +111,6 @@ const styles = StyleSheet.create({
     backgroundColor: Palette.surface,
     borderWidth: 1,
     borderColor: Palette.border,
-  },
-  chipActive: {
-    backgroundColor: Palette.brand,
-    borderColor: Palette.brandDark,
   },
   chipPressed: { opacity: 0.85 },
   label: {
@@ -107,7 +132,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  badgeActive: { backgroundColor: Palette.brandDark },
   badgeText: { ...Typography.smallStrong, color: Palette.textMuted, fontSize: 11 },
   badgeTextActive: { color: Palette.textInverse },
 });

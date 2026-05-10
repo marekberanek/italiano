@@ -1,5 +1,6 @@
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Alert, Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 
 import curatedVocabFallback from "@/assets/data/curated-vocab.json";
@@ -122,6 +123,8 @@ function buildPoolForSource(
 }
 
 export default function QuizScreen() {
+  const navigation = useNavigation();
+  const isFocused = useIsFocused();
   const tts = useItalianTts();
   const { state, addWord, recordAnswer, learnedThreshold } = useVocabStore();
   const { data: weekdays } = useSyncedJson("weekdays", weekdaysFallback as WeekdaysData);
@@ -183,6 +186,19 @@ export default function QuizScreen() {
   useEffect(() => {
     void loadQuizHistory().then(setHistory);
   }, []);
+
+  // Hide the floating tab bar while a round is in progress (questions only).
+  // Per-screen `tabBarStyle` is merged by the bottom-tab navigator for the
+  // focused route — no `getParent()` needed.
+  useLayoutEffect(() => {
+    const hide = active && !finished && isFocused;
+    navigation.setOptions({
+      tabBarStyle: hide ? { display: "none" } : undefined,
+    });
+    return () => {
+      navigation.setOptions({ tabBarStyle: undefined });
+    };
+  }, [active, finished, isFocused, navigation]);
 
   /** Italian forms (lower-cased) the user already has in personal vocab. */
   const ownedItalianSet = useMemo(
@@ -1243,6 +1259,7 @@ function HistoryDetailModal({
             count={wrongCount}
             active={filter === "wrong"}
             onPress={() => setFilter("wrong")}
+            tone="danger"
           />
         </View>
 

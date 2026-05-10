@@ -22,6 +22,17 @@ export function ItalianoTabBar({ state, descriptors, navigation }: BottomTabBarP
   const insets = useSafeAreaInsets();
   const bottom = Math.max(insets.bottom, 8) + 12;
 
+  // Allow individual screens to opt out of the floating tab bar by setting
+  // `navigation.setOptions({ tabBarStyle: { display: "none" } })`. The bar is
+  // a fully custom component so the navigator can't honor that style itself —
+  // we read it from the focused route's descriptor here.
+  const focusedRoute = state.routes[state.index];
+  const focusedOptions = focusedRoute ? descriptors[focusedRoute.key]?.options : undefined;
+  const focusedTabBarStyle = focusedOptions?.tabBarStyle as
+    | { display?: "none" | "flex" }
+    | undefined;
+  if (focusedTabBarStyle?.display === "none") return null;
+
   return (
     <View pointerEvents="box-none" style={[styles.wrapper, { bottom }]}>
       <View style={styles.bar}>

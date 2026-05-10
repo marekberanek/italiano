@@ -1,17 +1,20 @@
-import { StyleSheet, Text, View } from "react-native";
+import { useMemo, useState } from "react";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 
-import type { ContentBundleId } from "@/lib/content/bundle-ids";
 import type { TopicLessonData } from "@/assets/data/types";
 import { BackLink } from "@/components/back-link";
+import { CategoryChip } from "@/components/category-chip";
 import { PlayButton } from "@/components/play-button";
 import { Screen } from "@/components/screen";
 import { ScreenHeader } from "@/components/screen-header";
 import { SectionCard } from "@/components/section-card";
 import { Palette, Radius, Spacing, Typography } from "@/constants/theme";
+import type { ContentBundleId } from "@/lib/content/bundle-ids";
 import { useItalianTts } from "@/hooks/use-italian-tts";
 import { useSyncedJson } from "@/hooks/use-synced-json";
 
 const TONES = ["brand", "accent", "ochre", "navy"] as const;
+const ALL_FILTER = "__all__";
 
 type Props = {
   bundleId: ContentBundleId;
@@ -23,13 +26,50 @@ type Props = {
 export function TopicLessonScreen({ bundleId, fallback, title, subtitle }: Props) {
   const { data } = useSyncedJson(bundleId, fallback);
   const tts = useItalianTts();
+  const [filter, setFilter] = useState<string>(ALL_FILTER);
+
+  const visibleSections = useMemo(
+    () =>
+      filter === ALL_FILTER
+        ? data.sections
+        : data.sections.filter((s) => s.title === filter),
+    [filter, data.sections],
+  );
+
+  // Skip the chip row when there's only one section — the filter would be a
+  // no-op and the row would just take vertical space.
+  const showChips = data.sections.length > 1;
 
   return (
     <Screen>
       <BackLink />
       <ScreenHeader title={title} subtitle={subtitle} />
 
-      {data.sections.map((section, sIdx) => (
+      {showChips ? (
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.chipsRow}
+        >
+          <CategoryChip
+            label="Vše"
+            count={data.sections.reduce((n, s) => n + s.items.length, 0)}
+            active={filter === ALL_FILTER}
+            onPress={() => setFilter(ALL_FILTER)}
+          />
+          {data.sections.map((section) => (
+            <CategoryChip
+              key={section.title}
+              label={section.title}
+              count={section.items.length}
+              active={filter === section.title}
+              onPress={() => setFilter(section.title)}
+            />
+          ))}
+        </ScrollView>
+      ) : null}
+
+      {visibleSections.map((section, sIdx) => (
         <SectionCard
           key={`${section.title}-${sIdx}`}
           title={section.title}
@@ -56,6 +96,11 @@ export function TopicLessonScreen({ bundleId, fallback, title, subtitle }: Props
 }
 
 const styles = StyleSheet.create({
+  chipsRow: {
+    gap: Spacing.sm,
+    paddingVertical: Spacing.xs,
+    paddingRight: Spacing.lg,
+  },
   row: {
     flexDirection: "row",
     alignItems: "center",

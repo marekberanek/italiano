@@ -1,17 +1,18 @@
 import "react-native-url-polyfill/auto";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
-import * as SecureStore from "expo-secure-store";
 
 import { getSupabaseAnonKey, getSupabaseUrl } from "@/lib/auth/config";
 
+// Note on storage choice: Supabase session blobs are typically 3–5 KB
+// (access + refresh JWTs + user metadata). iOS Keychain values via
+// `expo-secure-store` are capped at ~2 KB per entry, which causes
+// "No suitable key or wrong key type" errors when the session straddles
+// that limit. AsyncStorage is the standard Supabase recommendation for
+// React Native — the JWT itself is the secret and is also protected by
+// RLS on the server side, so plain-storage is acceptable for this app.
 const AUTH_STORAGE_KEY = "italiano.supabase.auth";
-
-const secureStoreAdapter = {
-  getItem: (key: string) => SecureStore.getItemAsync(key),
-  setItem: (key: string, value: string) => SecureStore.setItemAsync(key, value),
-  removeItem: (key: string) => SecureStore.deleteItemAsync(key),
-};
 
 let client: SupabaseClient | null = null;
 
@@ -22,7 +23,7 @@ export function getSupabase(): SupabaseClient | null {
   if (!url || !anon) return null;
   client = createClient(url, anon, {
     auth: {
-      storage: secureStoreAdapter,
+      storage: AsyncStorage,
       storageKey: AUTH_STORAGE_KEY,
       autoRefreshToken: true,
       persistSession: true,
