@@ -15,6 +15,7 @@
       }
     },
     "android": {
+      "softwareKeyboardLayoutMode": "resize",
       "adaptiveIcon": {
         "backgroundColor": "#FBF7EE",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
@@ -59,25 +60,15 @@
       "reactCompiler": true
     },
     "extra": {
-      "translateEndpoint": "https://italiano-api.vercel.app/api/translate",
-      "contentBaseUrl": "https://italiano-api.vercel.app",
-      "supabaseUrl": "https://akxtiooloqgpksffermk.supabase.co",
-      "supabaseAnonKey": "sb_publishable_6CZBK9q-0IFqYJ1rLPw1Hg_tOBZ6PBf",
       "displayName": "Italiano",
       "tagline": "Procvičuj italská slovíčka",
       "author": "Marek Beránek",
       "repositoryUrl": "https://github.com/marekberanek/italiano",
-      "router": {},
-      "eas": {
-        "projectId": "cbb1f571-c3f5-49bc-b3b0-6b80478427fb"
-      }
+      "router": {}
     },
     "owner": "marekberanek",
     "runtimeVersion": {
       "policy": "appVersion"
-    },
-    "updates": {
-      "url": "https://u.expo.dev/cbb1f571-c3f5-49bc-b3b0-6b80478427fb"
     }
   }
 }

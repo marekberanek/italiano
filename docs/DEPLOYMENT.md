@@ -490,6 +490,7 @@ EXPO_PUBLIC_TRANSLATE_ENDPOINT=https://italiano-api.vercel.app/api/translate
 EXPO_PUBLIC_CONTENT_BASE_URL=https://italiano-api.vercel.app
 EXPO_PUBLIC_SUPABASE_URL=https://<ref>.supabase.co
 EXPO_PUBLIC_SUPABASE_ANON_KEY=sb_publishable_xxxxxxxx
+EXPO_PUBLIC_EAS_PROJECT_ID=00000000-0000-0000-0000-000000000000
 ```
 
 Then **always restart Metro with `-c`** after touching `.env`:
@@ -498,30 +499,17 @@ Then **always restart Metro with `-c`** after touching `.env`:
 npx expo start -c
 ```
 
-### 4.2 (Optional) `app.json` defaults
+### 4.2 `EXPO_PUBLIC_*` and `app.config.ts`
 
-If you don't want to ship a `.env` (e.g. on CI), put the **same** values into
-`app.json → expo.extra`. **`process.env.EXPO_PUBLIC_*` always wins over
-`Constants.expoConfig.extra` (see `lib/auth/config.ts`)** — so a `.env` value
-will override whatever you have in `app.json`.
+Do **not** put Supabase URL/anon key, translate URL, content base URL, or EAS project ID in committed `app.json`. Copy [`.env.example`](.env.example) → `.env` locally; for **EAS** builds, add the same variable names under the project’s **Environment variables**.
 
-If you keep both a `.env` (local dev) and `.env.production` (EAS prod build),
-make sure both files **point at the same Supabase project** until you really
-want a separate dev/prod stack — otherwise dev runs and the shipped app see
-different vocab data, and OAuth callbacks have to be configured twice.
+[`app.config.ts`](../app.config.ts) reads `process.env` at config evaluation time and writes into `expo.extra` (and sets `updates.url` + `extra.eas.projectId` when `EXPO_PUBLIC_EAS_PROJECT_ID` or `EAS_PROJECT_ID` is set). Runtime code in `lib/auth/config.ts` and `lib/content/config.ts` still prefers `EXPO_PUBLIC_*` from the Metro bundle when present.
 
-```jsonc
-"extra": {
-  "translateEndpoint": "https://italiano-api.vercel.app/api/translate",
-  "contentBaseUrl": "https://italiano-api.vercel.app",
-  "supabaseUrl": "https://<ref>.supabase.co",
-  "supabaseAnonKey": "sb_publishable_xxxxxxxx"
-}
+```bash
+npx expo start -c   # after any `.env` change
 ```
 
-> ❗ **Never** put `DEEPL_API_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, or any other
-> secret into the mobile config — both `.env` and `expo.extra` end up inside
-> the binary that anyone can decompile.
+If you previously used a tracked `.env.production`, stop committing it — it is gitignored now; use EAS env for production builds.
 
 ### 4.3 Local notification reminders
 
@@ -592,13 +580,13 @@ eas login
 In the **repo root**:
 
 ```bash
-eas init                  # creates a new Expo project, fills app.json → extra.eas.projectId
+eas init                  # creates/links Expo project — set EXPO_PUBLIC_EAS_PROJECT_ID in .env (see .env.example)
 eas build:configure       # generates eas.json
 ```
 
 > If you previously ran `eas init --id italiano` and got *Invalid UUID
-> appId*, delete the bogus block from `app.json` (`extra.eas.projectId`) and
-> run `eas init` **without** `--id` so EAS can mint a real UUID.
+> appId*, remove a bogus `EXPO_PUBLIC_EAS_PROJECT_ID` from `.env` and run
+> `eas init` **without** `--id` so EAS can mint a real UUID.
 
 ### 5.2 `eas.json` (sketch)
 
@@ -726,7 +714,7 @@ Info.plist) still require a fresh `eas build`.
 | Google sign-in returns *Unsupported provider* | Provider not enabled or wrong project | Re-check §2.3 (toggle ON, Web Client ID + Secret). |
 | *Invalid redirect URL* after Google login | Redirect not in allow-list | Add `italiano://` for builds; in **Expo Go** add the matching `exp://…` URL or wildcard (§2.4). |
 | Google login **spins forever** after confirming in the browser | Expo Go uses `exp://…`, not `italiano://` | Add `exp://…` / wildcard to Supabase Redirect URLs (§2.4), or test Google sign-in in a **development build**. |
-| EAS build fails: *Invalid UUID appId* | `app.json` has a bogus `extra.eas.projectId` | Remove that block, run `eas init` (no `--id`). |
+| EAS build fails: *Invalid UUID appId* | Bogus `EXPO_PUBLIC_EAS_PROJECT_ID` in `.env` / EAS env | Clear it, run `eas init` (no `--id`). |
 | Vocab not syncing across devices | User signed-in on only one device, or RLS blocks | Profile → Synchronizovat; check Supabase logs. |
 | Lessons empty / *Bundle not yet seeded* (HTTP 503) | `content_bundles` is empty | Run `npm run db:migrate && npm run content:push` (§ 2.6). |
 | `/api/content-manifest` returns `version: "fallback"` | DB unreachable or `SUPABASE_URL` / `SUPABASE_ANON_KEY` not set on Vercel | Add the env vars (§ 3.3) and redeploy; also re-run `content:push` if the table is empty. |

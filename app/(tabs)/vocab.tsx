@@ -3,13 +3,17 @@ import { useRouter } from "expo-router";
 import { useEffect, useMemo, useState } from "react";
 import {
   ActivityIndicator,
+  KeyboardAvoidingView,
   Modal,
+  Platform,
   Pressable,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
   View,
 } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import type { LookupResult, VocabKind } from "@/assets/data/types";
 import { CategoryChip } from "@/components/category-chip";
@@ -201,6 +205,7 @@ function AddWordModal({
 }) {
   const tts = useItalianTts();
   const router = useRouter();
+  const insets = useSafeAreaInsets();
   const [query, setQuery] = useState("");
   const [result, setResult] = useState<LookupResult | null>(null);
   const [loading, setLoading] = useState(false);
@@ -268,137 +273,155 @@ function AddWordModal({
 
   return (
     <Modal visible={visible} animationType="slide" transparent onRequestClose={close}>
-      <Pressable style={styles.modalScrim} onPress={close}>
-        <Pressable style={styles.modalCard} onPress={(e) => e.stopPropagation()}>
-          <View style={styles.modalHeader}>
-            <Text style={styles.modalTitle}>Přidat slovíčko</Text>
-            <Pressable onPress={close} hitSlop={8}>
-              <MaterialIcons name="close" size={22} color={Palette.textMuted} />
-            </Pressable>
-          </View>
-
-          <Text style={styles.modalHint}>
-            Napiš slovíčko česky nebo italsky — překlad i výslovnost dotáhneme.
-          </Text>
-
-          <View style={styles.searchRow}>
-            <View style={styles.searchInput}>
-              <MaterialIcons name="search" size={18} color={Palette.textMuted} />
-              <TextInput
-                value={query}
-                onChangeText={setQuery}
-                onSubmitEditing={search}
-                placeholder="např. „voda“ nebo „acqua“"
-                placeholderTextColor={Palette.textMuted}
-                autoCapitalize="none"
-                autoCorrect={false}
-                autoFocus
-                returnKeyType="search"
-                style={styles.modalSearchField}
-              />
-            </View>
-            <Pressable
-              onPress={search}
-              disabled={loading || !query.trim()}
-              style={({ pressed }) => [
-                styles.searchBtn,
-                (loading || !query.trim()) && styles.searchBtnDisabled,
-                pressed && styles.pressed,
+      <KeyboardAvoidingView
+        style={styles.modalKavRoot}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 8 : 0}
+      >
+        <Pressable style={styles.modalScrim} onPress={close}>
+          <Pressable style={styles.modalCard} onPress={(e) => e.stopPropagation()}>
+            <ScrollView
+              keyboardShouldPersistTaps="handled"
+              showsVerticalScrollIndicator={false}
+              bounces={false}
+              contentContainerStyle={[
+                styles.modalScrollContent,
+                { paddingBottom: Spacing.xxl + insets.bottom },
               ]}
             >
-              {loading ? (
-                <ActivityIndicator color={Palette.textInverse} />
-              ) : (
-                <Text style={styles.searchBtnLabel}>Hledat</Text>
-              )}
-            </Pressable>
-          </View>
-
-          {error ? (
-            <View style={styles.errorBox}>
-              <View style={styles.errorRow}>
-                <MaterialIcons name="error-outline" size={18} color={Palette.danger} />
-                <Text style={styles.errorText}>{error}</Text>
-              </View>
-              {errorRequiresAuth ? (
-                <PrimaryButton
-                  label="Přejít na profil"
-                  variant="secondary"
-                  onPress={goToProfile}
-                />
-              ) : null}
-            </View>
-          ) : null}
-
-          {result ? (
-            <View style={styles.previewCard}>
-              <View style={styles.previewTopRow}>
-                <Text style={styles.previewIt}>{result.it}</Text>
-                <PlayButton onPress={() => tts.speak(result.it)} size="md" tone="onDark" />
-              </View>
-              {result.p ? <Text style={styles.previewPron}>{result.p}</Text> : null}
-              <Text style={styles.previewCz}>{result.cz}</Text>
-            </View>
-          ) : null}
-
-          {result ? (
-            <View style={styles.kindRow}>
-              <Text style={styles.kindLabel}>Uložit jako</Text>
-              <View style={styles.kindChips}>
-                <Pressable
-                  onPress={() => setAddKind("word")}
-                  style={({ pressed }) => [
-                    styles.kindChip,
-                    addKind === "word" && styles.kindChipActive,
-                    pressed && styles.pressedChip,
-                  ]}
-                >
-                  <Text
-                    style={[styles.kindChipText, addKind === "word" && styles.kindChipTextActive]}
-                  >
-                    Slovíčko
-                  </Text>
-                </Pressable>
-                <Pressable
-                  onPress={() => setAddKind("phrase")}
-                  style={({ pressed }) => [
-                    styles.kindChip,
-                    addKind === "phrase" && styles.kindChipActive,
-                    pressed && styles.pressedChip,
-                  ]}
-                >
-                  <Text
-                    style={[styles.kindChipText, addKind === "phrase" && styles.kindChipTextActive]}
-                  >
-                    Fráze
-                  </Text>
+              <View style={styles.modalHeader}>
+                <Text style={styles.modalTitle}>Přidat slovíčko</Text>
+                <Pressable onPress={close} hitSlop={8}>
+                  <MaterialIcons name="close" size={22} color={Palette.textMuted} />
                 </Pressable>
               </View>
-            </View>
-          ) : null}
 
-          {result ? (
-            <Pressable
-              onPress={confirm}
-              disabled={alreadyOwned}
-              style={({ pressed }) => [
-                styles.modalSubmit,
-                alreadyOwned && styles.modalSubmitDisabled,
-                pressed && !alreadyOwned && styles.pressed,
-              ]}
-            >
-              <MaterialIcons
-                name={alreadyOwned ? "check" : "add"}
-                size={20}
-                color={Palette.textInverse}
-              />
-              <Text style={styles.modalSubmitLabel}>
-                {alreadyOwned ? "Už máš ve slovíčkách" : "Přidat do slovíček"}
+              <Text style={styles.modalHint}>
+                Napiš slovíčko česky nebo italsky — překlad i výslovnost dotáhneme.
               </Text>
-            </Pressable>
-          ) : null}
+
+              <View style={styles.searchRow}>
+                <View style={styles.searchInput}>
+                  <MaterialIcons name="search" size={18} color={Palette.textMuted} />
+                  <TextInput
+                    value={query}
+                    onChangeText={setQuery}
+                    onSubmitEditing={search}
+                    placeholder="např. „voda“ nebo „acqua“"
+                    placeholderTextColor={Palette.textMuted}
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    returnKeyType="search"
+                    style={styles.modalSearchField}
+                  />
+                </View>
+                <Pressable
+                  onPress={search}
+                  disabled={loading || !query.trim()}
+                  style={({ pressed }) => [
+                    styles.searchBtn,
+                    (loading || !query.trim()) && styles.searchBtnDisabled,
+                    pressed && styles.pressed,
+                  ]}
+                >
+                  {loading ? (
+                    <ActivityIndicator color={Palette.textInverse} />
+                  ) : (
+                    <Text style={styles.searchBtnLabel}>Hledat</Text>
+                  )}
+                </Pressable>
+              </View>
+
+              {error ? (
+                <View style={styles.errorBox}>
+                  <View style={styles.errorRow}>
+                    <MaterialIcons name="error-outline" size={18} color={Palette.danger} />
+                    <Text style={styles.errorText}>{error}</Text>
+                  </View>
+                  {errorRequiresAuth ? (
+                    <PrimaryButton
+                      label="Přejít na profil"
+                      variant="secondary"
+                      onPress={goToProfile}
+                    />
+                  ) : null}
+                </View>
+              ) : null}
+
+              {result ? (
+                <View style={styles.previewCard}>
+                  <View style={styles.previewTopRow}>
+                    <Text style={styles.previewIt}>{result.it}</Text>
+                    <PlayButton onPress={() => tts.speak(result.it)} size="md" tone="onDark" />
+                  </View>
+                  {result.p ? <Text style={styles.previewPron}>{result.p}</Text> : null}
+                  <Text style={styles.previewCz}>{result.cz}</Text>
+                </View>
+              ) : null}
+
+              {result ? (
+                <View style={styles.kindRow}>
+                  <Text style={styles.kindLabel}>Uložit jako</Text>
+                  <View style={styles.kindChips}>
+                    <Pressable
+                      onPress={() => setAddKind("word")}
+                      style={({ pressed }) => [
+                        styles.kindChip,
+                        addKind === "word" && styles.kindChipActive,
+                        pressed && styles.pressedChip,
+                      ]}
+                    >
+                      <Text
+                        style={[styles.kindChipText, addKind === "word" && styles.kindChipTextActive]}
+                      >
+                        Slovíčko
+                      </Text>
+                    </Pressable>
+                    <Pressable
+                      onPress={() => setAddKind("phrase")}
+                      style={({ pressed }) => [
+                        styles.kindChip,
+                        addKind === "phrase" && styles.kindChipActive,
+                        pressed && styles.pressedChip,
+                      ]}
+                    >
+                      <Text
+                        style={[
+                          styles.kindChipText,
+                          addKind === "phrase" && styles.kindChipTextActive,
+                        ]}
+                      >
+                        Fráze
+                      </Text>
+                    </Pressable>
+                  </View>
+                </View>
+              ) : null}
+
+              {result ? (
+                <Pressable
+                  onPress={confirm}
+                  disabled={alreadyOwned}
+                  style={({ pressed }) => [
+                    styles.modalSubmit,
+                    alreadyOwned && styles.modalSubmitDisabled,
+                    pressed && !alreadyOwned && styles.pressed,
+                  ]}
+                >
+                  <MaterialIcons
+                    name={alreadyOwned ? "check" : "add"}
+                    size={20}
+                    color={Palette.textInverse}
+                  />
+                  <Text style={styles.modalSubmitLabel}>
+                    {alreadyOwned ? "Už máš ve slovíčkách" : "Přidat do slovíček"}
+                  </Text>
+                </Pressable>
+              ) : null}
+            </ScrollView>
+          </Pressable>
         </Pressable>
-      </Pressable>
+      </KeyboardAvoidingView>
     </Modal>
   );
 }
@@ -456,6 +479,7 @@ const styles = StyleSheet.create({
   list: { gap: Spacing.sm + 2 },
   empty: { alignItems: "center", paddingVertical: Spacing.xxl },
   emptyText: { ...Typography.body, color: Palette.textMuted, fontStyle: "italic" },
+  modalKavRoot: { flex: 1 },
   modalScrim: {
     flex: 1,
     backgroundColor: "rgba(0,0,0,0.45)",
@@ -465,9 +489,12 @@ const styles = StyleSheet.create({
     backgroundColor: Palette.surface,
     borderTopLeftRadius: Radius.xl,
     borderTopRightRadius: Radius.xl,
+    maxHeight: "88%",
+    ...Shadow.pop,
+  },
+  modalScrollContent: {
     padding: Spacing.xl,
     gap: Spacing.md,
-    ...Shadow.pop,
   },
   modalHeader: {
     flexDirection: "row",

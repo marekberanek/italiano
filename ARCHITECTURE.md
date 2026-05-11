@@ -111,7 +111,7 @@ sequenceDiagram
   App-->>U: Display result + TTS (expo-speech)
 ```
 
-- **URL configuration:** `process.env.EXPO_PUBLIC_TRANSLATE_ENDPOINT` or `expo.extra.translateEndpoint` (`app.json`).
+- **URL configuration:** `process.env.EXPO_PUBLIC_TRANSLATE_ENDPOINT` or `expo.extra.translateEndpoint` (filled from `.env` / EAS via `app.config.ts` — not committed in `app.json`).
 - **Without a URL:** `lookupWord()` returns a local **fallback** (demo translation); the app does not crash.
 - **Translation direction:** the proxy uses a "Czech vs Italian" heuristic and sets `target_lang` to `IT` or `CS`; DeepL also detects the source.
 
@@ -141,7 +141,7 @@ flowchart LR
 ## 7. Lesson content (bundled + remote sync)
 
 1. **Bundled fallback:** files in `assets/data/*.json` are part of the build — the app always has something to show.
-2. **Cache after sync:** `lib/content/sync-content.ts` — when online and `EXPO_PUBLIC_CONTENT_BASE_URL` (or `expo.extra.contentBaseUrl`) is configured — fetches `GET /api/content-manifest` and individual `GET /api/content-bundle?bundle=…`, validates the JSON and stores the strings under keys defined in `lib/content/cache.ts`.
+2. **Cache after sync:** `lib/content/sync-content.ts` — when online and `EXPO_PUBLIC_CONTENT_BASE_URL` (or `expo.extra.contentBaseUrl` from `app.config.ts`) is configured — fetches `GET /api/content-manifest` and individual `GET /api/content-bundle?bundle=…`, validates the JSON and stores the strings under keys defined in `lib/content/cache.ts`.
 3. **UI:** `hooks/use-synced-json.ts` keeps the bundle state, replaces data once cache loads and re-reads cache after `emitContentUpdated()`. User vocabulary uses **separate** AsyncStorage keys — it is not part of content sync.
 
 Without connectivity or without the URL behaviour stays purely local (fallback ± stale cache).

@@ -1,4 +1,4 @@
-import pkg from "../package.json" with { type: "json" };
+import pkg from "../package.json";
 
 /**
  * Deployed API semver lives in `backend/package.json` — bump it when changing

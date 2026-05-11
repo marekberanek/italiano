@@ -1,4 +1,5 @@
 import { requireSupabaseUser } from "./_lib/auth";
+import { mergeCzechFromBackTranslation } from "./_lib/cs-merge-from-back";
 import { foldForSearch } from "./_lib/normalize";
 import { spellDigitsInPair } from "./_lib/spell-digits";
 
@@ -25,7 +26,14 @@ const callDeepL = async (
     throw new Error("DEEPL_API_KEY is not configured.");
   }
   const host = apiKey.endsWith(":fx") ? FREE_HOST : PRO_HOST;
-  const body: Record<string, unknown> = { text: [text], target_lang: target };
+  // Default API `split_sentences` is `1` (split on punctuation); that can add
+  // sentence-final punctuation vs. the web translator for short phrases. `0`
+  // treats the whole query as one unit — better for dictionary-style lookups.
+  const body: Record<string, unknown> = {
+    text: [text],
+    target_lang: target,
+    split_sentences: "0",
+  };
   if (source) body.source_lang = source;
   const res = await fetch(`${host}/v2/translate`, {
     method: "POST",
@@ -72,6 +80,33 @@ function matchFirstLetterCase(input: string, output: string): string {
   return output;
 }
 
+/** True if the user query already ends with sentence-final punctuation. */
+const QUERY_HAS_SENTENCE_END = /[.!?…]["')\]]?\s*$/u;
+
+/**
+ * DeepL API often appends `.` / `!` / `?` / `…` even for short lookup phrases
+ * (unlike the web UI). Strip that **only** when the query did not end with
+ * sentence punctuation, so we do not break intentional `Hotovo.` → `Fatto.`
+ * or real questions.
+ */
+function stripDetachedSentenceEndPunctuation(query: string, translated: string): string {
+  if (!translated || QUERY_HAS_SENTENCE_END.test(query.trimEnd())) return translated;
+  return translated.trimEnd().replace(/[\s\u00A0]*[.!?…]+$/u, "").trimEnd();
+}
+
+/**
+ * After CS→IT→CS back-translation, align `backCs` onto the user's `query`:
+ * borrow diacritics from DeepL while preserving gender/register and digit
+ * tokens (see `mergeCzechFromBackTranslation`).
+ */
+function czechDisplayAfterBackTranslate(query: string, backCs: string): string {
+  const q = query.trim();
+  const b = backCs.trim();
+  if (!b) return q;
+  const merged = mergeCzechFromBackTranslation(q, b);
+  return matchFirstLetterCase(q, merged);
+}
+
 type SmartResult = { it: string; cz: string; detected: string };
 
 /**
@@ -91,9 +126,9 @@ type SmartResult = { it: string; cz: string; detected: string };
  *        - `IT→CS` changed but `CS→IT` didn't → user typed Italian (e.g.
  *          `acqua`) → return `{it: query, cz: itToCs}`.
  *        - `CS→IT` changed → user typed Czech → use that as the IT result,
- *          then back-translate IT→CS so the CZ field shows DeepL's canonical
- *          form with diacritics (`uzasny` → `fantastico` → `fantastické`,
- *          `snih` → `neve` → `sníh`).
+ *          then back-translate IT→CS. The CZ field merges DeepL's canonical
+ *          Czech onto the user's wording (diacritics from DeepL, same gender
+ *          and digit tokens as typed).
  *        - Neither changed → fall back to CS interpretation.
  */
 async function smartTranslate(query: string): Promise<SmartResult> {
@@ -123,9 +158,7 @@ async function smartTranslate(query: string): Promise<SmartResult> {
     const back = await callDeepL(csToIt.text, "CS", "IT");
     return {
       it: matchFirstLetterCase(query, csToIt.text),
-      // Back-translation should mirror the canonical Czech form; align it to the
-      // user's original query so a lowercase input keeps the lowercase output.
-      cz: matchFirstLetterCase(query, back.text),
+      cz: czechDisplayAfterBackTranslate(query, back.text),
       detected: "CS",
     };
   }
@@ -169,7 +202,12 @@ export default async function handler(req: Request): Promise<Response> {
 
   try {
     const result = await smartTranslate(query);
-    const spelled = spellDigitsInPair(result.it, result.cz);
+    const cleaned = {
+      ...result,
+      it: stripDetachedSentenceEndPunctuation(query, result.it),
+      cz: stripDetachedSentenceEndPunctuation(query, result.cz),
+    };
+    const spelled = spellDigitsInPair(cleaned.it, cleaned.cz);
     return json(
       {
         it: spelled.it,

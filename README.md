@@ -207,6 +207,7 @@ Edit `**.env**` in the project root:
 | `EXPO_PUBLIC_SUPABASE_URL`       | From Supabase §2.2 (leave empty to disable cloud auth/sync UI).                                                                         |
 | `EXPO_PUBLIC_SUPABASE_ANON_KEY`  | From Supabase §2.2.                                                                                                                     |
 | `EXPO_PUBLIC_CONTENT_BASE_URL`   | Optional; same origin as your deployed backend without `/api/...` path, e.g. `https://your-project.vercel.app`, for remote lesson JSON. |
+| `EXPO_PUBLIC_EAS_PROJECT_ID`     | Expo project UUID (OTA). Same as in Expo → Project settings, or `eas project:info`; set on EAS for cloud builds.                        |
 
 
 **Pick the right host for your runtime** (otherwise the app spins forever waiting for a request that never lands):
@@ -222,7 +223,7 @@ Edit `**.env**` in the project root:
 
 Restart Metro after any change: `Ctrl+C`, then `npm start`.
 
-You can mirror values in `app.json` → `expo.extra` for EAS builds without committing `.env`.
+Secrets (Supabase, API URLs, EAS project ID) live in **`.env`** (gitignored) — copy [`.env.example`](.env.example) to `.env`. [`app.config.ts`](app.config.ts) merges `EXPO_PUBLIC_*` into `expo.extra` at startup / build. For **EAS** cloud builds, define the same `EXPO_PUBLIC_*` keys under the project’s **Environment variables** (Expo dashboard).
 
 ### 3.3 Run Expo
 

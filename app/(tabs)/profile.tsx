@@ -98,8 +98,8 @@ export default function ProfileScreen() {
           <MaterialIcons name="settings" size={22} color={Palette.textMuted} />
           <Text style={styles.cardTitle}>Supabase není nastavené</Text>
           <Text style={styles.cardBody}>
-            Přidej do `.env` hodnoty `EXPO_PUBLIC_SUPABASE_URL` a `EXPO_PUBLIC_SUPABASE_ANON_KEY`, případně
-            `expo.extra` v `app.json`, a restartuj Expo.
+            Zkopíruj `.env.example` do `.env`, doplň `EXPO_PUBLIC_SUPABASE_URL` a `EXPO_PUBLIC_SUPABASE_ANON_KEY`
+            (nebo je nastav v EAS Environment variables pro build), a restartuj Expo (`npx expo start -c`).
           </Text>
         </View>
       ) : null}

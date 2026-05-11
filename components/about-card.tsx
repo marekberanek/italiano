@@ -22,10 +22,10 @@ const REPO_URL = extra.repositoryUrl?.trim() || "";
 
 /**
  * Build label is a best-effort runtime version. `Constants.expoConfig.version`
- * is the marketing version from app.json (`"1.0.0"`); for OTA / native builds
- * Expo additionally exposes `nativeAppVersion` and `nativeBuildVersion`. We
- * surface the marketing version (always available) and append the build
- * number only when the runtime provides one (EAS builds, not Expo Go).
+ * comes from `package.json` via `app.config.ts`; for OTA / native builds Expo
+ * additionally exposes `nativeAppVersion` and `nativeBuildVersion`. We surface
+ * the marketing version (always available) and append the build number only when
+ * the runtime provides one (EAS builds, not Expo Go).
  */
 function buildVersionLabel(): string {
   const marketing = Constants.expoConfig?.version ?? "—";
