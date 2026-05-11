@@ -39,6 +39,7 @@ const HTML = /* html */ `<!doctype html>
 
     <h2>Endpoints</h2>
     <ul>
+      <li><code>GET&nbsp; /api/version</code> — API semver from <code>package.json</code> (+ optional Vercel git/deployment ids).</li>
       <li><code>POST /api/translate</code> — DeepL proxy.</li>
       <li><code>GET&nbsp; /api/content-manifest</code> — list of lesson bundles + version stamp.</li>
       <li><code>GET&nbsp; /api/content-bundle?bundle=…</code> — JSON of one bundle.</li>

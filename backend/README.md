@@ -4,6 +4,8 @@ Serverless function (Vercel/Cloudflare Workers/Netlify) that proxies translation
 
 ## Endpoint
 
+`GET /api/version` — JSON with API **semver** from this folder’s `package.json` (`name`, `version`), plus optional Vercel fields `gitSha`, `deploymentId`. Bump `version` here when you change API behaviour, then redeploy.
+
 `POST /api/translate`
 
 Request body:
@@ -48,6 +50,7 @@ The handler reads files from `backend/content/`. Keep `assets/data/` in the app 
 
 The backend ships its own machine-readable spec **and** a rendered viewer:
 
+- `GET /api/version` — deployed API semver (`package.json` in this folder).
 - `GET /api/openapi` — OpenAPI 3.1 JSON (hand-maintained in `backend/api/openapi.ts`).
 - `GET /api/docs` — interactive [Scalar](https://scalar.com) reference UI.
 - `GET /api/` — landing page with a list of endpoints.

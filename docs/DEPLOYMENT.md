@@ -306,6 +306,14 @@ is taken, Vercel adds a suffix; you can rename later in **Settings → General �
 Project Name** (the old subdomain stops working immediately, so update the app
 `.env` right after).
 
+### 3.2.1 API semver (`backend/package.json`)
+
+**Backend API version** = the `version` field in [`backend/package.json`](../backend/package.json). Bump it (semver) whenever you change server behaviour you care to track (translate logic, account routes, content handlers), then redeploy.
+
+- **`GET /api/version`** — returns JSON: `name`, `version` (from that file), and on Vercel optionally `gitSha` / `deploymentId` for the running deployment.
+
+The mobile app’s marketing version stays in the **repo root** `package.json` + `npm run release:*`; the two versions **can** match (e.g. same `1.1.1`) but do not have to — bump the backend semver whenever the API changes, even between app store releases.
+
 ### 3.3 Set env vars (Production **and** Preview)
 
 These are the variables every deployed function will read at runtime:
@@ -405,6 +413,10 @@ signed-in mobile users get a translation). Grab a token with the supabase CLI
 or sign in inside the app and read it from `expo-secure-store`:
 
 ```bash
+# Deployed API semver (no auth)
+curl -sS https://italiano-api.vercel.app/api/version | jq .
+# expected: { "name": "italiano-translate-proxy", "version": "1.1.1", "gitSha": "…", "deploymentId": "…" }
+
 # Anonymous request → 401 (expected behaviour)
 curl -isS -X POST https://italiano-api.vercel.app/api/translate \
   -H "Content-Type: application/json" \
@@ -436,6 +448,7 @@ A successful seed flips the version to an ISO timestamp.
 
 | Endpoint | Purpose | Auth |
 |----------|---------|------|
+| `GET /api/version` | API semver from `backend/package.json` (+ optional Vercel ids) | Public |
 | `POST /api/translate` | DeepL proxy used by Hledat (Search) screen | **Bearer JWT** (Supabase) — protects paid DeepL quota |
 | `GET /api/content-manifest` | Bundle manifest (versions) | Public |
 | `GET /api/content-bundle?bundle=…` | Single JSON bundle | Public |

@@ -69,6 +69,16 @@ const spec = {
           error: { type: "string", example: "DEEPL_API_KEY is not configured." },
         },
       },
+      ApiVersion: {
+        type: "object",
+        required: ["name", "version"],
+        properties: {
+          name: { type: "string", example: "italiano-translate-proxy" },
+          version: { type: "string", description: "Semver from `backend/package.json` (bump on API changes).", example: "1.1.1" },
+          gitSha: { type: "string", nullable: true, description: "Vercel: `VERCEL_GIT_COMMIT_SHA` when built from git." },
+          deploymentId: { type: "string", nullable: true, description: "Vercel: `VERCEL_DEPLOYMENT_ID`." },
+        },
+      },
       TranslateRequest: {
         type: "object",
         required: ["query"],
@@ -253,6 +263,19 @@ const spec = {
           "204": { description: "Account deleted." },
           "401": { description: "Missing or invalid JWT." },
           "500": { description: "Supabase admin call failed." },
+        },
+      },
+    },
+    "/api/version": {
+      get: {
+        tags: ["Meta"],
+        summary: "Deployed API semver (from `backend/package.json`) plus optional Vercel build metadata.",
+        responses: {
+          "200": {
+            description: "OK",
+            content: { "application/json": { schema: { $ref: "#/components/schemas/ApiVersion" } } },
+          },
+          "405": { description: "Method other than GET." },
         },
       },
     },
