@@ -16,10 +16,28 @@ export function VocabRow({ word, onPlay, onRemove, learnedThreshold }: Props) {
   const badgeBg = word.learned ? Palette.brand : Palette.brandSoft;
   const badgeFg = word.learned ? Palette.textInverse : Palette.brandDark;
   const badgeText = word.learned ? "✓" : `${word.streak}/${learnedThreshold}`;
+  const kindLabel = word.kind === "phrase" ? "Fráze" : "Slovo";
   return (
     <View style={styles.container}>
       <View style={styles.texts}>
-        <Text style={styles.italian}>{word.it}</Text>
+        <View style={styles.titleRow}>
+          <Text style={styles.italian}>{word.it}</Text>
+          <View
+            style={[
+              styles.kindPill,
+              word.kind === "phrase" ? styles.kindPillPhrase : styles.kindPillWord,
+            ]}
+          >
+            <Text
+              style={[
+                styles.kindPillText,
+                word.kind === "phrase" && styles.kindPillTextPhrase,
+              ]}
+            >
+              {kindLabel}
+            </Text>
+          </View>
+        </View>
         <Text style={styles.czech}>{word.cz}</Text>
         {word.p ? <Text style={styles.pronunciation}>{word.p}</Text> : null}
       </View>
@@ -53,11 +71,37 @@ const styles = StyleSheet.create({
     borderColor: Palette.border,
   },
   texts: { flex: 1, gap: 2 },
+  titleRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: Spacing.sm,
+    flexWrap: "wrap",
+  },
   italian: {
     fontFamily: Typography.display.fontFamily,
     fontSize: 17,
     color: Palette.textStrong,
   },
+  kindPill: {
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: Radius.pill,
+    borderWidth: 1,
+  },
+  kindPillWord: {
+    backgroundColor: Palette.surfaceMuted,
+    borderColor: Palette.border,
+  },
+  kindPillPhrase: {
+    backgroundColor: Palette.brandSoft,
+    borderColor: Palette.brand,
+  },
+  kindPillText: {
+    ...Typography.smallStrong,
+    fontSize: 10,
+    color: Palette.textMuted,
+  },
+  kindPillTextPhrase: { color: Palette.brandDark },
   czech: {
     ...Typography.body,
     color: Palette.text,

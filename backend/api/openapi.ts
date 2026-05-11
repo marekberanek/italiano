@@ -132,6 +132,7 @@ const spec = {
                 it: { type: "string" },
                 cz: { type: "string" },
                 p: { type: "string", nullable: true },
+                kind: { type: "string", enum: ["word", "phrase"] },
                 ex_it: { type: "string", nullable: true },
                 ex_cz: { type: "string", nullable: true },
                 learned: { type: "boolean" },

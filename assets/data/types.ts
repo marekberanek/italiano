@@ -118,10 +118,14 @@ export type CuratedVocabData = {
   items: CuratedVocabItem[];
 };
 
+export type VocabKind = "word" | "phrase";
+
 export type VocabWord = {
   id: number;
   /** Stable id across devices; used for Supabase upsert / merge. */
   clientUuid: string;
+  /** Single lemma vs multi-word phrase (filters, display). */
+  kind: VocabKind;
   it: string;
   cz: string;
   p: string;

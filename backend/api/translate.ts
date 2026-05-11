@@ -1,5 +1,6 @@
 import { requireSupabaseUser } from "./_lib/auth";
 import { foldForSearch } from "./_lib/normalize";
+import { spellDigitsInPair } from "./_lib/spell-digits";
 
 type TranslateRequest = {
   query?: string;
@@ -168,10 +169,11 @@ export default async function handler(req: Request): Promise<Response> {
 
   try {
     const result = await smartTranslate(query);
+    const spelled = spellDigitsInPair(result.it, result.cz);
     return json(
       {
-        it: result.it,
-        cz: result.cz,
+        it: spelled.it,
+        cz: spelled.cz,
         p: "",
         ex_it: undefined,
         ex_cz: undefined,

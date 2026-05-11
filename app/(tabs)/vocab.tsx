@@ -1,6 +1,6 @@
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useRouter } from "expo-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   ActivityIndicator,
   Modal,
@@ -11,7 +11,8 @@ import {
   View,
 } from "react-native";
 
-import type { LookupResult } from "@/assets/data/types";
+import type { LookupResult, VocabKind } from "@/assets/data/types";
+import { CategoryChip } from "@/components/category-chip";
 import { PlayButton } from "@/components/play-button";
 import { PrimaryButton } from "@/components/primary-button";
 import { Screen } from "@/components/screen";
@@ -24,6 +25,9 @@ import { useVocabStore, type AddWordInput } from "@/hooks/use-vocab-store";
 import { TranslateError, lookupWord } from "@/lib/api/translate";
 import { useAuth } from "@/lib/auth/use-auth";
 import { foldForSearch } from "@/lib/text/normalize";
+import { inferVocabKind } from "@/lib/vocab/infer-kind";
+
+type KindFilter = "all" | VocabKind;
 
 export default function VocabScreen() {
   const tts = useItalianTts();
@@ -33,14 +37,30 @@ export default function VocabScreen() {
   const { state, addWord, hasItalian, removeWord, stats, learnedThreshold } = useVocabStore();
   const [showAdd, setShowAdd] = useState(false);
   const [search, setSearch] = useState("");
+  const [kindFilter, setKindFilter] = useState<KindFilter>("all");
 
-  const visible = useMemo(() => {
+  const kindCounts = useMemo(() => {
+    let words = 0;
+    let phrases = 0;
+    for (const w of state.vocab) {
+      if (w.kind === "phrase") phrases += 1;
+      else words += 1;
+    }
+    return { words, phrases, total: state.vocab.length };
+  }, [state.vocab]);
+
+  const searched = useMemo(() => {
     const q = foldForSearch(search.trim());
     if (!q) return state.vocab;
     return state.vocab.filter(
       (w) => foldForSearch(w.it).includes(q) || foldForSearch(w.cz).includes(q),
     );
   }, [state.vocab, search]);
+
+  const visible = useMemo(() => {
+    if (kindFilter === "all") return searched;
+    return searched.filter((w) => w.kind === kindFilter);
+  }, [searched, kindFilter]);
 
   return (
     <Screen>
@@ -86,6 +106,27 @@ export default function VocabScreen() {
         </Pressable>
       </View>
 
+      <View style={styles.filterRow}>
+        <CategoryChip
+          label="Vše"
+          count={kindCounts.total}
+          active={kindFilter === "all"}
+          onPress={() => setKindFilter("all")}
+        />
+        <CategoryChip
+          label="Slovíčka"
+          count={kindCounts.words}
+          active={kindFilter === "word"}
+          onPress={() => setKindFilter("word")}
+        />
+        <CategoryChip
+          label="Fráze"
+          count={kindCounts.phrases}
+          active={kindFilter === "phrase"}
+          onPress={() => setKindFilter("phrase")}
+        />
+      </View>
+
       {search ? (
         <View style={styles.searchBox}>
           <MaterialIcons name="search" size={18} color={Palette.textMuted} />
@@ -108,7 +149,9 @@ export default function VocabScreen() {
               ? isSignedIn
                 ? "Žádná slovíčka. Přidej první."
                 : "Žádná slovíčka. Přihlas se a přidej první."
-              : "Nic nenalezeno."}
+              : searched.length === 0
+                ? "Nic nenalezeno."
+                : "Pro zvolený filtr nic nevyhovuje."}
           </Text>
         </View>
       ) : (
@@ -165,6 +208,11 @@ function AddWordModal({
   // Distinguishes auth gate failures (which surface a "go to profile" CTA)
   // from generic translate failures (network, DeepL down, etc.).
   const [errorRequiresAuth, setErrorRequiresAuth] = useState(false);
+  const [addKind, setAddKind] = useState<VocabKind>("word");
+
+  useEffect(() => {
+    if (result) setAddKind(inferVocabKind(result.it, result.cz));
+  }, [result]);
 
   const reset = () => {
     setQuery("");
@@ -172,6 +220,7 @@ function AddWordModal({
     setError(null);
     setErrorRequiresAuth(false);
     setLoading(false);
+    setAddKind("word");
   };
   const close = () => {
     reset();
@@ -212,6 +261,7 @@ function AddWordModal({
       p: result.p ?? "",
       exIt: result.ex_it,
       exCz: result.ex_cz,
+      kind: addKind,
     });
     reset();
   };
@@ -292,6 +342,42 @@ function AddWordModal({
           ) : null}
 
           {result ? (
+            <View style={styles.kindRow}>
+              <Text style={styles.kindLabel}>Uložit jako</Text>
+              <View style={styles.kindChips}>
+                <Pressable
+                  onPress={() => setAddKind("word")}
+                  style={({ pressed }) => [
+                    styles.kindChip,
+                    addKind === "word" && styles.kindChipActive,
+                    pressed && styles.pressedChip,
+                  ]}
+                >
+                  <Text
+                    style={[styles.kindChipText, addKind === "word" && styles.kindChipTextActive]}
+                  >
+                    Slovíčko
+                  </Text>
+                </Pressable>
+                <Pressable
+                  onPress={() => setAddKind("phrase")}
+                  style={({ pressed }) => [
+                    styles.kindChip,
+                    addKind === "phrase" && styles.kindChipActive,
+                    pressed && styles.pressedChip,
+                  ]}
+                >
+                  <Text
+                    style={[styles.kindChipText, addKind === "phrase" && styles.kindChipTextActive]}
+                  >
+                    Fráze
+                  </Text>
+                </Pressable>
+              </View>
+            </View>
+          ) : null}
+
+          {result ? (
             <Pressable
               onPress={confirm}
               disabled={alreadyOwned}
@@ -320,6 +406,12 @@ function AddWordModal({
 const styles = StyleSheet.create({
   statsRow: { flexDirection: "row", gap: Spacing.sm + 2 },
   actionRow: { flexDirection: "row", gap: Spacing.sm + 2 },
+  filterRow: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: Spacing.sm,
+    marginBottom: Spacing.sm,
+  },
   addButton: {
     flex: 1,
     flexDirection: "row",
@@ -458,6 +550,24 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: Palette.textInverse,
   },
+  kindRow: { gap: Spacing.sm },
+  kindLabel: { ...Typography.smallStrong, color: Palette.textMuted },
+  kindChips: { flexDirection: "row", gap: Spacing.sm },
+  kindChip: {
+    paddingVertical: 8,
+    paddingHorizontal: Spacing.lg,
+    borderRadius: Radius.pill,
+    backgroundColor: Palette.surfaceMuted,
+    borderWidth: 1.5,
+    borderColor: Palette.border,
+  },
+  kindChipActive: {
+    backgroundColor: Palette.brandSoft,
+    borderColor: Palette.brand,
+  },
+  kindChipText: { ...Typography.smallStrong, color: Palette.textMuted },
+  kindChipTextActive: { color: Palette.brandDark },
+  pressedChip: { opacity: 0.85 },
   modalSubmit: {
     flexDirection: "row",
     alignItems: "center",

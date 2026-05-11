@@ -17,6 +17,7 @@ const SEED: VocabWord[] = [
   {
     id: 1,
     clientUuid: "a1000000-0000-4000-8000-000000000001",
+    kind: "word",
     it: "buongiorno",
     cz: "dobrý den",
     p: "[buondžorno]",
@@ -27,6 +28,7 @@ const SEED: VocabWord[] = [
   {
     id: 2,
     clientUuid: "a1000000-0000-4000-8000-000000000002",
+    kind: "word",
     it: "grazie",
     cz: "děkuji",
     p: "[gracje]",
@@ -37,6 +39,7 @@ const SEED: VocabWord[] = [
   {
     id: 3,
     clientUuid: "a1000000-0000-4000-8000-000000000003",
+    kind: "word",
     it: "arrivederci",
     cz: "na shledanou",
     p: "[arrivedérči]",
@@ -47,6 +50,7 @@ const SEED: VocabWord[] = [
   {
     id: 4,
     clientUuid: "a1000000-0000-4000-8000-000000000004",
+    kind: "word",
     it: "prego",
     cz: "prosím / není zač",
     p: "[prego]",
@@ -57,6 +61,7 @@ const SEED: VocabWord[] = [
   {
     id: 5,
     clientUuid: "a1000000-0000-4000-8000-000000000005",
+    kind: "word",
     it: "ciao",
     cz: "ahoj",
     p: "[čao]",
@@ -87,9 +92,13 @@ function normalizeLoaded(parsed: VocabState): { state: VocabState; mutated: bool
     const rawExCz = (w as { exCz?: unknown; ex_cz?: unknown }).exCz ?? (w as { ex_cz?: unknown }).ex_cz;
     const exIt = typeof rawExIt === "string" ? rawExIt.trim() : "";
     const exCz = typeof rawExCz === "string" ? rawExCz.trim() : "";
+    const rawKind = (w as { kind?: unknown }).kind;
+    const kind =
+      rawKind === "phrase" || rawKind === "word" ? rawKind : ("word" as const);
     return {
       id: w.id,
       clientUuid,
+      kind,
       it: w.it,
       cz: w.cz,
       p: typeof w.p === "string" ? w.p : "",

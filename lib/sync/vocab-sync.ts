@@ -10,6 +10,7 @@ export type RemoteVocabRow = {
   it: string;
   cz: string;
   p: string;
+  kind?: string;
   ex_it?: string;
   ex_cz?: string;
   learned: boolean;
@@ -20,6 +21,10 @@ export type RemoteVocabRow = {
 
 function isoNow(): string {
   return new Date().toISOString();
+}
+
+function normalizeKind(raw: string | undefined): "word" | "phrase" {
+  return raw === "phrase" ? "phrase" : "word";
 }
 
 /** Merge remote `vocab_items` rows into local state (offline-first rules). */
@@ -41,6 +46,7 @@ export function mergeRemoteRowsIntoState(local: VocabState, remote: RemoteVocabR
       byUuid.set(row.client_uuid, {
         id: maxId,
         clientUuid: row.client_uuid,
+        kind: normalizeKind(row.kind),
         it: row.it,
         cz: row.cz,
         p: row.p ?? "",
@@ -75,6 +81,7 @@ export function mergeRemoteRowsIntoState(local: VocabState, remote: RemoteVocabR
       ...existing,
       streak,
       learned,
+      kind: textFromRemote ? normalizeKind(row.kind) : (existing.kind ?? "word"),
       it: textFromRemote ? row.it : existing.it,
       cz: textFromRemote ? row.cz : existing.cz,
       p: textFromRemote ? (row.p ?? "") : existing.p,
@@ -95,7 +102,7 @@ export function mergeRemoteRowsIntoState(local: VocabState, remote: RemoteVocabR
 export async function pullVocabRows(supabase: SupabaseClient): Promise<RemoteVocabRow[]> {
   const withExamples = await supabase
     .from("vocab_items")
-    .select("client_uuid,it,cz,p,ex_it,ex_cz,learned,streak,updated_at,deleted_at")
+    .select("client_uuid,it,cz,p,kind,ex_it,ex_cz,learned,streak,updated_at,deleted_at")
     .order("updated_at", { ascending: false });
 
   if (!withExamples.error) {
@@ -104,11 +111,24 @@ export async function pullVocabRows(supabase: SupabaseClient): Promise<RemoteVoc
 
   const msg = withExamples.error.message.toLowerCase();
   const missingExampleCols =
-    msg.includes("ex_it") || msg.includes("ex_cz") || msg.includes("column") || msg.includes("schema cache");
+    msg.includes("ex_it") ||
+    msg.includes("ex_cz") ||
+    msg.includes("kind") ||
+    msg.includes("column") ||
+    msg.includes("schema cache");
 
   if (!missingExampleCols) {
     console.warn("pullVocabRows", withExamples.error.message);
     return [];
+  }
+
+  const withExamplesNoKind = await supabase
+    .from("vocab_items")
+    .select("client_uuid,it,cz,p,ex_it,ex_cz,learned,streak,updated_at,deleted_at")
+    .order("updated_at", { ascending: false });
+
+  if (!withExamplesNoKind.error) {
+    return (withExamplesNoKind.data ?? []) as RemoteVocabRow[];
   }
 
   const baseOnly = await supabase
@@ -167,6 +187,7 @@ export async function pushVocabToRemote(
     it: w.it,
     cz: w.cz,
     p: w.p ?? "",
+    kind: w.kind ?? "word",
     ex_it: w.exIt?.trim() ?? "",
     ex_cz: w.exCz?.trim() ?? "",
     learned: w.learned,
@@ -187,7 +208,7 @@ export async function pushVocabToRemote(
     let { error } = await supabase.from("vocab_items").upsert(slice, {
       onConflict: "user_id,client_uuid",
     });
-    if (error && /ex_it|ex_cz|schema cache|column/i.test(error.message)) {
+    if (error && /ex_it|ex_cz|kind|schema cache|column/i.test(error.message)) {
       const slim = slice.map((r) => ({
         user_id: r.user_id,
         client_uuid: r.client_uuid,

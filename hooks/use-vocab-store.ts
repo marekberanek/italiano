@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-import type { VocabState, VocabWord } from "@/assets/data/types";
+import type { VocabKind, VocabState, VocabWord } from "@/assets/data/types";
 import { getSupabase } from "@/lib/auth/supabase";
 import { italianToCzechPron } from "@/lib/pronunciation/italian-pron";
+import { inferVocabKind } from "@/lib/vocab/infer-kind";
 import { enqueueDeletion } from "@/lib/storage/vocab-deletions";
 import {
   emitVocabExternalChange,
@@ -18,6 +19,8 @@ export type AddWordInput = {
   p?: string;
   exIt?: string;
   exCz?: string;
+  /** When omitted, inferred from IT/CZ token counts. */
+  kind?: VocabKind;
 };
 
 const LEARNED_THRESHOLD = 5;
@@ -85,6 +88,7 @@ export function useVocabStore() {
     const p = explicit || italianToCzechPron(it);
     const exIt = input.exIt?.trim();
     const exCz = input.exCz?.trim();
+    const kind = input.kind ?? inferVocabKind(it, cz);
     const itKey = it.toLowerCase();
     setState((prev) => {
       // Last-line-of-defense duplicate guard. UI also disables the button when
@@ -94,6 +98,7 @@ export function useVocabStore() {
       const word: VocabWord = {
         id: prev.nextId,
         clientUuid: randomUuid(),
+        kind,
         it,
         cz,
         p,

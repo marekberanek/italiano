@@ -1,9 +1,9 @@
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useRouter } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
-import type { LookupResult } from "@/assets/data/types";
+import type { LookupResult, VocabKind } from "@/assets/data/types";
 import { AppLogo } from "@/components/app-logo";
 import { PlayButton } from "@/components/play-button";
 import { PrimaryButton } from "@/components/primary-button";
@@ -15,6 +15,7 @@ import { useItalianTts } from "@/hooks/use-italian-tts";
 import { useVocabStore } from "@/hooks/use-vocab-store";
 import { TranslateError, lookupWord } from "@/lib/api/translate";
 import { useAuth } from "@/lib/auth/use-auth";
+import { inferVocabKind } from "@/lib/vocab/infer-kind";
 
 export default function LookupScreen() {
   const tts = useItalianTts();
@@ -31,6 +32,11 @@ export default function LookupScreen() {
   // (the screen is otherwise gated by `user` below).
   const [errorRequiresAuth, setErrorRequiresAuth] = useState(false);
   const [added, setAdded] = useState(false);
+  const [addKind, setAddKind] = useState<VocabKind>("word");
+
+  useEffect(() => {
+    if (result) setAddKind(inferVocabKind(result.it, result.cz));
+  }, [result]);
 
   // Word can be already in vocab from a previous session — treat that the same
   // way as "right after I clicked Add" so the button is disabled and labelled.
@@ -76,6 +82,7 @@ export default function LookupScreen() {
       p: result.p ?? "",
       exIt: result.ex_it,
       exCz: result.ex_cz,
+      kind: addKind,
     });
     setAdded(true);
   };
@@ -158,6 +165,38 @@ export default function LookupScreen() {
               {result.ex_cz ? <Text style={styles.exampleCz}>{result.ex_cz}</Text> : null}
             </View>
           ) : null}
+        </View>
+      ) : null}
+
+      {result ? (
+        <View style={styles.kindRow}>
+          <Text style={styles.kindLabel}>Uložit jako</Text>
+          <View style={styles.kindChips}>
+            <Pressable
+              onPress={() => setAddKind("word")}
+              style={({ pressed }) => [
+                styles.kindChip,
+                addKind === "word" && styles.kindChipActive,
+                pressed && styles.pressedChip,
+              ]}
+            >
+              <Text style={[styles.kindChipText, addKind === "word" && styles.kindChipTextActive]}>
+                Slovíčko
+              </Text>
+            </Pressable>
+            <Pressable
+              onPress={() => setAddKind("phrase")}
+              style={({ pressed }) => [
+                styles.kindChip,
+                addKind === "phrase" && styles.kindChipActive,
+                pressed && styles.pressedChip,
+              ]}
+            >
+              <Text style={[styles.kindChipText, addKind === "phrase" && styles.kindChipTextActive]}>
+                Fráze
+              </Text>
+            </Pressable>
+          </View>
         </View>
       ) : null}
 
@@ -278,6 +317,24 @@ const styles = StyleSheet.create({
     fontStyle: "italic",
   },
   exampleCz: { ...Typography.small, color: Palette.textOnDark },
+  kindRow: { gap: Spacing.sm, marginTop: Spacing.xs },
+  kindLabel: { ...Typography.smallStrong, color: Palette.textMuted },
+  kindChips: { flexDirection: "row", gap: Spacing.sm },
+  kindChip: {
+    paddingVertical: 8,
+    paddingHorizontal: Spacing.lg,
+    borderRadius: Radius.pill,
+    backgroundColor: Palette.surface,
+    borderWidth: 1.5,
+    borderColor: Palette.border,
+  },
+  kindChipActive: {
+    backgroundColor: Palette.brandSoft,
+    borderColor: Palette.brand,
+  },
+  kindChipText: { ...Typography.smallStrong, color: Palette.textMuted },
+  kindChipTextActive: { color: Palette.brandDark },
+  pressedChip: { opacity: 0.85 },
   actionsRow: { flexDirection: "row", gap: Spacing.sm + 2 },
   emptyState: {
     alignItems: "center",
