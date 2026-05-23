@@ -64,7 +64,10 @@
       "tagline": "Procvičuj italská slovíčka",
       "author": "Marek Beránek",
       "repositoryUrl": "https://github.com/marekberanek/italiano",
-      "router": {}
+      "router": {},
+      "eas": {
+        "projectId": "cbb1f571-c3f5-49bc-b3b0-6b80478427fb"
+      }
     },
     "owner": "marekberanek",
     "runtimeVersion": {

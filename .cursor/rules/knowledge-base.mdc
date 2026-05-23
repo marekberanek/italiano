@@ -1,0 +1,83 @@
+---
+alwaysApply: true
+description: Knowledge Base integration — makes the agent aware of the personal KB system at ~/knowledge-bases/
+---
+
+# Knowledge Base Integration
+
+You have access to a personal knowledge base system at ~/knowledge-bases/ via the `kb-*` skills in skilled-plus4u-mcp.
+
+## At Conversation Start
+
+Call `kb-list` to see available KBs. If any KB has unprocessed raw files, offer to compile them.
+
+## During Any Work
+
+- When you encounter valuable knowledge (new concepts, patterns, solutions, non-obvious findings), offer to save it to the appropriate KB
+- Don't save trivial or ephemeral things — only what would be useful for future queries
+- If no matching KB exists and the knowledge is substantial, suggest creating one with `kb-init`
+
+## When Answering Questions
+
+- If a question relates to a topic covered by an existing KB, consult it via `kb-search` / `kb-read` first
+- If your answer produces new knowledge, offer filing:
+  - Short fact — enrich existing article (read it first, integrate, write back)
+  - Extensive analysis — new file in wiki
+  - Trivial answer — don't file
+
+## Article Format
+
+Every wiki article MUST include:
+
+### YAML Frontmatter
+```yaml
+---
+source: https://... (origin URL or description)
+concepts: [concept1, concept2]
+aliases: [Alternative Name, alias2]
+---
+```
+
+### Tags
+Add `#tag` lines after the title for Obsidian tag filtering:
+```markdown
+# Article Title
+
+#concept1 #concept2 #domain
+```
+
+### Obsidian Wikilinks
+- **Within same topic:** `[[article-name]]` (e.g. `[[uu5string-format]]`)
+- **With display text:** `[[article-name|display text]]` (e.g. `[[uu5string-format|uu5string syntax]]`)
+- **Cross-topic:** `[[topic/wiki/article-name]]` (e.g. `[[ml-fundamentals/wiki/linear-algebra]]`)
+- **Always add a `## Related` section** at the end with wikilinks to related articles
+
+### Do NOT use
+- `[[kb:topic/article]]` convention (not Obsidian-native)
+- Plain text references like "See article X" without a wikilink
+
+## After Every KB Write
+
+- Update the topic's `_index.md` with current article summaries
+- Update `_meta/index.json` if concepts changed
+
+## Auto-Maintenance
+
+- After `kb-add-raw`, automatically compile the new raw file
+- When reading KB content and noticing issues (broken links, outdated info), fix them inline
+- At conversation start, check `kb-compile-status` for unprocessed raw files if any KB exists
+
+## Cross-KB Links
+
+- Use Obsidian-native `[[topic/wiki/article]]` wikilinks for cross-topic references
+- Use `kb-cross-link` to register formal links in `_meta/index.json`
+- Use `kb-cross-search` when a question might span multiple topics
+
+## Commit Convention
+
+All KB write operations auto-commit. Use appropriate `commitPrefix`:
+- `compile` — from raw compilation or enrichment
+- `filing` — saving Q&A output into wiki
+- `lint` — fixing health-check issues
+- `meta` — updating indexes
+- `ingest` — adding raw sources

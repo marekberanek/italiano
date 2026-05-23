@@ -20,7 +20,10 @@ import { CategoryChip } from "@/components/category-chip";
 import { PrimaryButton } from "@/components/primary-button";
 import { Screen } from "@/components/screen";
 import { ScreenHeader } from "@/components/screen-header";
-import { Palette, Radius, Shadow, Spacing, Typography } from "@/constants/theme";
+import type { ColorPalette, ThemeShadows } from "@/constants/theme";
+import { Radius, Spacing, Typography } from "@/constants/theme";
+import { useThemedStyles } from "@/hooks/use-themed-styles";
+import { useTheme } from "@/lib/theme/theme-context";
 import { useItalianTts } from "@/hooks/use-italian-tts";
 import { useSyncedJson } from "@/hooks/use-synced-json";
 import { useVocabStore } from "@/hooks/use-vocab-store";
@@ -124,6 +127,9 @@ function buildPoolForSource(
 }
 
 export default function QuizScreen() {
+  const { palette } = useTheme();
+  const styles = useThemedStyles(createStyles);
+
   const navigation = useNavigation();
   const isFocused = useIsFocused();
   const tts = useItalianTts();
@@ -531,12 +537,12 @@ export default function QuizScreen() {
           <MaterialIcons
             name={verdict.passed ? "emoji-events" : "refresh"}
             size={36}
-            color={verdict.passed ? Palette.brandDark : Palette.danger}
+            color={verdict.passed ? palette.brandDark : palette.danger}
           />
           <Text
             style={[
               styles.resultsTitle,
-              { color: verdict.passed ? Palette.brandDark : Palette.danger },
+              { color: verdict.passed ? palette.brandDark : palette.danger },
             ]}
           >
             {verdict.title}
@@ -557,7 +563,7 @@ export default function QuizScreen() {
         <PrimaryButton
           label="Hrát znovu"
           onPress={playAgain}
-          icon={<MaterialIcons name="replay" size={20} color={Palette.textInverse} />}
+          icon={<MaterialIcons name="replay" size={20} color={palette.textInverse} />}
           style={{ width: "100%" }}
         />
         {lastSavedSessionId ? (
@@ -565,7 +571,7 @@ export default function QuizScreen() {
             label="Zobrazit odpovědi"
             variant="secondary"
             onPress={() => setHistoryDetailId(lastSavedSessionId)}
-            icon={<MaterialIcons name="format-list-bulleted" size={20} color={Palette.textStrong} />}
+            icon={<MaterialIcons name="format-list-bulleted" size={20} color={palette.textStrong} />}
             style={{ width: "100%" }}
           />
         ) : null}
@@ -574,7 +580,7 @@ export default function QuizScreen() {
           hitSlop={6}
           style={({ pressed }) => [styles.stopRow, pressed && { opacity: 0.5 }]}
         >
-          <MaterialIcons name="undo" size={14} color={Palette.textMuted} />
+          <MaterialIcons name="undo" size={14} color={palette.textMuted} />
           <Text style={styles.stopLabel}>Zpět na výběr</Text>
         </Pressable>
 
@@ -605,7 +611,7 @@ export default function QuizScreen() {
         />
         <View style={styles.startCard}>
           <View style={styles.startTitleRow}>
-            <MaterialIcons name="track-changes" size={22} color={Palette.accent} />
+            <MaterialIcons name="track-changes" size={22} color={palette.accent} />
             <Text style={styles.startTitle}>Připraveno k opakování</Text>
           </View>
           <Text style={styles.startSubtitle}>
@@ -665,7 +671,7 @@ export default function QuizScreen() {
             disabled={startDisabled}
             icon={
               !startDisabled ? (
-                <MaterialIcons name="play-arrow" size={22} color={Palette.textInverse} />
+                <MaterialIcons name="play-arrow" size={22} color={palette.textInverse} />
               ) : undefined
             }
             style={{ width: "100%" }}
@@ -765,14 +771,14 @@ export default function QuizScreen() {
             <PrimaryButton
               label="Nevěděl"
               variant="danger"
-              icon={<MaterialIcons name="close" size={18} color={Palette.danger} />}
+              icon={<MaterialIcons name="close" size={18} color={palette.danger} />}
               onPress={() => answerFlashcard(false)}
               style={{ flex: 1 }}
             />
             <PrimaryButton
               label="Věděl"
               variant="success"
-              icon={<MaterialIcons name="check" size={18} color={Palette.textInverse} />}
+              icon={<MaterialIcons name="check" size={18} color={palette.textInverse} />}
               onPress={() => answerFlashcard(true)}
               style={{ flex: 1 }}
             />
@@ -784,7 +790,7 @@ export default function QuizScreen() {
           hitSlop={6}
           style={({ pressed }) => [styles.stopRow, pressed && { opacity: 0.5 }]}
         >
-          <MaterialIcons name="undo" size={14} color={Palette.textMuted} />
+          <MaterialIcons name="undo" size={14} color={palette.textMuted} />
           <Text style={styles.stopLabel}>Ukončit opakování</Text>
         </Pressable>
       </Screen>
@@ -870,13 +876,13 @@ export default function QuizScreen() {
             <MaterialIcons
               name={mcqWasCorrect ? "check-circle" : "cancel"}
               size={20}
-              color={mcqWasCorrect ? Palette.brandDark : Palette.danger}
+              color={mcqWasCorrect ? palette.brandDark : palette.danger}
             />
             <View style={styles.mcqFeedbackTexts}>
               <Text
                 style={[
                   styles.mcqFeedbackTitle,
-                  { color: mcqWasCorrect ? Palette.brandDark : Palette.danger },
+                  { color: mcqWasCorrect ? palette.brandDark : palette.danger },
                 ]}
               >
                 {mcqWasCorrect ? "Správně" : "Špatně"}
@@ -895,7 +901,7 @@ export default function QuizScreen() {
           <PrimaryButton
             label="Další"
             onPress={continueAfterMcq}
-            icon={<MaterialIcons name="arrow-forward" size={18} color={Palette.textInverse} />}
+            icon={<MaterialIcons name="arrow-forward" size={18} color={palette.textInverse} />}
             style={{ width: "100%" }}
           />
         ) : null}
@@ -905,7 +911,7 @@ export default function QuizScreen() {
           hitSlop={6}
           style={({ pressed }) => [styles.stopRow, pressed && { opacity: 0.5 }]}
         >
-          <MaterialIcons name="undo" size={14} color={Palette.textMuted} />
+          <MaterialIcons name="undo" size={14} color={palette.textMuted} />
           <Text style={styles.stopLabel}>Ukončit opakování</Text>
         </Pressable>
       </Screen>
@@ -956,7 +962,7 @@ export default function QuizScreen() {
           if (typedRevealWrong) setTypedRevealWrong(false);
         }}
         placeholder={direction === "it-cz" ? "česky…" : "italsky…"}
-        placeholderTextColor={Palette.textMuted}
+        placeholderTextColor={palette.textMuted}
         autoCapitalize="none"
         autoCorrect={false}
         editable={!typedRevealWrong}
@@ -986,7 +992,7 @@ export default function QuizScreen() {
         hitSlop={6}
         style={({ pressed }) => [styles.stopRow, pressed && { opacity: 0.5 }]}
       >
-        <MaterialIcons name="undo" size={14} color={Palette.textMuted} />
+        <MaterialIcons name="undo" size={14} color={palette.textMuted} />
         <Text style={styles.stopLabel}>Ukončit opakování</Text>
       </Pressable>
     </Screen>
@@ -1000,6 +1006,7 @@ function DirectionToggle({
   value: Direction;
   onChange: (d: Direction) => void;
 }) {
+  const styles = useThemedStyles(createStyles);
   return (
     <View style={styles.toggle}>
       <ToggleItem label="IT → CZ" active={value === "it-cz"} onPress={() => onChange("it-cz")} />
@@ -1017,6 +1024,8 @@ function AddToVocabPill({
   alreadyOwned: boolean;
   onAdd: () => void;
 }) {
+  const { palette } = useTheme();
+  const styles = useThemedStyles(createStyles);
   if (!visible) return null;
   return (
     <Pressable
@@ -1034,7 +1043,7 @@ function AddToVocabPill({
       <MaterialIcons
         name={alreadyOwned ? "check" : "bookmark-add"}
         size={16}
-        color={alreadyOwned ? Palette.brandDark : Palette.textInverse}
+        color={alreadyOwned ? palette.brandDark : palette.textInverse}
       />
       <Text style={[styles.addPillLabel, alreadyOwned && styles.addPillLabelDone]}>
         {alreadyOwned ? "Už máš ve slovíčkách" : "Přidat do slovíček"}
@@ -1052,6 +1061,7 @@ function ToggleItem({
   active: boolean;
   onPress: () => void;
 }) {
+  const styles = useThemedStyles(createStyles);
   return (
     <Pressable onPress={onPress} style={[styles.toggleItem, active && styles.toggleItemActive]}>
       <Text style={[styles.toggleLabel, active && styles.toggleLabelActive]}>{label}</Text>
@@ -1060,6 +1070,9 @@ function ToggleItem({
 }
 
 function StarsRow({ stars, size = 36 }: { stars: QuizStars; size?: number }) {
+  const { palette } = useTheme();
+  const styles = useThemedStyles(createStyles);
+
   return (
     <View style={styles.starsRow}>
       {[1, 2, 3].map((i) => {
@@ -1069,7 +1082,7 @@ function StarsRow({ stars, size = 36 }: { stars: QuizStars; size?: number }) {
             key={i}
             name={filled ? "star" : "star-border"}
             size={size}
-            color={filled ? Palette.ochre : Palette.border}
+            color={filled ? palette.ochre : palette.border}
           />
         );
       })}
@@ -1108,9 +1121,11 @@ function HistoryRow({
   onPress?: () => void;
   onDelete?: () => void;
 }) {
+  const { palette } = useTheme();
+  const styles = useThemedStyles(createStyles);
   const accuracy = entry.questions === 0 ? 0 : Math.round((entry.correct / entry.questions) * 100);
   const accuracyTone =
-    accuracy >= 80 ? Palette.brandDark : accuracy >= 50 ? Palette.ochre : Palette.danger;
+    accuracy >= 80 ? palette.brandDark : accuracy >= 50 ? palette.ochre : palette.danger;
   // Older entries (saved before the stars feature) don't carry `stars` — fall
   // back to recomputing it from the persisted accuracy so the UI stays uniform.
   const stars = entry.stars ?? quizStars(accuracy);
@@ -1143,7 +1158,7 @@ function HistoryRow({
               accessibilityLabel="Smazat tento záznam"
               style={({ pressed }) => [styles.historyRowDelete, pressed && { opacity: 0.5 }]}
             >
-              <MaterialIcons name="close" size={16} color={Palette.textMuted} />
+              <MaterialIcons name="close" size={16} color={palette.textMuted} />
             </Pressable>
           ) : null}
         </View>
@@ -1159,7 +1174,7 @@ function HistoryRow({
               key={i}
               name={i <= stars ? "star" : "star-border"}
               size={14}
-              color={i <= stars ? Palette.ochre : Palette.border}
+              color={i <= stars ? palette.ochre : palette.border}
             />
           ))}
         </View>
@@ -1172,7 +1187,7 @@ function HistoryRow({
         {hasDetail ? (
           <View style={styles.historyDetailHint}>
             <Text style={styles.historyDetailHintText}>Detail</Text>
-            <MaterialIcons name="chevron-right" size={16} color={Palette.textMuted} />
+            <MaterialIcons name="chevron-right" size={16} color={palette.textMuted} />
           </View>
         ) : null}
       </View>
@@ -1191,11 +1206,13 @@ function HistoryList({
   onOpenDetail: (id: string) => void;
   onDeleteOne: (id: string) => void;
 }) {
+  const { palette } = useTheme();
+  const styles = useThemedStyles(createStyles);
   return (
     <View style={styles.historyCard}>
       <View style={styles.historyHeader}>
         <View style={styles.historyHeaderLeft}>
-          <MaterialIcons name="history" size={18} color={Palette.textMuted} />
+          <MaterialIcons name="history" size={18} color={palette.textMuted} />
           <Text style={styles.historyTitle}>Poslední opakování</Text>
         </View>
         <Pressable
@@ -1235,6 +1252,8 @@ function HistoryDetailModal({
   onClose: () => void;
   onDelete: (id: string) => void;
 }) {
+  const { palette } = useTheme();
+  const styles = useThemedStyles(createStyles);
   const [filter, setFilter] = useState<HistoryDetailFilter>("all");
   // Reset the filter whenever the user opens a different entry so the chips
   // don't carry over a stale selection between sessions.
@@ -1281,7 +1300,7 @@ function HistoryDetailModal({
             accessibilityRole="button"
             accessibilityLabel="Smazat záznam"
           >
-            <MaterialIcons name="delete-outline" size={20} color={Palette.danger} />
+            <MaterialIcons name="delete-outline" size={20} color={palette.danger} />
           </Pressable>
           <Pressable
             onPress={onClose}
@@ -1290,7 +1309,7 @@ function HistoryDetailModal({
             accessibilityRole="button"
             accessibilityLabel="Zavřít detail"
           >
-            <MaterialIcons name="close" size={22} color={Palette.textStrong} />
+            <MaterialIcons name="close" size={22} color={palette.textStrong} />
           </Pressable>
         </View>
 
@@ -1333,6 +1352,9 @@ function HistoryDetailModal({
 }
 
 function AnswerLogRow({ index, answer }: { index: number; answer: QuizAnswerLog }) {
+  const { palette } = useTheme();
+  const styles = useThemedStyles(createStyles);
+
   const formatLabel =
     answer.format === "flashcard" ? "Kartička" : answer.format === "mcq" ? "Výběr" : "Psaní";
   return (
@@ -1347,7 +1369,7 @@ function AnswerLogRow({ index, answer }: { index: number; answer: QuizAnswerLog 
         <MaterialIcons
           name={answer.correct ? "check-circle" : "cancel"}
           size={20}
-          color={answer.correct ? Palette.brandDark : Palette.danger}
+          color={answer.correct ? palette.brandDark : palette.danger}
         />
       </View>
       <View style={{ flex: 1, gap: 4 }}>
@@ -1365,12 +1387,13 @@ function AnswerLogRow({ index, answer }: { index: number; answer: QuizAnswerLog 
   );
 }
 
-const styles = StyleSheet.create({
+function createStyles(p: ColorPalette, s: ThemeShadows) {
+  return StyleSheet.create({
   startCard: {
-    backgroundColor: Palette.surface,
+    backgroundColor: p.surface,
     borderRadius: Radius.lg,
     borderWidth: 1,
-    borderColor: Palette.border,
+    borderColor: p.border,
     padding: Spacing.xl,
     gap: Spacing.md,
     alignItems: "stretch",
@@ -1381,30 +1404,30 @@ const styles = StyleSheet.create({
     gap: Spacing.sm,
     alignSelf: "center",
   },
-  startTitle: { fontFamily: Typography.display.fontFamily, fontSize: 18, color: Palette.textStrong },
-  startSubtitle: { ...Typography.small, color: Palette.textMuted, textAlign: "center" },
-  modeLabel: { ...Typography.smallStrong, color: Palette.textMuted, marginTop: Spacing.xs },
+  startTitle: { fontFamily: Typography.display.fontFamily, fontSize: 18, color: p.textStrong },
+  startSubtitle: { ...Typography.small, color: p.textMuted, textAlign: "center" },
+  modeLabel: { ...Typography.smallStrong, color: p.textMuted, marginTop: Spacing.xs },
   modeRow: { flexDirection: "row", flexWrap: "wrap", gap: Spacing.sm },
   modeHint: {
     ...Typography.small,
-    color: Palette.textMuted,
+    color: p.textMuted,
     fontStyle: "italic",
     lineHeight: 18,
   },
   progressTrack: {
     height: 8,
     borderRadius: Radius.pill,
-    backgroundColor: Palette.surfaceMuted,
+    backgroundColor: p.surfaceMuted,
     overflow: "hidden",
   },
-  progressFill: { height: "100%", backgroundColor: Palette.brand, borderRadius: Radius.pill },
+  progressFill: { height: "100%", backgroundColor: p.brand, borderRadius: Radius.pill },
   progressMeta: { flexDirection: "row", justifyContent: "space-between" },
-  progressLabel: { ...Typography.small, color: Palette.textMuted },
-  progressCount: { ...Typography.smallStrong, color: Palette.brandDark },
+  progressLabel: { ...Typography.small, color: p.textMuted },
+  progressCount: { ...Typography.smallStrong, color: p.brandDark },
   toggle: {
     alignSelf: "flex-start",
     flexDirection: "row",
-    backgroundColor: Palette.surfaceMuted,
+    backgroundColor: p.surfaceMuted,
     borderRadius: Radius.pill,
     padding: 4,
   },
@@ -1413,55 +1436,55 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: Radius.pill,
   },
-  toggleItemActive: { backgroundColor: Palette.surface, ...Shadow.card },
+  toggleItemActive: { backgroundColor: p.surface, ...s.card },
   toggleLabel: {
     fontFamily: Typography.bodyStrong.fontFamily,
-    color: Palette.textMuted,
+    color: p.textMuted,
     fontSize: 13,
   },
-  toggleLabelActive: { color: Palette.textStrong },
+  toggleLabelActive: { color: p.textStrong },
   card: {
-    backgroundColor: Palette.surface,
+    backgroundColor: p.surface,
     borderRadius: Radius.xl,
     padding: Spacing.xl + 4,
     gap: Spacing.md,
     alignItems: "center",
     borderWidth: 1,
-    borderColor: Palette.border,
-    ...Shadow.pop,
+    borderColor: p.border,
+    ...s.pop,
   },
   hint: {
     fontFamily: Typography.display.fontFamily,
     fontSize: 11,
     letterSpacing: 1.6,
-    color: Palette.accent,
+    color: p.accent,
     textAlign: "center",
   },
   word: {
     fontFamily: Typography.display.fontFamily,
     fontSize: 38,
-    color: Palette.textStrong,
+    color: p.textStrong,
     textAlign: "center",
   },
   clozeText: {
     fontFamily: Typography.bodyStrong.fontFamily,
     fontSize: 18,
-    color: Palette.textStrong,
+    color: p.textStrong,
     textAlign: "center",
     lineHeight: 26,
     paddingHorizontal: Spacing.sm,
   },
-  cardPron: { ...Typography.bodyStrong, color: Palette.textMuted, fontStyle: "italic" },
+  cardPron: { ...Typography.bodyStrong, color: p.textMuted, fontStyle: "italic" },
   answerBox: {
     width: "100%",
     paddingTop: Spacing.md,
     borderTopWidth: 1,
-    borderTopColor: Palette.border,
+    borderTopColor: p.border,
     alignItems: "center",
     gap: Spacing.sm,
   },
-  answerLabel: { ...Typography.caption, color: Palette.textMuted, letterSpacing: 1.4 },
-  answer: { fontFamily: Typography.display.fontFamily, fontSize: 22, color: Palette.brandDark },
+  answerLabel: { ...Typography.caption, color: p.textMuted, letterSpacing: 1.4 },
+  answer: { fontFamily: Typography.display.fontFamily, fontSize: 22, color: p.brandDark },
   answersRow: { flexDirection: "row", gap: Spacing.sm + 2 },
   mcqGrid: { flexDirection: "row", flexWrap: "wrap", gap: Spacing.sm + 2 },
   mcqBtn: {
@@ -1470,29 +1493,29 @@ const styles = StyleSheet.create({
     minHeight: 52,
     paddingHorizontal: Spacing.md,
     borderRadius: Radius.md,
-    backgroundColor: Palette.surface,
+    backgroundColor: p.surface,
     borderWidth: 1.5,
-    borderColor: Palette.border,
+    borderColor: p.border,
     justifyContent: "center",
     alignItems: "center",
-    ...Shadow.card,
+    ...s.card,
   },
   mcqBtnCorrect: {
-    backgroundColor: Palette.brand,
-    borderColor: Palette.brandDark,
+    backgroundColor: p.brand,
+    borderColor: p.brandDark,
   },
   mcqBtnWrong: {
-    backgroundColor: Palette.danger,
-    borderColor: Palette.danger,
+    backgroundColor: p.danger,
+    borderColor: p.danger,
   },
   mcqBtnDimmed: { opacity: 0.55 },
   mcqBtnLabel: {
     ...Typography.bodyStrong,
-    color: Palette.textStrong,
+    color: p.textStrong,
     textAlign: "center",
     fontSize: 15,
   },
-  mcqBtnLabelOnFill: { color: Palette.textInverse },
+  mcqBtnLabelOnFill: { color: p.textInverse },
   mcqFeedback: {
     flexDirection: "row",
     alignItems: "center",
@@ -1502,37 +1525,37 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   mcqFeedbackOk: {
-    backgroundColor: Palette.brandSoft,
-    borderColor: Palette.brand,
+    backgroundColor: p.brandSoft,
+    borderColor: p.brand,
   },
   mcqFeedbackBad: {
-    backgroundColor: Palette.accentSoft,
-    borderColor: Palette.danger,
+    backgroundColor: p.accentSoft,
+    borderColor: p.danger,
   },
   mcqFeedbackTexts: { flex: 1, gap: 2 },
   mcqFeedbackTitle: { ...Typography.bodyStrong, fontSize: 15 },
-  mcqFeedbackAnswer: { ...Typography.small, color: Palette.text },
-  mcqFeedbackAnswerStrong: { ...Typography.bodyStrong, color: Palette.textStrong },
+  mcqFeedbackAnswer: { ...Typography.small, color: p.text },
+  mcqFeedbackAnswerStrong: { ...Typography.bodyStrong, color: p.textStrong },
   typedField: {
     ...Typography.body,
-    backgroundColor: Palette.surface,
+    backgroundColor: p.surface,
     borderRadius: Radius.md,
     borderWidth: 1,
-    borderColor: Palette.border,
+    borderColor: p.border,
     paddingHorizontal: Spacing.lg,
     paddingVertical: 14,
-    color: Palette.textStrong,
+    color: p.textStrong,
   },
   typedWrongBox: { gap: Spacing.md, width: "100%" },
-  typedWrongLabel: { ...Typography.small, color: Palette.textMuted },
-  typedWrongAnswer: { ...Typography.bodyStrong, color: Palette.brandDark, fontSize: 18 },
+  typedWrongLabel: { ...Typography.small, color: p.textMuted },
+  typedWrongAnswer: { ...Typography.bodyStrong, color: p.brandDark, fontSize: 18 },
   stopRow: {
     flexDirection: "row",
     gap: Spacing.xs + 2,
     alignSelf: "center",
     alignItems: "center",
   },
-  stopLabel: { ...Typography.smallStrong, color: Palette.textMuted, fontSize: 13 },
+  stopLabel: { ...Typography.smallStrong, color: p.textMuted, fontSize: 13 },
   addPill: {
     flexDirection: "row",
     alignItems: "center",
@@ -1541,36 +1564,36 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.md,
     paddingVertical: 8,
     borderRadius: Radius.pill,
-    backgroundColor: Palette.brandDark,
+    backgroundColor: p.brandDark,
   },
   addPillDone: {
-    backgroundColor: Palette.brandSoft,
+    backgroundColor: p.brandSoft,
     borderWidth: 1,
-    borderColor: Palette.brand,
+    borderColor: p.brand,
   },
   addPillLabel: {
     ...Typography.smallStrong,
-    color: Palette.textInverse,
+    color: p.textInverse,
     fontSize: 13,
   },
-  addPillLabelDone: { color: Palette.brandDark },
+  addPillLabelDone: { color: p.brandDark },
   resultsCard: {
-    backgroundColor: Palette.surface,
+    backgroundColor: p.surface,
     borderRadius: Radius.xl,
     padding: Spacing.xl,
     gap: Spacing.sm,
     alignItems: "center",
     borderWidth: 1,
-    borderColor: Palette.border,
-    ...Shadow.pop,
+    borderColor: p.border,
+    ...s.pop,
   },
   resultsCardOk: {
-    borderColor: Palette.brand,
-    backgroundColor: Palette.brandSoft,
+    borderColor: p.brand,
+    backgroundColor: p.brandSoft,
   },
   resultsCardFail: {
-    borderColor: Palette.danger,
-    backgroundColor: Palette.accentSoft,
+    borderColor: p.danger,
+    backgroundColor: p.accentSoft,
   },
   resultsTitle: {
     fontFamily: Typography.display.fontFamily,
@@ -1579,28 +1602,28 @@ const styles = StyleSheet.create({
   },
   resultsSubtitle: {
     ...Typography.small,
-    color: Palette.textMuted,
+    color: p.textMuted,
     textAlign: "center",
   },
   resultsScore: {
     fontFamily: Typography.display.fontFamily,
     fontSize: 48,
-    color: Palette.textStrong,
+    color: p.textStrong,
     marginTop: Spacing.sm,
   },
   resultsScoreSlash: {
     fontFamily: Typography.display.fontFamily,
     fontSize: 28,
-    color: Palette.textMuted,
+    color: p.textMuted,
   },
   resultsPercent: {
     ...Typography.bodyStrong,
-    color: Palette.textMuted,
+    color: p.textMuted,
     fontSize: 18,
   },
   resultsBonus: {
     ...Typography.smallStrong,
-    color: Palette.brandDark,
+    color: p.brandDark,
     marginTop: Spacing.xs,
   },
   starsRow: {
@@ -1613,10 +1636,10 @@ const styles = StyleSheet.create({
     gap: 2,
   },
   historyCard: {
-    backgroundColor: Palette.surface,
+    backgroundColor: p.surface,
     borderRadius: Radius.lg,
     borderWidth: 1,
-    borderColor: Palette.border,
+    borderColor: p.border,
     padding: Spacing.lg,
     gap: Spacing.md,
   },
@@ -1626,13 +1649,13 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   historyHeaderLeft: { flexDirection: "row", alignItems: "center", gap: Spacing.sm },
-  historyTitle: { ...Typography.bodyStrong, color: Palette.textStrong, fontSize: 14 },
-  historyClear: { ...Typography.smallStrong, color: Palette.textMuted, fontSize: 12 },
+  historyTitle: { ...Typography.bodyStrong, color: p.textStrong, fontSize: 14 },
+  historyClear: { ...Typography.smallStrong, color: p.textMuted, fontSize: 12 },
   historyList: { gap: Spacing.sm + 2 },
   historyRow: {
     paddingVertical: Spacing.sm,
     borderTopWidth: 1,
-    borderTopColor: Palette.border,
+    borderTopColor: p.border,
     gap: 4,
   },
   historyTopRow: {
@@ -1640,16 +1663,16 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
-  historyMode: { ...Typography.bodyStrong, color: Palette.textStrong, fontSize: 13 },
+  historyMode: { ...Typography.bodyStrong, color: p.textStrong, fontSize: 13 },
   historyTopRight: { flexDirection: "row", alignItems: "center", gap: Spacing.sm },
-  historyWhen: { ...Typography.small, color: Palette.textMuted },
+  historyWhen: { ...Typography.small, color: p.textMuted },
   historyRowDelete: {
     width: 24,
     height: 24,
     borderRadius: 12,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: Palette.surfaceMuted,
+    backgroundColor: p.surfaceMuted,
   },
   historyStatsRow: {
     flexDirection: "row",
@@ -1657,9 +1680,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: Spacing.sm,
   },
-  historyStat: { ...Typography.bodyStrong, color: Palette.textStrong, fontSize: 13 },
+  historyStat: { ...Typography.bodyStrong, color: p.textStrong, fontSize: 13 },
   historyAccuracy: { ...Typography.smallStrong, fontSize: 12 },
-  historyMeta: { ...Typography.small, color: Palette.textMuted, flexShrink: 1, textAlign: "left" },
+  historyMeta: { ...Typography.small, color: p.textMuted, flexShrink: 1, textAlign: "left" },
   historyBottomRow: {
     flexDirection: "row",
     alignItems: "center",
@@ -1667,25 +1690,25 @@ const styles = StyleSheet.create({
     gap: Spacing.sm,
   },
   historyDetailHint: { flexDirection: "row", alignItems: "center", gap: 2 },
-  historyDetailHintText: { ...Typography.smallStrong, color: Palette.textMuted, fontSize: 12 },
-  detailContainer: { flex: 1, backgroundColor: Palette.background, padding: Spacing.lg, gap: Spacing.md },
+  historyDetailHintText: { ...Typography.smallStrong, color: p.textMuted, fontSize: 12 },
+  detailContainer: { flex: 1, backgroundColor: p.background, padding: Spacing.lg, gap: Spacing.md },
   detailHeader: {
     flexDirection: "row",
     alignItems: "flex-start",
     gap: Spacing.md,
     paddingTop: Spacing.sm,
   },
-  detailTitle: { fontFamily: Typography.display.fontFamily, fontSize: 22, color: Palette.textStrong },
-  detailSubtitle: { ...Typography.small, color: Palette.textMuted, fontSize: 13 },
+  detailTitle: { fontFamily: Typography.display.fontFamily, fontSize: 22, color: p.textStrong },
+  detailSubtitle: { ...Typography.small, color: p.textMuted, fontSize: 13 },
   detailClose: {
     width: 36,
     height: 36,
     borderRadius: 18,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: Palette.surface,
+    backgroundColor: p.surface,
     borderWidth: 1,
-    borderColor: Palette.border,
+    borderColor: p.border,
   },
   detailDelete: {
     width: 36,
@@ -1693,15 +1716,15 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: Palette.surface,
+    backgroundColor: p.surface,
     borderWidth: 1,
-    borderColor: Palette.danger,
+    borderColor: p.danger,
   },
   detailFilterRow: { flexDirection: "row", flexWrap: "wrap", gap: Spacing.sm },
   detailListContent: { gap: Spacing.sm, paddingBottom: Spacing.xl },
   detailEmpty: {
     ...Typography.body,
-    color: Palette.textMuted,
+    color: p.textMuted,
     textAlign: "center",
     paddingVertical: Spacing.xl,
   },
@@ -1710,22 +1733,24 @@ const styles = StyleSheet.create({
     gap: Spacing.md,
     padding: Spacing.md,
     borderRadius: Radius.md,
-    backgroundColor: Palette.surface,
+    backgroundColor: p.surface,
     borderWidth: 1,
-    borderColor: Palette.border,
+    borderColor: p.border,
   },
-  answerRowOk: { borderColor: Palette.brand, backgroundColor: Palette.brandSoft },
-  answerRowFail: { borderColor: Palette.danger, backgroundColor: "#FFE9E5" },
+  answerRowOk: { borderColor: p.brand, backgroundColor: p.brandSoft },
+  answerRowFail: { borderColor: p.danger, backgroundColor: "#FFE9E5" },
   answerIndexCol: { alignItems: "center", gap: 4, minWidth: 28 },
-  answerIndex: { ...Typography.smallStrong, color: Palette.textMuted, fontSize: 12 },
+  answerIndex: { ...Typography.smallStrong, color: p.textMuted, fontSize: 12 },
   answerIt: {
     fontFamily: Typography.bodyStrong.fontFamily,
-    color: Palette.textStrong,
+    color: p.textStrong,
     fontSize: 16,
     fontStyle: "italic",
   },
-  answerCz: { ...Typography.body, color: Palette.text, fontSize: 14 },
-  answerGiven: { ...Typography.small, color: Palette.text, fontSize: 13 },
-  answerGivenLabel: { ...Typography.smallStrong, color: Palette.textMuted },
-  answerMeta: { ...Typography.small, color: Palette.textMuted, fontSize: 11 },
-});
+  answerCz: { ...Typography.body, color: p.text, fontSize: 14 },
+  answerGiven: { ...Typography.small, color: p.text, fontSize: 13 },
+  answerGivenLabel: { ...Typography.smallStrong, color: p.textMuted },
+  answerMeta: { ...Typography.small, color: p.textMuted, fontSize: 11 },
+  });
+}
+

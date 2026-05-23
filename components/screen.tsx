@@ -8,7 +8,10 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { Palette, Spacing } from "@/constants/theme";
+import type { ColorPalette } from "@/constants/theme";
+import { Spacing, TabBarMetrics } from "@/constants/theme";
+import { useThemedStyles } from "@/hooks/use-themed-styles";
+import { useTheme } from "@/lib/theme/theme-context";
 
 type Props = {
   children: React.ReactNode;
@@ -16,21 +19,18 @@ type Props = {
   style?: ViewStyle;
 };
 
-/** Floating tab bar height + bottom inset + breathing room so the last screen
- * element (e.g. a "Stop" link) is not visually glued to the bar. */
-const TAB_BAR_SAFE_PADDING = 140;
+/** Fixed tab bar + home indicator + extra scroll breathing room. */
+const TAB_BAR_SAFE_PADDING = TabBarMetrics.barHeight + 48;
 
 export function Screen({ children, scroll = true, style }: Props) {
+  const { palette } = useTheme();
+  const styles = useThemedStyles(createStyles);
+
   const inner = scroll ? (
     <ScrollView
       contentContainerStyle={[styles.container, style]}
       showsVerticalScrollIndicator={false}
-      // Lets the user tap a "Send"/"Submit" button without the keyboard
-      // intercepting the first tap to dismiss itself.
       keyboardShouldPersistTaps="handled"
-      // On iOS the system tries to scroll the focused TextInput into view but
-      // its default offset assumes a screen-level inset; ours is the floating
-      // tab bar so we set it explicitly.
       automaticallyAdjustKeyboardInsets
       contentInsetAdjustmentBehavior="automatic"
     >
@@ -41,13 +41,10 @@ export function Screen({ children, scroll = true, style }: Props) {
   );
 
   return (
-    <SafeAreaView edges={["top"]} style={styles.flex}>
+    <SafeAreaView edges={["top"]} style={[styles.flex, { backgroundColor: palette.background }]}>
       <KeyboardAvoidingView
         style={styles.flex}
         behavior={Platform.OS === "ios" ? "padding" : undefined}
-        // iOS keyboard would otherwise overlap the bottom of the focused
-        // input by `Screen`'s top safe-area inset; we already use `edges:
-        // ["top"]` so 0 is correct here.
         keyboardVerticalOffset={0}
       >
         {inner}
@@ -56,12 +53,14 @@ export function Screen({ children, scroll = true, style }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
-  flex: { flex: 1, backgroundColor: Palette.background },
-  container: {
-    paddingHorizontal: Spacing.lg,
-    paddingTop: Spacing.sm,
-    paddingBottom: TAB_BAR_SAFE_PADDING,
-    gap: Spacing.xl,
-  },
-});
+function createStyles(p: ColorPalette) {
+  return StyleSheet.create({
+    flex: { flex: 1, backgroundColor: p.background },
+    container: {
+      paddingHorizontal: Spacing.lg,
+      paddingTop: Spacing.sm,
+      paddingBottom: TAB_BAR_SAFE_PADDING,
+      gap: Spacing.xl,
+    },
+  });
+}

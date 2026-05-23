@@ -1,0 +1,87 @@
+{
+  "outputDir": ".uuapp-output",
+  "environments": {
+    "my-project-int": {
+      "oidc": {
+        "strategy": "grantToken",
+        "grantTokenUri": "https://int.my-project.local/uu-oidc-maing02/00000000000000000000000000000001/oidc/grantToken",
+        "accessCode1": "<FILL_IN>",
+        "accessCode2": "<FILL_IN>",
+        "scope": "openid http:// https://"
+      },
+      "apps": {
+        "gateway": {
+          "baseUri": "https://int.my-project.local/uu-gateway-maing01/a1a1a1a1a1a1a1a1a1a1a1a1/",
+          "commands": [
+            {
+              "name": "getHealth",
+              "description": "Check gateway health",
+              "useCase": "sys/getHealth",
+              "method": "GET",
+              "outputTransform": "{ \"status\": serverStatus, \"version\": uuSubAppVersion }",
+              "outputFormat": "json",
+              "outputDescription": "Object with keys: status, version"
+            },
+            {
+              "name": "importData",
+              "description": "Import data from external source",
+              "useCase": "data/import",
+              "method": "POST",
+              "dtoInSchema": {
+                "sourceId": {
+                  "type": "string",
+                  "required": true,
+                  "description": "ID of the data source to import from"
+                },
+                "dryRun": {
+                  "type": "boolean",
+                  "required": false,
+                  "description": "If true, validate without importing (default false)"
+                }
+              },
+              "outputFormat": "json",
+              "outputDescription": "Import result with counts: imported, skipped, errors"
+            }
+          ]
+        },
+        "analytics": {
+          "baseUri": "https://int.my-project.local/uu-analytics-maing01/b2b2b2b2b2b2b2b2b2b2b2b2/",
+          "commands": [
+            {
+              "name": "getHealth",
+              "description": "Check analytics app health",
+              "useCase": "sys/getHealth",
+              "method": "GET"
+            },
+            {
+              "name": "getReport",
+              "description": "Generate analytics report for a date range",
+              "useCase": "report/get",
+              "method": "GET",
+              "dtoInSchema": {
+                "dateFrom": {
+                  "type": "string",
+                  "required": true,
+                  "description": "Start date in ISO 8601 format"
+                },
+                "dateTo": {
+                  "type": "string",
+                  "required": true,
+                  "description": "End date in ISO 8601 format"
+                },
+                "type": {
+                  "type": "string",
+                  "required": false,
+                  "description": "Report type: summary | detailed (default: summary)"
+                }
+              },
+              "outputFormat": "markdown",
+              "outputDescription": "Report table with columns: date, metric, value, change",
+              "maxOutputSize": 524288
+            }
+          ]
+        }
+      }
+    }
+  }
+}

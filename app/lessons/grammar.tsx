@@ -9,7 +9,10 @@ import { PlayButton } from "@/components/play-button";
 import { Screen } from "@/components/screen";
 import { ScreenHeader } from "@/components/screen-header";
 import { SectionCard } from "@/components/section-card";
-import { Palette, Spacing, Typography } from "@/constants/theme";
+import type { ColorPalette } from "@/constants/theme";
+import { Spacing, Typography } from "@/constants/theme";
+import { useThemedStyles } from "@/hooks/use-themed-styles";
+
 import { useItalianTts } from "@/hooks/use-italian-tts";
 import { useSyncedJson } from "@/hooks/use-synced-json";
 
@@ -35,6 +38,7 @@ function speakablePhrase(pronoun: string, form: string): string {
 }
 
 export default function GrammarScreen() {
+  const styles = useThemedStyles(createStyles);
   const { data } = useSyncedJson("grammar", grammarFallback as GrammarData);
   const tts = useItalianTts();
 
@@ -118,7 +122,8 @@ export default function GrammarScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+function createStyles(p: ColorPalette) {
+  return StyleSheet.create({
   chipsScroll: {
     marginBottom: Spacing.md,
   },
@@ -132,28 +137,28 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 8,
     borderBottomWidth: 1,
-    borderBottomColor: Palette.border,
+    borderBottomColor: p.border,
   },
   tableRow: {
     flexDirection: "row",
     alignItems: "center",
     paddingVertical: 10,
     borderBottomWidth: 1,
-    borderBottomColor: Palette.border,
+    borderBottomColor: p.border,
   },
   tableRowLast: { borderBottomWidth: 0 },
-  cell: { ...Typography.body, color: Palette.text, fontSize: 17 },
+  cell: { ...Typography.body, color: p.text, fontSize: 17 },
   cellHead: {
     fontFamily: Typography.bodyStrong.fontFamily,
-    color: Palette.textMuted,
+    color: p.textMuted,
     fontSize: 12,
     textTransform: "uppercase",
     letterSpacing: 0.6,
   },
-  cellIt: { color: Palette.textStrong, fontFamily: Typography.bodyStrong.fontFamily, fontSize: 19 },
+  cellIt: { color: p.textStrong, fontFamily: Typography.bodyStrong.fontFamily, fontSize: 19 },
   cellPron: {
     ...Typography.small,
-    color: Palette.textMuted,
+    color: p.textMuted,
     fontStyle: "italic",
     fontSize: 13,
     marginTop: 2,
@@ -163,4 +168,5 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
     justifyContent: "center",
   },
-});
+  });
+}

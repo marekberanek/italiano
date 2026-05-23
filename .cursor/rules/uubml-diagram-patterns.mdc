@@ -1,0 +1,673 @@
+---
+description: Visual patterns and conventions for UU5 client-side component diagrams and uuApp topology diagrams — icon stencils, importance levels, connector patterns (direction, routing, relations, line styles, presets, callouts), layout patterns, labels, and naming conventions
+alwaysApply: false
+---
+
+# UU5 Component Diagram Patterns
+
+## Table of Contents
+
+1. Introduction
+2. Core Principles
+3. Icon Stencil Reference
+4. Importance Levels
+5. Connector Patterns
+   - 5.1-5.3 Direction and Routing
+   - 5.4 Relation Types
+   - 5.5 Line Styles
+   - 5.6 Connection Presets (Helper Methods)
+   - 5.7 Annotation Bubbles (Callouts)
+6. Layout Patterns
+7. Icon Labels
+8. Naming Conventions
+9. Best Practices
+10. Reference Template
+11. Troubleshooting
+
+## 1. Introduction
+
+This rule defines visual patterns and conventions for **UU5 client-side component diagrams** and **uuApp topology diagrams**. It is NOT a general rule for all uuBml diagram types.
+
+### 1.1 Scope
+
+This rule covers:
+
+- **UU5 Component Diagrams** — Visual representations of client-side component hierarchies (routes, visual components, non-visual components, hooks, methods, uuCommands)
+- **uuApp Topology Diagrams** — Application structure showing uuApp, uuSubApps, data stores, and libraries
+
+This rule does NOT cover:
+- General uuBml diagrams (use cases, activity diagrams, etc.)
+- Server-side command flow diagrams
+- Business process diagrams
+- Other specialized uuBml diagram types
+
+### 1.2 Key Characteristics
+
+- Visual conventions follow the official uuBml Cheatsheet and uuApp Model conventions
+- Diagrams communicate one clear idea with consistent styling
+- Elements use proper importance levels reflecting their semantic role
+- Connectors use appropriate routing (diagonal or orthogonal) based on layout
+- Labels and naming follow established patterns for UU5 components
+
+Use this rule together with the `/bml-diagram` skill (which handles the technical generation).
+
+### 1.3 When to Apply
+
+Apply this rule when:
+- Creating component diagrams for UU5 routes and visual components
+- Creating uuApp topology diagrams showing application structure
+- Documenting client-side component hierarchies
+- Reviewing or validating existing UU5 component diagrams
+
+## 2. Core Principles
+
+These five principles are from the official uuBml Cheatsheet.
+
+### 2.1 One Key Idea Per Diagram
+
+- Each diagram communicates **one clear idea**
+- For complex topics, use **separate diagrams for details**, then a summary diagram combining them
+
+### 2.2 Use Standard uuBml Formats
+
+- Do NOT change established icon styles and colors
+- Use icons **only for their intended purpose**
+- If no matching icon exists, use "Missing Icon" and note it
+- Use association arrows (1:1, aggregation 1:n, etc.) **exactly in their standard meanings**
+
+### 2.3 Style Consistency
+
+- A particular icon must have **only one meaning** within the diagram
+- Use **different arrow formats** for different relationship types
+- Name objects of the same type with **the same word classes** (e.g., activities as infinitives)
+- Attach arrows to **the same socket positions** on icons (not one higher and another lower)
+
+### 2.4 Simplicity and Readability
+
+- Read direction: **left to right, top to bottom**
+- Remove any icon or label that doesn't need to be there
+- **Generate HIGH-LEVEL diagrams by default** — show only the most important components, hooks, and commands
+- Do NOT include every import, helper function, or internal state variable as a separate icon
+- Group HOC chains into a single parent "Route" concept with dashed lines
+
+### 2.5 Alignment and Attachment
+
+- **Always attach** arrows, callouts, and annotations to the icons they reference
+- Do NOT cross or overlap arrows with other objects
+- Arrows should **point to the center** of an icon when possible
+- **Align icons with the grid** (between thicker grid lines)
+- Keep **uniform spacing** between icons
+- Do NOT overlap icon labels
+
+## 3. Icon Stencil Reference
+
+### 3.1 Mandatory Icon Types for UU5 Component Diagrams
+
+These are the **exact stencil and icon code combinations** to use. Do NOT use incorrect stencils. Pass them via `type: { stencil: '...', icon: '...' }` in the generator.
+
+| Element | Stencil | Icon Code | Generator Usage |
+|---|---|---|---|
+| **User visual entrypoint (uu5Uve)** | `uuappmodelkit` | `uu5Uve` | `type: { stencil: 'uuappmodelkit', icon: 'uu5Uve' }` |
+| **Route (uu5Route)** | `uu5` | `route` | `type: { stencil: 'uu5', icon: 'route' }` |
+| **Visual component** | `uu5` | `visualComponent` | `type: { stencil: 'uu5', icon: 'visualComponent' }` |
+| **Non-visual component** | `uu5` | `nonVisualComponent` | `type: { stencil: 'uu5', icon: 'nonVisualComponent' }` |
+| **General component** | `uuappcommon` | `contentComponent` | `type: { stencil: 'uuappcommon', icon: 'contentComponent' }` |
+| **Higher-order component (HoC)** | `uu5` | `higherOrderComponent` | `type: { stencil: 'uu5', icon: 'higherOrderComponent' }` |
+| **uuCommand** | `uuappcommon` | `command` | `type: { stencil: 'uuappcommon', icon: 'command' }` |
+| **Method / Handler** | `uuappcommon` | `method` | `type: { stencil: 'uuappcommon', icon: 'method' }` |
+| **Hook (uu5Hook)** | `uuappmodelkit` | `uu5Hook` | `type: { stencil: 'uuappmodelkit', icon: 'uu5Hook' }` |
+| **Context** | `uuappmodelkit` | `uu5Context` | `type: { stencil: 'uuappmodelkit', icon: 'uu5Context' }` |
+| **Context Provider** | `uu5` | `contextProvider` | `type: { stencil: 'uu5', icon: 'contextProvider' }` |
+| **Context Consumer** | `uu5` | `contextConsumer` | `type: { stencil: 'uu5', icon: 'contextConsumer' }` |
+
+### 3.2 When to Use Each Icon
+
+**Component Types:**
+- **uu5Uve (User Visual Entrypoint)** — Base of uuApp Human Interface, designed as SPA. One application can have multiple uu5Uves.
+- **Route (uu5Route)** — Individually addressable parts of SPA with its own URL. Encapsulates business logic.
+- **Visual component** — Dumb components responsible for visualizing content.
+- **Non-visual component** — Smart components that obtain data and pass it to visual components via props. Can encapsulate business logic.
+- **General component** — Use when unknown whether the component will be visual or non-visual.
+- **Higher-order component (HoC)** — Function that receives a component and returns a new enhanced component without modifying the original.
+
+**Hooks and Context:**
+- **uu5Hook** — Reusable component parts with logic, based on React Hooks.
+- **Context** — Used for passing data through component hierarchy without prop drilling (Provider/Consumer pattern).
+- **Context Provider** — Component that allows consuming components to subscribe to context changes.
+- **Context Consumer** — Component that subscribes to context changes. Note: For each context a hook is automatically generated - prefer using the hook icon in diagrams.
+
+**API and Methods:**
+- **uuCommand** — Non-visual subapplication interface (API layer), represents a particular use case. Icon is always yellow (`highest` importance).
+- **Method / Handler** — Used to indicate interface methods, component methods in interface, or handlers passed via context/props.
+
+### 3.3 uuCommand Callout Rules
+
+- **Always look for uuCmd calls** in the component's providers and hooks. Trace from hooks → providers → `Calls.*` to find the actual server commands.
+- uuCommand icons are **always `highest` importance** (yellow) — no exceptions.
+- Place uuCommand icons to the **right** of the hook/method that calls them.
+- Connect hook → uuCommand with horizontal `association1`, solid line.
+- Label uuCommand icons with the actual command path (e.g., `entityItem/get`, `entityItem/update`).
+
+## 4. Importance Levels
+
+Each importance level maps to a specific visual color. The meaning depends on diagram context.
+
+### 4.1 Color Mapping
+
+| Importance | Color | General Meaning | Component Diagram Meaning |
+|---|---|---|---|
+| `objective` | Orange/amber | The **main subject** of the diagram | The described component |
+| `highest` | Yellow | Primary highlighted elements | **uuCommand** (always yellow) |
+| `high` | Blue | Important supporting elements | Component with **its own detail page** |
+| `normal` | Gray | Standard elements | Common component from another library |
+| `low` | Light gray | Background/future elements | Components for later implementation |
+
+### 4.2 Importance Rules
+
+- The **focal element** of the diagram always gets `objective`
+- **uuCommand icons are ALWAYS `highest`** (yellow) — this is mandatory, no exceptions
+- Parent/container components in component diagrams use `normal` or `low`
+- Components described in detail elsewhere use `high`
+- External library components use `normal` (library identified by namespace, e.g., `Uu5Tiles.List`)
+
+## 5. Connector Patterns
+
+### 5.1 Parent-Child Connectors (Component Hierarchies)
+
+In component hierarchy diagrams, connectors are **straight diagonal lines** from the child's **top-center** to the parent's **bottom-center** socket. This is the standard pattern in official uuBml diagrams:
+
+```json
+"middlePointList": []
+```
+
+When `middlePointList` is empty and the two plug positions have different X and Y coordinates, the result is a **diagonal line**. Children at different horizontal positions naturally create diagonal lines to the parent above.
+
+**Key rules for hierarchy connectors:**
+- Child icon's **top-center socket** connects to parent's **bottom-center socket** (or nearby socket when multiple children share the same parent)
+- Icons on the **same Y position** are at the **same hierarchical level**
+- The parent is always **above** (lower Y value) the children
+- Lines are straight with no breakpoints — diagonal is expected and correct
+
+**When to use diagonal connectors:**
+- Parent-child relationships where children are offset horizontally from the parent
+- Hub-and-spoke layouts (e.g., uuSubApps radiating from uuApp)
+- Any connection where a direct line is clean and doesn't cross other elements
+
+**In the generator**, use `diagonal: true` option:
+```js
+builder.connect(childIcon, parentIcon, { diagonal: true, relationType: 'association1' });
+```
+
+### 5.2 Orthogonal Connectors (Right-Angle Lines)
+
+For situations requiring orthogonal routing, use `middlePointList` with breakpoints:
+
+- **L-shaped**: One breakpoint creates a 90-degree turn
+- **S-shaped**: Two breakpoints create two 90-degree turns
+
+**When to use orthogonal connectors:**
+- Horizontal connections between aligned elements (same Y), e.g., Component → uuCommand
+- Vertical connections between perfectly stacked elements (same X)
+- Complex routing where diagonal lines would cross other elements
+
+### 5.3 Connector Direction Convention
+
+The `startPoint` (with `pointer: "one"`) is on the **child/owned element**. The `endPoint` (with `pointer: "association"`) is on the **parent/owner**:
+
+- Data Store → uuSubApp (store belongs to SubApp)
+- uuSubApp → uuApp (SubApp belongs to App)
+- Child Component → Parent Component
+
+### 5.4 Relation Types
+
+| Relation Type | Start Pointer | End Pointer | When to Use |
+|---|---|---|---|
+| `association1` | `"one"` | `"association"` | 1:1 composition/containment (most common) |
+| `associationN` | `null` | `"association"` | 1:N composition (iteration pattern) |
+| `aggregation1` | `null` | `"aggregation"` | Has-a relationship (hollow diamond) |
+| `aggregationN` | `null` | `"aggregation"` | Object is part of another (in lists/maps) |
+| `composition1` | `null` | `"composition"` | Strong ownership (filled diamond) |
+| `compositionN` | `null` | `"composition"` | Composition with N multiplicity |
+| `inheritance` | `null` | `"inheritance"` | Extends/implements (triangle) |
+| `general` | `null` | `"general"` | Invocation/reference (method → uuCmd) |
+
+**Pointer Types (for custom configurations):**
+| Pointer Value | Visual | Description |
+|---|---|---|
+| `null` | (none) | No pointer/arrow |
+| `"general"` | → | Simple arrow head |
+| `"one"` | 1 | Multiplicity indicator |
+| `"association"` | ◇ | Hollow diamond (association) |
+| `"aggregation"` | ◇ | Hollow diamond (aggregation) |
+| `"composition"` | ◆ | Filled diamond (composition) |
+| `"inheritance"` | △ | Triangle (inheritance) |
+
+### 5.5 Line Styles
+
+| Style | Meaning |
+|---|---|
+| `solid` | Direct relationship — component is directly nested in parent |
+| `dashed` | **Intermediate components omitted** — "there are more components between, but they're not important for this diagram" |
+| `dotted` | Optional/weak dependency (e.g., dependency on external uuSubApp) |
+
+### 5.6 Connection Presets (Generator Helper Methods)
+
+The generator library provides **preset-based helper methods** for common connection patterns. Use these instead of manually specifying `relationType`, `lineStyle`, and pointer values:
+
+| Preset / Method | Visual | relationType | lineStyle | When to Use |
+|---|---|---|---|---|
+| `connect(from, to)` | → | `general` | `solid` | Standard arrow (default) |
+| `connectAssociation(from, to)` | ◇—1 | `association1` | `solid` | Parent-child containment |
+| `connectSkip(from, to)` | ◇- -1 | `association1` | `dashed` | Indirect relationship (HOCs omitted) |
+| `connectAggregation(from, to)` | ◇ | `aggregation1` | `solid` | Has-a relationship |
+| `connectComposition(from, to)` | ◆ | `composition1` | `solid` | Strong ownership |
+| `connectInheritance(from, to)` | △ | `inheritance` | `solid` | Extends/implements |
+| `connectLine(from, to)` | ── | `general` | `solid` | Plain line (no arrows) |
+
+**Using presets with `connect()`:**
+```javascript
+// Using preset parameter
+builder.connect(child, parent, { preset: 'association' });
+builder.connect(child, parent, { preset: 'skip' });  // dashed association
+
+// Using helper methods (recommended)
+builder.connectAssociation(child, parent);
+builder.connectSkip(child, parent);  // dashed association for omitted HOCs
+```
+
+**MANDATORY for component diagrams:**
+- Use `connectAssociation()` for direct parent-child relationships
+- Use `connectSkip()` when intermediate components (HOCs) are omitted
+- Use `connect()` (default arrow) for method → uuCmd references
+
+### 5.7 Annotation Bubbles (Callouts)
+
+Annotations are **speech bubble callouts** with pointers that explain elements in the diagram. Use them for:
+- Explaining what a connection or icon represents
+- Adding context about component behavior
+- Describing relationship semantics
+
+**Generator usage:**
+```javascript
+// Annotation pointing to an icon
+builder.addAnnotation({
+    position: { x: 700, y: 448 },
+    size: { width: 176, height: 72 },
+    text: '<uu5string/><div style="<uu5json />{\\\"lineHeight\\\":\\\"13px\\\"}">Explanation text here.</div>',
+    targetIcon: commandIcon,
+    pointerSide: 'left'  // 'top', 'right', 'bottom', 'left'
+});
+
+// Floating annotation (no pointer) for titles/notes
+builder.addFloatingAnnotation({
+    position: { x: 100, y: 50 },
+    size: { width: 200, height: 48 },
+    text: '<uu5string/><div>Diagram Title</div>'
+});
+```
+
+**Pointer side values:**
+| Side | orderInPolygon | Description |
+|---|---|---|
+| `top` | 1 | Pointer exits from top edge |
+| `right` | 2 | Pointer exits from right edge |
+| `bottom` | 3 | Pointer exits from bottom edge |
+| `left` | 4 | Pointer exits from left edge |
+
+**Annotation rules:**
+- Use `lineHeight: "13px"` for compact text
+- Typical sizes: width 176-288px, height 48-112px
+- Place annotations in **open spaces** near the elements they describe
+- Point to the **center of the icon** when possible
+
+## 6. Layout Patterns
+
+### 6.1 uuApp Topology Diagram
+
+Hub-and-spoke layout:
+
+```
+                    ┌─ uuSubApp A ─── primary ─── binary
+                   ╱
+    uuApp ────────
+                   ╲
+                    └─ uuSubApp B ─── primary
+       │
+       ├── uuAppServerLibrary
+       └── uu5ComponentLibrary
+```
+
+| Element | Position | Importance |
+|---|---|---|
+| uuApp | Center-left as hub | `objective` |
+| uuSubApps | Upper-right, stacked vertically (~128px) | `highest` |
+| Data stores | Extend horizontally right from SubApps | `high` |
+| Libraries | Extend downward from uuApp | `highest` |
+| Block | Wraps everything, label "Application structure" at top | `normal` |
+
+**Connections:** Diagonal from SubApps/Libraries to uuApp; horizontal from data stores to SubApps.
+
+### 6.2 Client-Side Component Diagram
+
+Hierarchical top-down layout where **Y position = hierarchy level**:
+
+```
+    Parent Component (normal/low, gray)
+          │                                  ← vertical line (same X)
+    Main Component (objective, orange)
+        ╱ │ ╲                                ← diagonal lines to children
+    Child A  Child B  Child C                   (all on same Y = same level)
+       │                                     ← vertical/diagonal to deeper children
+    Method ──→ uuCmd (highest, yellow)       ← horizontal "general" connector
+```
+
+**Hierarchy is reflected by Y position:**
+- Icons on the **same Y coordinate** are at the **same hierarchical level**
+- Parent icons are **above** (lower Y) their children
+- Children spread **horizontally** at the next Y level
+
+**Connector routing in hierarchies:**
+- Parent-to-child: straight lines from parent's **bottom-center** to child's **top-center** (diagonal when horizontally offset)
+- Same-level references: horizontal connectors (Component → uuCommand via `general` relation)
+- Use `diagonal: true` in the generator for hierarchy connectors
+
+| Level | Y Position | Elements |
+|---|---|---|
+| Top | ~128 | Parent route / User visual entrypoint (`normal`, gray) — `uuappmodelkit`/`uu5Uve` |
+| Main | ~320 | Main component (`objective`, orange) — `uu5`/`route` |
+| Wrapper | ~448 | Non-visual wrappers (`high`, blue) — `uu5`/`nonVisualComponent` |
+| Children | ~576 | Child visual components (various importances) — `uu5`/`visualComponent` |
+| Right of main | ~320 | Hooks using `uuappmodelkit`/`uu5Hook` |
+| Right of wrapper | ~448, ~576 | Context providers using `uu5`/`contextProvider` |
+| Far right | ~256, ~384, ~448 | uuCmd callouts (`highest`, yellow) — `uuappcommon`/`command` |
+
+**Example — Component with parent, hooks, callouts, and children:**
+```
+    Route (uuappmodelkit/uu5Uve, normal, y=128)
+          │ (dashed = HOCs omitted)
+    MainComponent (uu5/route, objective, y=320) ── useHook (uuappmodelkit/uu5Hook) ── cmd/get (uuappcommon/command, highest)
+          │                                                                        ── cmd/update (uuappcommon/command, highest)
+    ContentContainer (uu5/nonVisualComponent, high, y=448) ── Entity.Provider (uu5/contextProvider) ── cmd/get (highest)
+        ╱           ╲
+  ChildA (uu5/visualComponent, high)    ChildB (uu5/visualComponent, normal)     (all at y=576)
+```
+
+- Route→MainComponent: `association1`, **dashed**, `diagonal: true`
+- MainComponent→useHook: `association1`, solid (horizontal)
+- useHook→cmd/get, cmd/update: `association1`, solid (horizontal)
+- MainComponent→ContentContainer: `association1`, solid, `diagonal: true`
+- ContentContainer→[ChildA, ChildB]: `MultiConnector`, `inverted: true`, `direction: 'vertical'`
+- ContentContainer→Entity.Provider: `association1`, solid (horizontal)
+
+### 6.3 Three Composition Patterns (Client-Side)
+
+| Pattern | Connector Type | Description |
+|---|---|---|
+| **Sequence** | `association1`, solid | Children always displayed in specific order |
+| **Selection** | `MultiConnector` with `inverted: true` | Only one child conditionally displayed |
+| **Iteration** | `associationN` | Same component displayed multiple times |
+
+**Warning:** Do NOT combine MultiConnector (selection) with the `r` label — the multitree arrow already indicates conditional rendering.
+
+### 6.4 General Positioning Rules
+
+- Grid alignment: all positions on **8px grid** (coordinates divisible by 8)
+- Standard icon spacing: **128px** between hierarchy levels (vertical Y gap)
+- Horizontal spacing between siblings: **256px** minimum for wide layout, **128px** minimum for compact
+- Canvas width: **1600px** minimum for component diagrams (to accommodate callouts on the right)
+- Block padding from canvas edge: **40px**
+- Read flow: **left → right, top → bottom**
+- Component hierarchy spans the **left-center area**, hooks extend to the **right**, uuCmd callouts extend to the **far right**
+
+## 7. Icon Labels
+
+Labels appear as small indicators on icon corners.
+
+| Label Code | Symbol | Meaning |
+|---|---|---|
+| `uujson` / `{}` | `{}` | Object represents a single scheme in an object store |
+| `n` | N | Multi-workspace uuSubApp (N app workspaces) |
+| `one` | 1 | Single-workspace uuSubApp (1 app workspace) |
+| `r` | R | Rendered conditionally |
+| `d` | D | Disabled conditionally |
+| `h` | H | Hidden conditionally |
+| `lock` | Lock | Combination of conditions (R+D) |
+| `l` | L | Part of a **list** (aggregation) |
+| `m` | M | Part of a **map** (aggregation) |
+
+### 7.1 Label Rules
+
+- uuSubApps **must** be labeled with `one` or `n` to indicate workspace multiplicity
+- Objects representing a scheme in object store **must** have `{}` label
+- Aggregated objects that are NOT standalone schemes get **no label** (or `l`/`m`)
+- Do NOT combine `r` label with MultiConnector selection pattern
+
+## 8. Naming Conventions
+
+### 8.1 Text Labels
+
+| Entity | Convention | Example |
+|---|---|---|
+| uuApp | Simple name | `uuApp` |
+| uuSubApp | lowerCamelCase | `main`, `uuSubApp A` |
+| Data stores | Name + stereotype on second line | `primary\n<<uuAppObjectStore>>` |
+| Routes | Route name + stereotype | `Route name\n<<uu5Route>>` |
+| Components (same module) | Just name | `JokeListView` |
+| Components (same lib, different module) | Module.Name | `Joke.ListView` |
+| Components (different lib) | Full tag | `Uu5Tiles.List` |
+| Non-separate components | `//` prefix comment | `Component\n// render` |
+
+### 8.2 Text Width
+
+| Width | Use For |
+|---|---|
+| `64` | Short labels (uuApp) |
+| `128` | Medium labels (uuSubApps, components) |
+| `192` | Long labels with stereotypes (data stores, routes) |
+
+### 8.3 Annotation Text
+
+- Use `lineHeight: "13px"` for compact display
+- Typical sizes: width 176-288px, height 48-112px
+- Place annotations in **open spaces** near the elements they describe
+
+## 9. Best Practices
+
+- **High-level by default** — generate high-level diagrams showing only the key components, hooks, and commands. Do NOT add every import or helper.
+- **Wide layout** — use canvas width **1600px or wider** to give elements room. Default spacing between siblings should be **256px** horizontally.
+- **Always include callouts (uuCmd)** — trace hooks → providers → `Calls.*` to find all server commands and add them to the diagram as yellow (`highest`) command icons.
+- **One idea per diagram** — split complex topics into multiple diagrams.
+- **Focal element is `objective`** — always highlight the main subject.
+- **uuCommand is always yellow** — no exceptions, always `highest`.
+- **Correct icon stencils** — use the exact stencil/icon combinations from Section 3. Do NOT use generic fallbacks.
+- **Hierarchy = Y position** — icons at the same Y are at the same hierarchical level.
+- **Use diagonal lines for hierarchies** — parent-child connectors are straight diagonal lines (top-center of child to bottom-center of parent), use `diagonal: true` in the generator.
+- **Use orthogonal lines for same-level references** — horizontal/vertical for Component→uuCommand or similar.
+- **Label uuSubApps** — always indicate `one` or `n` for workspace multiplicity.
+- **Use dashed lines** — when intermediate components (HOCs) are omitted for clarity.
+- **Use connection helper methods** — prefer `connectAssociation()`, `connectSkip()`, etc. over manual `connect()` with options.
+- **Use annotations for context** — add `addAnnotation()` callouts to explain hooks, commands, or complex relationships.
+- **Consistent socket positions** — connectors attach at top-center (child) and bottom-center (parent).
+- **Grid alignment** — all positions on 8px grid for clean rendering.
+- **Z-order** — Blocks (bottom) → Icons → Annotations → Connectors (top).
+
+### 9.1 Component Analysis Checklist
+
+When asked to generate a UU5 component diagram, follow this analysis order:
+
+1. **Identify the main component** — the `createVisualComponent` call → this becomes the `objective` icon using `uu5` / `route`.
+2. **Identify the parent** — HOC chain or route wrapper → abstract as single `uuappmodelkit` / `uu5Uve` icon with dashed line.
+3. **Identify HOC wrappers** — `withRoute`, `withEditModal`, etc. → `uu5` / `higherOrderComponent` (or omit and use dashed line).
+4. **Identify key hooks** — `useEntityItem`, `useEntityDefinition`, `useBusinessBrick`, etc. → `uuappmodelkit` / `uu5Hook`.
+5. **Identify context usage** — Provider/Consumer patterns → `uuappmodelkit` / `uu5Context` for context, `uu5` / `contextProvider` for providers.
+6. **Trace uuCmd calls** — follow hooks → providers → `Calls.*` methods to find actual server commands (e.g., `entityItem/get`, `entityItem/update`) → `uuappcommon` / `command` with `highest` importance.
+7. **Identify child visual components** — direct children rendered in JSX → `uu5` / `visualComponent`.
+8. **Identify non-visual wrappers** — `ContentContainer`, `DataStateResolver`, etc. → `uu5` / `nonVisualComponent`.
+9. **Identify general components** — when visual/non-visual nature is unknown → `uuappcommon` / `contentComponent`.
+10. **Identify conditional rendering** — if/else or switch rendering multiple children → use `MultiConnector` with `inverted: true`.
+
+## 10. Reference Template
+
+### 10.1 Generator Script Template
+
+Use this template when generating UU5 component diagrams:
+
+```js
+const { DiagramBuilder } = require('/Users/jilek/.claude/skills/bml-diagram/lib/bml-generator');
+const fs = require('fs');
+
+// Wide canvas for readable layout
+const builder = new DiagramBuilder({ width: 1600, height: 900 });
+
+// === ROW 1: Parent route (y=128) ===
+const parentRoute = builder.addIcon({
+  type: { stencil: 'uuappmodelkit', icon: 'uu5Uve' },
+  position: { x: 640, y: 128 },
+  text: 'Route',
+  textWidth: 128,
+  importance: 'normal'
+});
+
+// === ROW 2: Main component (y=320, objective = orange) ===
+const mainComponent = builder.addIcon({
+  type: { stencil: 'uu5', icon: 'route' },
+  position: { x: 640, y: 320 },
+  text: 'ComponentName',
+  textWidth: 192,
+  importance: 'objective'
+});
+
+// === Hooks on the right of main component ===
+const hook1 = builder.addIcon({
+  type: { stencil: 'uuappmodelkit', icon: 'uu5Hook' },
+  position: { x: 960, y: 320 },
+  text: 'useHookName',
+  textWidth: 128,
+  importance: 'normal'
+});
+
+// === uuCmd callouts (always highest = yellow) ===
+const cmd1 = builder.addIcon({
+  type: { stencil: 'uuappcommon', icon: 'command' },
+  position: { x: 1216, y: 256 },
+  text: 'entity/get',
+  textWidth: 128,
+  importance: 'highest'
+});
+
+const cmd2 = builder.addIcon({
+  type: { stencil: 'uuappcommon', icon: 'command' },
+  position: { x: 1216, y: 384 },
+  text: 'entity/update',
+  textWidth: 144,
+  importance: 'highest'
+});
+
+// === ROW 3: Non-visual wrapper (y=448) ===
+const contentWrapper = builder.addIcon({
+  type: { stencil: 'uu5', icon: 'nonVisualComponent' },
+  position: { x: 640, y: 448 },
+  text: 'ContentContainer',
+  textWidth: 192,
+  importance: 'high'
+});
+
+// === ROW 4: Child visual components (y=576) ===
+const childA = builder.addIcon({
+  type: { stencil: 'uu5', icon: 'visualComponent' },
+  position: { x: 448, y: 576 },
+  text: 'ChildComponentA',
+  textWidth: 192,
+  importance: 'high'
+});
+
+const childB = builder.addIcon({
+  type: { stencil: 'uu5', icon: 'visualComponent' },
+  position: { x: 832, y: 576 },
+  text: 'ChildComponentB',
+  textWidth: 128,
+  importance: 'normal'
+});
+
+// === Context provider example ===
+const contextProvider = builder.addIcon({
+  type: { stencil: 'uu5', icon: 'contextProvider' },
+  position: { x: 1088, y: 448 },
+  text: 'Entity.Provider',
+  textWidth: 160,
+  importance: 'normal'
+});
+
+// === CONNECTIONS ===
+
+// Parent to main (dashed = HOCs omitted) - use connectSkip helper
+builder.connectSkip(mainComponent, parentRoute, { diagonal: true });
+
+// Main to hook (horizontal) - use connectAssociation helper
+builder.connectAssociation(hook1, mainComponent);
+
+// Hook to commands (horizontal) - use connectAssociation helper
+builder.connectAssociation(cmd1, hook1);
+builder.connectAssociation(cmd2, hook1);
+
+// Main to content wrapper (vertical/diagonal)
+builder.connectAssociation(contentWrapper, mainComponent, { diagonal: true });
+
+// Content wrapper to children (selection = MultiConnector)
+builder.connectMultiAssociation(contentWrapper, [childA, childB], {
+  inverted: true, direction: 'vertical'
+});
+
+// Context provider to wrapper (horizontal)
+builder.connectAssociation(contextProvider, contentWrapper);
+
+// === ANNOTATIONS (example) ===
+
+// Add a callout explaining the hook's purpose
+builder.addAnnotation({
+  position: { x: 1100, y: 256 },
+  size: { width: 176, height: 64 },
+  text: '<uu5string/><div style="<uu5json />{\\\"lineHeight\\\":\\\"13px\\\"}">Fetches entity data and manages update state</div>',
+  targetIcon: hook1,
+  pointerSide: 'left'
+});
+
+// === SAVE ===
+const uu5 = builder.toUu5String();
+fs.writeFileSync('/tmp/diagram_output.txt', uu5);
+console.log('Diagram saved to /tmp/diagram_output.txt');
+console.log('Size:', uu5.length, 'bytes');
+```
+
+### 10.2 Typical Layout Positions
+
+For a 1600px wide canvas:
+
+| Element | X Position | Y Position | Notes |
+|---|---|---|---|
+| Parent route (uu5Uve) | 640 | 128 | Center top |
+| Main component (objective) | 640 | 320 | Center, below parent |
+| Hook (uu5Hook) | 960 | 320 | Right of main component |
+| uuCmd callout 1 | 1216 | 256 | Right of hook, staggered up |
+| uuCmd callout 2 | 1216 | 384 | Right of hook, staggered down |
+| Non-visual wrapper | 640 | 448 | Below main component |
+| Context provider | 1088 | 448 | Right of wrapper |
+| uuCmd for context provider | 1344 | 448 | Right of context provider |
+| Child component A | 448 | 576 | Left child |
+| Child component B | 832 | 576 | Right child |
+
+## 11. Troubleshooting
+
+| Issue | Cause | Solution |
+|---|---|---|
+| Connector doesn't render | Missing socket IDs in `plugMap` | Ensure `elementId` and `socketId` reference valid icon sockets |
+| Diagonal line unexpected | `middlePointList` is empty | This is correct and standard for hierarchy connectors; add breakpoints only if orthogonal routing is needed |
+| Icon color wrong | Incorrect `importance` value | Use correct level: `objective`, `highest`, `high`, `normal`, `low` |
+| uuCommand not yellow | Importance not set to `highest` | uuCommand icons must always be `highest` |
+| Labels overlap icons | `textWidth` too small or icon spacing insufficient | Increase `textWidth` or spacing between icons |
+| Block behind icons | Wrong z-order | Blocks must be first in `elementZOrderList` |
+| Annotation pointer missing | `pointerStart.positionOnAnnotation` is empty | Add sides array like `["bottom", "left", "top", "right"]` |
+| Wrong line style | Not using preset helper | Use `connectSkip()` for dashed, `connectAssociation()` for solid |
+| Diamond not appearing | Wrong relationType | Use `association1`, `aggregation1`, or `composition1` for proper pointers |
+| Annotation not pointing correctly | Wrong `pointerSide` value | Use `'top'`, `'right'`, `'bottom'`, or `'left'` |
+| Floating annotation has pointer | Used `addAnnotation()` instead of `addFloatingAnnotation()` | Use `addFloatingAnnotation()` for notes without pointers |

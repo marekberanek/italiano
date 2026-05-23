@@ -1,0 +1,606 @@
+---
+description: List component creation guide using uu5Generate command for entity list views with filtering, sorting, pagination, and proper data display
+globs: 
+alwaysApply: false
+---
+# List Component Creation Guide
+
+## Table of Contents
+
+1. @Introduction
+2. @Specifications and Confirmation
+3. @Generation Process
+4. @SeriesList Configuration
+5. @Integration and Actions
+6. @Demo Configuration
+7. @Best Practices
+8. @Troubleshooting
+
+## 1. Introduction
+
+This guide outlines the process for creating list components using the uu5Generate command.
+
+### 1.1 When to Use
+
+Use this guide when creating components for:
+- Entity list views (e.g., Library List, Note List)
+- Collections with filtering and sorting capabilities
+- Paginated data display with actions
+
+### 1.2 Fundamental Rule
+
+⚠️ **ABSOLUTE MANDATORY REQUIREMENT** ⚠️
+
+**NO IMPLEMENTATION BEFORE USER CONFIRMATION - ZERO EXCEPTIONS!**
+
+Before writing ANY code, you MUST ALWAYS:
+
+1. 🛑 STOP and ASK the user to specify:
+   - Module name (e.g., `Note`, `Library`)
+   - Component name (e.g., `List`, `VersionTagList`)
+   - Object/entity description or uuSchema documentation link
+
+2. 🛑 WAIT for explicit user confirmation before proceeding.
+
+3. 🛑 DO NOT proceed with ANY implementation until you have received clear specifications.
+
+> **LIST COMPONENT RULE**  
+> When a user wants to create a new **list component**, do NOT generate any files manually.  
+> Instead, use the uu5Generate command in the **-core library**:
+> ```bash
+> npm run uu5Generate listComponent <module>.<name> -- --sub-app=<value> --brick-uu5-tag=<value> --redirect-uu5-route=<value>
+> ```
+
+
+**⚠️ WARNING**: NEVER call uu5Generate without ALL parameters - it will prompt for interactive input!
+
+**IMPORTANT**: ALWAYS use cmd when calling uu5Generate. Do NOT use PowerShell as it causes syntax issues with the command execution.
+
+## 2. Specifications and Confirmation
+
+Before implementation, confirm with the user:
+
+- [ ] Module name (e.g., `Note`, `Workspace`)
+- [ ] Component name (e.g., `List`, `VersionTagList`)
+- [ ] Object/entity description or uuSchema documentation link
+- [ ] BaseUri configuration (same for workspace and object, or separate)
+- [ ] Any special requirements or constraints
+
+> 
+## 3. Generation Process
+
+### 3.1 Command Parameters
+
+**Optional Parameters** (with default values):
+> • **sub-app** [string] – the sub app of the corresponding uuApp  
+>   *Default: derived from library name (e.g. `uu_frontend_aicodingg01-core` → `uu_frontend_aicodingg01`)*  
+>   *This option is **mandatory** for all cases*
+> • **brick-uu5-tag** [string] – full uu5Tag of related brick component for "Copy component" functionality  
+>   *Default: `"-"` (taken as empty when used)*  
+>   *This option is **mandatory** when generate-brick is positive*
+> • **generate-brick** [bool] – whether to generate related brick component  
+>   *This is a **mandatory** option with no default value*  
+>   *Use `no-generate-brick` when user doesn't want to generate brick component*
+> • **redirect-uu5-route** [string] – related uu5Route for "Redirect / open in new window" functionality  
+>   *Default: `"-"`*
+> 
+> **Process**:
+> 1. **ALWAYS provide ALL parameters** when calling uu5Generate - never call it without parameters
+> 2. **Use default values** for all parameters unless user specifies otherwise
+> 3. **Execute the uu5Generate command** with ALL parameters specified
+> 
+> **CRITICAL**: NEVER call `npm run uu5Generate listComponent <module>.<name>` without parameters. ALWAYS include all required parameters: `--sub-app`, `--brick-uu5-tag`, and `--redirect-uu5-route`.
+> 
+> **Examples**:
+> ```bash
+> # CORRECT: Using default values (all parameters MUST be specified)
+> # ALWAYS use cmd, NOT PowerShell
+> cmd /c "npm run uu5Generate listComponent Note.List -- --sub-app=uu_frontend_aicodingg01 --brick-uu5-tag=- --redirect-uu5-route=-"
+> 
+> # CORRECT: Overriding specific parameters
+> cmd /c "npm run uu5Generate listComponent Note.List -- --sub-app=mySubApp --brick-uu5-tag=UuMyAppBricks.Note.List --redirect-uu5-route=noteList"
+> 
+> # CORRECT: When not generating brick component
+> cmd /c "npm run uu5Generate listComponent Note.List -- --sub-app=uu_frontend_aicodingg01 --no-generate-brick --redirect-uu5-route=-"
+> 
+> # WRONG: Never call without parameters - this will prompt for input
+> # npm run uu5Generate listComponent Note.List
+> ```
+> 
+> The uu5Generate command will automatically create all necessary files including:
+> - Component files (js, test, html demo)
+> - Proper ContentContainer integration
+> - Registration in uuapp.json
+- Brick component generation (if applicable)
+
+### 3.2 Object Description
+> After the list component is successfully generated, you MUST check if the user already provided object documentation in their initial request. If they did, use that information directly. If not, ask the user for the object that will be represented by the list component.
+> 
+> **Check first**: Look for uuSchema documentation links or object descriptions in the user's initial prompt
+> 
+> **If not provided, ask the user to provide**:
+> • **Object Description** – Either a text description of the object/entity that the list component will represent, OR
+> • **Documentation Link** – A link to the uuSchema documentation that describes the object structure
+> 
+> **Purpose**: This information will be used to:
+> - Implement the content component with proper data fields
+> - Configure the component's data mapping
+> - Set up appropriate validation and business logic
+> - Create meaningful demo data
+> 
+> **Example questions to ask**:
+> - "What object/entity will this list component represent? Please provide either a text description or a link to the uuSchema documentation."
+> - "What data fields and properties should this list component display for the [Module] entity?"
+- "Do you have a uuSchema documentation link that describes the structure of the [Module] object?"
+
+## 4. SeriesList Configuration
+
+### 4.1 SeriesList Structure
+> After receiving the object description, you MUST configure the seriesList prop based on the object attributes. The seriesList defines the columns/fields that will be displayed in the list component.
+> 
+> **SeriesList Format**:
+> The seriesList is an array of objects with the following structure:
+> ```javascript
+> function getSerieList(viewLsi) {
+>   return [
+>     {
+>       value: "fieldName",
+>       label: viewLsi.fieldLabel,
+>       dataItem: ({ data: entityDto }) => entityDto.data.fieldName,
+>     },
+>     // ... more fields
+>   ];
+> }
+> ```
+> 
+> **Configuration Process**:
+> 1. **Map object attributes** to seriesList items based on the object description
+> 2. **Add LSI labels** for each field in the LSI file
+> 3. **Update the getSerieList function** in `src/[module]/list/view.js`
+> 4. **Configure dataItem functions** to extract the correct data from entityDto.data
+> 
+**Purpose**: The seriesList prop defines the columns/fields that will be displayed in the list component, mapping object attributes to display labels and data extraction functions.
+
+### 4.2 List Command Verification
+> After receiving the seriesList description, you MUST check the provided documentation for the list command to verify the correct parameters and structure.
+> 
+> **Primary verification - List command**:
+> - Look for the `[module]/list` command in the documentation (e.g., `library/list`)
+> - Verify what parameters are used in `dtoIn` (e.g., `pageInfo`, `sortOrder`, `filterMap`)
+> - Check the command signature to confirm the expected input parameters
+> - Verify the response structure and what data is returned
+> 
+**Purpose**: This ensures the list component is configured with the correct command parameters and can properly handle the list data.
+
+### 4.3 Object ID Configuration
+> Based on the list command documentation, configure the correct identifier attribute. If the command uses `id` instead of `oid`, you MUST:
+> 
+> 1. **Change `oid` prop to `id`** in the main list component (`src/[module]/list.js`)
+> 2. **Change `oid` prop to `id`** in the provider component (`src/[module]/provider.js`)
+> 3. **Change `oid` prop to `id`** in the use-provider hook (`src/[module]/use-provider.js`)
+> 4. **Update propTypes** to use `id` instead of `oid` in all affected components
+> 5. **Update the provider propTypes** to reflect the correct identifier field
+> 6. **Update the demo page** (`demo/[module]/list.html`) to use the correct identifier:
+>    - Change the `oid` prop to the correct identifier (e.g., `id`, `code`)
+>    - Update any hardcoded demo values to use the correct identifier format
+   - Ensure the demo page works with the new identifier structure
+
+### 4.4 BaseUri Configuration
+> After configuring the object ID, you MUST ask the user about baseUri configuration:
+> 
+> **Ask the user**:
+> - "Will the baseUri be the same for workspace check and for the [Module] object loading?"
+> - "If different, what baseUri should be used for [Module] object loading?"
+> - "Do you want to remove the WorkspaceProvider and use only baseUri for [Module] object loading? (workspace state check is not needed)"
+> 
+> **Purpose**: This determines whether to use the same baseUri for both workspace validation and object data loading, or if separate baseUris are needed for different operations.
+> 
+> **Implementation options**:
+> - **Option 1 - Same baseUri**: Use the existing `baseUri` prop for both workspace and object operations
+> - **Option 2 - Different baseUri**: Define TWO separate props:
+>   - `baseUri` - for workspace check operations
+>   - `objectBaseUri` - for object loading operations
+>   - **Update the list component** to pass the correct baseUri to each provider:
+>     - `baseUri` prop → passed to `WorkspaceProvider` as `baseUri`
+>     - `objectBaseUri` prop → passed to `[Module]Provider` as `baseUri`
+> - **Option 3 - Remove WorkspaceProvider**: Remove WorkspaceProvider entirely and use only baseUri for [Module] object loading:
+>   - Remove `WorkspaceProvider` import and usage from list component
+>   - Pass `baseUri` directly to `[Module]Provider`
+>   - Update propTypes to use `[Module]Provider.propTypes.baseUri` instead of `WorkspaceProvider.propTypes.baseUri`
+>   - **Clean up unused workspace components**: If WorkspaceProvider is not used elsewhere, delete the generated workspace-related files:
+>     - `src/workspace/workspace.js`
+>     - `src/workspace/config/config.js`
+>     - `src/workspace/provider.js`
+>     - `src/workspace/use-workspace.js`
+>     - Remove workspace-related calls from `src/calls.js`
+>     - Remove workspace exports from `src/exports.js` and `src/index.js`
+>   - **Update demo pages**: When removing WorkspaceProvider, the demo pages need to be updated:
+>     - Move `baseUri` prop from `Plus4U5.SpaProvider` to components directly
+>     - Update `demo/[module]/list.html` to pass `baseUri` prop to the list component
+>     - Remove workspace-related data from ContentContainer dataMap
+    - Update inlineView dataToResolve to remove workspace dependency
+
+### 4.5 Code Formatting
+> After completing all configuration steps, you MUST format the code using prettify:
+> 
+> **Run prettify**:
+> ```bash
+> cd uu_frontend_aicodingg01-core
+> npm run prettify
+> ```
+> 
+> **This will automatically**:
+> - Fix code formatting issues (indentation, spacing, line breaks)
+> - Ensure consistent code style across all files
+> - Remove unnecessary whitespace and newlines
+- Apply project-specific formatting rules
+
+### 4.6 Compilation Verification
+> After formatting the code, you MUST verify that the source code compiles successfully:
+> 
+> **Run compilation check**:
+> ```bash
+> cd ..
+> npm run build
+> ```
+> 
+> **Verify successful compilation**:
+> - Check that the build process completes without errors
+> - Verify that the list component is properly integrated
+> - Confirm that all imports and dependencies are resolved correctly
+> - Ensure no TypeScript/JavaScript compilation errors are present
+> 
+> **If compilation fails**:
+> - Fix any syntax errors or missing imports
+> - Resolve dependency issues
+> - Re-run `npm run build` until compilation succeeds
+- Document any issues found and their solutions
+
+## 5. Integration and Actions
+
+### 5.1 Demo Configuration
+> After successful compilation, you MUST ask the user for test data to configure the demo page:
+> 
+> **⚠️ CRITICAL**: This step is MANDATORY and must ALWAYS be completed. Do NOT skip asking for demo configuration.
+> 
+> **Ask the user for test data**:
+> - "Please provide test data for the [Module] list component demo:"
+> - "What baseUri should be used for testing?"
+> - "What [identifier] value should be used for testing?"
+> - "Are there any other configuration values needed for the demo?"
+> 
+> **Update the demo page** (`demo/[module]/list.html`):
+> 1. **Open the demo HTML file** in the core library
+> 2. **Update the configuration section** with the provided test data:
+>    - Set the `BASE_URI` variable to the provided baseUri
+>    - Set the identifier variable (e.g., `OID`, `ID`, `CODE`) to the provided value
+>    - Update any other configuration values as needed
+> 3. **Verify the demo works** with the provided test data
+> 4. **Test the component** in the browser to ensure it loads correctly
+> 
+> **Example demo configuration**:
+> ```javascript
+> // Update these values with the provided test data
+> const BASE_URI = "https://your-test-server.com";
+> const CODE = "your-test-library-code";
+> ```
+> 
+> **Purpose**: This ensures the demo page is functional and can be used for testing and demonstration purposes with real data.
+
+### 5.2 ActionList Configuration
+After successful demo configuration, you MUST check if there are create components in the same directory level and add them to the actionList prop.
+
+**Check for related components**:
+1. **Create Component Check**: Look for `src/[module]/create/` directory  
+   - If create component exists, add it to actionList
+
+**ActionList Implementation**:
+When create components are found in the same module directory, you MUST update the list component's view.js file to include them in the actionList prop:
+
+```javascript
+// In src/[module]/list/view.js
+const View = createVisualComponent({
+  // ... existing props
+  actionList: [
+    // Add create component if it exists  
+    ...(Create ? [{ component: <Create baseUri={baseUri} onSuccess={() => [module]DataList.handlerMap.load()} /> }] : [])
+  ],
+  // ... rest of component
+});
+```
+
+**Required imports**:
+Add the necessary imports at the top of the view.js file:
+```javascript
+// Add this import if the create component exists
+import Create from "../create/create.js";
+```
+
+**Purpose**: This ensures that list components automatically include related create components as actions, providing a complete interface when create components are present in the same module directory.
+
+### 5.3 Remove Default Values
+After configuring the actionList, you MUST remove the default values for filterList and sorterList in the list component.
+
+**Remove Default Values**:
+Update the list component's defaultProps to remove the placeholder filterList and sorterList values:
+
+```javascript
+// In src/[module]/list.js
+defaultProps: {
+  ...View.defaultProps,
+  // Remove these default values:
+  // filterList: [{ key: "yourFilterItem", value: true }],
+  // sorterList: [{ key: "yourSorterItem", ascending: true }],
+},
+```
+
+**Purpose**: This removes placeholder default values that were generated by uu5Generate, allowing the component to work with empty filter and sorter lists by default.
+
+## 6. Demo Configuration
+
+### 6.1 Display Value Guidelines
+After removing default values, you MUST ensure proper display of values in list components.
+
+**Display Guidelines**:
+1. **Exclude system attributes**: Do NOT display sysCts, sysMts, sysRev, or other system-generated fields in seriesList
+2. **Show only relevant data**: Display only business-relevant fields that users need to see
+3. **Proper data formatting**: Format dates, numbers, and other data types appropriately in dataItem functions
+4. **Handle null/undefined values**: Gracefully handle missing or empty data in dataItem functions
+
+**Example seriesList (excluding system attributes)**:
+```javascript
+function getSerieList(viewLsi) {
+  return [
+    {
+      value: "field1",
+      label: viewLsi.field1,
+      dataItem: ({ data: entityDto }) => entityDto.data.field1,
+    },
+    {
+      value: "field2", 
+      label: viewLsi.field2,
+      dataItem: ({ data: entityDto }) => entityDto.data.field2,
+    },
+    // Do NOT include sysCts, sysMts, sysRev, etc.
+  ];
+}
+```
+
+### 6.2 Detail Action Integration
+After removing default values, you MUST add detail actions to each row of the list component if a detail component exists in the same module directory.
+
+**Check for Detail Component**:
+1. **Detail Component Check**: Look for `src/[module]/detail/` directory or `src/[module]/detail.js` file
+   - If detail component exists, add it to item actions
+
+**Detail Action Implementation**:
+When detail components are found in the same module directory, you MUST update the list component's view.js file to include detail actions:
+
+```javascript
+// In src/[module]/list/view.js
+import Detail from "../detail.js";
+import { useModal } from "uu5g05-elements";
+
+// In the render function
+const [detailModalProps, openDetailModal, closeDetailModal] = useModal();
+
+// Update getItemActions function
+function getItemActions({ [Module]Dto }, baseUri, openDetailModal) {
+  const actionList = [
+    {
+      icon: "uugds-open-in-modal",
+      colorScheme: "blue",
+      tooltip: "View Details",
+      onClick: (e) => {
+        openDetailModal({
+          data: {
+            baseUri,
+            [identifier]: [Module]Dto.data.[identifier]
+          }
+        });
+      },
+      collapsed: false,
+    },
+  ];
+  return actionList;
+}
+
+// Update handleGetItemActionList
+const handleGetItemActionList = ({ data: [Module]Dto }) => {
+  return getItemActions({ [Module]Dto }, baseUri, openDetailModal);
+};
+
+// Add modal rendering
+{detailModalProps.open && (
+  <Detail
+    {...detailModalProps}
+    baseUri={detailModalProps.data?.baseUri}
+    [identifier]={detailModalProps.data?.[identifier]}
+    displayAsModal={true}
+    onClose={closeDetailModal}
+  />
+)}
+```
+
+**Required imports**:
+Add the necessary imports at the top of the view.js file:
+```javascript
+import Detail from "../detail.js";
+import { useModal } from "uu5g05-elements";
+```
+
+**Purpose**: This ensures that list components automatically include detail actions when detail components are present, providing a complete interface for viewing individual entity details.
+
+### 6.3 State Badge Rendering
+After removing default values, you MUST implement Badge rendering for state fields in list components.
+
+**State Badge Implementation**:
+When state fields are present in the list component, you MUST update the content.js file to render state values as Badges:
+
+```javascript
+// In src/[module]/list/content.js
+import { Badge } from "uu5g05-elements";
+
+// Add toCamelCase method to Content component
+toCamelCase(str) {
+  if (!str) return str;
+  return str
+    .toLowerCase()
+    .replace(/[-_\s]+(.)?/g, (_, char) => (char ? char.toUpperCase() : ''))
+    .replace(/^(.)/, (char) => char.toUpperCase());
+},
+
+// Add getStateColorScheme method to Content component
+getStateColorScheme(state) {
+  switch (state?.toLowerCase()) {
+    case "active":
+    case "running":
+      return "green";
+    case "inactive":
+    case "stopped":
+      return "red";
+    case "pending":
+    case "waiting":
+      return "orange";
+    case "completed":
+    case "finished":
+      return "blue";
+    default:
+      return "cyan";
+  }
+},
+
+// Update columnList to use custom StateCellWrapper for state column
+const columnList = useMemo(() => {
+  const CellWrapper = (cellProps) => <Cell {...cellProps} onClick={onItemClick} />;
+  
+  const StateCellWrapper = (cellProps) => {
+    const { data } = cellProps;
+    const stateValue = data?.data?.state;
+    
+    return (
+      <Cell {...cellProps} onClick={onItemClick}>
+        {stateValue && (
+          <Badge colorScheme={Content.getStateColorScheme(stateValue)} size="xl">
+            {Content.toCamelCase(stateValue)}
+          </Badge>
+        )}
+      </Cell>
+    );
+  };
+
+  return serieList.map((serie) => {
+    const cellComponent = serie.value === "state" ? StateCellWrapper : CellWrapper;
+    return { value: serie.value, cellComponent };
+  });
+}, [onItemClick, serieList]);
+```
+
+**Purpose**: This ensures that state fields in list components are rendered as prominent, color-coded badges with proper CamelCase formatting for better user experience and visual clarity.
+
+### 6.4 Date Alignment
+After removing default values, you MUST align date and datetime fields to the right in the list component.
+
+**Date Alignment Implementation**:
+When date or datetime fields are present in the list component, you MUST add alignment properties and use DateTime component in the getSerieList function:
+
+```javascript
+// In src/[module]/list/view.js
+import { DateTime } from "uu5g05-elements";
+
+function getSerieList(viewLsi) {
+  return [
+    // ... other fields
+    {
+      value: "dateField",
+      label: viewLsi.dateField,
+      dataItem: ({ data: entityDto }) => entityDto.data.dateField ? (
+        <DateTime value={entityDto.data.dateField} dateFormat="short" timeFormat="none" />
+      ) : null,
+      horizontalAlignment: "right",
+    },
+    {
+      value: "datetimeField", 
+      label: viewLsi.datetimeField,
+      dataItem: ({ data: entityDto }) => entityDto.data.datetimeField ? (
+        <DateTime value={entityDto.data.datetimeField} dateFormat="short" timeFormat="none" />
+      ) : null,
+      horizontalAlignment: "right",
+    },
+    // ... more fields
+  ];
+}
+```
+
+**Purpose**: This ensures that date and datetime fields are right-aligned in the table for better readability and professional appearance, following standard table formatting conventions.
+
+### 6.5 Title and Subtitle Configuration
+After removing default values, you MUST configure proper title and subtitle for the list component.
+
+**Title and Subtitle Implementation**:
+Update the ContentContainer.splitProps configuration in the view.js file to set meaningful titles and subtitles:
+
+```javascript
+// In src/[module]/list/view.js
+const { containerProps } = ContentContainer.splitProps(propsToPass, {
+  title: "[Module] list",  // e.g., "Auction list", "Note list", "Library list"
+  subtitle: "UEF Demo",    // Standard subtitle for demo purposes
+  info: viewLsi.info,
+});
+```
+
+**Purpose**: This ensures that list components have clear, descriptive titles and consistent subtitles for better user experience and professional appearance.
+
+### 6.6 ESLint Fix
+> After completing all configuration and testing, you MUST run eslint fix to resolve any linting errors:
+> 
+> **Run ESLint Fix**:
+> ```bash
+> # Option 1: Direct eslint command
+> npx eslint src/ --fix
+> 
+> # Option 2: Using project-specific eslint config
+> npx eslint "src/**/*.js" --fix
+> ```
+> 
+> **Verify ESLint Results**:
+> - Check that all linting errors are resolved
+> - Ensure code follows project style guidelines
+> - Verify no new warnings are introduced
+> - Confirm all files pass linting checks
+> 
+> **If ESLint errors persist**:
+> - Review and fix any remaining manual errors
+> - Check for configuration issues
+> - Ensure all imports and dependencies are correct
+> - Re-run eslint fix until all errors are resolved
+> 
+> **Purpose**: Ensures the list component code follows project standards and is free of linting errors before completion.
+
+## 7. Best Practices
+
+- **Always confirm specifications** before starting implementation
+- **Use cmd /c wrapper** for uu5Generate commands
+- **Configure seriesList** based on object attributes from schema
+- **Exclude system attributes** (sysCts, sysMts, sysRev) from seriesList
+- **Integrate create and detail components** when they exist in the same module
+- **Use Badge components** for state fields with proper color schemes
+- **Use DateTime components** for date/datetime fields with right alignment
+- **Remove default filter/sorter values** generated by uu5Generate
+- **Configure meaningful titles** and subtitles for better UX
+- **Test with real data** before considering implementation complete
+
+## 8. Troubleshooting
+
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| uu5Generate prompts for input | Missing parameters | Always include ALL parameters (--sub-app, --brick-uu5-tag, --redirect-uu5-route) |
+| PowerShell command fails | Using PowerShell directly | Always use cmd /c wrapper for uu5Generate commands |
+| List data not displaying | Wrong seriesList configuration | Verify dataItem functions extract correct data from entityDto.data |
+| WorkspaceProvider errors | Unnecessary workspace dependency | Remove WorkspaceProvider and use baseUri directly |
+| Create button not showing | ActionList not configured | Add Create component to actionList in list view |
+| Detail modal not opening | Missing useModal or incorrect handler | Import useModal and implement proper handler |
+| State badges not rendering | Missing Badge component or helpers | Import Badge and add helper methods (toCamelCase, getStateColorScheme) |
+| Date alignment incorrect | Missing horizontalAlignment prop | Add horizontalAlignment: "right" and use DateTime component |
+| Default filters showing | Default values not removed | Remove filterList and sorterList from defaultProps |
+| Compilation fails | Syntax errors or missing imports | Fix imports, check syntax, and re-run build |

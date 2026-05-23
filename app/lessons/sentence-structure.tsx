@@ -9,7 +9,10 @@ import { PlayButton } from "@/components/play-button";
 import { Screen } from "@/components/screen";
 import { ScreenHeader } from "@/components/screen-header";
 import { SectionCard } from "@/components/section-card";
-import { Palette, Radius, Spacing, Typography } from "@/constants/theme";
+import type { ColorPalette } from "@/constants/theme";
+import { Radius, Spacing, Typography } from "@/constants/theme";
+import { useThemedStyles } from "@/hooks/use-themed-styles";
+
 import { useItalianTts } from "@/hooks/use-italian-tts";
 import { useSyncedJson } from "@/hooks/use-synced-json";
 import {
@@ -19,6 +22,7 @@ import {
 } from "@/lib/grammar/rule-categories";
 
 export default function SentenceStructureScreen() {
+  const styles = useThemedStyles(createStyles);
   const { data } = useSyncedJson("grammar", grammarFallback as GrammarData);
   const tts = useItalianTts();
 
@@ -81,6 +85,7 @@ export default function SentenceStructureScreen() {
 }
 
 function RuleRow({ rule, onSpeak }: { rule: GrammarRule; onSpeak: () => void }) {
+  const styles = useThemedStyles(createStyles);
   return (
     <View style={styles.ruleRow}>
       <View style={{ flex: 1, gap: 2 }}>
@@ -94,7 +99,8 @@ function RuleRow({ rule, onSpeak }: { rule: GrammarRule; onSpeak: () => void }) 
   );
 }
 
-const styles = StyleSheet.create({
+function createStyles(p: ColorPalette) {
+  return StyleSheet.create({
   chipsRow: {
     paddingVertical: 4,
     paddingHorizontal: 2,
@@ -102,7 +108,7 @@ const styles = StyleSheet.create({
   },
   blurb: {
     ...Typography.small,
-    color: Palette.textMuted,
+    color: p.textMuted,
     fontSize: 13,
   },
   ruleRow: {
@@ -111,24 +117,25 @@ const styles = StyleSheet.create({
     gap: Spacing.md,
     padding: Spacing.md,
     borderRadius: Radius.md,
-    backgroundColor: Palette.accentSoft,
+    backgroundColor: p.accentSoft,
   },
   ruleTitle: {
     fontFamily: Typography.bodyStrong.fontFamily,
-    color: Palette.textStrong,
+    color: p.textStrong,
     fontSize: 14,
   },
   ruleExample: {
     fontFamily: Typography.bodyStrong.fontFamily,
-    color: Palette.accent,
+    color: p.accent,
     fontSize: 14,
     fontStyle: "italic",
   },
   rulePron: {
     ...Typography.small,
-    color: Palette.brandDark,
+    color: p.brandDark,
     fontStyle: "italic",
     fontSize: 12,
   },
-  ruleTrans: { ...Typography.small, color: Palette.text },
-});
+  ruleTrans: { ...Typography.small, color: p.text },
+  });
+}

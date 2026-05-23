@@ -10,13 +10,17 @@ import { PlayButton } from "@/components/play-button";
 import { Screen } from "@/components/screen";
 import { ScreenHeader } from "@/components/screen-header";
 import { SectionCard } from "@/components/section-card";
-import { Palette, Radius, Spacing, Typography } from "@/constants/theme";
+import type { ColorPalette } from "@/constants/theme";
+import { Radius, Spacing, Typography } from "@/constants/theme";
+import { useThemedStyles } from "@/hooks/use-themed-styles";
+
 import { useItalianTts } from "@/hooks/use-italian-tts";
 import { useSyncedJson } from "@/hooks/use-synced-json";
 
 type Section = "letters" | "rules";
 
 export default function AlphabetScreen() {
+  const styles = useThemedStyles(createStyles);
   const { data: alphabetData } = useSyncedJson("alphabet", alphabetFallback as AlphabetData);
   const { data: pronData } = useSyncedJson("pron-rules", pronRulesFallback as PronunciationData);
   const letters = alphabetData.letters;
@@ -79,7 +83,8 @@ export default function AlphabetScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+function createStyles(p: ColorPalette) {
+  return StyleSheet.create({
   chipsRow: {
     flexDirection: "row",
     flexWrap: "wrap",
@@ -92,7 +97,7 @@ const styles = StyleSheet.create({
   },
   tile: {
     width: "30%",
-    backgroundColor: Palette.navySoft,
+    backgroundColor: p.navySoft,
     borderRadius: Radius.md,
     padding: Spacing.sm + 2,
     alignItems: "center",
@@ -101,16 +106,16 @@ const styles = StyleSheet.create({
   letter: {
     fontFamily: Typography.display.fontFamily,
     fontSize: 22,
-    color: Palette.navy,
+    color: p.navy,
   },
   name: {
     ...Typography.small,
-    color: Palette.text,
+    color: p.text,
     fontSize: 11,
   },
   pron: {
     ...Typography.small,
-    color: Palette.textMuted,
+    color: p.textMuted,
     fontStyle: "italic",
     fontSize: 11,
   },
@@ -120,29 +125,30 @@ const styles = StyleSheet.create({
     gap: Spacing.md,
     padding: Spacing.md,
     borderRadius: Radius.md,
-    backgroundColor: Palette.brandSoft,
+    backgroundColor: p.brandSoft,
   },
   ruleCombo: {
     minWidth: 56,
     paddingHorizontal: 10,
     paddingVertical: 6,
     borderRadius: Radius.sm,
-    backgroundColor: Palette.brand,
+    backgroundColor: p.brand,
     alignItems: "center",
   },
   ruleComboText: {
     fontFamily: Typography.bodyStrong.fontFamily,
-    color: Palette.textInverse,
+    color: p.textInverse,
     fontSize: 13,
   },
   rulePron: {
     fontFamily: Typography.bodyStrong.fontFamily,
-    color: Palette.brandDark,
+    color: p.brandDark,
     fontSize: 14,
   },
   ruleExample: {
     ...Typography.small,
-    color: Palette.text,
+    color: p.text,
     fontStyle: "italic",
   },
-});
+  });
+}

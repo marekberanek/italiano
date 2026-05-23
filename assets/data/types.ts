@@ -150,3 +150,18 @@ export type LookupResult = {
   ex_it?: string;
   ex_cz?: string;
 };
+
+/**
+ * One disambiguated sense of an ambiguous Czech / Italian word, returned by
+ * `POST /api/translate-meanings`. Used in the "Další významy" picker so the
+ * user can pick e.g. _sušička na prádlo_ vs _sušička na potraviny_ before
+ * adding to vocab.
+ */
+export type WordMeaning = {
+  it: string;
+  cz: string;
+  /** Brief Czech disambiguator (1–4 words: "na prádlo", "domácí spotřebič"). */
+  gloss: string;
+  example_it?: string;
+  example_cz?: string;
+};

@@ -3,12 +3,9 @@ import * as Haptics from "expo-haptics";
 import { Platform, Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { FontFamily, Palette, Shadow } from "@/constants/theme";
-
-const BAR_HEIGHT = 70;
-const BAR_PAD_V = 8;
-const PILL_HEIGHT = 30;
-const PILL_RADIUS = 16;
+import type { ColorPalette, ThemeShadows } from "@/constants/theme";
+import { FontFamily, TabBarMetrics } from "@/constants/theme";
+import { useThemedStyles } from "@/hooks/use-themed-styles";
 
 function resolveLabel(
   options: BottomTabBarProps["descriptors"][string]["options"],
@@ -20,12 +17,9 @@ function resolveLabel(
 
 export function ItalianoTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
   const insets = useSafeAreaInsets();
-  const bottom = Math.max(insets.bottom, 8) + 12;
+  const styles = useThemedStyles(createStyles);
+  const iconPillRadius = TabBarMetrics.iconPillHeight / 2;
 
-  // Allow individual screens to opt out of the floating tab bar by setting
-  // `navigation.setOptions({ tabBarStyle: { display: "none" } })`. The bar is
-  // a fully custom component so the navigator can't honor that style itself —
-  // we read it from the focused route's descriptor here.
   const focusedRoute = state.routes[state.index];
   const focusedOptions = focusedRoute ? descriptors[focusedRoute.key]?.options : undefined;
   const focusedTabBarStyle = focusedOptions?.tabBarStyle as
@@ -34,14 +28,17 @@ export function ItalianoTabBar({ state, descriptors, navigation }: BottomTabBarP
   if (focusedTabBarStyle?.display === "none") return null;
 
   return (
-    <View pointerEvents="box-none" style={[styles.wrapper, { bottom }]}>
+    <View
+      pointerEvents="box-none"
+      style={[styles.shell, { paddingBottom: insets.bottom }]}
+    >
       <View style={styles.bar}>
         {state.routes.map((route, index) => {
           const { options } = descriptors[route.key];
           const isFocused = state.index === index;
           const label = resolveLabel(options, route.name);
-          const iconColor = isFocused ? Palette.textInverse : Palette.tabIconInactive;
-          const labelColor = isFocused ? Palette.textStrong : Palette.textMuted;
+          const iconColor = isFocused ? styles.iconActive.color : styles.iconInactive.color;
+          const labelColor = isFocused ? styles.labelActive.color : styles.labelInactive.color;
 
           const onPress = () => {
             if (Platform.OS === "ios") {
@@ -72,8 +69,18 @@ export function ItalianoTabBar({ state, descriptors, navigation }: BottomTabBarP
               onLongPress={onLongPress}
               style={({ pressed }) => [styles.item, pressed && styles.itemPressed]}
             >
-              <View style={[styles.pill, isFocused && styles.pillActive]}>
-                {options.tabBarIcon?.({ color: iconColor, size: 20, focused: isFocused })}
+              <View
+                style={[
+                  styles.iconPill,
+                  { borderRadius: iconPillRadius },
+                  isFocused && styles.iconPillActive,
+                ]}
+              >
+                {options.tabBarIcon?.({
+                  color: iconColor,
+                  size: TabBarMetrics.iconSize,
+                  focused: isFocused,
+                })}
               </View>
               <Text
                 style={[styles.label, { color: labelColor }]}
@@ -90,46 +97,54 @@ export function ItalianoTabBar({ state, descriptors, navigation }: BottomTabBarP
   );
 }
 
-const styles = StyleSheet.create({
-  wrapper: {
-    position: "absolute",
-    left: 16,
-    right: 16,
-    alignItems: "stretch",
-  },
-  bar: {
-    flexDirection: "row",
-    height: BAR_HEIGHT,
-    borderRadius: 26,
-    backgroundColor: Palette.surface,
-    borderColor: Palette.border,
-    borderWidth: 1,
-    paddingHorizontal: 6,
-    paddingVertical: BAR_PAD_V,
-    ...Shadow.pop,
-  },
-  item: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "flex-start",
-    paddingTop: 2,
-    gap: 4,
-  },
-  itemPressed: { opacity: 0.85 },
-  pill: {
-    height: PILL_HEIGHT,
-    minWidth: 56,
-    paddingHorizontal: 14,
-    borderRadius: PILL_RADIUS,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "transparent",
-  },
-  pillActive: { backgroundColor: Palette.brand },
-  label: {
-    fontFamily: FontFamily.bold,
-    fontSize: 10.5,
-    lineHeight: 13,
-    letterSpacing: 0.1,
-  },
-});
+function createStyles(p: ColorPalette, s: ThemeShadows) {
+  return StyleSheet.create({
+    shell: {
+      position: "absolute",
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: p.surface,
+      borderTopWidth: 1,
+      borderTopColor: p.border,
+      ...s.tabBar,
+    },
+    bar: {
+      flexDirection: "row",
+      height: TabBarMetrics.barHeight,
+      paddingHorizontal: TabBarMetrics.barPaddingH,
+      paddingVertical: TabBarMetrics.barPaddingV,
+      alignItems: "stretch",
+    },
+    item: {
+      flex: 1,
+      alignItems: "center",
+      justifyContent: "flex-start",
+      paddingTop: 2,
+      gap: TabBarMetrics.itemGap,
+    },
+    itemPressed: { opacity: 0.85 },
+    iconPill: {
+      height: TabBarMetrics.iconPillHeight,
+      minWidth: TabBarMetrics.iconPillMinWidth,
+      paddingHorizontal: TabBarMetrics.iconPillPaddingH,
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: "transparent",
+    },
+    iconPillActive: {
+      backgroundColor: p.brand,
+    },
+    iconActive: { color: p.textInverse },
+    iconInactive: { color: p.tabIconInactive },
+    labelActive: { color: p.textStrong },
+    labelInactive: { color: p.textMuted },
+    label: {
+      fontFamily: FontFamily.bold,
+      fontSize: TabBarMetrics.labelSize,
+      lineHeight: 14,
+      letterSpacing: 0.4,
+      textTransform: "uppercase",
+    },
+  });
+}

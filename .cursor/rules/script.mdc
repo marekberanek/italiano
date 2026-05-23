@@ -1,0 +1,127 @@
+---
+description: uuScript (uuScriptEngine) development guide — async sandboxed JavaScript scripts with structured sections (imports, names, mockups, errors, validateDtoIn, helpers, main), uuScriptRequire, uuAppClient usage, and script testing
+alwaysApply: false
+---
+
+# Script development
+
+## Table of Contents
+1. @Introduction
+2. @Specifications and Confirmation
+3. @Script Structure
+4. @API Specifications for AppClient
+5. @Implementation Guidelines
+6. @Validation Process
+7. @Error Handling
+8. @Testing
+
+## 1. Introduction
+
+Scripts (or uuScripts) are a powerful way to automate tasks and extend the functionality of the system. The scripts
+are basically dynamically loaded JavaScript files that are executed asynchronously in uuScriptEngine subApp.
+The subApp uuScriptEngine handles inputs, outputs, and the execution of the script. The business logic is then
+handled by the provided script. The script is executed in a sandboxed environment, which means that it has limited access to the
+system and cannot perform any actions that could compromise the security of the system. By default, the script has
+a single executable function, which is called when the script is executed. The script can also require other scripts
+via a function called uuScriptRequire.
+
+For detailed guidelines, see [script-engine.md](mdc:docs/script/script-engine.md).
+Always follow the examples and templates in the provided guideline, especially for the most common tasks (validation,
+error handling, helpers, uuAppClient, uuUri...).
+
+## 2. Specifications and Confirmation
+
+- ALWAYS follow the guidelines and rules for implementations of scripts described in following rules:
+-- [script-engine.md](mdc:docs/script/script-engine.md)
+-- [script-require.md](mdc:docs/script/script-require.md)
+-- [script-context.md](mdc:docs/script/script-context.md)
+-- [script-testing.md](mdc:docs/script/script-testing.md)
+-- [generic-script-helper.md](mdc:docs/script/generic-script-helper.md)
+- ALWAYS follow general rules for implementation of commands, see [general-rules](mdc:.cursor/rules/general-rules.md).
+
+## 3. Script Structure
+
+- Every script must contain a single async function main, which is executed at the bottom of the file.
+- Every script must contain a section separated by comments, even if that would mean empty section. The sections are as follow:
+-- imports
+-- names
+-- mockups
+-- errors
+-- validateDtoIn
+-- helpers
+-- main
+
+For detailed guidelines, see [script-engine.md](mdc:docs/script/script-engine.md).
+
+## 4. API Specifications for AppClient
+
+Main usage of uuScript is to provide a way to use uuAppClient.
+You can find detailed information about uuAppClient in [app-client.md](mdc:docs/command/app-client.md).
+The uuAppClient is a client for the uuApp server. It provides a way to call commands of other subApps and process the results.
+
+Since the API of other subApps can vary, you must follow these rules when implementing any steps that are calling
+any commands.
+
+- ALWAYS make sure that the base uri and use case is known and specified by the user.
+- ALWAYS make sure that you understand what dtoIn will be used to call the command.
+- ALWAYS make sure that you understand what is the dtoOut of the command.
+- ALWAYS use the session of the current user, there is no way to get a session of another user in uuScript.
+    This rule has precedence over the generic rule of AppClient for commands.
+
+The uuAppClient can be used to call any HTTP endpoint, but it is mainly used to call uuCommands on uuSubApplications.
+Whenever you need to call a uuCommand, you must always use the uuUri module to build the correct URL.
+Never concatenate the URL manually, because it can lead to errors in the URL format.
+For the documentation of uuUri, see [uri.md](mdc:docs/command/uri.md).
+
+## 5. Implementation Guidelines
+
+Always follow general rules, including the separation of competencies and responsibilities to different classes or helpers.
+
+In uuScripts, you will be forced to use uuScriptRequire for importing helpers, which is a bit different from the
+standard import. The uuScriptRequire is a function that loads the script dynamically and executes it in the context of the
+uuScriptEngine. You can read more information about it in [script-require.md](mdc:docs/script/script-require.md).
+
+Any script input data, session data, dtoOut with uuAppErrorMap or information about script runtime can be found in global variable
+called scriptContext. This variable is available at the main script and all helpers loaded via uuScriptRequire.
+See [script-context.md](mdc:docs/script/script-context.md) for more information about the scriptContext.
+
+Always make sure that the generic-script-helper exists in the script library. If it does not exist, create it in
+/src/helpers folder. ALWAYS name it generic-script-helper.js and if it does not exist, copy the content from
+the example without any modifications!
+It contains all the necessary functions that are shared between every script, such as validation,
+error handling, and other helper functions. Check the [generic-script-helper.md](mdc:docs/script/generic-script-helper.md)
+for more information about the generic-script-helper and how to use it.
+
+Always prefer to use uuUri to handle any URI-related tasks, such as parsing, validating, or constructing URIs.
+See the documentation at [uri.md](mdc:docs/command/uri.md) for more information about uuUri, uuUriBuilder and how to use it.
+
+## 6. Validation Process
+
+Always validate the input data of the script. The validation must be done in the validateDtoIn section of the script.
+You must always use the validateDtoIn function from the generic-script-helper to validate the input data.
+All standard validation functions are already implemented, in the script you just need to provide standard validation
+scheme and use the validateDtoIn function to validate the input data. Use the validation documentation available
+at [validation.md](mdc:docs/command/validation.md) and
+[validation-scheme.md](mdc:docs/command/validation-scheme.md) for more information about the validation schemes and
+all available data types.
+
+There can be possibly multiple requirements for validations, such as
+- validating that an uri passed in dtoIn is valid and that it contains
+-- in this case, always use the uuUri module to validate the uri and extract any parameters, see [uri.md](mdc:docs/command/uri.md)
+
+## 7. Error Handling
+
+Every script must handle errors. The errors must be handled in a manner very similar to uuCommands,
+see [errors.md](mdc:docs/command/errors.md) and [generic-script-helper.md](mdc:docs/script/generic-script-helper.md).
+There must be no unnamed errors thrown in the script, it must always be an instance of UseCaseError.
+
+## 8. Testing
+
+Every script must have a related test file, which is located in /tests directory. The test file must be named
+`<script-name>.test.js` and must contain at least a basic form of test that does not mock anything, just runs the script
+in prepared test environment.
+
+Always follow the practices and examples from the [script-testing.md](mdc:docs/script/script-testing.md) documentation.
+
+Always prepare the test file regardless whether the user has requested it or not. It is a good practice to have the test file ready
+and for localhost development, it will be necesary anyway.

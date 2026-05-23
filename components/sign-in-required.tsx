@@ -3,7 +3,10 @@ import { useRouter } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
 
 import { PrimaryButton } from "@/components/primary-button";
-import { Palette, Radius, Shadow, Spacing, Typography } from "@/constants/theme";
+import type { ColorPalette, ThemeShadows } from "@/constants/theme";
+import { Radius, Spacing, Typography } from "@/constants/theme";
+import { useThemedStyles } from "@/hooks/use-themed-styles";
+import { useTheme } from "@/lib/theme/theme-context";
 
 type Props = {
   /** Heading shown at the top of the card. */
@@ -34,6 +37,8 @@ export function SignInRequiredCard({
   onBeforeNavigate,
 }: Props) {
   const router = useRouter();
+  const { palette } = useTheme();
+  const styles = useThemedStyles(createStyles);
   const handlePress = () => {
     onBeforeNavigate?.();
     router.push("/(tabs)/profile");
@@ -41,7 +46,7 @@ export function SignInRequiredCard({
   return (
     <View style={styles.card}>
       <View style={styles.iconWrap}>
-        <MaterialIcons name="lock-outline" size={28} color={Palette.brandDark} />
+        <MaterialIcons name="lock-outline" size={28} color={palette.brandDark} />
       </View>
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.body}>{description}</Text>
@@ -49,38 +54,40 @@ export function SignInRequiredCard({
         label={ctaLabel}
         variant="primary"
         onPress={handlePress}
-        icon={<MaterialIcons name="login" size={18} color={Palette.textInverse} />}
+        icon={<MaterialIcons name="login" size={18} color={palette.textInverse} />}
       />
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  card: {
-    backgroundColor: Palette.surface,
-    borderRadius: Radius.lg,
-    borderWidth: 1,
-    borderColor: Palette.border,
-    padding: Spacing.lg,
-    gap: Spacing.md,
-    alignItems: "stretch",
-    ...Shadow.card,
-  },
-  iconWrap: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    backgroundColor: Palette.brandSoft,
-    alignItems: "center",
-    justifyContent: "center",
-    alignSelf: "flex-start",
-  },
-  title: {
-    ...Typography.sectionTitle,
-    color: Palette.textStrong,
-  },
-  body: {
-    ...Typography.body,
-    color: Palette.textMuted,
-  },
-});
+function createStyles(p: ColorPalette, s: ThemeShadows) {
+  return StyleSheet.create({
+    card: {
+      backgroundColor: p.surface,
+      borderRadius: Radius.lg,
+      borderWidth: 1,
+      borderColor: p.border,
+      padding: Spacing.lg,
+      gap: Spacing.md,
+      alignItems: "stretch",
+      ...s.card,
+    },
+    iconWrap: {
+      width: 56,
+      height: 56,
+      borderRadius: 28,
+      backgroundColor: p.brandSoft,
+      alignItems: "center",
+      justifyContent: "center",
+      alignSelf: "flex-start",
+    },
+    title: {
+      ...Typography.sectionTitle,
+      color: p.textStrong,
+    },
+    body: {
+      ...Typography.body,
+      color: p.textMuted,
+    },
+  });
+}

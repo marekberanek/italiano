@@ -10,7 +10,11 @@ import { PlayButton } from "@/components/play-button";
 import { Screen } from "@/components/screen";
 import { ScreenHeader } from "@/components/screen-header";
 import { SectionCard } from "@/components/section-card";
-import { Palette, Radius, Spacing, Typography } from "@/constants/theme";
+import type { ColorPalette } from "@/constants/theme";
+import { Radius, Spacing, Typography } from "@/constants/theme";
+import { useThemedStyles } from "@/hooks/use-themed-styles";
+import { useTheme } from "@/lib/theme/theme-context";
+
 import { useItalianTts } from "@/hooks/use-italian-tts";
 import { useSyncedJson } from "@/hooks/use-synced-json";
 import { useVocabStore } from "@/hooks/use-vocab-store";
@@ -35,6 +39,8 @@ type SectionTone = (typeof SECTION_TONES)[number];
 type Group = { tag: string; items: CuratedVocabItem[] };
 
 export default function CuratedVocabScreen() {
+  const { palette } = useTheme();
+  const styles = useThemedStyles(createStyles);
   const { data } = useSyncedJson("curated-vocab", curatedVocabFallback as CuratedVocabData);
   const tts = useItalianTts();
   const { state, addWord } = useVocabStore();
@@ -105,7 +111,7 @@ export default function CuratedVocabScreen() {
       </ScrollView>
 
       <View style={styles.intro}>
-        <MaterialIcons name="info-outline" size={16} color={Palette.textMuted} />
+        <MaterialIcons name="info-outline" size={16} color={palette.textMuted} />
         <Text style={styles.introText}>
           Klepni na <Text style={styles.introStrong}>+</Text> a slovíčko se přidá do tvých{" "}
           <Text style={styles.introStrong}>Slovíček</Text> k procvičování.
@@ -150,6 +156,7 @@ function CuratedRow({
   onSpeak: () => void;
   onAdd: () => void;
 }) {
+  const styles = useThemedStyles(createStyles);
   // Pronunciation is generated locally — `italianToCzechPron` is cheap, but
   // memoise per-item so the giant list stays stable on re-renders.
   const pron = useMemo(() => italianToCzechPron(item.it), [item.it]);
@@ -167,6 +174,8 @@ function CuratedRow({
 }
 
 function AddButton({ added, onPress }: { added: boolean; onPress: () => void }) {
+  const { palette } = useTheme();
+  const styles = useThemedStyles(createStyles);
   return (
     <Pressable
       onPress={onPress}
@@ -181,13 +190,14 @@ function AddButton({ added, onPress }: { added: boolean; onPress: () => void }) 
       <MaterialIcons
         name={added ? "check" : "add"}
         size={20}
-        color={added ? Palette.brandDark : Palette.textInverse}
+        color={added ? palette.brandDark : palette.textInverse}
       />
     </Pressable>
   );
 }
 
-const styles = StyleSheet.create({
+function createStyles(p: ColorPalette) {
+  return StyleSheet.create({
   chipsRow: {
     gap: Spacing.sm,
     paddingVertical: Spacing.xs,
@@ -201,28 +211,28 @@ const styles = StyleSheet.create({
   },
   introText: {
     ...Typography.small,
-    color: Palette.textMuted,
+    color: p.textMuted,
     flex: 1,
     lineHeight: 18,
   },
-  introStrong: { ...Typography.smallStrong, color: Palette.textStrong },
+  introStrong: { ...Typography.smallStrong, color: p.textStrong },
   row: {
     flexDirection: "row",
     alignItems: "center",
     gap: Spacing.sm + 2,
     padding: Spacing.md,
     borderRadius: Radius.md,
-    backgroundColor: Palette.brandSoft,
+    backgroundColor: p.brandSoft,
   },
   rowText: { flex: 1, gap: 2 },
   it: {
     fontFamily: Typography.bodyStrong.fontFamily,
-    color: Palette.textStrong,
+    color: p.textStrong,
     fontSize: 16,
     fontStyle: "italic",
   },
-  cz: { ...Typography.body, color: Palette.text, fontSize: 14 },
-  pron: { ...Typography.small, color: Palette.textMuted, fontStyle: "italic", fontSize: 12 },
+  cz: { ...Typography.body, color: p.text, fontSize: 14 },
+  pron: { ...Typography.small, color: p.textMuted, fontStyle: "italic", fontSize: 12 },
   addBtn: {
     width: 36,
     height: 36,
@@ -230,10 +240,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  addBtnIdle: { backgroundColor: Palette.brand },
+  addBtnIdle: { backgroundColor: p.brand },
   addBtnDone: {
     backgroundColor: "transparent",
     borderWidth: 1.5,
-    borderColor: Palette.brand,
+    borderColor: p.brand,
   },
-});
+  });
+}

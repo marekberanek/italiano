@@ -1,15 +1,11 @@
 import { StyleSheet, Text, View, type ViewStyle } from "react-native";
 
-import { Palette, Radius, Spacing, Typography } from "@/constants/theme";
+import type { ColorPalette } from "@/constants/theme";
+import { Radius, Spacing, Typography } from "@/constants/theme";
+import { useThemedStyles } from "@/hooks/use-themed-styles";
+import { useTheme } from "@/lib/theme/theme-context";
 
 type Tone = "brand" | "accent" | "ochre" | "navy";
-
-const toneColor: Record<Tone, string> = {
-  brand: Palette.brand,
-  accent: Palette.accent,
-  ochre: Palette.ochre,
-  navy: Palette.navy,
-};
 
 type Props = {
   title: string;
@@ -21,6 +17,15 @@ type Props = {
 };
 
 export function SectionCard({ title, subtitle, tone = "brand", trailing, children, style }: Props) {
+  const { palette } = useTheme();
+  const styles = useThemedStyles(createStyles);
+  const toneColor: Record<Tone, string> = {
+    brand: palette.brand,
+    accent: palette.accent,
+    ochre: palette.ochre,
+    navy: palette.navy,
+  };
+
   return (
     <View style={[styles.card, style]}>
       <View style={styles.header}>
@@ -38,37 +43,39 @@ export function SectionCard({ title, subtitle, tone = "brand", trailing, childre
   );
 }
 
-const styles = StyleSheet.create({
-  card: {
-    backgroundColor: Palette.surface,
-    borderWidth: 1,
-    borderColor: Palette.border,
-    borderRadius: Radius.lg,
-    padding: Spacing.lg + 4,
-    gap: Spacing.md,
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "flex-start",
-    justifyContent: "space-between",
-    gap: Spacing.sm,
-  },
-  titleBlock: { flex: 1, gap: 4 },
-  titleRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: Spacing.sm + 2,
-  },
-  dot: { width: 8, height: 8, borderRadius: 4 },
-  title: {
-    fontFamily: Typography.display.fontFamily,
-    fontSize: 16,
-    color: Palette.textStrong,
-  },
-  subtitle: {
-    ...Typography.small,
-    color: Palette.textMuted,
-    fontSize: 13,
-    paddingLeft: Spacing.md + 10,
-  },
-});
+function createStyles(p: ColorPalette) {
+  return StyleSheet.create({
+    card: {
+      backgroundColor: p.surface,
+      borderWidth: 1,
+      borderColor: p.border,
+      borderRadius: Radius.lg,
+      padding: Spacing.lg + 4,
+      gap: Spacing.md,
+    },
+    header: {
+      flexDirection: "row",
+      alignItems: "flex-start",
+      justifyContent: "space-between",
+      gap: Spacing.sm,
+    },
+    titleBlock: { flex: 1, gap: 4 },
+    titleRow: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: Spacing.sm + 2,
+    },
+    dot: { width: 8, height: 8, borderRadius: 4 },
+    title: {
+      fontFamily: Typography.display.fontFamily,
+      fontSize: 16,
+      color: p.textStrong,
+    },
+    subtitle: {
+      ...Typography.small,
+      color: p.textMuted,
+      fontSize: 13,
+      paddingLeft: Spacing.md + 10,
+    },
+  });
+}

@@ -1,0 +1,604 @@
+---
+description: Enelane input dataflow implementation guide — four-phase message processing pipeline (Recognize → Validate → Extract Metadata → Transform) for incoming integration messages with XSD/JSON schema validation and recognizer/validator/extractor/transformer base classes
+alwaysApply: false
+---
+
+# Enelane Input Dataflow Implementation
+
+## Table of Contents
+
+1. @Introduction
+2. @Pipeline Overview
+3. @Required Inputs
+4. @Implementation Pattern
+5. @Phase 1: Recognition
+6. @Phase 2: Validation
+7. @Phase 3: Metadata Extraction
+8. @Phase 4: Transformation
+9. @Complete Working Example
+10. @Key Interfaces and Base Classes
+11. @Troubleshooting
+
+## 1. Introduction
+
+Enelane Input Dataflow implements a standardized message processing pipeline for incoming messages in integration scenarios. The pipeline follows a four-phase approach:
+
+**Pipeline:** **Recognize → Validate → Extract Metadata → Transform**
+
+### 1.1 Purpose
+
+The input dataflow system provides:
+
+- Automated message recognition based on content patterns
+- Technical validation with XSD/JSON schema support
+- Business metadata extraction for routing and processing
+- Message transformation from source format to business application format
+
+### 1.2 Documentation References
+
+Complete documentation for each phase:
+
+- [message-input-processing.md](../docs/enelane/message-input-processing.md) - Pipeline overview
+- [recognizers.md](../docs/enelane/recognizers.md) - Phase 1: Recognition
+- [validators.md](../docs/enelane/validators.md) - Phase 2: Validation
+- [extractors.md](../docs/enelane/extractors.md) - Phase 3: Metadata
+- [transformers.md](../docs/enelane/transformers.md) - Phase 4: Transform
+
+## 2. Pipeline Overview
+
+### 2.1 Four-Phase Processing Model
+
+The input dataflow pipeline consists of four sequential phases:
+
+1. **Recognition (Phase 1)**: Identifies message type and routes to appropriate dataflow
+2. **Validation (Phase 2)**: Validates message structure and business rules
+3. **Metadata Extraction (Phase 3)**: Extracts business metadata for routing and processing
+4. **Transformation (Phase 4)**: Transforms message to target business application format
+
+### 2.2 Phase Dependencies
+
+- Phase 1 must execute successfully before Phase 2
+- Phase 2 must complete without errors before Phase 3
+- Phase 3 must complete before Phase 4
+- Each phase can fail independently with specific error handling
+
+### 2.3 Configuration Architecture
+
+Each dataflow requires:
+
+- Recognizer configuration (`recognizers/<name>RecognizerConfiguration.js`)
+- Dataflow configuration (`dataflows/<name>InputDataFlow.js`)
+- Java components (validators, extractors, transformers)
+- JAXB POJOs (for XML messages)
+
+## 3. Required Inputs
+
+### 3.1 Schema Files
+
+For XML messages:
+
+- XSD schema file in `src/main/resources/xsd/` directory
+- Schema must define complete message structure
+- Schema location reference in messages
+
+For JSON messages:
+
+- JSON schema definition
+- Schema validation rules
+
+### 3.2 Business Requirements
+
+Must confirm before implementation:
+
+- Recognition rules (XPath, SpEL, or custom)
+- Validation rules (technical and business)
+- Metadata fields to extract
+- Target JSON structure for business application
+
+### 3.3 Target Structure Definition
+
+- Target business application JSON format
+- Field mappings from source to target
+- Data type transformations
+- Default values and conditional logic
+
+## 4. Implementation Pattern
+
+### 4.1 Component Structure
+
+Each phase requires specific components:
+
+1. **InitData Configuration** - JavaScript module defining dataflow/recognizer setup
+2. **Java Components** - Custom processors, validators, extractors, transformers
+3. **JAXB POJOs** - Generated from XSD using Gradle plugin (for XML messages)
+
+### 4.2 File Organization
+
+```text
+src/main/resources/
+├── initdata/
+│   ├── recognizers/
+│   │   └── <name>RecognizerConfiguration.js
+│   └── dataflows/
+│       └── <name>InputDataFlow.js
+├── xsd/
+│   └── <schema>.xsd
+└── ...
+
+src/main/java/
+├── <package>/domain/<schema>/   # Generated JAXB POJOs
+├── <package>/validator/         # Technical validators
+├── <package>/extractor/         # Metadata extractors
+└── <package>/transformer/       # Message transformers
+```
+
+### 4.3 Critical Implementation Rule
+
+⚠️ **CRITICAL: JAXB Generation is FIRST STEP of Dataflow Implementation**
+
+**ABSOLUTE REQUIREMENT:** Before implementing ANY dataflow for XML messages, you MUST generate JAXB POJOs from XSD schemas.
+
+**Generation Command:**
+
+```bash
+gradle generateJaxb --no-daemon
+```
+
+**Why First:**
+
+1. Domain model defines data structure for all subsequent phases
+2. Validators need POJO classes to validate against
+3. Extractors extract from POJO objects
+4. Transformers map from POJO to target DTO
+
+**Workflow:**
+
+1. 🛑 **FIRST**: Place XSD in `src/main/resources/xsd/`
+2. 🛑 **SECOND**: Configure `generateJaxb` task in `build.gradle`
+3. 🛑 **THIRD**: Run `gradle generateJaxb --no-daemon`
+4. ✅ Verify generated POJOs at path matching your `-p` argument
+5. ✅ POJOs are part of source code, IDE recognizes them automatically
+6. Only then proceed with dataflow implementation
+
+**See [validators.md - JAXB Generation](../docs/enelane/validators.md#jaxb-generation) for complete configuration details**
+
+## 5. Phase 1: Recognition
+
+### 5.1 Overview
+
+**Doc:** [recognizers.md](../docs/enelane/recognizers.md)
+
+Recognition identifies incoming message type and routes to appropriate dataflow.
+
+### 5.2 Recognizer Configuration
+
+**File:** `recognizers/<name>RecognizerConfiguration.js`
+
+**Available Recognizer:** `defaultIncomingMessageRecognizer` (only one available)
+
+### 5.3 Rule Types
+
+**Built-in Rule Types:**
+
+1. **XPath** - For XML message content matching (ready to use)
+2. **SpEL** - For metadata-based matching (ready to use)
+3. **AND** - For combining multiple rules (ready to use)
+
+**Custom Rule Types (Require Implementation):**
+
+1. **JSONPath** - ⚠️ NOT built-in. Requires custom `RecognizerRuleEvaluator` implementation for JSON message matching. See [recognizers.md](../docs/enelane/recognizers.md#jsonpath-support-requires-custom-implementation) for implementation guide.
+
+### 5.4 Configuration Structure
+
+See [recognizers.md](../docs/enelane/recognizers.md) for complete configuration examples.
+
+### 5.5 Best Practices
+
+- Use specific XPath expressions to avoid false matches
+- Test recognition rules with sample messages
+- Always configure unrecognized message handling
+- Document recognition criteria in comments
+
+## 6. Phase 2: Validation
+
+### 6.1 Overview
+
+**Doc:** [validators.md](../docs/enelane/validators.md)
+
+**File:** `dataflows/<name>InputDataFlow.js`
+
+Validation ensures message structure and content meet technical and business requirements.
+
+### 6.2 Validation Configuration
+
+⚠️ **CRITICAL:** All validation MUST happen in Phase 2 using `TechnicalValidator` implementations. Transformers (Phase 4) perform ZERO validation - they only transform data.
+
+**See [transformers.md](../docs/enelane/transformers.md#-critical-rule-no-validation-in-transformers) for complete validation vs transformation guidelines.**
+
+**Pattern:**
+```javascript
+technicalValidators: [
+    { name: "myTypeValidator" },      // Each validation rule = one validator
+    { name: "myFormatValidator" },
+    { name: "mySequenceValidator" }
+]
+```
+
+### 6.3 JAXB POJO Generation (MANDATORY for XML)
+
+⚠️ **CRITICAL RULE: NEVER CREATE JAXB CLASSES MANUALLY!**
+
+**Always use Gradle JavaExec task with xjc. This is the FIRST STEP of dataflow implementation.**
+
+#### 6.3.1 Quick Start
+
+**Step 1:** Add JAXB configuration to `build.gradle` (see below)
+
+**Step 2:** Place XSD in `src/main/resources/xsd/`
+
+**Step 3:** Run `gradle generateJaxb --no-daemon`
+
+**Step 4:** Verify POJOs in the path matching your `-p` package argument
+
+**Step 5:** Proceed with dataflow implementation
+
+#### 6.3.2 Package Convention
+
+**Convention:** `<main-application-package>.domain.<schema-name>`
+
+**Where:**
+
+- `<main-application-package>`: The base package where your application's main method exists (e.g., `usy.cap.energygateway`, `com.mycompany.myapp`)
+- `domain`: Fixed segment indicating domain models (always "domain")
+- `<schema-name>`: Name derived from XSD filename (e.g., "capacity", "certificate")
+
+**Examples:**
+
+- `usy.cap.energygateway.domain.capacity`
+- `usy.aibhub.energygateway.domain.certificate`
+- `com.company.appname.domain.order`
+
+#### 6.3.3 Quick Gradle Setup
+
+**Minimal working configuration:**
+
+```gradle
+// JAXB Configuration
+configurations {
+    jaxb
+}
+
+dependencies {
+    // JAXB dependencies (Jakarta 3.0.x)
+    implementation "jakarta.xml.bind:jakarta.xml.bind-api:3.0.1"
+    implementation "com.sun.xml.bind:jaxb-impl:3.0.2"
+    implementation "com.sun.xml.bind:jaxb-core:3.0.2"
+    implementation "org.glassfish.jaxb:jaxb-runtime:3.0.2"
+    
+    // XJC for generation
+    jaxb "com.sun.xml.bind:jaxb-xjc:3.0.2"
+    jaxb "com.sun.xml.bind:jaxb-impl:3.0.2"
+    jaxb "com.sun.xml.bind:jaxb-core:3.0.2"
+    jaxb "org.glassfish.jaxb:jaxb-runtime:3.0.2"
+    jaxb "jakarta.xml.bind:jakarta.xml.bind-api:3.0.1"
+}
+
+// Generate POJOs directly to src/main/java (domain model must be directly usable by application)
+def generatedDir = "src/main/java"
+
+task generateJaxb(type: JavaExec) {
+    group = 'build'
+    classpath = configurations.jaxb
+    mainClass = 'com.sun.tools.xjc.XJCFacade'
+    
+    args = [
+        '-d', generatedDir,
+        '-p', 'usy.cap.energygateway.domain.capacity',  // Use your main application package
+        '-extension',
+        '-no-header',
+        file('src/main/resources/xsd/schema.xsd')
+    ]
+    
+    inputs.files(fileTree(dir: 'src/main/resources/xsd', include: '**/*.xsd'))
+    outputs.dir("${generatedDir}/usy/cap/energygateway/domain/capacity")
+}
+```
+
+#### 6.3.4 Generation Command
+
+**CRITICAL: ALWAYS call generateJaxb explicitly - do NOT rely on automatic generation via compileJava!**
+
+```bash
+gradle generateJaxb --no-daemon
+```
+
+**Why Manual Generation:**
+
+- Ensures POJOs exist before implementing dataflow components
+- Verifies XSD and configuration correctness immediately
+- Provides clear error messages if generation fails
+- IDE can recognize generated classes immediately
+
+**Verification:**
+
+```bash
+# Verify POJOs exist at path matching your -p argument
+ls -la src/main/java/<your-package-path>/domain/<schema-name>/
+
+# Example:
+ls -la src/main/java/usy/cap/energygateway/domain/capacity/
+```
+
+**Why src/main/java (not build/generated):**
+
+- Domain models must be directly usable by the application
+- POJOs are part of your domain layer, not build artifacts
+- IDE automatically recognizes them as source code
+- Can be version controlled if needed
+- No additional classpath configuration required
+
+#### 6.3.5 Usage in Dataflow Configuration
+
+```javascript
+messagePreProcessors: [
+    {
+        name: "xmlMessagePreProcessor",
+        params: {
+            dtoPackage: "usy.cap.energygateway.domain.capacity",  // Must match -p argument
+            xsdPath: "xsd/schema.xsd"
+        }
+    }
+]
+```
+
+#### 6.3.6 Complete Documentation
+
+📚 **For complete JAXB configuration, multiple schemas, troubleshooting, and best practices:**
+
+**See [validators.md - JAXB Generation](../docs/enelane/validators.md#jaxb-generation)** for:
+- Complete Gradle configuration with all options
+- Multiple XSD schemas handling
+- Package naming conventions
+- XJC command line arguments
+- Troubleshooting and common issues
+- Best practices
+
+### 6.4 Message Pre-Processors
+
+Pre-processors prepare messages for validation and transformation:
+
+#### 6.4.1 Standard Pre-Processors
+
+| Pre-Processor | Purpose | Phase |
+|---------------|---------|-------|
+| `xmlSchemaLocationPreProcessor` | Extracts XSD schema location from `xsi:schemaLocation` and stores in business metadata | Metadata extraction only |
+| `xmlMessagePreProcessor` | XSD validation + JAXB deserialization (uses generated POJOs) | Validation |
+| `jsonIncomingMessagePreProcessor` | JSON → POJO deserialization | Validation |
+| `createTransferPreProcessor` | Transfer lifecycle management | Initialization |
+
+#### 6.4.2 xmlMessagePreProcessor Configuration
+
+```javascript
+messagePreProcessors: [
+    { name: "xmlSchemaLocationPreProcessor" },
+    {
+        name: "xmlMessagePreProcessor",
+        params: {
+            dtoPackage: "usy.cap.energygateway.domain.capacity",  // Use your main application package
+            xsdPath: "xsd/capacityDocumentIEC80.xsd"
+        }
+    }
+]
+```
+
+#### 6.4.3 Custom Pre-Processors
+
+**See [validators.md - Custom Pre-Processors](../docs/enelane/validators.md#custom-pre-processors) for complete implementation template with `XmlSchemaLocationPreProcessor` as reference example.**
+
+### 6.5 Technical Validators
+
+#### 6.5.1 Validator Requirements
+
+Technical validators must:
+
+- Implement `TechnicalValidator` interface
+- Be registered as Spring components
+- Return `ValidationDto` (not throw exceptions)
+- Each validator = one validation rule
+
+**See [validators.md - Technical Validators](../docs/enelane/validators.md#technical-validators) for:**
+- Complete validator template with all interface methods
+- `ValidationDtoHelper` class
+- Validation criteria
+- Best practices
+
+### 6.6 Validation Best Practices
+
+1. Create one validator per validation rule
+2. Use descriptive validator names
+3. Provide clear error messages
+4. Test validators independently
+5. Document validation criteria
+6. Never mix validation with transformation
+
+## 7. Phase 3: Metadata Extraction
+
+### 7.1 Overview
+
+**Doc:** [extractors.md](../docs/enelane/extractors.md)
+
+Metadata extraction captures business context from messages for routing and processing decisions.
+
+### 7.2 Default Extractors
+
+Standard extractors available:
+
+| Extractor | Purpose |
+|-----------|---------|
+| `channelMessageMetadataExtractor` | Extracts channel and endpoint information |
+| `inputDataFlowMetadataExtractor` | Extracts dataflow metadata |
+
+### 7.3 Custom Metadata Extractors
+
+#### 7.3.1 Implementation Pattern
+
+Custom extractors must:
+
+- Implement `MessageMetadataExtractor` interface
+- Implement business-specific extraction logic
+- Store metadata in message headers
+- Be registered as Spring components
+
+**See [extractors.md - Custom Metadata Extractors](../docs/enelane/extractors.md#custom-extractor-implementation) for:**
+- Complete extractor template with all interface methods
+- Examples for XML and JSON
+- Best practices
+
+### 7.4 Metadata Usage
+
+Extracted metadata is used for:
+
+- Message routing decisions
+- Audit trail and logging
+- Business process correlation
+- Downstream system routing
+
+## 8. Phase 4: Transformation
+
+### 8.1 Overview
+
+**Doc:** [transformers.md](../docs/enelane/transformers.md)
+
+Transformation converts validated messages from source format to target business application format.
+
+### 8.2 Critical Rules
+
+⚠️ **MANDATORY REQUIREMENTS:**
+
+1. **NO default transformers exist** - All transformers are custom implementations
+2. **Transformers ONLY transform** - NEVER validate! (All validation in Phase 2)
+
+**See [transformers.md](../docs/enelane/transformers.md#-critical-rule-no-validation-in-transformers) for complete guidelines.**
+
+### 8.3 Implementation Process
+
+**Interface:** `MessageTransformer` (NOT an abstract class)
+
+Transformers must:
+
+- Implement `MessageTransformer` interface
+- Implement only transformation logic
+- Handle null values gracefully
+- Provide clear transformation mappings
+- Be registered as Spring components
+
+**See [transformers.md - Implementation Patterns](../docs/enelane/transformers.md#implementation-patterns) for:**
+- Complete transformer template with all interface methods
+- DTO class examples
+- Target JSON structure definition
+- DtoInTransformer for AsyncJobDestinationClient
+- Best practices
+
+### 8.4 Transformation Best Practices
+
+1. Document field mappings clearly
+2. Handle optional fields appropriately
+3. Apply data type conversions
+4. Set default values where needed
+5. Never include validation logic
+6. Test transformation independently
+
+### 8.5 Target Structure Definition
+
+Before implementing transformers, define:
+
+- Complete target JSON structure
+- All field mappings (source → target)
+- Data type conversions
+- Default values
+- Conditional mappings
+
+**See [transformers.md - Target JSON Structure](../docs/enelane/transformers.md#target-json-structure) for complete guidance.**
+
+## 9. Complete Working Example
+
+See [validators.md - InitData Configuration](../docs/enelane/validators.md#initdata-configuration) for complete working examples including:
+
+- Recognizer configuration
+- Dataflow configuration
+- Validator implementations
+- Extractor implementations
+- Transformer implementations
+
+## 10. Key Interfaces and Base Classes
+
+### 10.1 Phase 1: Recognition
+
+| Interface/Class | Purpose |
+|-----|---|
+| `RecognizerRuleEvaluator` | Custom recognizer logic implementation |
+| `defaultIncomingMessageRecognizer` | Standard recognizer implementation |
+
+### 10.2 Phase 2: Validation
+
+| Interface/Class | Purpose |
+|-----|---|
+| `IncomingMessagePreProcessor` | Message preparation interface |
+| `TechnicalValidator` | Technical validation interface |
+| `ValidationDto` | Validation result object |
+
+### 10.3 Phase 3: Metadata Extraction
+
+| Interface/Class | Purpose |
+|-----|---|
+| `MessageMetadataExtractor` | Metadata extraction interface |
+
+### 10.4 Phase 4: Transformation
+
+| Interface/Class | Purpose |
+|-----|---|
+| `MessageTransformer` | Transformation interface |
+| `DtoInTransformer` | DtoIn transformation for AsyncJobDestinationClient |
+
+## 11. Troubleshooting
+
+### 11.1 Common Issues
+
+| Issue | Solution |
+|----|----|
+| Recognition not working | Verify XPath expression with message samples |
+| JAXB generation fails | Check XSD validity and package configuration |
+| Validation errors not clear | Add detailed error messages to validators |
+| Transformation fails | Check null handling and field mappings |
+| Unrecognized messages | Review recognition rules and test coverage |
+
+### 11.2 Validation Checklist
+
+- [ ] Schema files are in correct location
+- [ ] JAXB POJOs generated successfully
+- [ ] Recognition rules tested with sample messages
+- [ ] Each validation rule has separate validator
+- [ ] Validators registered as Spring components
+- [ ] Metadata extractors configured correctly
+- [ ] Transformers only contain transformation logic
+- [ ] Target JSON structure defined
+- [ ] Integration tests cover all phases
+- [ ] Error handling tested
+
+### 11.3 Performance Optimization
+
+- Use specific XPath expressions to reduce processing
+- Generate JAXB POJOs once, not on every build
+- Cache metadata extraction results when appropriate
+- Optimize transformation logic for large messages
+- Use appropriate logging levels
+
+### 11.4 Debugging Tips
+
+1. Enable DEBUG logging for specific packages
+2. Verify message content at each phase boundary
+3. Test validators independently with unit tests
+4. Validate XSD schema separately
+5. Check JAXB deserialization with sample XML
+6. Review metadata extraction results
+7. Verify transformed JSON structure

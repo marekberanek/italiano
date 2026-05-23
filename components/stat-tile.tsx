@@ -1,6 +1,9 @@
 import { StyleSheet, Text, View } from "react-native";
 
-import { Palette, Radius, Shadow, Spacing, Typography } from "@/constants/theme";
+import type { ColorPalette, ThemeShadows } from "@/constants/theme";
+import { Radius, Spacing, Typography } from "@/constants/theme";
+import { useThemedStyles } from "@/hooks/use-themed-styles";
+import { useTheme } from "@/lib/theme/theme-context";
 
 type Tone = "brand" | "accent" | "neutral";
 
@@ -10,13 +13,15 @@ type Props = {
   tone?: Tone;
 };
 
-const toneColors: Record<Tone, string> = {
-  brand: Palette.brand,
-  accent: Palette.accent,
-  neutral: Palette.brandDark,
-};
-
 export function StatTile({ value, label, tone = "neutral" }: Props) {
+  const { palette } = useTheme();
+  const styles = useThemedStyles(createStyles);
+  const toneColors: Record<Tone, string> = {
+    brand: palette.brand,
+    accent: palette.accent,
+    neutral: palette.brandDark,
+  };
+
   return (
     <View style={styles.container}>
       <Text style={[styles.value, { color: toneColors[tone] }]}>{value}</Text>
@@ -25,28 +30,30 @@ export function StatTile({ value, label, tone = "neutral" }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Palette.surface,
-    borderRadius: Radius.lg,
-    paddingVertical: Spacing.md,
-    paddingHorizontal: Spacing.md,
-    borderWidth: 1,
-    borderColor: Palette.border,
-    minHeight: 88,
-    justifyContent: "center",
-    ...Shadow.card,
-  },
-  value: {
-    fontFamily: Typography.display.fontFamily,
-    fontSize: 32,
-    lineHeight: 36,
-  },
-  label: {
-    ...Typography.caption,
-    color: Palette.textMuted,
-    fontSize: 12,
-    marginTop: 4,
-  },
-});
+function createStyles(p: ColorPalette, s: ThemeShadows) {
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: p.surface,
+      borderRadius: Radius.lg,
+      paddingVertical: Spacing.md,
+      paddingHorizontal: Spacing.md,
+      borderWidth: 1,
+      borderColor: p.border,
+      minHeight: 88,
+      justifyContent: "center",
+      ...s.card,
+    },
+    value: {
+      fontFamily: Typography.display.fontFamily,
+      fontSize: 32,
+      lineHeight: 36,
+    },
+    label: {
+      ...Typography.caption,
+      color: p.textMuted,
+      fontSize: 12,
+      marginTop: 4,
+    },
+  });
+}

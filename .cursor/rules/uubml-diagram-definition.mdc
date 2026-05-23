@@ -1,0 +1,588 @@
+---
+description: uuBml diagram definition creation guide — Schema, Elements (Icons, Connectors, Blocks), connection sockets/plugs, grid-based layout positioning, importance levels, and visual properties for technical diagrams
+alwaysApply: false
+---
+
+# uuBml Diagram Definition Creation
+
+## Table of Contents
+1. Introduction
+2. Core Structure
+3. Element Types
+4. Connection System
+5. Schema Configuration
+6. Layout and Positioning
+7. Visual Properties
+8. Complete Examples
+9. Interactive Creation Process
+
+## 1. Introduction
+
+uuBml provides a standardized framework for creating technical diagrams with:
+
+- Schema definitions that describe diagram structure and behavior
+- Elements (Icons, Connectors, Blocks, etc.) that contain visual and semantic data
+- Built-in connection system with sockets and plugs
+- Configurable visual properties and importance levels
+- Grid-based positioning system for precise layout
+
+### 1.1 Diagram Purpose
+
+uuBml diagrams serve as visual representations that:
+- Define system architecture and component relationships
+- Establish visual communication patterns
+- Configure element positioning and connections
+- Set up visual hierarchy through importance levels
+- Enable complex technical documentation
+
+### 1.2 Basic Usage Pattern
+
+The typical workflow for creating uuBml diagrams:
+
+1. Create Schema with basic metadata and size
+2. Add Elements (Icons, Blocks, Connectors) with proper positioning
+3. Configure connections between elements using sockets and plugs
+4. Set visual properties (importance, colors, text)
+5. Use reference relationships to build complex diagram hierarchies
+
+## 2. Core Structure
+
+Every uuBml Schema requires these essential elements:
+
+### 2.1 Identification and Metadata
+
+```json
+{
+  "id": "uniqueSchemaId",              // Technical identifier (auto-generated)
+  "name": "Diagram Name",              // Human-readable name
+  "desc": "Diagram description",       // Detailed description
+  "searchKey": "diagramCode",          // User-defined code (optional)
+  "author": "authorUuIdentity",        // Author UUID
+  "underConstruction": false           // Development status
+}
+```
+
+#### 2.1.1 Naming Conventions
+
+- `name`: Should be clear, concise, and descriptive of the diagram purpose
+- `desc`: Should provide enough detail for users to understand the diagram's context
+- `searchKey`: Must be unique if used, camelCase preferred
+
+### 2.2 Canvas Configuration
+
+```json
+"size": {
+  "width": 2048,    // Canvas width in pixels (multiples of 8)
+  "height": 2048    // Canvas height in pixels (multiples of 8)
+}
+```
+
+### 2.3 View Mode Configuration
+
+```json
+"editMode": {
+  "frameVisible": true,
+  "gridVisible": true,
+  "socketsVisible": false,
+  "plugsVisible": false,
+  "anchorsVisible": false,
+  "consoleVisible": false
+},
+"presentationMode": {
+  "frameVisible": false,
+  "gridVisible": false,
+  "socketsVisible": false,
+  "plugsVisible": false,
+  "anchorsVisible": false,
+  "descriptionVisible": false,
+  "iconTextBackgroundVisible": false,
+  "alignment": "center"
+}
+```
+
+## 3. Element Types
+
+### 3.1 Icon Elements
+
+Basic building blocks for representing entities, systems, or concepts:
+
+```json
+"elementId": {
+  "id": "elementId",
+  "elementType": "Icon",
+  "sourceUuBmlStencil": "uuappcommon",
+  "uuBmlIconCode": "activityState",
+  "text": "Element Label",
+  "importance": "highest",
+  "position": { "x": 256, "y": 128 },
+  "textWidth": 192,
+  "textHidden": false,
+  "plural": false,
+  "searchKey": "uniqueElementKey"
+}
+```
+
+#### 3.1.1 Common Icon Codes
+
+- `applicationServer`: Server or service components
+- `command`: Commands or operations
+- `activityState`: Process states or activities
+- `uusubapp`: Applications or subsystems
+- `product`: External products or tools
+- `document`: Documents or data stores
+
+#### 3.1.2 Importance Levels
+
+- `objective`: Most important, highest visual prominence
+- `highest`: Very important elements
+- `high`: Important elements
+- `normal`: Standard elements (default)
+- `low`: Less important elements
+- `problem`: Elements indicating issues
+
+### 3.2 Connector Elements
+
+Lines connecting elements to show relationships:
+
+```json
+"connectorId": {
+  "id": "connectorId",
+  "elementType": "Connector",
+  "importance": "normal",
+  "lineStyle": "solid",
+  "relationType": "general",
+  "startPoint": {
+    "pointType": "Plug",
+    "id": "plugId"
+  },
+  "endPoint": {
+    "pointType": "Plug",
+    "id": "plugId"
+  },
+  "label": "Connection Label",
+  "labelPosition": 1
+}
+```
+
+#### 3.2.1 Relation Types
+
+- `general`: Standard connections
+- `aggregation1`/`aggregationN`: Aggregation relationships
+- `association1`/`associationN`: Association relationships
+- `inheritance`: Inheritance relationships
+- `composition1`/`compositionN`: Composition relationships
+- `custom`: Custom relationships
+
+#### 3.2.2 Line Styles
+
+- `solid`: Solid line (default)
+- `dashed`: Dashed line
+- `dotted`: Dotted line
+
+### 3.3 Block Elements
+
+Rectangular containers for grouping related elements:
+
+```json
+"blockId": {
+  "id": "blockId",
+  "elementType": "Block",
+  "text": "Block Title",
+  "importance": "normal",
+  "textLocation": "top",
+  "position": { "x": 512, "y": 256 },
+  "size": { "width": 256, "height": 384 }
+}
+```
+
+### 3.4 Annotation Elements
+
+Text annotations with optional pointers:
+
+```json
+"annotationId": {
+  "id": "annotationId",
+  "elementType": "Annotation",
+  "text": "Explanation text",
+  "position": { "x": 128, "y": 128 },
+  "size": { "width": 192, "height": 64 },
+  "pointerStart": {
+    "positionOnAnnotation": ["bottom", "left"],
+    "pointList": [{"x": 160, "y": 192}, {"x": 180, "y": 192}],
+    "orderInPolygon": 2
+  },
+  "pointerEnd": {
+    "pointType": "Plug",
+    "id": "targetPlugId"
+  }
+}
+```
+
+### 3.5 MultiConnector Elements
+
+One-to-many or many-to-one connections:
+
+```json
+"multiConnectorId": {
+  "id": "multiConnectorId",
+  "elementType": "MultiConnector",
+  "direction": "horizontal",
+  "bidirectional": false,
+  "inverted": false,
+  "startPoint": {
+    "pointType": "Plug",
+    "id": "startPlugId"
+  },
+  "endPointList": [
+    {
+      "pointType": "Plug",
+      "id": "endPlug1Id",
+      "pointer": "general"
+    },
+    {
+      "pointType": "Plug",
+      "id": "endPlug2Id",
+      "pointer": "general"
+    }
+  ]
+}
+```
+
+## 4. Connection System
+
+### 4.1 Socket Configuration
+
+Sockets are connection points on elements:
+
+```json
+"socketMap": {
+  "socketId": {
+    "id": "socketId",
+    "plugList": ["connectedPlugId1", "connectedPlugId2"],
+    "position": { "x": 288, "y": 160 }
+  }
+}
+```
+
+### 4.2 Plug Configuration
+
+Plugs are connection endpoints on connectors:
+
+```json
+"plugMap": {
+  "plugId": {
+    "id": "plugId",
+    "elementId": "targetElementId",
+    "socketId": "targetSocketId",
+    "position": { "x": 320, "y": 160 }
+  }
+}
+```
+
+### 4.3 Connection Patterns
+
+#### 4.3.1 Simple Connection
+```json
+// Icon A -> Icon B
+{
+  "connector": {
+    "startPoint": { "pointType": "Plug", "id": "iconA_outlet" },
+    "endPoint": { "pointType": "Plug", "id": "iconB_inlet" }
+  }
+}
+```
+
+#### 4.3.2 Fan-out Connection
+```json
+// Icon A -> Multiple Icons
+{
+  "multiConnector": {
+    "startPoint": { "pointType": "Plug", "id": "iconA_outlet" },
+    "endPointList": [
+      { "pointType": "Plug", "id": "iconB_inlet" },
+      { "pointType": "Plug", "id": "iconC_inlet" },
+      { "pointType": "Plug", "id": "iconD_inlet" }
+    ]
+  }
+}
+```
+
+## 5. Schema Configuration
+
+### 5.1 Element Management
+
+```json
+"elementMap": {
+  "elementId1": { /* Icon definition */ },
+  "elementId2": { /* Connector definition */ },
+  "elementId3": { /* Block definition */ }
+},
+"elementZOrderList": [
+  "elementId3",  // Background elements first
+  "elementId1",
+  "elementId2"   // Foreground elements last
+]
+```
+
+### 5.2 Bounds Calculation
+
+Each element should include calculated bounds:
+
+```json
+"bounds": {
+  "minX": 256,
+  "minY": 128,
+  "maxX": 448,
+  "maxY": 192
+}
+```
+
+## 6. Layout and Positioning
+
+### 6.1 Grid System
+
+All positions must align to 8-pixel grid:
+
+```javascript
+// Ensure grid alignment
+position.x = Math.round(position.x / 8) * 8;
+position.y = Math.round(position.y / 8) * 8;
+```
+
+### 6.2 Layout Patterns
+
+#### 6.2.1 Horizontal Flow
+```json
+// Left to right arrangement
+{
+  "icon1": { "position": { "x": 64, "y": 128 } },
+  "icon2": { "position": { "x": 256, "y": 128 } },
+  "icon3": { "position": { "x": 448, "y": 128 } }
+}
+```
+
+#### 6.2.2 Vertical Flow
+```json
+// Top to bottom arrangement
+{
+  "icon1": { "position": { "x": 256, "y": 64 } },
+  "icon2": { "position": { "x": 256, "y": 192 } },
+  "icon3": { "position": { "x": 256, "y": 320 } }
+}
+```
+
+#### 6.2.3 Hierarchical Layout
+```json
+// Tree-like structure
+{
+  "root": { "position": { "x": 256, "y": 64 } },
+  "child1": { "position": { "x": 128, "y": 192 } },
+  "child2": { "position": { "x": 384, "y": 192 } },
+  "grandchild1": { "position": { "x": 64, "y": 320 } },
+  "grandchild2": { "position": { "x": 192, "y": 320 } }
+}
+```
+
+## 7. Visual Properties
+
+### 7.1 Text Configuration
+
+```json
+"textWidth": 128,        // One of [64, 128, 192, 256]
+"textHidden": false,     // Whether to show text
+"textBackgroundVisible": false  // Background for text over blocks
+```
+
+### 7.2 Color and Style
+
+Elements inherit colors based on importance:
+- `objective`: Distinct highlight color
+- `highest`: Strong emphasis
+- `high`: Medium emphasis
+- `normal`: Standard color
+- `low`: Subdued color
+- `problem`: Warning/error color
+
+### 7.3 State Management
+
+Icons can have states for different scenarios:
+
+```json
+"state": {
+  "name": "Active State",
+  "desc": "Currently processing",
+  "uuBmlIconStateCode": "active",
+  "uuBmlIconStateGeneric": "active"
+}
+```
+
+## 8. Complete Examples
+
+### 8.1 Simple System Architecture
+
+```json
+{
+  "id": "simpleArchitecture",
+  "name": "Web Application Architecture",
+  "desc": "Basic three-tier web application",
+  "size": { "width": 1024, "height": 768 },
+  "elementMap": {
+    "client": {
+      "id": "client",
+      "elementType": "Icon",
+      "sourceUuBmlStencil": "uuplus4umall",
+      "uuBmlIconCode": "product",
+      "text": "Web Browser",
+      "importance": "high",
+      "position": { "x": 64, "y": 256 },
+      "textWidth": 128
+    },
+    "server": {
+      "id": "server",
+      "elementType": "Icon",
+      "sourceUuBmlStencil": "uuappcommon",
+      "uuBmlIconCode": "applicationServer",
+      "text": "Web Server",
+      "importance": "highest",
+      "position": { "x": 384, "y": 256 },
+      "textWidth": 128
+    },
+    "database": {
+      "id": "database",
+      "elementType": "Icon",
+      "sourceUuBmlStencil": "uuappcommon",
+      "uuBmlIconCode": "document",
+      "text": "Database",
+      "importance": "high",
+      "position": { "x": 704, "y": 256 },
+      "textWidth": 128
+    },
+    "clientToServer": {
+      "id": "clientToServer",
+      "elementType": "Connector",
+      "relationType": "general",
+      "startPoint": { "pointType": "Plug", "id": "clientOut" },
+      "endPoint": { "pointType": "Plug", "id": "serverIn" },
+      "label": "HTTP Requests"
+    },
+    "serverToDatabase": {
+      "id": "serverToDatabase",
+      "elementType": "Connector",
+      "relationType": "general",
+      "startPoint": { "pointType": "Plug", "id": "serverOut" },
+      "endPoint": { "pointType": "Plug", "id": "databaseIn" },
+      "label": "SQL Queries"
+    }
+  },
+  "elementZOrderList": ["client", "server", "database", "clientToServer", "serverToDatabase"]
+}
+```
+
+### 8.2 Complex Service Architecture
+
+```json
+{
+  "id": "microserviceArchitecture",
+  "name": "Microservice Architecture",
+  "desc": "Distributed microservice system with API gateway",
+  "size": { "width": 1536, "height": 1024 },
+  "elementMap": {
+    "apiGateway": {
+      "id": "apiGateway",
+      "elementType": "Icon",
+      "sourceUuBmlStencil": "uuappcommon",
+      "uuBmlIconCode": "applicationServer",
+      "text": "API Gateway",
+      "importance": "highest",
+      "position": { "x": 256, "y": 128 }
+    },
+    "serviceBlock": {
+      "id": "serviceBlock",
+      "elementType": "Block",
+      "text": "Microservices",
+      "textLocation": "top",
+      "importance": "normal",
+      "position": { "x": 512, "y": 256 },
+      "size": { "width": 512, "height": 256 }
+    },
+    "userService": {
+      "id": "userService",
+      "elementType": "Icon",
+      "sourceUuBmlStencil": "uuappcommon",
+      "uuBmlIconCode": "command",
+      "text": "User Service",
+      "importance": "high",
+      "position": { "x": 576, "y": 320 }
+    },
+    "orderService": {
+      "id": "orderService",
+      "elementType": "Icon",
+      "sourceUuBmlStencil": "uuappcommon",
+      "uuBmlIconCode": "command",
+      "text": "Order Service",
+      "importance": "high",
+      "position": { "x": 768, "y": 320 }
+    },
+    "gatewayToServices": {
+      "id": "gatewayToServices",
+      "elementType": "MultiConnector",
+      "direction": "horizontal",
+      "startPoint": { "pointType": "Plug", "id": "gatewayOut" },
+      "endPointList": [
+        { "pointType": "Plug", "id": "userServiceIn", "pointer": "general" },
+        { "pointType": "Plug", "id": "orderServiceIn", "pointer": "general" }
+      ]
+    }
+  },
+  "elementZOrderList": ["serviceBlock", "userService", "orderService", "apiGateway", "gatewayToServices"]
+}
+```
+
+## 9. Interactive Creation Process
+
+For creating a new uuBml diagram, follow these steps:
+
+### 9.1 Basic Information
+- Diagram name (descriptive title)
+- Diagram description (context and purpose)
+- Canvas size (based on complexity)
+- Target audience (technical, business, mixed)
+
+### 9.2 Element Planning
+For each element:
+- Element type (Icon, Block, Connector, Annotation)
+- Text label (clear and concise)
+- Importance level (visual hierarchy)
+- Positioning (grid-aligned coordinates)
+- Stencil and icon code (for Icons)
+
+### 9.3 Connection Design
+- Source and target elements
+- Connection type (general, aggregation, inheritance)
+- Connection labels (if needed)
+- Multiplicity (one-to-one, one-to-many)
+
+### 9.4 Visual Configuration
+- Text width for readability
+- Element grouping with Blocks
+- Annotations for explanations
+- Importance-based visual hierarchy
+
+### 9.5 Layout Optimization
+- Grid alignment verification
+- Element spacing consistency
+- Connection clarity
+- Overall visual balance
+
+### 9.6 View Mode Setup
+- Edit mode visibility settings
+- Presentation mode configuration
+- Grid and socket visibility
+- Text background settings
+
+### 9.7 Validation and Testing
+- Verify JSON structure validity
+- Test element positioning
+- Check connection integrity
+- Validate visual hierarchy
+- Review diagram readability

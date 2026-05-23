@@ -1,0 +1,531 @@
+---
+description: InitData dataset development guide — declarative entity/action commands for uuApp initialization, configuration, and testing scenarios with inventory configuration, brick system, MetaCommands, and global scripts
+alwaysApply: false
+---
+
+# InitData Dataset Development
+
+## Documentation Resources
+
+**IMPORTANT**: The following comprehensive documentation is available and should be referenced during implementation:
+
+| Component | Description | Documentation Link |
+|-----------|-------------|-------------------|
+| **CLI Interface** | Command line execution options and configurations | [CLI Interface](mdc:docs/initdata/cli-interface.md) |
+| **Inventory Configuration** | Environment settings, authentication, workspace mapping | [Inventory Configuration](mdc:docs/initdata/inventory-configuration.md) |
+| **Dataset Development** | File formats, dynamic generation, context management | [Dataset Development](mdc:docs/initdata/dataset-development.md) |
+| **Command Structure** | Command options, data input methods, execution patterns | [Command Structure](mdc:docs/initdata/command-structure.md) |
+| **Brick System** | Reusable components for complex workflows | [Brick System](mdc:docs/initdata/brick-system.md) |
+| **Advanced Features** | MetaCommands, helpers, global scripts | [Advanced Features](mdc:docs/initdata/advanced-features.md) |
+| **Examples** | Real-world usage patterns and implementations | [Examples](mdc:docs/initdata/examples.md) |
+| **Best Practices** | Guidelines and troubleshooting | [Best Practices](mdc:docs/initdata/best-practices.md) |
+
+**Command Pattern**: All commands follow the `entity/action` pattern (e.g., `user/create`, `product/list`, `order/delete`, `system/initialize`), where the entity represents the business object and the action represents the operation to perform.
+
+## Table of Contents
+1. @Introduction
+2. @Specifications and Confirmation
+3. @Dataset Structure
+4. @Mandatory Components
+5. @Implementation Guidelines
+6. @Command Configuration
+7. @Validation Process
+8. @Error Handling
+9. @Best Practices
+10. @Troubleshooting
+
+## 1. Introduction
+
+InitData datasets automate uuApp initialization, configuration, and testing through declarative configuration, where:
+
+- Each dataset represents a specific workflow or test scenario
+- Datasets follow the `entity/action` command pattern (e.g., `user/create`, `product/list`, `order/delete`)
+- Implementation consists of multiple mandatory components working together
+- Implementation follows a structured approach with specific file organization and execution order
+
+### 1.1 Dataset-to-Implementation Mapping
+
+Each dataset maps to specific implementation components:
+
+- **Inventory Configuration** - Environment settings, authentication, and workspace mapping
+- **Dataset Files** - Command definitions with input data and execution logic
+- **Command Structure** - Individual command specifications with validation
+- **Context Management** - Result storage and reference between commands
+- **File Processing** - Support for .js (dynamic), .json (static), and .handlebars (templated)
+
+### 1.2 Fundamental Rule
+
+⚠️ **ABSOLUTE MANDATORY REQUIREMENT** ⚠️
+
+**NO IMPLEMENTATION BEFORE USER CONFIRMATION - ZERO EXCEPTIONS!**
+
+Before creating ANY dataset, you MUST ALWAYS:
+
+1. 🛑 STOP and ASK the user to specify:
+   - Precisely what commands and workflows should be included
+   - What input data structure (dtoIn) should be used for each command
+   - What inventory configuration is needed
+   - Any specific file formats or data sources required
+   - Expected outcomes and validation criteria
+
+2. 🛑 WAIT for explicit user confirmation of these specifications before proceeding with implementation.
+
+3. 🛑 DO NOT proceed with ANY implementation until you have received clear specifications.
+
+## 2. Specifications and Confirmation
+
+### 2.1 No Assumptions Policy
+
+- NEVER assume what commands or workflows are needed even if the user request seems clear
+- NEVER create dataset structures without explicit confirmation
+- NEVER skip asking for specifications regardless of how obvious they might seem
+
+### 2.2 Required Specifications
+
+For each dataset, you must confirm:
+
+1. **Dataset purpose and scope**
+   - What business scenario or workflow does this dataset implement
+   - What applications and workspaces will be involved
+   - Expected execution order and dependencies
+
+2. **Command specifications**
+   - All commands to be included with entity/action patterns
+   - Input structure (dtoIn) for each command
+   - Expected output and context keys for result storage
+   - Error handling and allowed error codes
+
+3. **Data source requirements**
+   - Static data (JSON) vs dynamic data (JavaScript functions)
+   - External file inputs (Excel, CSV, JSON files)
+   - Template requirements (Handlebars with inventory data)
+
+4. **Environment configuration**
+   - Target applications and their configurations
+   - Authentication requirements and user mappings
+   - Workspace codes and system identities
+
+5. **Execution context**
+   - Dependencies on other datasets or commands
+   - Context references between commands
+   - Validation and success criteria
+
+6. **File organization**
+   - Naming conventions and execution order prefixes
+   - Directory structure and file locations
+   - Asset and resource file management
+
+### 2.3 Confirmation Process
+
+Always follow this sequence:
+1. Gather information from existing datasets and inventory files
+2. 🛑 ASK for specifications - this is REQUIRED, MANDATORY and NON-OPTIONAL
+3. 🛑 WAIT for user confirmation before proceeding
+4. Only after explicit confirmation, implement according to the rules
+
+## 3. Dataset Structure
+
+### 3.1 File Naming Convention
+
+Datasets must follow this naming structure:
+- Use numbered prefixes for execution order: `010-`, `020-`, `030-`
+- Include descriptive names: `010-users.js`, `020-products.json`, `030-orders.handlebars`
+- Support multiple formats: `.js` (dynamic), `.json` (static), `.handlebars` (templated)
+
+### 3.2 Core Dataset Components
+
+Each dataset consists of these components:
+
+1. **SubApp Configuration**
+   - Target application identifier
+   - Workspace specification
+   - Optional gateway and port overrides
+
+2. **Command Array**
+   - Sequential list of commands to execute
+   - Each command follows entity/action pattern
+   - Input data (dtoIn) or file references
+
+3. **Context Management**
+   - Result storage with contextKey
+   - Cross-command references
+   - Dynamic data flow between commands
+
+4. **Error Handling**
+   - Allowed error codes for expected failures
+   - Retry policies and timeout configurations
+   - Graceful failure handling
+
+## 4. Mandatory Components
+
+### 4.1 Basic Dataset Structure
+
+All datasets must implement this basic structure:
+
+```javascript
+module.exports = {
+  subApp: "uu-app-maing01",           // Target application
+  workspace: "awid",                  // Target workspace
+  commands: [                         // Command array
+    {
+      command: "entity/action",       // entity/action pattern
+      method: "POST",                 // HTTP method (default: POST)
+      dtoIn: { /* input data */ },    // Command input
+      contextKey: "resultKey",        // Store result for later use
+      allowedErrorCodes: ["expected"] // Handle expected errors
+    }
+  ]
+};
+```
+
+For detailed guidelines, see [Dataset Development](mdc:docs/initdata/dataset-development.md).
+
+### 4.2 Dynamic Dataset Implementation
+
+For complex scenarios requiring dynamic data generation:
+
+```javascript
+module.exports = (inventory, context, helpers) => {
+  // Access inventory configuration
+  const users = inventory.identityMap;
+
+  // Access previous command results
+  const createdProjects = context.projectList?.dtoOut?.itemList || [];
+
+  // Generate commands dynamically
+  const commands = createdProjects.map(project => ({
+    command: "task/create",
+    dtoIn: {
+      projectId: project.id,
+      name: `Task for ${project.name}`
+    }
+  }));
+
+  return {
+    subApp: "uu-tasks-maing01",
+    workspace: "awid",
+    commands
+  };
+};
+```
+
+For detailed guidelines, see [Advanced Features](mdc:docs/initdata/advanced-features.md).
+
+### 4.3 Command Structure
+
+Each command must follow the standardized structure:
+
+```javascript
+{
+  command: "user/create",             // Required: entity/action pattern
+  method: "POST",                     // Optional: HTTP method
+  dtoIn: {                           // Input data (mutually exclusive with file options)
+    name: "John Doe",
+    email: "john@example.com"
+  },
+  contextKey: "createdUser",         // Optional: store result
+  allowedErrorCodes: ["duplicate"],  // Optional: expected errors
+  authorization: {                   // Optional: auth override
+    uid: "adminUser"
+  }
+}
+```
+
+For detailed command options, see [Command Structure](mdc:docs/initdata/command-structure.md).
+
+### 4.4 File Input Methods
+
+Commands support multiple input methods (mutually exclusive):
+
+```javascript
+// Direct input
+{ command: "user/create", dtoIn: { name: "John" } }
+
+// Single file input
+{ command: "user/create", dtoInFile: { path: "user.json", type: "single" } }
+
+// Array file input
+{ command: "user/create", dtoInFile: { path: "users.json", type: "list" } }
+
+// Directory input
+{ command: "doc/upload", dtoInFiles: { path: "./docs/", type: "list" } }
+
+// Excel input
+{ command: "data/import", dtoInFile: { path: "data.xlsx", type: "excel" } }
+```
+
+### 4.5 Context References
+
+Enable data flow between commands using context references:
+
+```javascript
+[
+  {
+    command: "project/create",
+    dtoIn: { name: "Parent Project" },
+    contextKey: "parentProject"        // Store result
+  },
+  {
+    command: "task/create",
+    dtoIn: {
+      projectId: "{{parentProject.dtoOut.id}}", // Reference stored result
+      name: "Child Task"
+    }
+  }
+]
+```
+
+### 4.6 Handlebars Templates
+
+For template-based datasets with inventory integration:
+
+```handlebars
+{
+  "subApp": "uu-users-maing01",
+  "workspace": "awid",
+  "commands": [
+    {{#each inventory.identityMap}}
+      {
+        "command": "user/create",
+        "dtoIn": {
+          "name": "{{name}}",
+          "uid": "{{uid}}"
+        }
+      }{{#unless @last}},{{/unless}}
+    {{/each}}
+  ]
+}
+```
+
+## 5. Implementation Guidelines
+
+### 5.1 Implementation Process
+
+Follow this process for each dataset:
+1. Confirm specifications with user
+2. Define dataset structure and command sequence
+3. Implement command definitions with proper input validation
+4. Configure context management and cross-references
+5. Set up error handling and allowed error codes
+6. Test with appropriate inventory configuration
+7. Document expected outcomes and validation criteria
+
+### 5.2 Inventory Integration
+
+Ensure proper integration with inventory configuration:
+- Reference correct subApp names from inventory
+- Use appropriate workspace codes
+- Leverage identity mappings for authentication
+- Apply gateway and port overrides when needed
+
+For detailed guidelines, see [Inventory Configuration](mdc:docs/initdata/inventory-configuration.md).
+
+### 5.3 Command Orchestration
+
+When orchestrating multiple commands:
+- Use contextKey to store intermediate results
+- Reference previous results with {{contextKey.dtoOut.field}} syntax
+- Handle dependencies and execution order properly
+- Implement appropriate error handling for each step
+
+### 5.4 File Processing
+
+Support various file input formats:
+- **JSON files**: Static data with consistent structure
+- **Excel files**: Tabular data with sheet and column configuration
+- **Directory processing**: Batch file operations
+- **Dynamic JavaScript**: Runtime data generation and logic
+
+### 5.5 Authentication and Authorization
+
+Always follow proper authentication practices:
+- Use inventory identity mappings for user authentication
+- Apply appropriate authorization overrides when needed
+- Handle cross-application authentication properly
+- Document required user roles and permissions
+
+## 6. Command Configuration
+
+### 6.1 Command Options
+
+Each command supports comprehensive configuration:
+
+```javascript
+{
+  command: "entity/action",           // Required: entity/action pattern
+  method: "POST",                     // HTTP method
+  dtoIn: { /* data */ },             // Direct input
+  dtoInFile: {                       // File input (alternative to dtoIn)
+    path: "data.json",
+    type: "single"                   // or "list" or "excel"
+  },
+  contextKey: "result",              // Store result
+  authorization: {                   // Auth override
+    uid: "specificUser",
+    actAs: "targetUser"
+  },
+  allowedErrorCodes: ["expected"],   // Expected errors
+  printOutput: true,                 // Debug output
+  strategy: "fireAndForget",         // Async execution
+  waitFor: {                         // Wait conditions
+    condition: { path: "$.status", value: "completed" },
+    timeout: 30000
+  },
+  retryPolicy: {                     // Retry configuration
+    maxRetries: 3,
+    backoffStrategy: "exponential"
+  }
+}
+```
+
+### 6.2 Error Handling Configuration
+
+Define comprehensive error handling:
+
+```javascript
+{
+  command: "user/create",
+  dtoIn: { name: "John Doe" },
+  allowedErrorCodes: [
+    "uu-app-main/user/create/duplicateCode",
+    "uu-app-main/user/create/invalidEmail"
+  ],
+  retryPolicy: {
+    maxRetries: 3,
+    retryOn: ["NETWORK_ERROR", "502", "503"],
+    backoffStrategy: "exponential"
+  }
+}
+```
+
+### 6.3 Async Operations
+
+Handle asynchronous operations with wait conditions:
+
+```javascript
+{
+  command: "job/start",
+  dtoIn: { type: "import" },
+  contextKey: "importJob",
+  waitFor: {
+    condition: {
+      path: "$.status",
+      value: "completed"
+    },
+    timeout: 60000,
+    retryAfter: 2000
+  }
+}
+```
+
+## 7. Validation Process
+
+### 7.1 Pre-Execution Validation
+
+Validate dataset structure before execution:
+- Command syntax and entity/action patterns
+- Input data structure and required fields
+- Context reference validity
+- File path and format verification
+
+### 7.2 Runtime Validation
+
+Monitor execution and validate results:
+- Command execution success/failure
+- Expected output structure
+- Context data availability
+- Error code matching
+
+### 7.3 Post-Execution Validation
+
+Verify final outcomes:
+- All expected data created/modified
+- Context references properly stored
+- Error handling worked as expected
+- Cleanup operations completed
+
+## 8. Error Handling
+
+### 8.1 Command-Level Errors
+
+Handle errors at the command level:
+
+```javascript
+{
+  command: "user/create",
+  dtoIn: { name: "John Doe" },
+  allowedErrorCodes: [
+    "uu-app-main/user/create/duplicateCode"
+  ],
+  run: "always"  // Continue even if this command fails
+}
+```
+
+### 8.2 Dataset-Level Errors
+
+Implement dataset-wide error handling:
+- Validation of required inventory configuration
+- Missing context references
+- Authentication failures
+- Network connectivity issues
+
+### 8.3 Recovery Strategies
+
+Define recovery mechanisms:
+- Retry policies for transient failures
+- Alternative command paths
+- Graceful degradation options
+- Cleanup procedures
+
+## 9. Best Practices
+
+### 9.1 Dataset Organization
+
+- Use numbered prefixes for execution order
+- Group related commands in single datasets
+- Keep datasets focused on specific scenarios
+- Document dependencies and prerequisites
+
+### 9.2 Context Management
+
+- Use descriptive contextKey names
+- Store only necessary result data
+- Clean up unused context references
+- Document context data structure
+
+### 9.3 Error Handling
+
+- Define expected error codes explicitly
+- Implement appropriate retry policies
+- Log errors for debugging
+- Provide meaningful error messages
+
+### 9.4 Performance Optimization
+
+- Use fireAndForget for non-critical operations
+- Batch similar operations when possible
+- Optimize file processing for large datasets
+- Monitor execution times and resource usage
+
+## 10. Troubleshooting
+
+### 10.1 Common Issues
+
+- **Command not found**: Verify entity/action pattern and application availability
+- **Authentication failures**: Check inventory identity mappings and permissions
+- **Context reference errors**: Validate contextKey names and data structure
+- **File processing errors**: Verify file paths, formats, and permissions
+
+### 10.2 Debugging Techniques
+
+- Use printOutput: true for detailed command logging
+- Validate inventory configuration separately
+- Test commands individually before batch execution
+- Monitor context data flow between commands
+
+### 10.3 Performance Issues
+
+- Optimize large file processing with appropriate batch sizes
+- Use appropriate wait conditions for async operations
+- Monitor network timeouts and retry policies
+- Consider parallel execution for independent commands

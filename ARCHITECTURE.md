@@ -6,7 +6,7 @@ This document describes the purpose of each part of the project, the data flow a
 
 ## 1. Product goal
 
-The app supports both **passive learning** (reading lessons, listening to TTS) and **active learning** (custom vocabulary, repetition, lookup). Translation between Czech and Italian is handled through **DeepL** in a way that **the API key never ships with the mobile binary**.
+The app supports both **passive learning** (reading lessons, listening to TTS) and **active learning** (custom vocabulary, repetition, lookup). Translation between Czech and Italian is handled through **DeepL**, with **Anthropic Claude Haiku** as an optional second tier for disambiguating ambiguous words via the *Další významy* button. Both API keys live **only on the server** — they never ship with the mobile binary.
 
 ---
 
@@ -21,7 +21,7 @@ The app supports both **passive learning** (reading lessons, listening to TTS) a
 | TTS | `expo-speech` (language `it-IT`) |
 | Translation (network) | `fetch` against a custom HTTP endpoint |
 | Lesson content (network) | `GET` manifest + JSON bundles from the backend, cached in AsyncStorage (`italiano.content.*`) |
-| Backend (proxy) | Vercel: `backend/api/translate.ts` (DeepL), `content-manifest` / `content-bundle` (JSON) |
+| Backend (proxy) | Vercel: `backend/api/translate.ts` (DeepL), `backend/api/translate-meanings.ts` (Anthropic Claude Haiku — optional), `content-manifest` / `content-bundle` (JSON) |
 
 ---
 
@@ -60,17 +60,20 @@ italiano/
 │   ├── data/               # JSON bundled into the binary + shared types
 │   └── images/             # Icon, splash, favicon, adaptive icon
 ├── backend/
-│   ├── api/translate.ts    # Edge handler → DeepL
+│   ├── api/translate.ts             # Edge handler → DeepL (translation + spell-check fallbacks)
+│   ├── api/translate-meanings.ts    # Edge handler → Anthropic Claude Haiku (multiple senses, optional)
+│   ├── api/_lib/llm-anthropic.ts    # Minimal fetch-based Anthropic client
 │   ├── api/content-manifest.ts
 │   ├── api/content-bundle.ts
-│   ├── content/            # JSON sources for remote sync
+│   ├── content/                     # JSON sources for remote sync
 │   ├── package.json
 │   └── README.md
 ├── components/             # Reusable UI (buttons, screen wrapper, …)
 ├── constants/theme.ts      # Colors, spacing, typography, shadows
 ├── hooks/                  # useVocabStore, useItalianTts, useSyncedJson
 ├── lib/
-│   ├── api/translate.ts    # Translation client + offline fallback
+│   ├── api/translate.ts    # Translation client + offline fallback + AmbiguousQueryError handling (422)
+│   ├── api/meanings.ts     # "Další významy" client (Anthropic-backed; gracefully disables on 503)
 │   ├── content/            # Manifest, cache keys, sync (AsyncStorage)
 │   └── storage/vocab-store.ts   # AsyncStorage serialization for vocabulary
 ├── scripts/
@@ -114,6 +117,32 @@ sequenceDiagram
 - **URL configuration:** `process.env.EXPO_PUBLIC_TRANSLATE_ENDPOINT` or `expo.extra.translateEndpoint` (filled from `.env` / EAS via `app.config.ts` — not committed in `app.json`).
 - **Without a URL:** `lookupWord()` returns a local **fallback** (demo translation); the app does not crash.
 - **Translation direction:** the proxy uses a "Czech vs Italian" heuristic and sets `target_lang` to `IT` or `CS`; DeepL also detects the source.
+- **Ambiguity detection:** when DeepL's back-translation diverges from the user's input (typical for diacritic-less Czech, e.g. `pracka` → `lavoro` → `práce`), the proxy throws `AmbiguousQueryError` which the handler returns as **HTTP 422** with `{ ambiguous: true, hint }`. The mobile app renders a warm warning ("DeepL si není jistý — zkus diakritiku") instead of a confidently wrong result.
+
+---
+
+## 5b. Data flow — *Další významy* (multiple senses, optional)
+
+```mermaid
+sequenceDiagram
+  participant U as User
+  participant App as Expo app
+  participant Proxy as backend/api/translate-meanings
+  participant A as Anthropic Claude Haiku
+
+  U->>App: Taps "Další významy" button
+  App->>Proxy: POST /api/translate-meanings { query }
+  Proxy->>A: POST /v1/messages (claude-haiku-4-5, JSON-only prompt)
+  A-->>Proxy: { meanings: [{ it, cz, gloss, example_it?, example_cz? }, …] }
+  Proxy-->>App: JSON { meanings: [...] } (or 503 when no key)
+  App-->>U: Card list — user picks one to replace the result
+```
+
+- **Purpose:** disambiguate words with several common meanings (e.g. `sušička` → na prádlo / na potraviny / na vlasy).
+- **Trigger:** explicit user button under each DeepL result; never auto-fired (cost + latency control).
+- **Without `ANTHROPIC_API_KEY` on the server:** endpoint returns **503**, the mobile client marks the feature as `disabled` and **hides the button** for the rest of the session — DeepL translate keeps working.
+- **Model:** `claude-haiku-4-5` by default (override via `ANTHROPIC_MODEL`); ~$0.0001–0.0003 per call.
+- **Selection:** picking a meaning replaces `result` with its `{ it, cz, example_it, example_cz }` so the standard *Přidat do slovíček* flow stores the disambiguated variant.
 
 ---
 
@@ -164,6 +193,7 @@ Without connectivity or without the URL behaviour stays purely local (fallback �
 | Topic | Project decision |
 |-------|------------------|
 | DeepL key | Server-only (`DEEPL_API_KEY` in Vercel / `backend/.env` locally for `vercel dev`). |
+| Anthropic key | Server-only (`ANTHROPIC_API_KEY`, optional). Mobile app only knows about the public `/api/translate-meanings` URL. |
 | Client secret | None; only the public proxy URL. |
 | HTTPS in production | Recommended for the proxy deploy; locally HTTP + LAN IP is fine. |
 
@@ -176,6 +206,7 @@ Without connectivity or without the URL behaviour stays purely local (fallback �
 | New JSON-driven lesson | `assets/data/*.json` + `backend/content/*.json` + `lib/content/bundle-ids.ts` + manifest on the server + screen in `app/lessons/` + card in `app/(tabs)/lessons.tsx` + `Stack.Screen` in `app/_layout.tsx`. |
 | Remote content / version | `backend/api/content-manifest.ts`, `CONTENT_VERSION`, `lib/content/sync-content.ts`. |
 | Translation / API format | `backend/api/translate.ts` + the `LookupResult` type + `lib/api/translate.ts`. |
+| Multiple meanings (LLM) | `backend/api/translate-meanings.ts` (prompt, response shape) + `backend/api/_lib/llm-anthropic.ts` (model, timeout) + `WordMeaning` in `assets/data/types.ts` + `lib/api/meanings.ts` + UI in `app/(tabs)/index.tsx`. |
 | New grammar rules / verbs | Edit `scripts/generate-grammar.mjs`, then `npm run generate:grammar`. |
 | Phonetic transcription rules | `scripts/lib/italian-pron.mjs` + run `npm run generate:content` (regenerates `grammar.json`, numbers, alphabet, weekdays, months). |
 | Theme / colors | `constants/theme.ts` and optionally assets in `assets/images/`. |
@@ -195,7 +226,8 @@ Automated UI tests are not part of the template yet.
 ## 12. Known limitations
 
 - DeepL does not return phonetic transcription in the `p` field — the field is reserved for a manual fill-in or a future LLM step on the proxy.
-- The translation-direction heuristic is not 100% reliable for short ambiguous strings.
+- The translation-direction heuristic is not 100% reliable for short ambiguous strings — the proxy now detects this and returns HTTP 422 (`ambiguous`) so the app prompts for diacritics. Truly ambiguous words (e.g. `sušička`) still rely on the user clicking *Další významy*.
+- *Další významy* requires an Anthropic key on the server; when absent the feature silently degrades (button hidden) instead of erroring.
 - A large `grammar.json` only slightly slows the bundler startup; for extreme growth consider chapter-based splits or lazy loading (strategy: [docs/PLAN-auth-sync-offline.md](docs/PLAN-auth-sync-offline.md) § 6).
 
 ---

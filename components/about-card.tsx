@@ -4,7 +4,10 @@ import * as Linking from "expo-linking";
 import { Alert, Pressable, StyleSheet, Text, View } from "react-native";
 
 import { AppLogo } from "@/components/app-logo";
-import { Palette, Radius, Shadow, Spacing, Typography } from "@/constants/theme";
+import type { ColorPalette, ThemeShadows } from "@/constants/theme";
+import { Radius, Spacing, Typography } from "@/constants/theme";
+import { useThemedStyles } from "@/hooks/use-themed-styles";
+import { useTheme } from "@/lib/theme/theme-context";
 
 type Extra = {
   displayName?: string;
@@ -41,6 +44,8 @@ function buildVersionLabel(): string {
  * anywhere a `ScrollView`-friendly card fits.
  */
 export function AboutCard() {
+  const { palette } = useTheme();
+  const styles = useThemedStyles(createStyles);
   const version = buildVersionLabel();
 
   const openRepo = async () => {
@@ -76,7 +81,7 @@ export function AboutCard() {
           accessibilityRole="link"
           accessibilityLabel={`Otevřít repozitář ${REPO_URL}`}
         >
-          <MaterialIcons name="open-in-new" size={18} color={Palette.brandDark} />
+          <MaterialIcons name="open-in-new" size={18} color={palette.brandDark} />
           <Text style={styles.linkLabel}>Otevřít repozitář</Text>
         </Pressable>
       ) : null}
@@ -93,10 +98,12 @@ function Row({
   label: string;
   value: string;
 }) {
+  const { palette } = useTheme();
+  const styles = useThemedStyles(createStyles);
   return (
     <View style={styles.row}>
       <View style={styles.rowLeft}>
-        <MaterialIcons name={icon} size={18} color={Palette.textMuted} />
+        <MaterialIcons name={icon} size={18} color={palette.textMuted} />
         <Text style={styles.rowLabel}>{label}</Text>
       </View>
       <Text style={styles.rowValue} numberOfLines={1}>
@@ -106,59 +113,61 @@ function Row({
   );
 }
 
-const styles = StyleSheet.create({
-  card: {
-    backgroundColor: Palette.surface,
-    borderRadius: Radius.lg,
-    borderWidth: 1,
-    borderColor: Palette.border,
-    padding: Spacing.lg,
-    gap: Spacing.md,
-    ...Shadow.card,
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: Spacing.md,
-  },
-  headerText: { flex: 1, gap: 2 },
-  appName: {
-    fontFamily: Typography.display.fontFamily,
-    fontSize: 22,
-    color: Palette.textStrong,
-    lineHeight: 26,
-  },
-  tagline: { ...Typography.small, color: Palette.textMuted },
-  divider: {
-    height: 1,
-    backgroundColor: Palette.border,
-    marginVertical: Spacing.xs,
-  },
-  row: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    gap: Spacing.md,
-  },
-  rowLeft: { flexDirection: "row", alignItems: "center", gap: Spacing.sm },
-  rowLabel: { ...Typography.smallStrong, color: Palette.textMuted },
-  rowValue: { ...Typography.bodyStrong, color: Palette.textStrong, flexShrink: 1 },
-  linkRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: Spacing.sm,
-    paddingVertical: Spacing.sm,
-    marginTop: Spacing.xs,
-    borderRadius: Radius.pill,
-    backgroundColor: Palette.brandSoft,
-    borderWidth: 1,
-    borderColor: Palette.brand,
-  },
-  linkPressed: { opacity: 0.75 },
-  linkLabel: {
-    fontFamily: Typography.display.fontFamily,
-    fontSize: 14,
-    color: Palette.brandDark,
-  },
-});
+function createStyles(p: ColorPalette, s: ThemeShadows) {
+  return StyleSheet.create({
+    card: {
+      backgroundColor: p.surface,
+      borderRadius: Radius.lg,
+      borderWidth: 1,
+      borderColor: p.border,
+      padding: Spacing.lg,
+      gap: Spacing.md,
+      ...s.card,
+    },
+    header: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: Spacing.md,
+    },
+    headerText: { flex: 1, gap: 2 },
+    appName: {
+      fontFamily: Typography.display.fontFamily,
+      fontSize: 22,
+      color: p.textStrong,
+      lineHeight: 26,
+    },
+    tagline: { ...Typography.small, color: p.textMuted },
+    divider: {
+      height: 1,
+      backgroundColor: p.border,
+      marginVertical: Spacing.xs,
+    },
+    row: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      gap: Spacing.md,
+    },
+    rowLeft: { flexDirection: "row", alignItems: "center", gap: Spacing.sm },
+    rowLabel: { ...Typography.smallStrong, color: p.textMuted },
+    rowValue: { ...Typography.bodyStrong, color: p.textStrong, flexShrink: 1 },
+    linkRow: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: Spacing.sm,
+      paddingVertical: Spacing.sm,
+      marginTop: Spacing.xs,
+      borderRadius: Radius.pill,
+      backgroundColor: p.brandSoft,
+      borderWidth: 1,
+      borderColor: p.brand,
+    },
+    linkPressed: { opacity: 0.75 },
+    linkLabel: {
+      fontFamily: Typography.display.fontFamily,
+      fontSize: 14,
+      color: p.brandDark,
+    },
+  });
+}

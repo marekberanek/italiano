@@ -27,7 +27,11 @@ export default ({ config }: ConfigContext): ExpoConfig => {
   const supabaseUrl = env("EXPO_PUBLIC_SUPABASE_URL");
   const supabaseAnonKey = env("EXPO_PUBLIC_SUPABASE_ANON_KEY");
   /** Same UUID as in Expo → Project → Project ID (OTA + `eas project:info`). */
-  const easProjectId = env("EXPO_PUBLIC_EAS_PROJECT_ID") ?? env("EAS_PROJECT_ID");
+  const easFromBase = baseExtra.eas as { projectId?: string } | undefined;
+  const easProjectId =
+    env("EXPO_PUBLIC_EAS_PROJECT_ID") ??
+    env("EAS_PROJECT_ID") ??
+    easFromBase?.projectId;
 
   const extra: Record<string, unknown> = { ...baseExtra };
 
@@ -38,8 +42,6 @@ export default ({ config }: ConfigContext): ExpoConfig => {
 
   if (easProjectId) {
     extra.eas = { projectId: easProjectId };
-  } else {
-    delete extra.eas;
   }
 
   const out: ExpoConfig = {

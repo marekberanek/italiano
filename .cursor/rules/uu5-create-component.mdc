@@ -1,0 +1,732 @@
+---
+description: Create component creation guide using uu5Generate command for entity creation forms with validation, modal integration, and API calls
+globs: 
+alwaysApply: false
+---
+# Create Component Creation Guide
+
+## Table of Contents
+
+1. @Introduction
+2. @Prerequisites
+3. @Generation Process
+4. @Form Configuration
+5. @Modal Integration
+6. @Validation and Error Handling
+7. @Demo Configuration
+8. @Best Practices
+9. @Troubleshooting
+
+## 1. Introduction
+
+This guide outlines the process for creating create components using the uu5Generate command for visual components.
+
+### 1.1 When to Use
+
+Use this guide when creating components for:
+- Entity creation forms (e.g., create Library, create Note)
+- Modal-based creation workflows
+- Forms with validation and API integration
+
+### 1.2 Fundamental Rule
+
+⚠️ **ABSOLUTE MANDATORY REQUIREMENT** ⚠️
+
+**NO IMPLEMENTATION BEFORE USER CONFIRMATION - ZERO EXCEPTIONS!**
+
+Before writing ANY code, you MUST ALWAYS:
+
+1. 🛑 STOP and ASK the user to specify:
+   - Module name (e.g., `Note`, `Library`)
+   - Component name (e.g., `Create`, `CreateForm`)
+   - Object/entity description or uuSchema documentation link
+
+2. 🛑 WAIT for explicit user confirmation before proceeding.
+
+3. 🛑 DO NOT proceed with ANY implementation until you have received clear specifications.
+
+> **CREATE COMPONENT RULE**  
+> When a user wants to create a new **create component**, you MUST use the uu5Generate command to generate visual components in the **-core library**.  
+> Use `npm run uu5Generate visualComponent` for all visual components.
+
+**Required Information**:
+- **Module** – the entity module (e.g. `Note`, `Workspace`)  
+- **Name** – the component name (e.g. `Create`, `CreateForm`)
+- **Object Description** – Either text description OR uuSchema documentation link
+
+## 2. Prerequisites
+
+### 2.1 Package Installation Check
+> Before starting any create component creation, you MUST verify that all required packages are installed:
+> 
+> **Check for uu-safe-install script in ROOT folder (where uuapp.json is located)**:
+> ```bash
+> # Navigate to the root folder where uuapp.json is located
+> cd ..
+> # Check if required packages are already installed
+> npm list uu5g05-forms uu_plus4u5g02
+> ```
+> 
+> **If packages are already installed**:
+> - Verify that `uu5g05-forms` and `uu_plus4u5g02` packages are available
+> - **CRITICAL**: Also check that packages are registered in the -core library's package.json
+> - Navigate to the -core library directory and verify package.json contains the required dependencies
+> - If packages are in node_modules but not in package.json, they need to be properly registered
+> - Proceed with component creation only if both conditions are met
+> 
+> **If packages are missing OR uu-safe-install script exists in root**:
+> ```bash
+> # Run uu-safe-install command
+> npm run uu-safe-install
+> ```
+> - Run the command to install all required packages
+> - Verify that `uu5g05-forms` and `uu_plus4u5g02` packages are available
+> - Proceed with component creation
+> 
+> **If uu-safe-install script does NOT exist in root**:
+> - **ERROR**: Cannot proceed with create component creation
+> - The required packages (`uu5g05-forms`, `uu_plus4u5g02`) must be installed first
+> - Add missing packages to package.json dependencies in the appropriate workspace
+> - Use appropriate install command (npm install, yarn install, etc.)
+> - **STOP**: Do not proceed with component creation until packages are available
+> 
+> **Required Packages**:
+> - `uu5g05-forms` - For Uu5Forms components (Form, FormText, FormTextArea, etc.)
+> - `uu_plus4u5g02` - For Plus4U5.Utils.AppClient API calls
+> 
+> **Purpose**: Ensures all required dependencies are available before attempting to create components that depend on them.
+
+## 3. Generation Process
+
+### 3.1 Implementation Steps
+
+Follow these steps in order:
+1. **Gather all required information** from the user
+2. **Generate visual components** using uu5Generate command
+3. **Implement the complete create component** with form, modal, and validation
+4. **Update exports and registration** as needed
+
+### 3.2 Components to Generate
+
+- `npm run uu5Generate visualComponent <module>.Create` - Main create component
+- `npm run uu5Generate visualComponent <module>.CreateContent` - Form content component
+- Update `src/lsi/en.json` - LSI labels
+- Update `src/calls.js` - API calls
+
+### 3.3 Object Description
+> Before generating the create component, you MUST check if the user already provided object documentation in their initial request. If they did, use that information directly. If not, ask the user for the object that will be represented by the create component.
+> 
+> **Check first**: Look for uuSchema documentation links or object descriptions in the user's initial prompt
+> 
+> **If not provided, ask the user to provide**:
+> • **Object Description** – Either a text description of the object/entity that the create component will represent, OR
+> • **Documentation Link** – A link to the uuSchema documentation that describes the object structure
+> 
+> **Purpose**: This information will be used to:
+> - Implement the form component with proper data fields
+> - Configure the component's data mapping
+> - Set up appropriate validation and business logic
+> - Create meaningful demo data
+> 
+> **Example questions to ask**:
+> - "What object/entity will this create component represent? Please provide either a text description or a link to the uuSchema documentation."
+> - "What data fields and properties should this create component collect for the [Module] entity?"
+> - "Do you have a uuSchema documentation link that describes the structure of the [Module] object?"
+> 
+> **STEP 2 - Create Command Verification**:
+> After receiving the object description, you MUST check the provided documentation for the create command to verify the correct parameters and structure.
+> 
+> **Primary verification - Create command**:
+> - Look for the `[module]/create` command in the documentation (e.g., `library/create`)
+> - Verify what parameters are used in `dtoIn` (e.g., `name`, `description`, `type`)
+> - Check the command signature to confirm the expected input parameters
+> - Verify the response structure and what data is returned
+> 
+> **Purpose**: This ensures the create component is configured with the correct command parameters and can properly handle the creation data.
+
+### 3.4 Visual Component Generation
+> After gathering all required information, you MUST generate the visual components using uu5Generate command:
+> 
+> **Generate Main Create Component**:
+> ```bash
+> cmd /c "npm run uu5Generate visualComponent <module>.Create"
+> ```
+> - This will create the main create component with proper structure
+> - Includes modal integration and form handling
+> - Generates configuration and demo files automatically
+> - **ALWAYS use cmd /c** to avoid PowerShell command syntax issues
+> 
+> **Generate Content Component**:
+> ```bash
+> cmd /c "npm run uu5Generate visualComponent <module>.CreateContent -- --no-demo --no-register"
+> ```
+> - This will create the form content component
+> - Includes proper form field structure
+> - Uses --no-demo and --no-register options for content component
+> - **ALWAYS use cmd /c** to avoid PowerShell command syntax issues
+> 
+> **CRITICAL**: Always run uu5Generate commands using `cmd /c` wrapper, never use PowerShell directly for these commands.
+> 
+> **Examples**:
+> ```bash
+> # CORRECT: Main Create component (using cmd)
+> cmd /c "npm run uu5Generate visualComponent Library.Create"
+> 
+> # CORRECT: CreateContent component (using cmd)
+> cmd /c "npm run uu5Generate visualComponent Library.Create.Content -- --no-demo --no-register"
+> 
+> # WRONG: Never use PowerShell directly - causes command syntax issues
+> # npm run uu5Generate visualComponent Library.Create
+> ```
+> 
+> **Update Additional Files**:
+- Update `src/lsi/en.json` with all necessary LSI labels
+- Update `src/calls.js` with the create API call
+
+## 4. Form Configuration
+
+### 4.1 Form Field Configuration
+> After generating the visual components, you MUST configure the form fields to match the expected input parameters using Uu5Forms components. You MUST:
+> 
+> **CRITICAL**: The form field names MUST use dot notation for nested objects and array notation for arrays to match the exact dtoIn structure. The handleSubmit function MUST transform the flat form data into the exact nested structure expected by the API.
+> 
+> 1. **Import Uu5Forms, useLsi, and PropTypes** in the content component:
+>    ```javascript
+>    import Uu5Forms from "uu5g05-forms";
+>    import { useLsi, PropTypes } from "uu5g05";
+>    import importLsi from "../lsi/import-lsi.js";
+>    ```
+> 2. **Use useLsi hook correctly** with importLsi and component uu5Tag:
+>    ```javascript
+>    const lsi = useLsi(importLsi, [CreateContent.uu5Tag]);
+>    ```
+> 3. **Add appropriate Uu5Forms inputs** for each parameter:
+>    - Use `Uu5Forms.FormText` for string fields
+>    - Use `Uu5Forms.FormTextArea` for longer text fields
+>    - Use `Uu5Forms.FormNumber` for numeric fields
+>    - Use `Uu5Forms.FormSelect` for selection fields
+>    - Use `Uu5Forms.FormDate` for date fields
+>    - Use `Uu5Forms.FormCheckbox` for boolean fields
+>    - Use `Uu5Forms.FormEmail` for email fields
+>    - Use `Uu5Forms.FormPassword` for password fields
+> 4. **Add proper validation** based on command requirements:
+>    - Use `required` prop for mandatory fields
+>    - Add `min`, `max` for numeric constraints
+>    - Add `pattern` for string format validation
+>    - Implement custom validation using `onValidate` prop
+> 5. **Update LSI labels** for each field in the LSI file following the LSI guide structure
+> 
+> **Form Structure Example**:
+> ```javascript
+> <Uu5Forms.Form
+>   onSubmit={onSubmit}
+> >
+>   <Uu5Forms.FormText name="code" label={lsi.codeLabel} required />
+>   <Uu5Forms.FormText name="name" label={lsi.nameLabel} required />
+>   <Uu5Forms.FormText name="version" label={lsi.versionLabel} required />
+>   <Uu5Forms.FormText name="sourceUri" label={lsi.sourceUriLabel} />
+>   <Uu5Forms.FormText name="docUri" label={lsi.docUriLabel} />
+>   <Uu5Forms.FormTextArea name="description" label={lsi.descriptionLabel} />
+> </Uu5Forms.Form>
+> ```
+> 
+> **CRITICAL**: Always import PropTypes from uu5g05 when creating form content components:
+> ```javascript
+> //@@viewOn:imports
+> import { createVisualComponent, Utils, useLsi, PropTypes } from "uu5g05";
+> //@@viewOff:imports
+> ```
+> 
+> **Nested Objects and Arrays**:
+> When the dtoIn contains nested objects or arrays, you MUST:
+> 1. **Add Text components** to group related fields (except for simple objects like timeInterval)
+> 2. **Use dot notation** for nested object properties (e.g., `timeInterval.from`, `auctionThresholdMap.minPrice`)
+> 3. **Use array notation** for array elements (e.g., `routeCodeList[0].routeCode`)
+> 6. **Transform form data** in handleSubmit to match exact dtoIn structure before API call
+> 
+> **Data Transformation Requirement**:
+> The form data MUST be transformed in the handleSubmit function to match the exact dtoIn structure:
+> ```javascript
+> //@@viewOn:private
+> const handleSubmit = async (e) => {
+>   const values = e.data.value;
+>   
+>   // Transform flat form data into correct nested structure
+>   const transformedData = {
+>     productCode: values.productCode,
+>     periodCode: values.periodCode,
+>     timeInterval: {
+>       from: values["timeInterval.from"],
+>       to: values["timeInterval.to"]
+>     },
+>     auctionThresholdMap: {
+>       minAuctionPrice: values["auctionThresholdMap.minAuctionPrice"],
+>       maxBidCount: values["auctionThresholdMap.maxBidCount"]
+>     },
+>     routeCodeList: [{
+>       routeCode: values["routeCodeList[0].routeCode"],
+>       offeredCapacity: values["routeCodeList[0].offeredCapacity"]
+>     }]
+>   };
+>   
+>   const result = await Calls.module.create(baseUri, transformedData);
+> };
+> //@@viewOff:private
+> ```
+> 
+> **Example with Nested Objects**:
+> ```javascript
+> import { Text } from "uu5g05-elements";
+> 
+> <Uu5Forms.Form.View>
+>   {/* Basic Information */}
+>   <Text category="interface" segment="highlight" type="minor" className={Config.Css.css`margin: 16px 0 12px 0;display: block;`} colorScheme={"grey"} bold>
+>     {lsi.basicInfoHeading}
+>   </Text>
+>   <Uu5Forms.FormText name="productCode" label={lsi.productCodeLabel} required />
+>   <Uu5Forms.FormText name="periodCode" label={lsi.periodCodeLabel} required />
+>   
+>   <Uu5Forms.FormDate name="timeInterval.from" label={lsi.fromLabel} required />
+>   <Uu5Forms.FormDate name="timeInterval.to" label={lsi.toLabel} required />
+>   
+>   {/* Nested Object */}
+>   <Text category="interface" segment="highlight" type="minor" className={Config.Css.css`margin: 16px 0 12px 0;display: block;`} colorScheme={"grey"} bold>
+>     {lsi.thresholdHeading}
+>   </Text>
+>   <Uu5Forms.FormNumber name="auctionThresholdMap.minPrice" label={lsi.minPriceLabel} required />
+>   <Uu5Forms.FormNumber name="auctionThresholdMap.maxPrice" label={lsi.maxPriceLabel} required />
+>   
+>   {/* Array Element */}
+>   <Text category="interface" segment="highlight" type="minor" className={Config.Css.css`margin: 16px 0 12px 0;display: block;`} colorScheme={"grey"} bold>
+>     {lsi.routeHeading}
+>   </Text>
+>   <Uu5Forms.FormText name="routeCodeList[0].routeCode" label={lsi.routeCodeLabel} required />
+>   <Uu5Forms.FormNumber name="routeCodeList[0].capacity" label={lsi.capacityLabel} required />
+> </Uu5Forms.Form.View>
+> ```
+> 
+> **Purpose**: The form fields must match the create command's expected input parameters to ensure successful data submission.
+> 
+> **STEP 4.1 - LSI Structure Configuration**:
+> After configuring form fields, you MUST update the LSI labels following the proper structure from the LSI guide:
+> 
+> **LSI Structure Requirements**:
+> 1. **Use component uu5Tag as keys**: The LSI structure must use the component's uu5Tag as the main key
+> 2. **Follow hierarchical structure**: Organize labels by component hierarchy
+> 3. **Use descriptive keys**: Make keys descriptive of their content
+> 4. **Include all form fields**: Add labels for every form field used
+> 
+> **Correct LSI Structure Example**:
+> ```json
+> {
+>   "UuApp.Module.Create": {
+>     "openButton": "Create Module",
+>     "header": "Create New Module",
+>     "info": "Fill in the details to create a new module",
+>     "cancel": "Cancel",
+>     "submit": "Create Module"
+>   },
+>   "UuApp.Module.CreateContent": {
+>     "titleLabel": "Title",
+>     "titlePlaceholder": "Enter title",
+>     "descriptionLabel": "Description",
+>     "descriptionPlaceholder": "Enter description"
+>   }
+> }
+> ```
+> 
+> **WRONG LSI Structure** (DO NOT use):
+> ```json
+> {
+>   "uu_frontend_aicodingg01-core": {
+>     "module": {
+>       "create": { ... }
+>     }
+>   }
+> }
+> ```
+> 
+> **Purpose**: Ensures LSI labels are properly structured and accessible using component uu5Tags.
+
+## 5. Modal Integration
+
+### 5.1 Modal Implementation
+> After configuring the form fields, you MUST implement modal integration for the create component using useModal hook:
+> 
+> **Modal Implementation**:
+> 1. **Import Modal components and useModal hook**:
+>    ```javascript
+>    //@@viewOn:imports
+>    import { Modal, Button, Grid, useModal } from "uu5g05-elements";
+>    import Uu5Forms from "uu5g05-forms";
+>    import { useLsi } from "uu5g05";
+>    import importLsi from "../lsi/import-lsi.js";
+>    //@@viewOff:imports
+>    ```
+> 2. **Use useModal hook** in the main create component:
+>    ```javascript
+>    const [modalProps, open, close] = useModal();
+>    const lsi = useLsi(importLsi, [Create.uu5Tag]);
+>    ```
+> 3. **Add button to open modal**:
+>    ```javascript
+>    <Button onClick={() => open({ data: {} })} colorScheme="primary">
+>       {lsi.openButton || "Create Library"}
+>     </Button>
+>    ```
+> 4. **Implement modal with spread modalProps**:
+>    ```javascript
+>    {modalProps.open && (
+>      <Uu5Forms.Form.Provider onSubmit={handleSubmit}>
+>        {({ submit, cancel, state }) => (
+>          <Modal
+>            {...modalProps}
+>            header={lsi.header}
+>            info={lsi.info}
+>            footer={
+>              <Grid templateColumns="repeat(2, 1fr)" justifyContent="end">
+>                <Button onClick={close}>{lsi.cancel}</Button>
+>                <Button onClick={submit} colorScheme="primary">{lsi.submit}</Button>
+>              </Grid>
+>            }
+>            onClose={async () => {
+>              const leave = await cancel();
+>              if (leave) close();
+>            }}
+>          >
+>            <Uu5Forms.Form.View>
+>              <CreateContent onSubmit={handleSubmit} />
+>            </Uu5Forms.Form.View>
+>          </Modal>
+>        )}
+>      </Uu5Forms.Form.Provider>
+   )}
+   ```
+
+### 5.2 BaseUri Configuration
+> The create component should have a `baseUri` prop but NO workspace check. You MUST:
+> 
+> **Configure the create component**:
+> - Add `baseUri` prop to the main create component
+> - Use the `baseUri` directly for API calls (no WorkspaceProvider needed)
+> - No workspace validation or state checking required
+> 
+> **Implementation**:
+> ```javascript
+> //@@viewOn:imports
+> import { createVisualComponent, Utils, PropTypes } from "uu5g05";
+> //@@viewOff:imports
+> 
+> //@@viewOn:propTypes
+> propTypes: {
+>   baseUri: PropTypes.string,
+>   onSuccess: PropTypes.func,
+>   onClose: PropTypes.func,
+> },
+> //@@viewOff:propTypes
+> 
+> //@@viewOn:defaultProps
+> defaultProps: {
+>   baseUri: Environment.appBaseUri,
+> },
+> //@@viewOff:defaultProps
+> 
+> render(props) {
+>   //@@viewOn:private
+>   // Use baseUri directly in API calls
+>   const handleSubmit = async (e) => {
+>     const values = e.data.value;
+>     const result = await Calls.[Module].create(baseUri, values);
+>     // Handle success/error
+>   };
+>   //@@viewOff:private
+> }
+> ```
+> 
+> **Purpose**: The create component uses baseUri directly for API calls without any workspace validation or provider complexity.
+
+## 6. Validation and Error Handling
+
+### 6.1 Form Validation Implementation
+> After completing the baseUri configuration, you MUST implement comprehensive form validation:
+> 
+> **Validation Types**:
+> 1. **Field-level validation**:
+>    - Use native HTML5 validation (required, min, max, pattern)
+>    - Implement custom validation functions for business logic
+>    - Add async validation for server-side checks
+> 2. **Form-level validation**:
+>    - Cross-field validation (e.g., end date after start date)
+>    - Business rule validation (e.g., unique constraints)
+>    - Server-side validation integration
+> 3. **Error handling**:
+>    - Display validation errors clearly
+>    - Provide helpful error messages
+>    - Handle server errors gracefully
+> 
+> **Implementation**:
+> ```javascript
+> // Field-level validation
+> <Uu5Forms.FormText
+>   name="name"
+>   label={lsi.nameLabel}
+>   required
+>   onValidate={async (e) => {
+>     const { value } = e.data;
+>     if (value && value.length < 3) {
+>       return {
+>         feedback: "error",
+>         message: lsi.nameTooShort
+>       };
+>     }
+>   }}
+> />
+> 
+> // Form-level validation
+> <Uu5Forms.Form.Provider
+>   onSubmit={handleSubmit}
+>   onValidate={async (e) => {
+>     const values = e.data.value;
+>     // Cross-field validation
+>     if (values.startDate && values.endDate && values.startDate > values.endDate) {
+>       return {
+>         feedback: "error",
+>         message: lsi.invalidDateRange
+>       };
+>     }
+  }}
+>
+```
+
+### 6.2 Success Handling
+> After implementing form validation, you MUST configure success handling for the create operation:
+> 
+> **Success Handling Options**:
+> 1. **Modal closure**: Close the modal and show success message
+> 2. **Redirect**: Navigate to the created object's detail page
+> 3. **Refresh**: Refresh the parent list component
+> 4. **Callback**: Execute a custom callback function
+> 
+> **Implementation**:
+> ```javascript
+> const handleSubmit = async (e) => {
+>   try {
+>     const values = e.data.value;
+>     const result = await Calls.create[Module](values);
+>     
+>     // Option 1: Close modal and show success
+>     props.onClose();
+>     showSuccessMessage(viewLsi.createSuccess);
+>     
+>     // Option 2: Redirect to detail page
+>     // Uu5Elements.Router.go(`/detail/${result.id}`);
+>     
+>     // Option 3: Refresh parent component
+>     // props.onSuccess?.(result);
+>   } catch (error) {
+>     // Handle error
+>     showErrorMessage(error.message);
+  }
+};
+```
+
+### 6.3 Code Formatting
+> After completing all configuration steps, you MUST format the code using prettify:
+> 
+> **Run prettify**:
+> ```bash
+> cd uu_frontend_aicodingg01-core
+> npm run prettify
+> ```
+> 
+> **This will automatically**:
+> - Fix code formatting issues (indentation, spacing, line breaks)
+> - Ensure consistent code style across all files
+> - Remove unnecessary whitespace and newlines
+- Apply project-specific formatting rules
+
+### 6.4 Compilation Verification
+> After formatting the code, you MUST verify that the source code compiles successfully:
+> 
+> **Run compilation check**:
+> ```bash
+> cd ..
+> npm run build
+> ```
+> 
+> **Verify successful compilation**:
+> - Check that the build process completes without errors
+> - Verify that the create component is properly integrated
+> - Confirm that all imports and dependencies are resolved correctly
+> - Ensure no TypeScript/JavaScript compilation errors are present
+> 
+> **If compilation fails**:
+> - Fix any syntax errors or missing imports
+> - Resolve dependency issues
+> - Re-run `npm run build` until compilation succeeds
+- Document any issues found and their solutions
+
+## 7. Demo Configuration
+
+### 7.1 Demo Setup
+> After successful compilation, you MUST ask the user for test data to configure the demo page:
+> 
+> **⚠️ CRITICAL**: This step is MANDATORY and must ALWAYS be completed. Do NOT skip asking for demo configuration.
+> 
+> **Ask the user for test data**:
+> - "Please provide test data for the [Module] create component demo:"
+> - **MANDATORY**: "What baseUri should be used for testing? (This is required for API calls)"
+> - "What sample values should be used for the form fields?"
+> - "Are there any other configuration values needed for the demo?"
+> 
+> **⚠️ CRITICAL**: Do NOT set a default baseUri if the user has not provided one. The user must explicitly provide the baseUri or edit the demo file later.
+> 
+> **Update the demo page** (`demo/[module]/create.html`):
+> 1. **Open the demo HTML file** in the core library
+> 2. **Update the configuration section** with the provided test data:
+>    - Set the `BASE_URI` variable to the provided baseUri
+>    - Set sample values for form fields
+>    - Update any other configuration values as needed
+> 3. **Verify the demo works** with the provided test data
+> 4. **Test the component** in the browser to ensure it loads correctly
+> 
+> **Example demo configuration**:
+> ```javascript
+> // Update these values with the provided test data
+> const BASE_URI = "https://your-test-server.com";
+> const SAMPLE_NAME = "Sample Library";
+> const SAMPLE_DESCRIPTION = "This is a sample library for testing";
+> ```
+> 
+**Purpose**: This ensures the demo page is functional and can be used for testing and demonstration purposes with real data.
+
+### 7.2 Advanced Form Features
+> After completing the basic demo configuration, you MAY implement advanced form features based on user requirements:
+> 
+> **Advanced Features**:
+> 1. **Dynamic form fields**: Show/hide fields based on other field values
+> 2. **Field dependencies**: Update field options based on other selections
+> 3. **Multi-step forms**: Break complex forms into multiple steps
+> 4. **File uploads**: Add file upload capabilities
+> 5. **Rich text editing**: Add rich text editors for content fields
+> 6. **Auto-save**: Implement auto-save functionality
+> 7. **Form templates**: Pre-fill forms with template data
+> 
+> **Implementation Examples**:
+> ```javascript
+> // Dynamic fields
+> const [showAdvanced, setShowAdvanced] = useState(false);
+> 
+> <Uu5Forms.FormCheckbox
+>   name="advanced"
+>   label="Advanced options"
+>   onChange={(e) => setShowAdvanced(e.data.value)}
+> />
+> 
+> {showAdvanced && (
+>   <Uu5Forms.FormText
+>     name="advancedOption"
+>     label="Advanced Option"
+>   />
+> )}
+> 
+> // Field dependencies
+> <Uu5Forms.FormSelect
+>   name="category"
+>   label="Category"
+>   itemList={categories}
+>   onChange={(e) => setSelectedCategory(e.data.value)}
+> />
+> 
+> <Uu5Forms.FormSelect
+>   name="subcategory"
+>   label="Subcategory"
+>   itemList={getSubcategories(selectedCategory)}
+  disabled={!selectedCategory}
+/>
+```
+
+### 7.3 Testing and Validation
+> After implementing advanced features, you MUST ensure comprehensive testing:
+> 
+> **Testing Checklist**:
+> 1. **Form validation testing**:
+>    - Test all required fields
+>    - Test field format validation
+>    - Test cross-field validation
+>    - Test async validation
+> 2. **User interaction testing**:
+>    - Test form submission
+>    - Test form cancellation
+>    - Test modal opening/closing
+>    - Test field interactions
+> 3. **Error handling testing**:
+>    - Test network errors
+>    - Test validation errors
+>    - Test server errors
+>    - Test user feedback
+> 4. **Accessibility testing**:
+>    - Test keyboard navigation
+>    - Test screen reader compatibility
+>    - Test focus management
+>    - Test error announcements
+> 
+> **Final Verification**:
+> - Ensure all form fields work correctly
+> - Verify validation messages are clear and helpful
+> - Test the complete user workflow
+> - Confirm the component integrates properly with the parent application
+> - Validate that all LSI labels are properly configured
+> - Ensure the demo page works with real data
+> 
+**Purpose**: This comprehensive testing ensures the create component is robust, user-friendly, and ready for production use.
+
+### 7.4 ESLint Fix
+> After completing all testing and validation, you MUST run eslint fix to resolve any linting errors:
+> 
+> **Run ESLint Fix**:
+> ```bash
+> # Option 1: Direct eslint command
+> npx eslint src/ --fix
+> 
+> # Option 2: Using project-specific eslint config
+> npx eslint "src/**/*.js" --fix
+> ```
+> 
+> **Verify ESLint Results**:
+> - Check that all linting errors are resolved
+> - Ensure code follows project style guidelines
+> - Verify no new warnings are introduced
+> - Confirm all files pass linting checks
+> 
+> **If ESLint errors persist**:
+> - Review and fix any remaining manual errors
+> - Check for configuration issues
+> - Ensure all imports and dependencies are correct
+> - Re-run eslint fix until all errors are resolved
+> 
+> **Purpose**: Ensures the create component code follows project standards and is free of linting errors before completion.
+
+## 8. Best Practices
+
+- **Always confirm specifications** before starting implementation
+- **Use cmd /c wrapper** for uu5Generate commands, never use PowerShell directly
+- **Implement comprehensive validation** at both field and form level
+- **Use proper LSI structure** with component uu5Tag as keys
+- **Handle nested objects** with dot notation and proper data transformation
+- **Test thoroughly** before considering implementation complete
+- **Format and compile** code after each major change
+- **Configure demo pages** with real test data for demonstration
+
+## 9. Troubleshooting
+
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| uu5Generate prompts for input | Missing parameters | Always include ALL parameters (--sub-app, --brick-uu5-tag, etc.) |
+| PowerShell command fails | Using PowerShell directly | Always use cmd /c wrapper for uu5Generate commands |
+| Form validation not working | Missing onValidate prop | Add onValidate prop to Form or individual inputs |
+| Modal not closing | Missing cancel/close handlers | Implement proper cancel handler and use close function |
+| Form data not matching API | Missing data transformation | Transform form data in handleSubmit to match dtoIn structure |
+| LSI labels not displaying | Wrong LSI structure | Use component uu5Tag as main key in LSI file |
+| Compilation fails | Syntax errors or missing imports | Fix imports, check syntax, and re-run build |
+| Demo page not working | Missing baseUri or test data | Configure demo page with provided test data |

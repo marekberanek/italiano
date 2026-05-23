@@ -2,8 +2,11 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import type { VocabWord } from "@/assets/data/types";
-import { Palette, Radius, Spacing, Typography } from "@/constants/theme";
 import { PlayButton } from "@/components/play-button";
+import type { ColorPalette } from "@/constants/theme";
+import { Radius, Spacing, Typography } from "@/constants/theme";
+import { useThemedStyles } from "@/hooks/use-themed-styles";
+import { useTheme } from "@/lib/theme/theme-context";
 
 type Props = {
   word: VocabWord;
@@ -13,8 +16,10 @@ type Props = {
 };
 
 export function VocabRow({ word, onPlay, onRemove, learnedThreshold }: Props) {
-  const badgeBg = word.learned ? Palette.brand : Palette.brandSoft;
-  const badgeFg = word.learned ? Palette.textInverse : Palette.brandDark;
+  const { palette } = useTheme();
+  const styles = useThemedStyles(createStyles);
+  const badgeBg = word.learned ? palette.brand : palette.brandSoft;
+  const badgeFg = word.learned ? palette.textInverse : palette.brandDark;
   const badgeText = word.learned ? "✓" : `${word.streak}/${learnedThreshold}`;
   const kindLabel = word.kind === "phrase" ? "Fráze" : "Slovo";
   return (
@@ -51,85 +56,87 @@ export function VocabRow({ word, onPlay, onRemove, learnedThreshold }: Props) {
           hitSlop={8}
           style={({ pressed }) => [styles.remove, pressed && styles.removePressed]}
         >
-          <MaterialIcons name="close" size={18} color={Palette.textMuted} />
+          <MaterialIcons name="close" size={18} color={palette.textMuted} />
         </Pressable>
       ) : null}
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: Spacing.md,
-    paddingVertical: 14,
-    paddingHorizontal: Spacing.lg,
-    borderRadius: Radius.md,
-    backgroundColor: Palette.surface,
-    borderWidth: 1,
-    borderColor: Palette.border,
-  },
-  texts: { flex: 1, gap: 2 },
-  titleRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: Spacing.sm,
-    flexWrap: "wrap",
-  },
-  italian: {
-    fontFamily: Typography.display.fontFamily,
-    fontSize: 17,
-    color: Palette.textStrong,
-  },
-  kindPill: {
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: Radius.pill,
-    borderWidth: 1,
-  },
-  kindPillWord: {
-    backgroundColor: Palette.surfaceMuted,
-    borderColor: Palette.border,
-  },
-  kindPillPhrase: {
-    backgroundColor: Palette.brandSoft,
-    borderColor: Palette.brand,
-  },
-  kindPillText: {
-    ...Typography.smallStrong,
-    fontSize: 10,
-    color: Palette.textMuted,
-  },
-  kindPillTextPhrase: { color: Palette.brandDark },
-  czech: {
-    ...Typography.body,
-    color: Palette.text,
-    fontSize: 14,
-  },
-  pronunciation: {
-    fontFamily: Typography.bodyStrong.fontFamily,
-    fontSize: 12,
-    fontStyle: "italic",
-    color: Palette.accent,
-  },
-  badge: {
-    minWidth: 42,
-    height: 28,
-    borderRadius: Radius.pill,
-    alignItems: "center",
-    justifyContent: "center",
-    paddingHorizontal: 8,
-  },
-  badgeLabel: {
-    fontFamily: Typography.bodyStrong.fontFamily,
-    fontSize: 12,
-  },
-  remove: {
-    width: 28,
-    height: 28,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  removePressed: { opacity: 0.5 },
-});
+function createStyles(p: ColorPalette) {
+  return StyleSheet.create({
+    container: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: Spacing.md,
+      paddingVertical: 14,
+      paddingHorizontal: Spacing.lg,
+      borderRadius: Radius.md,
+      backgroundColor: p.surface,
+      borderWidth: 1,
+      borderColor: p.border,
+    },
+    texts: { flex: 1, gap: 2 },
+    titleRow: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: Spacing.sm,
+      flexWrap: "wrap",
+    },
+    italian: {
+      fontFamily: Typography.display.fontFamily,
+      fontSize: 17,
+      color: p.textStrong,
+    },
+    kindPill: {
+      paddingHorizontal: 8,
+      paddingVertical: 2,
+      borderRadius: Radius.pill,
+      borderWidth: 1,
+    },
+    kindPillWord: {
+      backgroundColor: p.surfaceMuted,
+      borderColor: p.border,
+    },
+    kindPillPhrase: {
+      backgroundColor: p.brandSoft,
+      borderColor: p.brand,
+    },
+    kindPillText: {
+      ...Typography.smallStrong,
+      fontSize: 10,
+      color: p.textMuted,
+    },
+    kindPillTextPhrase: { color: p.brandDark },
+    czech: {
+      ...Typography.body,
+      color: p.text,
+      fontSize: 14,
+    },
+    pronunciation: {
+      fontFamily: Typography.bodyStrong.fontFamily,
+      fontSize: 12,
+      fontStyle: "italic",
+      color: p.accent,
+    },
+    badge: {
+      minWidth: 42,
+      height: 28,
+      borderRadius: Radius.pill,
+      alignItems: "center",
+      justifyContent: "center",
+      paddingHorizontal: 8,
+    },
+    badgeLabel: {
+      fontFamily: Typography.bodyStrong.fontFamily,
+      fontSize: 12,
+    },
+    remove: {
+      width: 28,
+      height: 28,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    removePressed: { opacity: 0.5 },
+  });
+}

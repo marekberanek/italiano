@@ -1,0 +1,14 @@
+{
+  "configs": [
+    {
+      "name": "my-project-cloud",
+      "file": "configs/example-plus4u-cloud.json",
+      "description": "My Project - Plus4U cloud environments (dev, prod)"
+    },
+    {
+      "name": "my-project-onprem",
+      "file": "configs/example-on-prem.json",
+      "description": "My Project - On-prem integration environment with grantToken auth"
+    }
+  ]
+}

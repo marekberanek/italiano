@@ -1,0 +1,518 @@
+---
+description: Detail component creation guide using uu5Generate command for entity detail views with InfoGroup, Grid layouts, and proper data display
+globs: 
+alwaysApply: false
+---
+# Detail Component Creation Guide
+
+## Table of Contents
+
+1. @Introduction
+2. @Specifications and Confirmation
+3. @Generation Process
+4. @Content Implementation
+5. @Configuration and Integration
+6. @Demo Configuration
+7. @Best Practices
+8. @Troubleshooting
+
+## 1. Introduction
+
+This guide outlines the process for creating detail components using the uu5Generate command.
+
+### 1.1 When to Use
+
+Use this guide when creating components for:
+- Entity detail views (e.g., Library Detail, Note Detail)
+- Single object data display with proper layout
+- Hybrid InfoGroup and Grid implementations
+
+### 1.2 Fundamental Rule
+
+⚠️ **ABSOLUTE MANDATORY REQUIREMENT** ⚠️
+
+**NO IMPLEMENTATION BEFORE USER CONFIRMATION - ZERO EXCEPTIONS!**
+
+Before writing ANY code, you MUST ALWAYS follow these steps IN ORDER:
+
+1. 🛑 **FIRST STEP - CONFIRM INTENT**: 
+   - ASK the user to CONFIRM they want to create a detail component
+   - Verify the module name (e.g., `Note`, `Library`)
+   - Verify the component name (e.g., `Detail`, `VersionTagDetail`)
+   - WAIT for explicit YES/NO confirmation
+
+2. 🛑 **SECOND STEP - GATHER SPECIFICATIONS** (only after step 1 is confirmed):
+   - ASK for object/entity description or uuSchema documentation link
+   - ASK about baseUri configuration
+   - ASK about load/get command details
+   - ASK about identifier attribute
+   - ASK about any special requirements
+
+3. 🛑 **THIRD STEP - FINAL CONFIRMATION**:
+   - SUMMARIZE all gathered specifications
+   - ASK for final confirmation before implementation
+   - WAIT for explicit approval
+
+4. 🛑 DO NOT proceed with ANY implementation until ALL confirmations are received.
+
+> **DETAIL COMPONENT RULE**  
+> When a user wants to create a new **detail component**, do NOT generate any files manually.  
+> Instead, use the uu5Generate command in the **-core library**:
+> ```bash
+> npm run uu5Generate detailComponent <module>.<name> -- --sub-app=<value> --brick-uu5-tag=<value> --redirect-uu5-route=<value>
+> ```
+
+
+**⚠️ WARNING**: NEVER call uu5Generate without ALL parameters - it will prompt for interactive input!
+
+**IMPORTANT**: ALWAYS use cmd when calling uu5Generate. Do NOT use PowerShell as it causes syntax issues with the command execution.
+
+## 2. Specifications and Confirmation
+
+Before implementation, confirm with the user:
+
+- [ ] Module name (e.g., `Note`, `Workspace`)
+- [ ] Component name (e.g., `Detail`, `VersionTagDetail`)
+- [ ] Object/entity description or uuSchema documentation link
+- [ ] BaseUri configuration (same for workspace and object, or separate)
+- [ ] Any special requirements or constraints
+
+> 
+## 3. Generation Process
+
+### 3.1 Command Parameters
+
+**Optional Parameters** (with default values):
+> • **sub-app** [string] – the sub app of the corresponding uuApp  
+>   *Default: derived from library name (e.g. `uu_frontend_aicodingg01-core` → `uu_frontend_aicodingg01`)*  
+>   *This option is **mandatory** for all cases*
+> • **brick-uu5-tag** [string] – full uu5Tag of related brick component for "Copy component" functionality  
+>   *Default: `"-"` (taken as empty when used)*  
+>   *This option is **mandatory** when generate-brick is positive*
+> • **generate-brick** [bool] – whether to generate related brick component  
+>   *This is a **mandatory** option with no default value*  
+>   *Use `no-generate-brick` when user doesn't want to generate brick component*
+> • **redirect-uu5-route** [string] – related uu5Route for "Redirect / open in new window" functionality  
+>   *Default: `"-"`*
+> 
+> **Process**:
+> 1. **ALWAYS provide ALL parameters** when calling uu5Generate - never call it without parameters
+> 2. **Use default values** for all parameters unless user specifies otherwise
+> 3. **Execute the uu5Generate command** with ALL parameters specified
+> 
+> **CRITICAL**: NEVER call `npm run uu5Generate detailComponent <module>.<name>` without parameters. ALWAYS include all required parameters: `--sub-app`, `--brick-uu5-tag`, and `--redirect-uu5-route`.
+> 
+> **Examples**:
+> ```bash
+> # CORRECT: Using default values (all parameters MUST be specified)
+> # ALWAYS use cmd, NOT PowerShell
+> cmd /c "npm run uu5Generate detailComponent Note.Detail -- --sub-app=uu_frontend_aicodingg01 --brick-uu5-tag=- --redirect-uu5-route=-"
+> 
+> # CORRECT: Overriding specific parameters
+> cmd /c "npm run uu5Generate detailComponent Note.Detail -- --sub-app=mySubApp --brick-uu5-tag=UuMyAppBricks.Note.Detail --redirect-uu5-route=noteDetail"
+> 
+> # CORRECT: When not generating brick component
+> cmd /c "npm run uu5Generate detailComponent Note.Detail -- --sub-app=uu_frontend_aicodingg01 --no-generate-brick --redirect-uu5-route=-"
+> 
+> # WRONG: Never call without parameters - this will prompt for input
+> # npm run uu5Generate detailComponent Note.Detail
+> ```
+> 
+> The uu5Generate command will automatically create all necessary files including:
+> - Component files (js, test, html demo)
+> - Proper ContentContainer integration
+> - Registration in uuapp.json
+- Brick component generation (if applicable)
+
+### 3.2 Object Description
+> After the detail component is successfully generated, you MUST check if the user already provided object documentation in their initial request. If they did, use that information directly. If not, ask the user for the object that will be represented by the detail component.
+> 
+> **Check first**: Look for uuSchema documentation links or object descriptions in the user's initial prompt
+> 
+> **If not provided, ask the user to provide**:
+> • **Object Description** – Either a text description of the object/entity that the detail component will represent, OR
+> • **Documentation Link** – A link to the uuSchema documentation that describes the object structure
+> 
+> **Purpose**: This information will be used to:
+> - Implement the content component with proper data fields
+> - Configure the component's data mapping
+> - Set up appropriate validation and business logic
+> - Create meaningful demo data
+> 
+> **Example questions to ask**:
+> - "What object/entity will this detail component represent? Please provide either a text description or a link to the uuSchema documentation."
+> - "What data fields and properties should this detail component display for the [Module] entity?"
+- "Do you have a uuSchema documentation link that describes the structure of the [Module] object?"
+
+### 3.3 Load/Get Command Verification
+> After receiving the object description, you MUST check the provided documentation for the load command to verify the correct identifier attribute.
+> 
+> **Primary verification - Load command**:
+> - Look for the `[module]/load` command in the documentation (e.g., `library/load`)
+> - Verify what identifier attribute is used in `dtoIn` (e.g., `id` or `oid`)
+> - Check the command signature to confirm the expected input parameters
+> 
+> **Fallback verification - Get command**:
+> - If `[module]/load` command is not found, look for `[module]/get` command (e.g., `library/get`)
+> - Verify what identifier attribute is used in `dtoIn` for the get command
+> - Check the command signature to confirm the expected input parameters
+> - **Note**: Get commands typically use different identifier attributes than load commands
+> 
+> **STEP AFTER LOAD/GET COMMAND VERIFICATION - Object ID Configuration**:
+> Based on the load or get command documentation, configure the correct identifier attribute. If the command uses `id` instead of `oid`, you MUST:
+> 
+> 1. **Change `oid` prop to `id`** in the main detail component (`src/[module]/detail.js`)
+> 2. **Change `oid` prop to `id`** in the provider component (`src/[module]/provider.js`)
+> 3. **Change `oid` prop to `id`** in the use-provider hook (`src/[module]/use-provider.js`)
+> 4. **Update propTypes** to use `id` instead of `oid` in all affected components
+> 5. **Update the provider propTypes** to reflect the correct identifier field
+> 6. **Update the demo page** (`demo/[module]/detail.html`) to use the correct identifier:
+>    - Change the `oid` prop to the correct identifier (e.g., `id`, `code`)
+>    - Update any hardcoded demo values to use the correct identifier format
+   - Ensure the demo page works with the new identifier structure
+
+### 3.4 Object ID Configuration
+
+Based on the load or get command documentation, configure the correct identifier attribute as described above.
+
+## 4. Content Implementation
+
+### 4.1 BaseUri Configuration
+> After configuring the object ID, you MUST ask the user about baseUri configuration:
+> 
+> **Ask the user**:
+> - "Will the baseUri be the same for workspace check and for the [Module] object loading?"
+> - "If different, what baseUri should be used for [Module] object loading?"
+> - "Do you want to remove the WorkspaceProvider and use only baseUri for [Module] object loading? (workspace state check is not needed)"
+> 
+> **Purpose**: This determines whether to use the same baseUri for both workspace validation and object data loading, or if separate baseUris are needed for different operations.
+> 
+> **Implementation options**:
+> - **Option 1 - Same baseUri**: Use the existing `baseUri` prop for both workspace and object operations
+> - **Option 2 - Different baseUri**: Define TWO separate props:
+>   - `baseUri` - for workspace check operations
+>   - `objectBaseUri` - for object loading operations
+>   - **Update the detail component** to pass the correct baseUri to each provider:
+>     - `baseUri` prop → passed to `WorkspaceProvider` as `baseUri`
+>     - `objectBaseUri` prop → passed to `[Module]Provider` as `baseUri`
+> - **Option 3 - Remove WorkspaceProvider**: Remove WorkspaceProvider entirely and use only baseUri for [Module] object loading:
+>   - Remove `WorkspaceProvider` import and usage from detail component
+>   - Pass `baseUri` directly to `[Module]Provider`
+>   - Update propTypes to use `[Module]Provider.propTypes.baseUri` instead of `WorkspaceProvider.propTypes.baseUri`
+>   - **Clean up unused workspace components**: If WorkspaceProvider is not used elsewhere, delete the generated workspace-related files:
+>     - `src/workspace/workspace.js`
+>     - `src/workspace/config/config.js`
+>     - `src/workspace/provider.js`
+>     - `src/workspace/use-workspace.js`
+>     - Remove workspace-related calls from `src/calls.js`
+    - Remove workspace exports from `src/exports.js` and `src/index.js`
+
+### 4.2 Hybrid Content Implementation
+> After completing the baseUri configuration, you MUST implement the content component using a hybrid approach with InfoGroup for basic fields and Grid layout for nested objects.
+> 
+> **Implementation Structure**:
+> - **InfoGroup**: Display basic fields (OID, name, description, etc.) in a single InfoGroup
+> - **Grid Layout**: Display nested objects (maps, arrays) in responsive grid layouts below the InfoGroup
+> - **Spacing**: Add proper spacing between InfoGroup and grid sections
+> 
+> **Key steps**:
+> 1. Open `src/[module]/detail/content.js`
+> 2. Import InfoGroup, Grid, and Text from `uu5g05-elements`
+> 3. Replace PlaceholderBox with hybrid structure (InfoGroup + Grid)
+> 4. **Basic Fields (InfoGroup)**:
+>    - Use `{ subtitle: "Label", title: "Value" }` for basic fields
+>    - Use `href: url` directly in the item object for clickable links
+>    - **Always make URI fields clickable** by detecting URIs and adding `href` property
+>    - **Create helper function** to automatically detect URIs and conditionally add `href`
+>    - **Exclude system attributes**: Do NOT display sysCts, sysMts, sysRev, or other system-generated fields
+> 5. **Nested Objects (Grid Layout)**:
+>    - Use ListLayout for each nested object (maps, arrays)
+>    - Structure: `{ label: "Section Name", children: <ListLayout itemList={[...]} /> }`
+>    - For arrays, map each item with proper labeling
+>    - Use nested ListLayout for complex nested structures
+> 6. **Spacing**: Add `marginTop: "24px"` between InfoGroup and grid sections
+> 7. Handle data formatting and display
+> 
+> **Data Access Pattern**:
+> Always check both `[module]Dto` and `[module]Dto.data` when accessing data:
+> ```javascript
+> // Check both [module]Dto and [module]Dto.data for data
+> const data = [module]Dto.data || [module]Dto;
+> 
+> if (!data) {
+>   return null;
+> }
+> ```
+
+> **Example Implementation**:
+> ```javascript
+> // Basic fields in InfoGroup
+> const itemList = [
+>   { subtitle: lsi.oid, ...addHrefIfUri(data.oid) },
+>   { subtitle: lsi.name, ...addHrefIfUri(data.name) },
+>   // ... more basic fields
+> ];
+> 
+> // Nested objects in ListLayout
+> const listLayoutItems = [
+>   {
+>     label: lsi.nestedObjectName,
+>     children: (
+>       <ListLayout
+>         itemList={[
+>           { label: lsi.field1, children: nestedObject.field1 },
+>           { label: lsi.field2, children: nestedObject.field2 },
+>         ]}
+>       />
+>     ),
+>   },
+> ];
+> 
+> return (
+>   <>
+>     <InfoGroup header={lsi.details} itemList={itemList} />
+    <div style={{ marginTop: "24px" }}>
+      <ListLayout itemList={listLayoutItems} />
+    </div>
+  </>
+);
+```
+
+**Reference**: This hybrid approach provides better organization, performance, and responsive layout control compared to nested ListLayout components.
+
+## 5. Configuration and Integration
+
+### 5.1 LSI Configuration
+> After implementing the content component, you MUST update the LSI labels for the detail component.
+> 
+> **LSI Structure Requirements**:
+> 1. **Use component uu5Tag as keys**: The LSI structure must use the component's uu5Tag as the main key
+> 2. **Follow hierarchical structure**: Organize labels by component hierarchy
+> 3. **Use descriptive keys**: Make keys descriptive of their content
+> 4. **Include all display fields**: Add labels for every field displayed in the detail component
+> 
+> **Correct LSI Structure Example**:
+> ```json
+> {
+>   "UuApp.Module.Detail.View": {
+>     "title": "Module Details",
+>     "subtitle": "View module information",
+>     "info": "Detailed information about the selected module",
+>     "loading": "Loading module details...",
+>     "error": "Error loading module details"
+>   },
+>   "UuApp.Module.Detail.Content": {
+>     "field1": "Field 1 Label",
+>     "field2": "Field 2 Label",
+>     "nestedObject": "Nested Object Label",
+>     "nestedField1": "Nested Field 1 Label",
+>     "nestedField2": "Nested Field 2 Label"
+  }
+}
+```
+
+**Purpose**: Ensures LSI labels are properly structured and accessible using component uu5Tags for internationalization support.
+
+### 5.2 Code Formatting
+> After completing all configuration steps, you MUST format the code using prettify:
+> 
+> **Run prettify**:
+> ```bash
+> cd uu_frontend_aicodingg01-core
+> npm run prettify
+> ```
+> 
+> **This will automatically**:
+> - Fix code formatting issues (indentation, spacing, line breaks)
+> - Ensure consistent code style across all files
+> - Remove unnecessary whitespace and newlines
+- Apply project-specific formatting rules
+
+### 5.3 Compilation Verification
+> After formatting the code, you MUST verify that the source code compiles successfully:
+> 
+> **Run compilation check**:
+> ```bash
+> cd ..
+> npm run build
+> ```
+> 
+> **Verify successful compilation**:
+> - Check that the build process completes without errors
+> - Verify that the detail component is properly integrated
+> - Confirm that all imports and dependencies are resolved correctly
+> - Ensure no TypeScript/JavaScript compilation errors are present
+> 
+> **If compilation fails**:
+> - Fix any syntax errors or missing imports
+> - Resolve dependency issues
+> - Re-run `npm run build` until compilation succeeds
+- Document any issues found and their solutions
+
+## 6. Demo Configuration
+
+### 6.1 Demo Setup
+> After successful compilation, you MUST ask the user for test data to configure the demo page:
+> 
+> **⚠️ CRITICAL**: This step is MANDATORY and must ALWAYS be completed. Do NOT skip asking for demo configuration.
+> 
+> **Ask the user for test data**:
+> - "Please provide test data for the [Module] detail component demo:"
+> - "What baseUri should be used for testing?"
+> - "What [identifier] value should be used for testing?"
+> - "Are there any other configuration values needed for the demo?"
+> 
+> **Update the demo page** (`demo/[module]/detail.html`):
+> 1. **Open the demo HTML file** in the core library
+> 2. **Update the configuration section** with the provided test data:
+>    - Set the `BASE_URI` variable to the provided baseUri
+>    - Set the identifier variable (e.g., `OID`, `ID`, `CODE`) to the provided value
+>    - Update any other configuration values as needed
+> 3. **Verify the demo works** with the provided test data
+> 4. **Test the component** in the browser to ensure it loads correctly
+> 
+> **Example demo configuration**:
+> ```javascript
+> // Update these values with the provided test data
+> const BASE_URI = "https://your-test-server.com";
+> const CODE = "your-test-library-code";
+> ```
+> 
+> **Purpose**: This ensures the demo page is functional and can be used for testing and demonstration purposes with real data.
+
+### 6.2 State Badge Rendering
+After implementing the content component, you MUST implement Badge rendering for state fields in detail components.
+
+**State Badge Implementation**:
+When state fields are present in the detail component, you MUST update the content.js file to render state values as Badges:
+
+```javascript
+// In src/[module]/detail/content.js
+import { Badge } from "uu5g05-elements";
+
+// Add toCamelCase method to Content component
+toCamelCase(str) {
+  if (!str) return str;
+  return str
+    .toLowerCase()
+    .replace(/[-_\s]+(.)?/g, (_, char) => (char ? char.toUpperCase() : ''))
+    .replace(/^(.)/, (char) => char.toUpperCase());
+},
+
+// Add getStateColorScheme method to Content component
+getStateColorScheme(state) {
+  switch (state?.toLowerCase()) {
+    case "active":
+    case "running":
+      return "green";
+    case "inactive":
+    case "stopped":
+      return "red";
+    case "pending":
+    case "waiting":
+      return "orange";
+    case "completed":
+    case "finished":
+      return "blue";
+    default:
+      return "cyan";
+  }
+},
+
+// Update InfoGroup itemList to render state as Badge
+const itemList = [
+  { subtitle: lsi.oid, ...addHrefIfUri(data.oid) },
+  { subtitle: lsi.name, ...addHrefIfUri(data.name) },
+  // ... other basic fields
+  {
+    subtitle: lsi.state,
+    title: data.state ? (
+      <Badge colorScheme={Content.getStateColorScheme(data.state)} size="xl">
+        {Content.toCamelCase(data.state)}
+      </Badge>
+    ) : null
+  },
+  // ... more basic fields
+];
+```
+
+**Purpose**: This ensures that state fields in detail components are rendered as prominent, color-coded badges with proper CamelCase formatting for better user experience and visual clarity.
+
+### 6.3 DateTime Rendering
+After implementing the content component, you MUST render date and datetime fields using the DateTime component in detail components.
+
+**DateTime Rendering Implementation**:
+When date or datetime fields are present in the detail component, you MUST update the content.js file to use DateTime component:
+
+```javascript
+// In src/[module]/detail/content.js
+import { InfoGroup, ListLayout, DateTime } from "uu5g05-elements";
+
+// Update InfoGroup itemList to render date fields with DateTime component
+const itemList = [
+  // ... other fields
+  { 
+    subtitle: lsi.dateField, 
+    title: data.dateField ? <DateTime value={data.dateField} dateFormat="short" timeFormat="none" /> : null 
+  },
+  { 
+    subtitle: lsi.datetimeField, 
+    title: data.datetimeField ? <DateTime value={data.datetimeField} dateFormat="short" timeFormat="none" /> : null 
+  },
+  // ... more fields
+];
+```
+
+**Purpose**: This ensures that date and datetime fields in detail components are rendered using the proper DateTime component for consistent formatting and better user experience.
+
+### 6.4 ESLint Fix
+> After completing all configuration and testing, you MUST run eslint fix to resolve any linting errors:
+> 
+> **Run ESLint Fix**:
+> ```bash
+> # Option 1: Direct eslint command
+> npx eslint src/ --fix
+> 
+> # Option 2: Using project-specific eslint config
+> npx eslint "src/**/*.js" --fix
+> ```
+> 
+> **Verify ESLint Results**:
+> - Check that all linting errors are resolved
+> - Ensure code follows project style guidelines
+> - Verify no new warnings are introduced
+> - Confirm all files pass linting checks
+> 
+> **If ESLint errors persist**:
+> - Review and fix any remaining manual errors
+> - Check for configuration issues
+> - Ensure all imports and dependencies are correct
+> - Re-run eslint fix until all errors are resolved
+> 
+> **Purpose**: Ensures the detail component code follows project standards and is free of linting errors before completion.
+
+## 7. Best Practices
+
+- **Always confirm specifications** before starting implementation
+- **Use cmd /c wrapper** for uu5Generate commands
+- **Implement hybrid content approach** using InfoGroup for basic fields and Grid for nested objects
+- **Make URIs clickable** by detecting and adding href properties
+- **Exclude system attributes** (sysCts, sysMts, sysRev) from display
+- **Use Badge components** for state fields with proper color schemes
+- **Use DateTime components** for all date/datetime fields
+- **Test with real data** before considering implementation complete
+- **Format and compile** after each major change
+
+## 8. Troubleshooting
+
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| uu5Generate prompts for input | Missing parameters | Always include ALL parameters (--sub-app, --brick-uu5-tag, --redirect-uu5-route) |
+| PowerShell command fails | Using PowerShell directly | Always use cmd /c wrapper for uu5Generate commands |
+| Data not displaying | Wrong data access pattern | Check both [module]Dto.data and [module]Dto for data |
+| WorkspaceProvider errors | Unnecessary workspace dependency | Remove WorkspaceProvider and use baseUri directly |
+| URIs not clickable | Missing href detection | Implement addHrefIfUri helper function |
+| State values not showing as badges | Missing Badge import or helpers | Import Badge and add helper methods (toCamelCase, getStateColorScheme) |
+| Dates not formatting correctly | Not using DateTime component | Import and use DateTime component for all date fields |
+| Compilation fails | Syntax errors or missing imports | Fix imports, check syntax, and re-run build |
+| Demo page not working | Missing configuration or test data | Configure BASE_URI and identifier value for demo |

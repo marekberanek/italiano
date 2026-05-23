@@ -14,6 +14,7 @@ More detail: **[ARCHITECTURE.md](./ARCHITECTURE.md)** · Auth/sync design: **[do
 - For Android: **Android Studio** + emulator, or a physical device with USB debugging
 - **Vercel CLI** for local backend: `npm i -g vercel` (or use `npx vercel` in `backend/`)
 - (Optional) **DeepL API** key for real translation in the *Search* tab
+- (Optional) **Anthropic API** key (`claude-haiku-4-5`) for the *Další významy* button — multiple disambiguated senses of an ambiguous word (e.g. `sušička` → na prádlo / na potraviny / na vlasy). Without it the button is hidden.
 - (Optional) **Supabase** free project for sign-in (Google / Apple) and cloud vocabulary sync
 
 ---
@@ -35,10 +36,21 @@ The app’s *Search* tab calls your backend; the backend holds `DEEPL_API_KEY` s
 
 1. Sign up at [DeepL API](https://www.deepl.com/pro-api).
 2. Create an **API key** in the dashboard.
-3. Free keys end with `**:fx*`* — the proxy picks `api-free.deepl.com` vs `api.deepl.com` from that suffix.
+3. Free keys end with `**:fx`** — the proxy picks `api-free.deepl.com` vs `api.deepl.com` from that suffix.
 4. Keep **Czech** and **Italian** enabled (default).
 
-### 1.2 Install and configure `backend/`
+### 1.2 Anthropic API key (optional — Další významy button)
+
+The *Search* tab shows a **Další významy** button under each DeepL result that lists up to four disambiguated senses for ambiguous words (e.g. `sušička` → _na prádlo_ / _na potraviny_ / _na vlasy_). It is backed by Anthropic Claude Haiku (`claude-haiku-4-5`, ~$0.0001–0.0003 per lookup).
+
+1. Sign up at [console.anthropic.com](https://console.anthropic.com).
+2. Create an **API key** under *Settings → API Keys*.
+3. Add a few dollars of credit.
+4. Add the key to `backend/.env` as `ANTHROPIC_API_KEY` (see §1.3 below).
+
+Skip this if you do not want the feature — the endpoint returns 503 and the mobile app hides the button.
+
+### 1.3 Install and configure `backend/`
 
 ```bash
 cd backend
@@ -48,12 +60,16 @@ npm install --registry https://registry.npmjs.org/
 Create `**backend/.env**` (this file is gitignored; do **not** commit secrets):
 
 ```bash
-echo "DEEPL_API_KEY=xxxxxxxx:fx" > .env
+cat > .env <<'EOF'
+DEEPL_API_KEY=xxxxxxxx:fx
+# Optional — multiple meanings via Anthropic Claude Haiku (see §1.2). Omit to disable the feature.
+ANTHROPIC_API_KEY=sk-ant-xxxxxxxx
+EOF
 ```
 
 Use `**.env**` (not `.env.local`) for `vercel dev` — older Vercel CLI versions load `.env` reliably for local dev. After editing `.env`, restart `vercel dev`.
 
-### 1.3 Log in to Vercel (first time only)
+### 1.4 Log in to Vercel (first time only)
 
 ```bash
 vercel login
@@ -61,7 +77,7 @@ vercel login
 
 Prefer a recent CLI (`npm i -g vercel@latest`) — it uses a simpler device-code flow if GitHub redirect gets stuck.
 
-### 1.4 Start the local API
+### 1.5 Start the local API
 
 From `backend/`:
 
@@ -80,21 +96,23 @@ curl -s -X POST http://127.0.0.1:3000/api/translate \
 
 You should see JSON with `it` and `cz`. If you see `DEEPL_API_KEY is not configured`, check `backend/.env`, spelling of `DEEPL_API_KEY`, and restart `vercel dev`.
 
-### 1.5 Backend troubleshooting
+### 1.6 Backend troubleshooting
 
 
 | Problem                                    | Likely cause                                                                                                          |
 | ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------- |
 | `DEEPL_API_KEY is not configured`          | Missing `backend/.env`, wrong variable name, or `vercel dev` not restarted after creating the file.                   |
 | `DeepL 403` / `456`                        | Invalid key, quota, or language not allowed on your plan.                                                             |
+| *Další významy* button is missing in app   | Backend has no `ANTHROPIC_API_KEY` (returns 503) — set it on Vercel and the app re-shows the button on next lookup.   |
+| `Anthropic 401`                            | Invalid or revoked `ANTHROPIC_API_KEY`. Rotate it at [console.anthropic.com](https://console.anthropic.com).          |
 | `vercel dev` recursive error               | Do not name an npm script `dev` that runs `vercel dev` — this repo uses `npm start` instead.                          |
 | `npm install` timeout to `repo.plus4u.net` | Use `npm install --registry https://registry.npmjs.org/` or set `registry=https://registry.npmjs.org/` in `~/.npmrc`. |
 
 
-### 1.6 Deploy backend to Vercel (production)
+### 1.7 Deploy backend to Vercel (production)
 
 1. In `backend/`: `vercel link` (once), then `vercel --prod` or connect the GitHub repo in the Vercel dashboard.
-2. **Project → Settings → Environment Variables:** set `DEEPL_API_KEY`, and (for account delete/export) `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY` — see §3 and [docs/DEPLOYMENT.md](./docs/DEPLOYMENT.md) §6.
+2. **Project → Settings → Environment Variables:** set `DEEPL_API_KEY`, optionally `ANTHROPIC_API_KEY` (for *Další významy*), and (for account delete/export) `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY` — see §3 and [docs/DEPLOYMENT.md](./docs/DEPLOYMENT.md) §6.
 3. Copy the deployed base URL (e.g. `https://your-project.vercel.app`) — you will use it in the app `.env` as `EXPO_PUBLIC_TRANSLATE_ENDPOINT` and optionally `EXPO_PUBLIC_CONTENT_BASE_URL`.
 
 ---
@@ -117,7 +135,7 @@ In the Supabase dashboard: **Project Settings → API**
 - `**anon` `public` key** → copy into `EXPO_PUBLIC_SUPABASE_ANON_KEY`.  
 Safe to ship in the app; **Row Level Security** protects data.
 
-Never put the **service_role** key in the app — only on the server (Vercel env for `api/account/*`).
+Never put the **service_role** key in the app — only on the server (Vercel env for `api/account/`*).
 
 ### 2.3 Database schema (migrations)
 
@@ -223,7 +241,7 @@ Edit `**.env**` in the project root:
 
 Restart Metro after any change: `Ctrl+C`, then `npm start`.
 
-Secrets (Supabase, API URLs, EAS project ID) live in **`.env`** (gitignored) — copy [`.env.example`](.env.example) to `.env`. [`app.config.ts`](app.config.ts) merges `EXPO_PUBLIC_*` into `expo.extra` at startup / build. For **EAS** cloud builds, define the same `EXPO_PUBLIC_*` keys under the project’s **Environment variables** (Expo dashboard).
+Secrets (Supabase, API URLs, EAS project ID) live in `**.env`** (gitignored) — copy `[.env.example](.env.example)` to `.env`. `[app.config.ts](app.config.ts)` merges `EXPO_PUBLIC_*` into `expo.extra` at startup / build. For **EAS** cloud builds, define the same `EXPO_PUBLIC_`* keys under the project’s **Environment variables** (Expo dashboard).
 
 ### 3.3 Run Expo
 
@@ -261,7 +279,7 @@ npm run generate:grammar   # regenerate assets/data/grammar.json
 ## 5. Releases (semver)
 
 The marketing version shown in the **About** card and on stores comes from
-**`package.json` → `"version"`**. Root `app.config.ts` injects it into
+`**package.json` → `"version"`**. Root `app.config.ts` injects it into
 `expo.version`, so `app.json` deliberately has **no** `version` field.
 
 Bump it explicitly before a store-facing build (each command updates

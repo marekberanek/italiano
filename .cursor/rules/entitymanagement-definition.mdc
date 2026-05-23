@@ -1,0 +1,1215 @@
+---
+description: uuEntityManagement entity definition creation guide — attributes, references, authorization patterns, component configuration, validation, filtering/sorting, historization, business brick integration, and index recommendations
+alwaysApply: false
+---
+
+# Entity Management Definition Creation
+
+## Overview
+
+This document provides the ultimate guide for creating entity definitions in uuEntityManagement. It follows proven patterns from the official documentation and source code implementation, focusing on progressive complexity from simple entities to advanced features.
+
+## Core Principles
+
+1. **Start Simple**: Begin with basic entities using minimal configuration
+2. **Progressive Enhancement**: Add features incrementally based on requirements
+4. **Mandatory Confirmation**: Always confirm requirements before implementation
+
+## Table of Contents
+
+1. [Task Confirmation Process](#1-task-confirmation-process)
+2. [Entity Definition Types](#2-entity-definition-types)
+3. [Authorization Patterns](#3-authorization-patterns)
+4. [Component Configuration](#4-component-configuration)
+   - 4.1 [Simple Component Pattern](#41-simple-component-pattern)
+   - 4.1.1 [Tooltip Support (MANDATORY)](#411-tooltip-support-mandatory)
+   - 4.2 [Edit/Display Component Pattern](#42-editdisplay-component-pattern)
+   - 4.3 [Reference Components](#43-reference-components)
+   - 4.3.1 [Custom Validation Messages](#431-custom-validation-messages)
+   - 4.3.2 [Custom Reference Attributes](#432-custom-reference-attributes)
+5. [Validation Patterns](#5-validation-patterns)
+6. [Filtering and Sorting](#6-filtering-and-sorting)
+7. [Historization](#7-historization)
+8. [Business Brick Integration](#8-business-brick-integration)
+9. [Index Recommendations](#9-index-recommendations)
+10. [Complete Examples](#10-complete-examples)
+
+## 1. Task Confirmation Process
+
+**MANDATORY**: Before creating any entity definition, confirm these requirements:
+
+### Basic Requirements
+- [ ] **Entity Purpose**: What business data will this entity store?
+- [ ] **Entity Type**: Simple lookup, operational entity, or configuration data?
+- [ ] **Attributes**: What fields are needed (text, numbers, dates, references)?
+- [ ] **References**: Does it reference other entities?
+
+### Mandatory Features
+- [ ] **Tooltips**: ALL form fields MUST have `info` property with user guidance
+- [ ] **Validation Messages**: For pattern-based fields, custom validation messages are required
+
+### Optional Features (confirm each)
+- [ ] **Filtering**: Should users be able to filter lists by specific attributes?
+- [ ] **Sorting**: Should users be able to sort by specific attributes?
+- [ ] **Authorization**: Custom authorization beyond basic CRUD?
+- [ ] **Historization**: Should changes be audited (`storeItemHistory`)?
+- [ ] **Business Brick**: Should it be a business brick with UU5 templates?
+- [ ] **ATC Integration**: Should it use Access Control Lists?
+- [ ] **Reference Time Validation**: For entity references, should time validity be validated (`validateTimeValidity: true/false`)?
+- [ ] **Custom Patterns**: Do any fields require specific format validation (e.g., email, phone, custom codes)?
+
+**Example Confirmation**:
+```
+I need to create a "Product" entity with:
+✓ Basic fields: code, name, description, price
+✓ Reference to category entity
+✓ Tooltips for all fields (MANDATORY - will be provided)
+✓ Filtering by name and category
+✓ Sorting by name and price
+✗ No custom authorization (use defaults)
+✓ Audit trail needed (storeItemHistory: true)
+✗ Not a business brick
+✗ No ATC integration
+✗ No time validation for references (validateTimeValidity: false)
+✗ No custom pattern validation needed
+```
+
+## 2. Entity Definition Types
+
+### 2.1 Simple Entity (Code Table)
+- Basic lookup/reference data
+- Single component pattern
+- Uses basic authorization (see §3.1)
+- No filtering/sorting unless specified
+
+### 2.2 Entity with Extended Authorization
+- Requires additional profiles beyond command defaults
+- Uses basic authorization extension (see §3.2)
+- Custom profile definitions merged with command profiles
+
+### 2.3 Entity with References
+- References other entities
+- Uses EntityReferenceSelect components
+- May need authorization for referenced data
+- Reference is defined using the code attribute from the referenced entity
+
+### 2.4 Entity with Filtering/Sorting
+- Enhanced list capabilities
+- Attribute-level filtering/sorting flags
+- Server-side sorting strategy
+- Index recommendations
+
+### 2.5 Historized Entity
+- Audit trail enabled
+- `storeItemHistory: true`
+- Change tracking configuration
+
+### 2.6 Business Brick Entity
+- UU5 template integration
+- `uuObcDefinition` and `uuObcItem` configuration
+- Business component integration
+
+## 3. Authorization Patterns
+
+### 3.1 Basic Authorization
+For simple entities, default authorization is defined on the commands. When profiles defined on the actual commands are sufficient, do not define anything related to the authorization in the entity definition.
+
+### 3.2 Basic Authorization Extension
+Definition with extended authorization for specific profiles which are not defined on the commands. These are merged with the command profiles.
+
+```json
+"profileList": ["NewProfile1", "NewProfile2", "NewProfile3"],
+"entityDefinitionAuthorization": {
+  "authorizationStrategy": "uuAppWorkspace",
+  "profileMap": {
+    "Read": ["NewProfile1", "NewProfile2", "NewProfile3"],
+    "Create": ["NewProfile1", "NewProfile2"],
+    "Update": ["NewProfile1", "NewProfile2"],
+    "Delete": ["NewProfile1"]
+  }
+}
+```
+
+### 3.3 Artifact-Based Authorization
+For entities requiring OBC (business brick) authorization:
+
+```json
+"entityItemAuthorization": {
+  "authorizationStrategy": "artifact",
+  "artifactIdAttributeKey": "artifactId"
+},
+"entityDefinitionAuthorization": {
+  "authorizationStrategy": "artifact",
+  "profileMap": {
+    "Read": ["readers", "managers"],
+    "Create": ["managers"],
+    "Update": ["managers"],
+    "Delete": ["administrators"]
+  }
+}
+```
+
+### 3.4 ATC Integration
+For entities using Access Control Lists:
+
+```json
+"profileList": ["Authorities", "Executives", "SpecializedRole"],
+"entityItemAuthorization": {
+  "authorizationStrategy": "boundArtifact",
+  "profileMap": {
+    "Read": ["readers"],
+    "Create": ["creators"],
+    "Update": ["editors"],
+    "Delete": ["administrators"]
+  },
+  "artifactIdAttributeKey": "artifactId"
+}
+```
+
+### 3.5 Attribute-Level Authorization
+For granular access control:
+
+```json
+"attributeMap": {
+  "sensitiveData": {
+    "profileMap": {
+      "read": ["administrators", "managers"],
+      "write": ["administrators"]
+    }
+  }
+}
+```
+
+## 4. Component Configuration
+
+Detail of the components can be found in the [uu5elements-components.md](mdc:docs/uu5/uu5elements-components.md) and [uu5forms-components.md](mdc:docs/uu5/uu5forms-components.md).
+
+### 4.1 Simple Component Pattern
+For basic fields use single component:
+
+```json
+"attributeMap": {
+  "name": {
+    "uu5": {
+      "component": "Uu5Forms.FormText",
+      "props": {
+        "required": true,
+        "info": "Enter the full name of the entity"
+      },
+      "lsi": {
+        "en": "Name"
+      }
+    }
+  }
+}
+```
+
+### 4.1.1 Tooltip Support (MANDATORY)
+
+⚠️ **MANDATORY REQUIREMENT**: All form components (`Uu5Forms.*`) MUST include the `info` property to provide user guidance.
+
+```json
+"uu5": {
+  "editComponent": {
+    "component": "Uu5Forms.FormText",
+    "props": {
+      "required": true,
+      "info": "Enter the full name of the entity (maximum 200 characters)"
+    }
+  }
+}
+```
+
+**Rules for `info` property:**
+- **REQUIRED** for all `Uu5Forms.*` components (editComponent)
+- **NOT supported** on display components (`Uu5Elements.*`)
+- Should be clear, concise, and helpful
+- Should explain what the user needs to enter
+- Should include format requirements if applicable
+- Should mention validation constraints (length, pattern, etc.)
+
+**Examples of good tooltip content:**
+
+```json
+// Simple field
+"info": "Enter the unique identifier code (2-3 characters)"
+
+// Date field
+"info": "Select the start date for the validity period"
+
+// Complex pattern
+"info": "Enter timing offset (format: -XDH:MM, e.g., -7D11:00 means 7 days and 11 hours before delivery)"
+
+// Reference field
+"info": "Select the category this product belongs to"
+
+// Number field
+"info": "Enter the price in EUR (must be greater than 0)"
+```
+
+The `info` property supports:
+- Simple text strings for basic tooltips (preferred)
+- Rich text for more detailed explanations
+- Format examples and constraints
+
+### 4.2 Edit/Display Component Pattern
+For complex forms use separate components:
+
+```json
+"attributeMap": {
+  "description": {
+    "uu5": {
+      "editComponent": {
+        "component": "Uu5Forms.FormTextArea",
+        "props": {
+          "required": false,
+          "rows": 3,
+          "info": "Provide a detailed description of the item. Use clear and concise language."
+        }
+      },
+      "displayComponent": {
+        "component": "Uu5Elements.Text",
+        "props": {}
+      },
+      "lsi": {
+        "en": "Description"
+      }
+    }
+  }
+}
+```
+
+### 4.3 Reference Components
+For entity references:
+
+```json
+"attributeMap": {
+  "categoryId": {
+    "uu5": {
+      "editComponent": {
+        "component": "UuEntityManagement.EntityReferenceSelect",
+        "props": {
+          "required": true,
+          "referenceAttributeKey": "code",
+          "entityDefinitionCode": "category",
+          "displayAttributeKey": "code"
+        }
+      },
+      "displayComponent": {
+        "component": "UuEntityManagement.EntityReference",
+        "props": {
+          "referenceAttributeKey": "code",
+          "entityDefinitionCode": "category",
+          "displayAttributeKey": "code"
+        }
+      },
+      "lsi": {
+        "en": "Category"
+      }
+    },
+    "referenceDefinition": {
+      "entityDefinitionCode": "category",
+      "referenceAttributeKey": "code",
+      "validateTimeValidity": false
+    }
+  }
+}
+```
+
+### 4.3.1 Custom Validation Messages
+
+For fields requiring specific input patterns or complex validation, you can provide custom validation messages:
+
+```json
+"publishingAuctionSpecificationPure": {
+  "uu5": {
+    "editComponent": {
+      "component": "Uu5Forms.FormText",
+      "props": {
+        "required": true,
+        "maxLength": 20,
+        "pattern": "-\\d+D\\d{1,2}:\\d{2}",
+        "info": "Enter timing offset (format: -XDH:MM, e.g., -7D11:00 means 7 days and 11 hours before delivery)",
+        "validationMap": {
+          "pattern": {
+            "message": {
+              "en": "Please enter a valid timing offset (format: -XDH:MM, e.g., -7D11:00)"
+            },
+            "feedback": "error"
+          }
+        }
+      }
+    },
+    "displayComponent": {
+      "component": "Uu5Elements.Text",
+      "props": {}
+    },
+    "filterComponent": {
+      "inputType": "text"
+    },
+    "lsi": {
+      "en": "Publishing Auction Specification Pure"
+    }
+  }
+}
+```
+
+**Validation Message Configuration:**
+
+| Property | Description | Required |
+|----------|-------------|----------|
+| `pattern` | Regex pattern for validation (use double backslashes for escaping) | Optional |
+| `validationMap` | Map of validation rules with custom messages | Optional |
+| `validationMap.pattern.message` | Custom error message (localized) | Yes (if validationMap used) |
+| `validationMap.pattern.feedback` | Feedback type ("error", "warning", "success") | Yes (if validationMap used) |
+| `info` | Tooltip explaining the expected format | **MANDATORY** |
+
+**Pattern Escaping Rules:**
+- Use double backslashes (`\\`) for regex escape sequences
+- Example: `\\d+` for "one or more digits"
+- Example: `\\d{1,2}` for "one or two digits"
+
+**Common Validation Patterns:**
+
+```json
+// Email pattern
+{
+  "pattern": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
+  "info": "Enter a valid email address (e.g., user@example.com)",
+  "validationMap": {
+    "pattern": {
+      "message": { "en": "Please enter a valid email address" },
+      "feedback": "error"
+    }
+  }
+}
+
+// Time offset pattern (-XDH:MM)
+{
+  "pattern": "-\\d+D\\d{1,2}:\\d{2}",
+  "info": "Enter timing offset (format: -XDH:MM, e.g., -7D11:00)",
+  "validationMap": {
+    "pattern": {
+      "message": { "en": "Please enter a valid timing offset (format: -XDH:MM)" },
+      "feedback": "error"
+    }
+  }
+}
+
+// Phone number pattern
+{
+  "pattern": "^\\+?[0-9]{1,3}[-.\\s]?\\(?[0-9]{1,4}\\)?[-.\\s]?[0-9]{1,4}[-.\\s]?[0-9]{1,9}$",
+  "info": "Enter a phone number (e.g., +1-555-123-4567)",
+  "validationMap": {
+    "pattern": {
+      "message": { "en": "Please enter a valid phone number" },
+      "feedback": "error"
+    }
+  }
+}
+
+// Alphanumeric code pattern
+{
+  "pattern": "^[A-Z0-9]{3,10}$",
+  "info": "Enter an alphanumeric code (3-10 uppercase letters or digits)",
+  "validationMap": {
+    "pattern": {
+      "message": { "en": "Code must be 3-10 uppercase letters or digits" },
+      "feedback": "error"
+    }
+  }
+}
+```
+
+**Best Practices:**
+1. Always include `info` property explaining the expected format
+2. Provide examples in both `info` and validation messages
+3. Use clear, user-friendly error messages
+4. Match the pattern in `validationMap.pattern.message` with the `info` text
+5. Test patterns thoroughly with valid and invalid inputs
+6. Keep patterns as simple as possible while meeting requirements
+
+### 4.3.2 Custom Reference Attributes
+The `referenceAttributeKey` can reference any attribute of the target entity definition:
+
+**Default Behavior:**
+- **Default value**: "code" (most common case)
+- **User confirmation**: Ask user which attribute to use for the reference
+- **When obvious**: If only "code" exists or is clearly the main identifier, use "code" without asking
+
+**Requirements:**
+- Must be an existing attribute in the referenced entity definition
+- Must be a string attribute with maximum 200 characters
+- Should be unique within the referenced entity for proper identification
+
+**Example with custom reference attribute:**
+
+```json
+"attributeMap": {
+  "productId": {
+    "uu5": {
+      "editComponent": {
+        "component": "UuEntityManagement.EntityReferenceSelect",
+        "props": {
+          "required": true,
+          "referenceAttributeKey": "productNumber",
+          "entityDefinitionCode": "product",
+          "displayAttributeKey": "productNumber",
+          "info": "Select a product by its unique product number"
+        }
+      },
+      "displayComponent": {
+        "component": "UuEntityManagement.EntityReference",
+        "props": {
+          "referenceAttributeKey": "productNumber",
+          "entityDefinitionCode": "product",
+          "displayAttributeKey": "productNumber"
+        }
+      },
+      "lsi": {
+        "en": "Product"
+      }
+    },
+    "referenceDefinition": {
+      "entityDefinitionCode": "product",
+      "referenceAttributeKey": "productNumber",
+      "validateTimeValidity": false
+    }
+  }
+}
+```
+
+In this example, the `product` entity must have a `productNumber` attribute defined as `string(200)` or shorter.
+
+## 5. Validation Patterns
+
+### 5.1 Common Validation Types
+
+| Field Type | Create Validation | Update Validation |
+|------------|------------------|-------------------|
+| Code | `code().isRequired()` | `code().isNotNull()` |
+| Name | `string(200).isRequired()` | `string(200).isNotNull()` |
+| Short Text | `shortText(1).isRequired()` | `shortText(1).isNotNull()` |
+| Description | `uu5String(4000)` | `uu5String(4000)` |
+| Boolean | `boolean()` | `boolean()` |
+| Date | `date().isRequired()` | `date().isNotNull()` |
+| DateTime | `datetime().isRequired()` | `datetime().isNotNull()` |
+| Number | `number().isRequired()` | `number().isNotNull()` |
+| Integer | `integer().isRequired()` | `integer().isNotNull()` |
+| Reference | `shortText(1).isRequired()` | `shortText().isNotNull()` |
+| Reference (custom attr) | `string(200).isRequired()` | `string(200).isNotNull()` |
+| Array | `array(string(2))` | `array(string(2))` |
+
+### 5.2 Required Fields
+- **Create**: Use `.isRequired()` for mandatory fields
+- **Update**: Use `.isNotNull()` for mandatory fields (allows undefined)
+
+### 5.3 Update Validation Type
+Always include `updateValidationType` with system fields:
+
+```json
+"validationType": "shape({ code: code().isRequired(), name: string(200).isRequired() })",
+"updateValidationType": "shape({ id: id().isRequired(), entityDefinitionCode: code(), dateInterval: interval(date(), true, true), code: code().isNotNull(), name: string(200).isNotNull() })"
+```
+
+## 6. Filtering and Sorting
+
+### 6.1 Attribute-Level Configuration
+Enable filtering/sorting at individual attribute level:
+
+```json
+"attributeMap": {
+  "name": {
+    "sortable": true,
+    "filterable": true,
+    "uu5": {
+      "component": "Uu5Forms.FormText",
+      "filterComponent": {
+        "inputType": "text"
+      }
+    }
+  },
+  "category": {
+    "sortable": true,
+    "filterable": true,
+    "uu5": {
+      "filterComponent": {
+        "inputType": "select",
+        "props": {
+          "itemList": []
+        }
+      }
+    }
+  }
+}
+```
+
+### 6.2 Definition-Level Configuration
+For entities with filtering/sorting capabilities:
+
+```json
+"sortingStrategy": "server",
+"defaultSorter": "code"
+```
+
+### 6.3 Filter Component Types
+
+When default inputType is used, it is not possible to customize the component further by defining the "component" property.
+
+| Filter Type | Configuration | Use Case |
+|-------------|--------------|----------|
+| Text Search | `"inputType": "text"` | Free text filtering |
+| Select From Reference | `"inputType": "select"` | Fixed options from entity references.|
+| Select From Predefined Values | `"inputType": "text-select"` | Fixed options from defined values in props |
+| Date Range | `"inputType": "date-range"` | Date period filtering |
+| Date | `"inputType": "date"` | Date filtering |
+| Number | `"inputType": "number"` | Number filtering |
+| Boolean | `"inputType": "bool"` | True/false filtering |
+
+#### 6.3.1 Text-Select Filter Example
+For fields with predefined options but allowing custom values:
+
+```json
+"communicationChannel": {
+  "filterable": true,
+  "uu5": {
+    "component": "Uu5Forms.FormTextSelect",
+    "props": {
+      "insertable": true,
+      "required": true,
+      "itemList": [
+        { "value": "SOAP WS" },
+        { "value": "AMQP XML" },
+        { "value": "AMQP JSON" }
+      ]
+    },
+    "lsi": {
+      "en": "Communication Channel"
+    },
+    "filterComponent": {
+      "inputType": "text-select",
+      "props": {
+        "itemList": [
+          { "children": "SOAP WS", "value": "SOAP WS" },
+          { "children": "AMQP XML", "value": "AMQP XML" },
+          { "children": "AMQP JSON", "value": "AMQP JSON" }
+        ]
+      }
+    }
+  }
+}
+```
+
+## 7. Historization
+
+### 7.1 Basic Historization
+Enable audit trail for data changes:
+
+```json
+"storeItemHistory": true
+```
+
+### 7.2 Advanced Historization Options
+```json
+"storeItemHistory": true,
+"historization": {
+  "auditLevel": "full"
+},
+"useBitemporalModel": false
+```
+
+### 7.3 Historization Behavior
+- `true`: Stores all changes to audit log
+- `false`: No change tracking (default)
+- Requires proper audit configuration in entity item config
+
+## 8. Business Brick Integration
+
+### 8.1 Business Component Configuration
+```json
+"uuObcDefinition": {
+  "uuAppTypeCode": "myapp-mysubapp/entityDefinition",
+  "locationId": "folder123"
+},
+"uuObcItem": {
+  "uuAppTypeCode": "myapp-mysubapp/productDefinition",
+  "locationId": "folder123",
+  "artifactIdAttributeKey": "artifactId"
+}
+```
+
+### 8.2 UU5 Template Integration
+```json
+"uuEcc": {
+  "document": {
+    "name": "Product Template",
+    "desc": "Template for product entities"
+  }
+},
+"uuEbc": {
+  "collection": {
+    "name": "Product Collection",
+    "desc": "Collection for product data"
+  }
+}
+```
+
+### 8.3 Layout Configuration
+Layout configuration defines how form fields are arranged in a grid system. Two approaches are supported, with the **string-based layout (preferred)** and the tag approach.
+
+#### 8.3.1 String-Based Layout (Preferred)
+
+**Layout Format:**
+- Each attribute key in the layout string represents one column
+- Repeating a key multiple times spans multiple columns (e.g., `name name` spans 2 columns)
+- Commas separate rows
+- **IMPORTANT**: All rows must use the same number of columns
+
+**First Row Rules:**
+- First row should always contain `timeInterval` and `code`
+- `timeInterval` typically occupies more space than `code` (e.g., 3:1 ratio)
+  - Example: `"xs": "timeInterval timeInterval timeInterval code, ...other fields..."`
+  - This is just an example - adjust the ratio based on your needs. Further documentation refers to 3:1 ratio.
+
+**Field Sizing Guidelines:**
+
+Determine the number of columns each field should occupy based on:
+
+1. **Validation Schema Analysis:**
+   - `string(2)` or `string(3)`: 1 column (short codes)
+   - `string(1,10)` to `string(1,20)`: 1-2 columns (short text)
+   - `string(1,50)` to `string(200)`: 2-3 columns (medium text)
+   - `uu5String(4000)`: Full row (4 columns) - long text
+   - `integer()` or `number()`: 1-2 columns
+   - `date()` or `datetime()`: 1-2 columns
+   - `boolean()`: 1 column
+   - Entity references: 2-4 columns (based on expected display length)
+
+2. **Component Type:**
+   - `FormTextArea`: Always full row (4 columns)
+   - `FormText` with `rows` prop: Always full row (4 columns)
+   - `FormNumber`: 1-2 columns
+   - `FormDate`/`FormDateTime`: 1-2 columns
+   - `FormSelect`: 1-2 columns (based on options length)
+   - `FormCheckbox`/`FormSwitchSelect`: 1 column
+   - `EntityReferenceSelect` (single): 2-4 columns
+   - `EntityReferenceSelect` (multiple): Full row (4 columns)
+   - `JsonEditorInput`: Always full row (4 columns)
+
+3. **Field Name Analysis:**
+   - Names like `code`, `alpha2Code`, `stateCode`: 1 column
+   - Names like `name`, `fullName`: 2-3 columns
+   - Names like `shortName`: 1-2 columns
+   - Names like `description`, `address`, `billingAddress`: Full row (4 columns)
+   - Names with `EIC` suffix (e.g., `domainEIC`, `regionEIC`): Full row (4 columns)
+   - Reference fields (e.g., `marketArea`, `country`): 2 columns
+
+4. **Layout Balancing:**
+   - Try to fill each row completely (use all 4 columns)
+   - Group related fields together on the same row when possible
+   - Place smaller fields (1-2 columns) together to fill rows
+   - Keep full-row fields (descriptions, text areas) on their own row
+
+**Example Layout Patterns:**
+
+**Simple Entity (3-4 short fields):**
+```
+"xs": "timeInterval timeInterval timeInterval code, alpha2Code numericCode stateCode stateCode, name name name name, description description description description"
+```
+- Row 1: timeInterval (3 columns), code (1 column)
+- Row 2: alpha2Code (1), numericCode (1), stateCode (2)
+- Row 3: name (4 columns)
+- Row 4: description (4 columns)
+
+**Entity with References:**
+```
+"xs": "timeInterval timeInterval timeInterval code, name name name shortName, regionEIC regionEIC regionEIC regionEIC, borderDirections borderDirections borderDirections borderDirections"
+```
+- Row 1: timeInterval (3 columns), code (1 column)
+- Row 2: name (3), shortName (1)
+- Row 3: regionEIC (4 columns)
+- Row 4: borderDirections (4 columns - multiple reference)
+
+**Entity with Mixed Field Types:**
+```
+"xs": "timeInterval timeInterval timeInterval code, name name name shortName, marketArea1 marketArea1 marketArea2 marketArea2, borderType borderType lossFactor lossFactor"
+```
+- Row 1: timeInterval (3 columns), code (1 column)
+- Row 2: name (3), shortName (1)
+- Row 3: marketArea1 (2), marketArea2 (2)
+- Row 4: borderType (2), lossFactor (2)
+
+**Configuration Example:**
+```json
+"uu5BricksMap": {
+  "create": {
+    "default": {
+      "layout": {
+        "xs": "timeInterval timeInterval timeInterval code, alpha2Code numericCode stateCode stateCode, name name name name, description description description description, orderN orderN orderN orderN"
+      }
+    }
+  },
+  "list": {}
+}
+```
+
+**Decision Tree for Field Sizing:**
+
+```
+Is it a FormTextArea or JsonEditorInput?
+├─ YES → Full row (4 columns)
+└─ NO → Check field name
+    ├─ Contains "description", "address", or "EIC"? → Full row (4 columns)
+    └─ Check validation length
+        ├─ string(2-10) or boolean → 1 column
+        ├─ string(11-30) or number/date → 1-2 columns
+        ├─ string(31-100) or single reference → 2-3 columns
+        ├─ string(100+) or multiple reference → 3-4 columns (usually full row)
+        └─ uu5String or no limit → Full row (4 columns)
+```
+
+**Best Practices:**
+- Define `create` layout in `uu5BricksMap`
+- First row should contain `timeInterval` and `code`
+- Maintain consistent column count across all rows
+- Balance field distribution for visual appeal
+- Group semantically related fields on the same row
+- Put the most important fields near the top
+- Full-row fields (descriptions, text areas) should be on their own row
+
+#### 8.3.2 Tag Layout (Alternative)
+
+Alternative approach to the string-based layout definition.
+
+```json
+"uu5BricksMap": {
+  "create": {
+    "default": {
+      "layout": { "xs": "12", "s": "6", "m": "4" },
+      "tag": "Uu5Forms.FormText",
+      "props": {}
+    }
+  }
+}
+```
+
+## 9. Index Recommendations
+
+### 9.1 Basic Indexes (Automatic)
+- `{ awid: 1, id: 1 }` - Primary key
+- `{ awid: 1, code: 1 }` - Code lookup
+- `{ awid: 1, entityDefinitionCode: 1, state: 1 }` - Entity listing
+
+### 9.2 Filtering-Based Indexes
+For each filterable attribute, recommend:
+```
+{ awid: 1, entityDefinitionCode: 1, attributeName: 1, state: 1 }
+```
+
+### 9.3 Sorting-Based Indexes
+For each sortable attribute, recommend:
+```
+{ awid: 1, entityDefinitionCode: 1, attributeName: 1 }
+```
+
+### 9.4 Reference Indexes
+For each reference attribute:
+```
+{ awid: 1, entityDefinitionCode: 1, referenceAttributeKey: 1 }
+```
+
+### 9.5 Date Interval Indexes
+For entities with date intervals:
+```
+{ awid: 1, entityDefinitionCode: 1, "dateInterval.from": 1, "dateInterval.to": 1, state: 1 }
+```
+
+## 10. Complete Examples
+
+### 10.1 Simple Code Table Entity
+Uses basic authorization (§3.1) - no authorization configuration needed in entity definition.
+
+```json
+{
+  "code": "ctCountry",
+  "name": "Country Code Table",
+  "desc": "List of countries for reference",
+  "schemaVersion": "2.0.0",
+  "attributeMap": {
+    "name": {
+      "uu5": {
+        "component": "Uu5Forms.FormText",
+        "props": {
+          "required": true,
+          "info": "Enter the full country name (e.g., United States, Germany)"
+        },
+        "lsi": {
+          "en": "Country Name"
+        }
+      }
+    },
+    "isoCode": {
+      "uu5": {
+        "component": "Uu5Forms.FormText",
+        "props": {
+          "required": true,
+          "maxLength": 2,
+          "info": "Enter the 2-letter ISO country code (e.g., US, DE)"
+        },
+        "lsi": {
+          "en": "ISO Code"
+        }
+      }
+    }
+  },
+  "validationType": "shape({ code: code().isRequired(), name: string(200).isRequired(), isoCode: string(2).isRequired() })",
+  "updateValidationType": "shape({ id: id().isRequired(), entityDefinitionCode: code(), dateInterval: interval(date(), true, true), code: code().isNotNull(), name: string(200).isNotNull(), isoCode: string(2).isNotNull() })",
+  "softDelete": false,
+  "listOrder": ["code", "name", "isoCode"],
+  "detailOrder": ["code", "name", "isoCode"],
+  "editOrder": ["code", "name", "isoCode"]
+}
+```
+
+### 10.2 Entity with Extended Authorization, References and Filtering
+Uses extended authorization (§3.2) with custom "ProductManagers" profile in addition to default command profiles.
+
+```json
+{
+  "code": "product",
+  "name": "Product",
+  "desc": "Product catalog entity",
+  "schemaVersion": "2.0.0",
+  "profileList": ["Authorities", "Executives", "ProductManagers"],
+  "entityDefinitionAuthorization": {
+    "authorizationStrategy": "uuAppWorkspace",
+    "profileMap": {
+      "Read": ["Authorities", "Executives", "ProductManagers", "StandardUsers"],
+      "Create": ["Authorities", "Executives", "ProductManagers"],
+      "Update": ["Authorities", "Executives", "ProductManagers"],
+      "Delete": ["Authorities", "Executives"]
+    }
+  },
+  "attributeMap": {
+    "name": {
+      "sortable": true,
+      "filterable": true,
+      "uu5": {
+        "editComponent": {
+          "component": "Uu5Forms.FormText",
+          "props": {
+            "required": true,
+            "info": "Enter the product name (maximum 200 characters)"
+          }
+        },
+        "displayComponent": {
+          "component": "Uu5Elements.Text",
+          "props": {}
+        },
+        "filterComponent": {
+          "inputType": "text"
+        },
+        "lsi": {
+          "en": "Product Name"
+        }
+      }
+    },
+    "description": {
+      "uu5": {
+        "editComponent": {
+          "component": "Uu5Forms.FormTextArea",
+          "props": {
+            "rows": 3,
+            "info": "Provide a detailed description of the product (optional, maximum 4000 characters)"
+          }
+        },
+        "displayComponent": {
+          "component": "Uu5Elements.Text",
+          "props": {}
+        },
+        "lsi": {
+          "en": "Description"
+        }
+      }
+    },
+    "categoryId": {
+      "sortable": true,
+      "filterable": true,
+      "uu5": {
+        "editComponent": {
+          "component": "UuEntityManagement.EntityReferenceSelect",
+          "props": {
+            "required": true,
+            "referenceAttributeKey": "code",
+            "entityDefinitionCode": "category",
+            "displayAttributeKey": "code",
+            "info": "Select the category this product belongs to"
+          }
+        },
+        "displayComponent": {
+          "component": "UuEntityManagement.EntityReference",
+          "props": {
+            "referenceAttributeKey": "code",
+            "entityDefinitionCode": "category",
+            "displayAttributeKey": "code"
+          }
+        },
+        "filterComponent": {
+           "component": "UuEntityManagement.EntityReferenceSelect",
+           "props": {
+             "referenceAttributeKey": "code",
+             "entityDefinitionCode": "category",
+             "displayAttributeKey": "code"
+           }
+        },
+        "lsi": {
+          "en": "Category"
+        }
+      },
+      "referenceDefinition": {
+        "entityDefinitionCode": "category",
+        "referenceAttributeKey": "code",
+        "validateTimeValidity": false
+      }
+    },
+    "price": {
+      "sortable": true,
+      "filterable": true,
+      "uu5": {
+        "editComponent": {
+          "component": "Uu5Forms.FormNumber",
+          "props": {
+            "required": true,
+            "min": 0,
+            "info": "Enter the product price (must be greater than or equal to 0)"
+          }
+        },
+        "displayComponent": {
+          "component": "Uu5Elements.Number",
+          "props": {}
+        },
+        "filterComponent": {
+          "inputType": "number"
+        },
+        "lsi": {
+          "en": "Price"
+        }
+      }
+    },
+    "active": {
+       "filterable": true,
+       "uu5": {
+         "editComponent": {
+           "component": "Uu5Forms.FormCheckbox",
+           "props": {
+             "info": "Check to mark this product as active and available for use"
+           }
+         },
+         "displayComponent": {
+           "component": "Uu5Elements.Text",
+           "props": {}
+         },
+         "filterComponent": {
+           "inputType": "bool"
+         },
+         "lsi": {
+           "en": "Active"
+         }
+       }
+     },
+     "communicationChannel": {
+       "filterable": true,
+       "uu5": {
+         "editComponent": {
+           "component": "Uu5Forms.FormTextSelect",
+           "props": {
+             "insertable": true,
+             "required": false,
+             "itemList": [
+               { "value": "REST API" },
+               { "value": "GraphQL" },
+               { "value": "SOAP WS" }
+             ],
+             "info": "Select or enter the communication channel (REST API, GraphQL, SOAP WS, or custom)"
+           }
+         },
+         "displayComponent": {
+           "component": "Uu5Elements.Text",
+           "props": {}
+         },
+         "filterComponent": {
+           "inputType": "text-select",
+           "props": {
+             "itemList": [
+               { "children": "REST API", "value": "REST API" },
+               { "children": "GraphQL", "value": "GraphQL" },
+               { "children": "SOAP WS", "value": "SOAP WS" }
+             ]
+           }
+         },
+         "lsi": {
+           "en": "Communication Channel"
+         }
+       }
+     },
+     "releaseDate": {
+       "sortable": true,
+       "filterable": true,
+       "uu5": {
+         "editComponent": {
+           "component": "Uu5Forms.FormDate",
+           "props": {
+             "required": true,
+             "info": "Select the date when the product was or will be released"
+           }
+         },
+         "displayComponent": {
+           "component": "Uu5Elements.DateTime",
+           "props": {}
+         },
+         "filterComponent": {
+           "component": "Uu5Forms.FormDate"
+         },
+         "lsi": {
+           "en": "Release Date"
+         }
+       }
+     }
+   },
+   "validationType": "shape({ code: code().isRequired(), name: string(200).isRequired(), description: uu5String(4000), categoryId: shortText(1).isRequired(), price: number().isRequired(), active: boolean(), communicationChannel: string(), releaseDate: date().isRequired() })",
+   "updateValidationType": "shape({ id: id().isRequired(), entityDefinitionCode: code(), dateInterval: interval(date(), true, true), code: code().isNotNull(), name: string(200).isNotNull(), description: uu5String(4000), categoryId: shortText(1).isNotNull(), price: number().isNotNull(), active: boolean(), communicationChannel: string(), releaseDate: date().isNotNull() })",
+      "sortingStrategy": "server",
+   "defaultSorter": "name",
+   "softDelete": false,
+   "listOrder": ["code", "name", "categoryId", "price", "communicationChannel", "active", "releaseDate"],
+   "detailOrder": ["code", "name", "description", "categoryId", "price", "communicationChannel", "active", "releaseDate"],
+   "editOrder": ["code", "name", "description", "categoryId", "price", "communicationChannel", "active", "releaseDate"]
+}
+```
+
+### 10.3 Historized Business Brick Entity
+```json
+{
+  "code": "accountHolder",
+  "name": "Account Holder",
+  "desc": "Account holder with full audit trail",
+  "schemaVersion": "2.0.0",
+  "uuObcDefinition": {
+    "uuAppTypeCode": "myapp-registry/entityDefinition",
+    "locationId": "folder123"
+  },
+  "uuObcItem": {
+    "uuAppTypeCode": "myapp-registry/accountHolderDefinition",
+    "locationId": "folder123",
+    "artifactIdAttributeKey": "artifactId"
+  },
+  "profileList": ["Authorities", "Executives", "RegistryAdministrators", "AccountManagers"],
+  "entityItemAuthorization": {
+    "authorizationStrategy": "artifact",
+    "artifactIdAttributeKey": "artifactId"
+  },
+  "entityDefinitionAuthorization": {
+    "authorizationStrategy": "artifact",
+    "profileMap": {
+      "Read": ["readers", "accountManagers"],
+      "Create": ["accountManagers"],
+      "Update": ["accountManagers"],
+      "Delete": ["registryAdministrators"]
+    }
+  },
+  "attributeMap": {
+    "personalNumber": {
+      "sortable": true,
+      "filterable": true,
+      "uu5": {
+        "editComponent": {
+          "component": "Uu5Forms.FormText",
+          "props": {
+            "required": true
+          }
+        },
+        "displayComponent": {
+          "component": "Uu5Elements.Text",
+          "props": {}
+        },
+        "filterComponent": {
+          "inputType": "text"
+        },
+        "lsi": {
+          "en": "Personal Number"
+        }
+      }
+    },
+    "name": {
+      "sortable": true,
+      "filterable": true,
+      "uu5": {
+        "editComponent": {
+          "component": "Uu5Forms.FormText",
+          "props": {
+            "required": true
+          }
+        },
+        "displayComponent": {
+          "component": "Uu5Elements.Text",
+          "props": {}
+        },
+        "filterComponent": {
+          "inputType": "text"
+        },
+        "lsi": {
+          "en": "Full Name"
+        }
+      }
+    },
+    "artifactId": {
+      "uu5": {},
+      "referenceDefinition": {},
+      "profileMap": {
+        "read": ["registryAdministrators", "accountManagers"],
+        "write": ["registryAdministrators"]
+      }
+    }
+  },
+  "validationType": "shape({ code: code().isRequired(), personalNumber: shortText(1).isRequired(), name: string(200).isRequired() })",
+  "updateValidationType": "shape({ id: id().isRequired(), entityDefinitionCode: code(), dateInterval: interval(date(), true, true), code: code().isNotNull(), personalNumber: shortText(1).isNotNull(), name: string(200).isNotNull() })",
+  "storeItemHistory": true,
+  "sortingStrategy": "server",
+  "defaultSorter": "name",
+  "softDelete": false,
+  "uuEcc": {
+    "document": {
+      "name": "Account Holder Template",
+      "desc": "UU5 template for account holder display"
+    }
+  },
+  "listOrder": ["code", "personalNumber", "name"],
+  "detailOrder": ["code", "personalNumber", "name"],
+  "editOrder": ["code", "personalNumber", "name"]
+}
+```
+
+## Index Creation Commands
+
+After creating entity definitions with filtering/sorting, create recommended indexes:
+
+```javascript
+// Basic performance indexes
+await entityItem.ensureIndex({
+  entityDefinitionCode: "productCode",
+  indexList: [
+    {
+      keys: { awid: 1, entityDefinitionCode: 1, name: 1, state: 1 },
+      options: { name: "product_name_filter" }
+    },
+    {
+      keys: { awid: 1, entityDefinitionCode: 1, categoryId: 1, state: 1 },
+      options: { name: "product_category_filter" }
+    },
+    {
+      keys: { awid: 1, entityDefinitionCode: 1, price: 1 },
+      options: { name: "product_price_sort" }
+    }
+  ]
+});
+```

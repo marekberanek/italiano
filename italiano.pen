@@ -4,8 +4,8 @@
     {
       "type": "frame",
       "id": "g5lTv",
-      "x": 1800,
-      "y": 0,
+      "x": 1808,
+      "y": -162,
       "name": "Library",
       "width": 600,
       "height": 2400,
@@ -227,6 +227,284 @@
                   "content": "LEKCE"
                 }
               }
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "v2LibHd",
+          "name": "v2LibTitle",
+          "fill": "$text-strong",
+          "content": "V2 — větší navigace & hledání",
+          "fontFamily": "$font-display",
+          "fontSize": 18,
+          "fontWeight": "800"
+        },
+        {
+          "type": "frame",
+          "id": "TbItV2",
+          "name": "TabBarItemV2",
+          "reusable": true,
+          "width": "fill_container",
+          "height": 60,
+          "fill": "#FFFFFF00",
+          "cornerRadius": 28,
+          "layout": "vertical",
+          "gap": 5,
+          "padding": [
+            8,
+            4
+          ],
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "icon_font",
+              "id": "iTbV2",
+              "name": "tabIcon",
+              "width": 26,
+              "height": 26,
+              "iconFontName": "magnifying-glass-bold",
+              "iconFontFamily": "phosphor",
+              "fill": "$tab-inactive"
+            },
+            {
+              "type": "text",
+              "id": "lTbV2",
+              "name": "Label",
+              "fill": "$tab-inactive",
+              "content": "HLEDAT",
+              "fontFamily": "$font-display",
+              "fontSize": 11,
+              "fontWeight": "700",
+              "letterSpacing": 0.4
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "TbBarFx",
+          "name": "TabBarFixed",
+          "reusable": true,
+          "width": 390,
+          "height": 72,
+          "fill": "$surface-card",
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "$border"
+          },
+          "effect": {
+            "type": "shadow",
+            "shadowType": "outer",
+            "color": "#2A1A0F0F",
+            "offset": {
+              "x": 0,
+              "y": -4
+            },
+            "blur": 16
+          },
+          "gap": 2,
+          "padding": [
+            6,
+            12
+          ],
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "id": "FxTb1",
+              "type": "ref",
+              "ref": "TbItV2",
+              "name": "Tab/Search",
+              "fill": "$brand",
+              "descendants": {
+                "iTbV2": {
+                  "iconFontName": "magnifying-glass-bold",
+                  "fill": "$text-inverse"
+                },
+                "lTbV2": {
+                  "content": "HLEDAT",
+                  "fill": "$text-inverse"
+                }
+              }
+            },
+            {
+              "id": "FxTb2",
+              "type": "ref",
+              "ref": "TbItV2",
+              "name": "Tab/Vocab",
+              "descendants": {
+                "iTbV2": {
+                  "iconFontName": "book-bookmark-bold"
+                },
+                "lTbV2": {
+                  "content": "SLOVÍČKA"
+                }
+              }
+            },
+            {
+              "id": "FxTb3",
+              "type": "ref",
+              "ref": "TbItV2",
+              "name": "Tab/Quiz",
+              "descendants": {
+                "iTbV2": {
+                  "iconFontName": "target-bold"
+                },
+                "lTbV2": {
+                  "content": "OPAKOVÁNÍ"
+                }
+              }
+            },
+            {
+              "id": "FxTb4",
+              "type": "ref",
+              "ref": "TbItV2",
+              "name": "Tab/Lessons",
+              "descendants": {
+                "iTbV2": {
+                  "iconFontName": "graduation-cap-bold"
+                },
+                "lTbV2": {
+                  "content": "LEKCE"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "TbBarV2",
+          "name": "TabBarV2",
+          "reusable": true,
+          "width": 358,
+          "height": 72,
+          "fill": "$surface-card",
+          "cornerRadius": 36,
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "$border"
+          },
+          "effect": {
+            "type": "shadow",
+            "shadowType": "outer",
+            "color": "#2A1A0F14",
+            "offset": {
+              "x": 0,
+              "y": 6
+            },
+            "blur": 20
+          },
+          "gap": 2,
+          "padding": 6,
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "id": "FlTb1",
+              "type": "ref",
+              "ref": "TbItV2",
+              "name": "Tab/Search",
+              "fill": "$brand",
+              "descendants": {
+                "iTbV2": {
+                  "iconFontName": "magnifying-glass-bold",
+                  "fill": "$text-inverse"
+                },
+                "lTbV2": {
+                  "content": "HLEDAT",
+                  "fill": "$text-inverse"
+                }
+              }
+            },
+            {
+              "id": "FlTb2",
+              "type": "ref",
+              "ref": "TbItV2",
+              "name": "Tab/Vocab",
+              "descendants": {
+                "iTbV2": {
+                  "iconFontName": "book-bookmark-bold"
+                },
+                "lTbV2": {
+                  "content": "SLOVÍČKA"
+                }
+              }
+            },
+            {
+              "id": "FlTb3",
+              "type": "ref",
+              "ref": "TbItV2",
+              "name": "Tab/Quiz",
+              "descendants": {
+                "iTbV2": {
+                  "iconFontName": "target-bold"
+                },
+                "lTbV2": {
+                  "content": "OPAKOVÁNÍ"
+                }
+              }
+            },
+            {
+              "id": "FlTb4",
+              "type": "ref",
+              "ref": "TbItV2",
+              "name": "Tab/Lessons",
+              "descendants": {
+                "iTbV2": {
+                  "iconFontName": "graduation-cap-bold"
+                },
+                "lTbV2": {
+                  "content": "LEKCE"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "SrchV2",
+          "name": "SearchInputV2",
+          "reusable": true,
+          "width": 358,
+          "height": 64,
+          "fill": "$surface-card",
+          "cornerRadius": "$radius-pill",
+          "stroke": {
+            "align": "inside",
+            "thickness": 1.5,
+            "fill": "$border"
+          },
+          "gap": 12,
+          "padding": [
+            16,
+            20
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "icon_font",
+              "id": "iSrV2",
+              "name": "searchIcon",
+              "width": 24,
+              "height": 24,
+              "iconFontName": "magnifying-glass-bold",
+              "iconFontFamily": "phosphor",
+              "fill": "$text-muted"
+            },
+            {
+              "type": "text",
+              "id": "tSrV2",
+              "name": "searchPlaceholder",
+              "fill": "$text-muted",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Napiš slovo česky nebo italsky",
+              "fontFamily": "$font-body",
+              "fontSize": 17,
+              "fontWeight": "500"
             }
           ]
         },
@@ -702,7 +980,7 @@
       "type": "frame",
       "id": "xk1fi",
       "x": 0,
-      "y": 0,
+      "y": -162,
       "name": "Screen / Hledat",
       "width": 390,
       "height": 844,
@@ -787,7 +1065,7 @@
           "padding": [
             8,
             16,
-            24,
+            16,
             16
           ],
           "children": [
@@ -814,13 +1092,13 @@
               "alignItems": "center",
               "children": [
                 {
-                  "id": "QehD1",
+                  "id": "WjpXy",
                   "type": "ref",
-                  "ref": "qSlVh",
+                  "ref": "SrchV2",
                   "width": "fill_container",
-                  "name": "searchInputInst",
+                  "name": "searchInputV2",
                   "descendants": {
-                    "i1M92": {
+                    "tSrV2": {
                       "content": "buongiorno",
                       "fill": "$text-strong"
                     }
@@ -831,8 +1109,8 @@
                   "type": "ref",
                   "ref": "MCkDl",
                   "name": "SearchBtn",
-                  "height": 56,
-                  "width": 96,
+                  "height": 64,
+                  "width": 100,
                   "descendants": {
                     "f4pgr": {
                       "content": "Hledat"
@@ -1010,23 +1288,39 @@
         {
           "type": "frame",
           "id": "gRs08",
-          "name": "tabBarWrap",
+          "name": "tabBarFixedWrap",
           "width": "fill_container",
-          "padding": [
-            12,
-            21,
-            21,
-            21
-          ],
-          "justifyContent": "center",
+          "layout": "vertical",
           "alignItems": "center",
           "children": [
             {
-              "id": "MWoGm",
+              "id": "eyWjY",
               "type": "ref",
-              "ref": "ssPV9",
+              "ref": "TbBarFx",
               "width": "fill_container",
-              "name": "tabBarInst"
+              "name": "tabBarFixed"
+            },
+            {
+              "type": "frame",
+              "id": "s4hbNT",
+              "name": "safeArea",
+              "width": "fill_container",
+              "height": 34,
+              "fill": "$surface-card",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "WJvRH",
+                  "name": "homeIndicator",
+                  "opacity": 0.18,
+                  "width": 134,
+                  "height": 5,
+                  "fill": "$text-strong",
+                  "cornerRadius": 9999
+                }
+              ]
             }
           ]
         }
@@ -1036,7 +1330,7 @@
       "type": "frame",
       "id": "gSesP",
       "x": 450,
-      "y": 0,
+      "y": -162,
       "name": "Screen / Slovíčka",
       "width": 390,
       "height": 844,
@@ -1121,7 +1415,7 @@
           "padding": [
             8,
             16,
-            24,
+            16,
             16
           ],
           "children": [
@@ -1365,43 +1659,59 @@
         {
           "type": "frame",
           "id": "j5qAwX",
-          "name": "tabBarWrapV",
+          "name": "tabBarFixedWrap",
           "width": "fill_container",
-          "padding": [
-            12,
-            21,
-            21,
-            21
-          ],
-          "justifyContent": "center",
+          "layout": "vertical",
           "alignItems": "center",
           "children": [
             {
-              "id": "vVrWT",
+              "id": "LZDiL",
               "type": "ref",
-              "ref": "ssPV9",
+              "ref": "TbBarFx",
               "width": "fill_container",
-              "name": "tabBarV",
+              "name": "tabBarFixed",
               "descendants": {
-                "Lpai8": {
+                "FxTb1": {
                   "fill": "#FFFFFF00"
                 },
-                "Lpai8/hSqVF": {
+                "FxTb1/iTbV2": {
                   "fill": "$tab-inactive"
                 },
-                "Lpai8/Kht9i": {
+                "FxTb1/lTbV2": {
                   "fill": "$tab-inactive"
                 },
-                "RdF1M": {
+                "FxTb2": {
                   "fill": "$brand"
                 },
-                "RdF1M/hSqVF": {
+                "FxTb2/iTbV2": {
                   "fill": "$text-inverse"
                 },
-                "RdF1M/Kht9i": {
+                "FxTb2/lTbV2": {
                   "fill": "$text-inverse"
                 }
               }
+            },
+            {
+              "type": "frame",
+              "id": "vkdDX",
+              "name": "safeArea",
+              "width": "fill_container",
+              "height": 34,
+              "fill": "$surface-card",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "i5wce",
+                  "name": "homeIndicator",
+                  "opacity": 0.18,
+                  "width": 134,
+                  "height": 5,
+                  "fill": "$text-strong",
+                  "cornerRadius": 9999
+                }
+              ]
             }
           ]
         }
@@ -1411,7 +1721,7 @@
       "type": "frame",
       "id": "s66Sqh",
       "x": 900,
-      "y": 0,
+      "y": -162,
       "name": "Screen / Opakování",
       "width": 390,
       "height": 844,
@@ -1496,7 +1806,7 @@
           "padding": [
             8,
             16,
-            24,
+            16,
             16
           ],
           "children": [
@@ -1852,43 +2162,59 @@
         {
           "type": "frame",
           "id": "P43Y6u",
-          "name": "tabBarWrapQ",
+          "name": "tabBarFixedWrap",
           "width": "fill_container",
-          "padding": [
-            12,
-            21,
-            21,
-            21
-          ],
-          "justifyContent": "center",
+          "layout": "vertical",
           "alignItems": "center",
           "children": [
             {
-              "id": "H1WKY",
+              "id": "hm6ri",
               "type": "ref",
-              "ref": "ssPV9",
+              "ref": "TbBarFx",
               "width": "fill_container",
-              "name": "tabBarQ",
+              "name": "tabBarFixed",
               "descendants": {
-                "Lpai8": {
+                "FxTb1": {
                   "fill": "#FFFFFF00"
                 },
-                "Lpai8/hSqVF": {
+                "FxTb1/iTbV2": {
                   "fill": "$tab-inactive"
                 },
-                "Lpai8/Kht9i": {
+                "FxTb1/lTbV2": {
                   "fill": "$tab-inactive"
                 },
-                "GVKx2": {
+                "FxTb3": {
                   "fill": "$brand"
                 },
-                "GVKx2/hSqVF": {
+                "FxTb3/iTbV2": {
                   "fill": "$text-inverse"
                 },
-                "GVKx2/Kht9i": {
+                "FxTb3/lTbV2": {
                   "fill": "$text-inverse"
                 }
               }
+            },
+            {
+              "type": "frame",
+              "id": "v3FEv",
+              "name": "safeArea",
+              "width": "fill_container",
+              "height": 34,
+              "fill": "$surface-card",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "z4SgcY",
+                  "name": "homeIndicator",
+                  "opacity": 0.18,
+                  "width": 134,
+                  "height": 5,
+                  "fill": "$text-strong",
+                  "cornerRadius": 9999
+                }
+              ]
             }
           ]
         }
@@ -1898,7 +2224,7 @@
       "type": "frame",
       "id": "psh67",
       "x": 1350,
-      "y": 0,
+      "y": -162,
       "name": "Screen / Lekce",
       "width": 390,
       "height": 844,
@@ -1983,7 +2309,7 @@
           "padding": [
             8,
             16,
-            24,
+            16,
             16
           ],
           "children": [
@@ -2199,43 +2525,77 @@
         {
           "type": "frame",
           "id": "VPrPC",
-          "name": "tabBarWrapL",
+          "name": "tabBarFixedWrap",
           "width": "fill_container",
-          "padding": [
-            12,
-            21,
-            21,
-            21
-          ],
-          "justifyContent": "center",
+          "layout": "vertical",
           "alignItems": "center",
           "children": [
             {
-              "id": "MXrgP",
+              "id": "msD5L",
               "type": "ref",
-              "ref": "ssPV9",
+              "ref": "TbBarFx",
               "width": "fill_container",
-              "name": "tabBarL",
+              "name": "tabBarFixed",
               "descendants": {
-                "Lpai8": {
+                "FxTb1": {
                   "fill": "#FFFFFF00"
                 },
-                "Lpai8/hSqVF": {
+                "FxTb1/iTbV2": {
                   "fill": "$tab-inactive"
                 },
-                "Lpai8/Kht9i": {
+                "FxTb1/lTbV2": {
                   "fill": "$tab-inactive"
                 },
-                "V87WT": {
+                "FxTb2": {
+                  "fill": "#FFFFFF00"
+                },
+                "FxTb2/iTbV2": {
+                  "fill": "$tab-inactive"
+                },
+                "FxTb2/lTbV2": {
+                  "fill": "$tab-inactive"
+                },
+                "FxTb3": {
+                  "fill": "#FFFFFF00"
+                },
+                "FxTb3/iTbV2": {
+                  "fill": "$tab-inactive"
+                },
+                "FxTb3/lTbV2": {
+                  "fill": "$tab-inactive"
+                },
+                "FxTb4": {
                   "fill": "$brand"
                 },
-                "V87WT/hSqVF": {
+                "FxTb4/iTbV2": {
                   "fill": "$text-inverse"
                 },
-                "V87WT/Kht9i": {
+                "FxTb4/lTbV2": {
                   "fill": "$text-inverse"
                 }
               }
+            },
+            {
+              "type": "frame",
+              "id": "Npi8d",
+              "name": "safeArea",
+              "width": "fill_container",
+              "height": 34,
+              "fill": "$surface-card",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "r24rhb",
+                  "name": "homeIndicator",
+                  "opacity": 0.18,
+                  "width": 134,
+                  "height": 5,
+                  "fill": "$text-strong",
+                  "cornerRadius": 9999
+                }
+              ]
             }
           ]
         }
@@ -2330,7 +2690,7 @@
           "padding": [
             8,
             16,
-            24,
+            16,
             16
           ],
           "children": [
@@ -3069,43 +3429,77 @@
         {
           "type": "frame",
           "id": "Fevcu",
-          "name": "tabBarWrapG",
+          "name": "tabBarFixedWrap",
           "width": "fill_container",
-          "padding": [
-            12,
-            21,
-            21,
-            21
-          ],
-          "justifyContent": "center",
+          "layout": "vertical",
           "alignItems": "center",
           "children": [
             {
-              "id": "N8nAYQ",
+              "id": "NRm5V",
               "type": "ref",
-              "ref": "ssPV9",
+              "ref": "TbBarFx",
               "width": "fill_container",
-              "name": "tabBarG",
+              "name": "tabBarFixed",
               "descendants": {
-                "Lpai8": {
+                "FxTb1": {
                   "fill": "#FFFFFF00"
                 },
-                "Lpai8/hSqVF": {
+                "FxTb1/iTbV2": {
                   "fill": "$tab-inactive"
                 },
-                "Lpai8/Kht9i": {
+                "FxTb1/lTbV2": {
                   "fill": "$tab-inactive"
                 },
-                "V87WT": {
+                "FxTb2": {
+                  "fill": "#FFFFFF00"
+                },
+                "FxTb2/iTbV2": {
+                  "fill": "$tab-inactive"
+                },
+                "FxTb2/lTbV2": {
+                  "fill": "$tab-inactive"
+                },
+                "FxTb3": {
+                  "fill": "#FFFFFF00"
+                },
+                "FxTb3/iTbV2": {
+                  "fill": "$tab-inactive"
+                },
+                "FxTb3/lTbV2": {
+                  "fill": "$tab-inactive"
+                },
+                "FxTb4": {
                   "fill": "$brand"
                 },
-                "V87WT/hSqVF": {
+                "FxTb4/iTbV2": {
                   "fill": "$text-inverse"
                 },
-                "V87WT/Kht9i": {
+                "FxTb4/lTbV2": {
                   "fill": "$text-inverse"
                 }
               }
+            },
+            {
+              "type": "frame",
+              "id": "YSiVL",
+              "name": "safeArea",
+              "width": "fill_container",
+              "height": 34,
+              "fill": "$surface-card",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "M1wGjR",
+                  "name": "homeIndicator",
+                  "opacity": 0.18,
+                  "width": 134,
+                  "height": 5,
+                  "fill": "$text-strong",
+                  "cornerRadius": 9999
+                }
+              ]
             }
           ]
         }
@@ -3200,7 +3594,7 @@
           "padding": [
             8,
             16,
-            24,
+            16,
             16
           ],
           "children": [
@@ -3440,43 +3834,77 @@
         {
           "type": "frame",
           "id": "Z2odr2",
-          "name": "tabBarWrapS",
+          "name": "tabBarFixedWrap",
           "width": "fill_container",
-          "padding": [
-            12,
-            21,
-            21,
-            21
-          ],
-          "justifyContent": "center",
+          "layout": "vertical",
           "alignItems": "center",
           "children": [
             {
-              "id": "C2aaI",
+              "id": "Uj0SV",
               "type": "ref",
-              "ref": "ssPV9",
+              "ref": "TbBarFx",
               "width": "fill_container",
-              "name": "tabBarS",
+              "name": "tabBarFixed",
               "descendants": {
-                "Lpai8": {
+                "FxTb1": {
                   "fill": "#FFFFFF00"
                 },
-                "Lpai8/hSqVF": {
+                "FxTb1/iTbV2": {
                   "fill": "$tab-inactive"
                 },
-                "Lpai8/Kht9i": {
+                "FxTb1/lTbV2": {
                   "fill": "$tab-inactive"
                 },
-                "V87WT": {
+                "FxTb2": {
+                  "fill": "#FFFFFF00"
+                },
+                "FxTb2/iTbV2": {
+                  "fill": "$tab-inactive"
+                },
+                "FxTb2/lTbV2": {
+                  "fill": "$tab-inactive"
+                },
+                "FxTb3": {
+                  "fill": "#FFFFFF00"
+                },
+                "FxTb3/iTbV2": {
+                  "fill": "$tab-inactive"
+                },
+                "FxTb3/lTbV2": {
+                  "fill": "$tab-inactive"
+                },
+                "FxTb4": {
                   "fill": "$brand"
                 },
-                "V87WT/hSqVF": {
+                "FxTb4/iTbV2": {
                   "fill": "$text-inverse"
                 },
-                "V87WT/Kht9i": {
+                "FxTb4/lTbV2": {
                   "fill": "$text-inverse"
                 }
               }
+            },
+            {
+              "type": "frame",
+              "id": "VwjUJ",
+              "name": "safeArea",
+              "width": "fill_container",
+              "height": 34,
+              "fill": "$surface-card",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "mQhQO",
+                  "name": "homeIndicator",
+                  "opacity": 0.18,
+                  "width": 134,
+                  "height": 5,
+                  "fill": "$text-strong",
+                  "cornerRadius": 9999
+                }
+              ]
             }
           ]
         }
@@ -3571,7 +3999,7 @@
           "padding": [
             8,
             16,
-            24,
+            16,
             16
           ],
           "children": [
@@ -3619,13 +4047,13 @@
               }
             },
             {
-              "id": "pZwTu",
+              "id": "khXek",
               "type": "ref",
-              "ref": "qSlVh",
+              "ref": "SrchV2",
               "width": "fill_container",
               "name": "nSearch",
               "descendants": {
-                "i1M92": {
+                "tSrV2": {
                   "content": "Hledat číslo…",
                   "fill": "$text-muted"
                 }
@@ -3904,43 +4332,77 @@
         {
           "type": "frame",
           "id": "Bv3LO",
-          "name": "tabBarWrapN",
+          "name": "tabBarFixedWrap",
           "width": "fill_container",
-          "padding": [
-            12,
-            21,
-            21,
-            21
-          ],
-          "justifyContent": "center",
+          "layout": "vertical",
           "alignItems": "center",
           "children": [
             {
-              "id": "GR5Xe",
+              "id": "E2NXAx",
               "type": "ref",
-              "ref": "ssPV9",
+              "ref": "TbBarFx",
               "width": "fill_container",
-              "name": "tabBarN",
+              "name": "tabBarFixed",
               "descendants": {
-                "Lpai8": {
+                "FxTb1": {
                   "fill": "#FFFFFF00"
                 },
-                "Lpai8/hSqVF": {
+                "FxTb1/iTbV2": {
                   "fill": "$tab-inactive"
                 },
-                "Lpai8/Kht9i": {
+                "FxTb1/lTbV2": {
                   "fill": "$tab-inactive"
                 },
-                "V87WT": {
+                "FxTb2": {
+                  "fill": "#FFFFFF00"
+                },
+                "FxTb2/iTbV2": {
+                  "fill": "$tab-inactive"
+                },
+                "FxTb2/lTbV2": {
+                  "fill": "$tab-inactive"
+                },
+                "FxTb3": {
+                  "fill": "#FFFFFF00"
+                },
+                "FxTb3/iTbV2": {
+                  "fill": "$tab-inactive"
+                },
+                "FxTb3/lTbV2": {
+                  "fill": "$tab-inactive"
+                },
+                "FxTb4": {
                   "fill": "$brand"
                 },
-                "V87WT/hSqVF": {
+                "FxTb4/iTbV2": {
                   "fill": "$text-inverse"
                 },
-                "V87WT/Kht9i": {
+                "FxTb4/lTbV2": {
                   "fill": "$text-inverse"
                 }
               }
+            },
+            {
+              "type": "frame",
+              "id": "HlNJV",
+              "name": "safeArea",
+              "width": "fill_container",
+              "height": 34,
+              "fill": "$surface-card",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "B2pnz",
+                  "name": "homeIndicator",
+                  "opacity": 0.18,
+                  "width": 134,
+                  "height": 5,
+                  "fill": "$text-strong",
+                  "cornerRadius": 9999
+                }
+              ]
             }
           ]
         }
@@ -4035,7 +4497,7 @@
           "padding": [
             8,
             16,
-            24,
+            16,
             16
           ],
           "children": [
@@ -4567,43 +5029,77 @@
         {
           "type": "frame",
           "id": "N5oQ9",
-          "name": "tabBarWrapA",
+          "name": "tabBarFixedWrap",
           "width": "fill_container",
-          "padding": [
-            12,
-            21,
-            21,
-            21
-          ],
-          "justifyContent": "center",
+          "layout": "vertical",
           "alignItems": "center",
           "children": [
             {
-              "id": "z1wYu",
+              "id": "yrH7K",
               "type": "ref",
-              "ref": "ssPV9",
+              "ref": "TbBarFx",
               "width": "fill_container",
-              "name": "tabBarA",
+              "name": "tabBarFixed",
               "descendants": {
-                "Lpai8": {
+                "FxTb1": {
                   "fill": "#FFFFFF00"
                 },
-                "Lpai8/hSqVF": {
+                "FxTb1/iTbV2": {
                   "fill": "$tab-inactive"
                 },
-                "Lpai8/Kht9i": {
+                "FxTb1/lTbV2": {
                   "fill": "$tab-inactive"
                 },
-                "V87WT": {
+                "FxTb2": {
+                  "fill": "#FFFFFF00"
+                },
+                "FxTb2/iTbV2": {
+                  "fill": "$tab-inactive"
+                },
+                "FxTb2/lTbV2": {
+                  "fill": "$tab-inactive"
+                },
+                "FxTb3": {
+                  "fill": "#FFFFFF00"
+                },
+                "FxTb3/iTbV2": {
+                  "fill": "$tab-inactive"
+                },
+                "FxTb3/lTbV2": {
+                  "fill": "$tab-inactive"
+                },
+                "FxTb4": {
                   "fill": "$brand"
                 },
-                "V87WT/hSqVF": {
+                "FxTb4/iTbV2": {
                   "fill": "$text-inverse"
                 },
-                "V87WT/Kht9i": {
+                "FxTb4/lTbV2": {
                   "fill": "$text-inverse"
                 }
               }
+            },
+            {
+              "type": "frame",
+              "id": "tG6rP",
+              "name": "safeArea",
+              "width": "fill_container",
+              "height": 34,
+              "fill": "$surface-card",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "pOOEy",
+                  "name": "homeIndicator",
+                  "opacity": 0.18,
+                  "width": 134,
+                  "height": 5,
+                  "fill": "$text-strong",
+                  "cornerRadius": 9999
+                }
+              ]
             }
           ]
         }

@@ -1,0 +1,122 @@
+{
+  "outputDir": ".uuapp-output",
+  "environments": {
+    "dev": {
+      "apps": {
+        "todoApp": {
+          "baseUri": "https://uuapp.plus4u.net/uu-todo-maing01/a1b2c3d4e5f6a1b2c3d4e5f6/",
+          "commands": [
+            {
+              "name": "getHealth",
+              "description": "Check application health and version",
+              "useCase": "sys/getHealth",
+              "method": "GET",
+              "outputTransform": "{ \"status\": serverStatus, \"app\": uuSubApp, \"version\": uuSubAppVersion }",
+              "outputFormat": "json",
+              "outputDescription": "Object with keys: status, app, version"
+            },
+            {
+              "name": "listTodos",
+              "description": "List todo items with pagination",
+              "useCase": "todo/list",
+              "method": "GET",
+              "dtoInSchema": {
+                "pageIndex": {
+                  "type": "number",
+                  "required": false,
+                  "description": "Page index (0-based)"
+                },
+                "pageSize": {
+                  "type": "number",
+                  "required": false,
+                  "description": "Items per page (default 100)"
+                },
+                "state": {
+                  "type": "string",
+                  "required": false,
+                  "description": "Filter by state: active | completed | archived"
+                }
+              },
+              "outputFormat": "markdown",
+              "outputDescription": "Table of todo items with columns: id, name, state, deadline"
+            },
+            {
+              "name": "createTodo",
+              "description": "Create a new todo item",
+              "useCase": "todo/create",
+              "method": "POST",
+              "dtoInSchema": {
+                "name": {
+                  "type": "string",
+                  "required": true,
+                  "description": "Todo item name"
+                },
+                "description": {
+                  "type": "string",
+                  "required": false,
+                  "description": "Detailed description"
+                },
+                "deadline": {
+                  "type": "string",
+                  "required": false,
+                  "description": "ISO 8601 deadline date"
+                }
+              },
+              "outputFormat": "json",
+              "outputDescription": "Created todo object with id, name, state, sys"
+            }
+          ]
+        },
+        "userRegistry": {
+          "baseUri": "https://uuapp.plus4u.net/uu-userregistry-maing01/f1e2d3c4b5a6f1e2d3c4b5a6/",
+          "commands": [
+            {
+              "name": "getHealth",
+              "description": "Check user registry health",
+              "useCase": "sys/getHealth",
+              "method": "GET"
+            }
+          ]
+        }
+      }
+    },
+    "prod": {
+      "apps": {
+        "todoApp": {
+          "baseUri": "https://uuapp.plus4u.net/uu-todo-maing01/b2c3d4e5f6a1b2c3d4e5f6a1/",
+          "commands": [
+            {
+              "name": "getHealth",
+              "description": "Check production app health",
+              "useCase": "sys/getHealth",
+              "method": "GET",
+              "outputTransform": "{ \"status\": serverStatus, \"app\": uuSubApp, \"version\": uuSubAppVersion }",
+              "outputFormat": "json",
+              "outputDescription": "Object with keys: status, app, version"
+            },
+            {
+              "name": "listTodos",
+              "description": "List production todo items",
+              "useCase": "todo/list",
+              "method": "GET",
+              "dtoInSchema": {
+                "pageIndex": {
+                  "type": "number",
+                  "required": false,
+                  "description": "Page index (0-based)"
+                },
+                "pageSize": {
+                  "type": "number",
+                  "required": false,
+                  "description": "Items per page (default 100)"
+                }
+              },
+              "outputFormat": "markdown",
+              "outputDescription": "Table of todo items"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

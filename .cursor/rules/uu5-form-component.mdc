@@ -1,0 +1,603 @@
+---
+description: Form component development guide covering form structure, validation, layout, LSI usage, and best practices for creating user input forms in UU5 framework
+globs: 
+alwaysApply: false
+---
+# Form Component Development Guide
+
+## Table of Contents
+
+1. @Introduction
+2. @Form Structure
+3. @Implementation Guidelines
+4. @Validation
+5. @Layout Configuration
+6. @Best Practices
+7. @Troubleshooting
+
+## 1. Introduction
+
+This guide covers the creation and implementation of forms using the uu5 framework. Forms are essential components for collecting user input and should follow specific patterns and best practices.
+
+### 1.1 When to Use
+
+Use this guide when:
+- Creating forms for user input collection
+- Implementing validation logic
+- Building complex multi-field forms
+- Working with form layouts and styling
+
+For detailed form component implementation patterns, see [Form Component Guide](mdc:docs/uu5/form-component-guide.md).
+
+## 2. Form Structure
+
+### 2.1 Overview
+
+### 2.2 Basic Components
+Forms consist of three main component types:
+
+1. **Form Component** - Covers inputs and controls, collects data from inputs, stores them in state and validates them
+2. **Inputs** - Fields for getting data from user that automatically communicate with form
+3. **Controls** - Buttons for working with form (submitting, resetting, validating, etc.)
+
+### 2.3 Form Props
+Standard form props include:
+- `onSubmit` - Function to handle form submission (can be synchronous or asynchronous)
+- `gridLayout` - Layout configuration for form inputs
+- `onValidate` - Custom validation function
+- `layout` - Layout configuration
+- `size` - Size of form elements
+- `borderRadius` - Border radius styling
+- `readOnly` - Read-only state
+- `disabled` - Disabled state
+- `id`, `className`, `style` - Standard styling props
+- `elementAttrs`, `elementRef`, `noIndex` - Additional props
+
+### 2.4 Input Props
+Each form input supports:
+
+**Standard input props:**
+- `name` - required
+- `initialValue`
+- `required`
+- `disabled` and `readOnly` - not available for Checkbox, Checkboxes, Radios, SwitchSelect
+- `placeholder`
+
+**Validation props:**
+- `validateOnChange`
+
+**Visual props:**
+- `label`, `info`, `message`
+- `size`, `layout`, `borderRadius`
+
+**Other props:**
+- `id`, `className`, `style`
+- `elementAttrs`, `elementRef`, `noIndex`
+- `onValidate` - Custom validation function
+
+## 3. Implementation Guidelines
+
+### 3.1 Basic Form Creation
+```javascript
+<Uu5Forms.Form
+  gridLayout="name, note"
+  onSubmit={async (e) => {
+    const values = e.data.value;
+    // TODO some call to server for storing data
+  }}
+>
+  <Uu5Forms.FormText name="name" label="Name" required />
+  <Uu5Forms.FormTextArea name="note" label="Note" />
+  <Uu5Forms.SubmitButton
+    className={Config.Css.css({ justifySelf: "end" })}
+  />
+</Uu5Forms.Form>
+```
+
+### 3.2 LSI (Localization) Usage
+All text properties (`label`, `info`, `placeholder`, `message`) automatically accept LSI objects:
+
+```javascript
+<Uu5Forms.FormText
+  name="name"
+  label={{ en: "Name", cs: "Jméno" }}
+  info={{
+    en: "You can find your name on your ID card.",
+    cs: "Své jméno najdete v občaském průkazu.",
+  }}
+  placeholder={{ en: "John Smith", cs: "Jan Novák" }}
+  message={{ en: "Name and surname", cs: "Jméno a příjmení" }}
+  required
+/>
+```
+
+**Note:** All properties except `placeholder` also accept React components for complex content.
+
+## 4. Validation
+
+### 4.1 Input Validation
+```javascript
+<Uu5Forms.FormNumber
+  name="count"
+  label="Count"
+  initialValue={1}
+  required
+  min={1}
+  max={5}
+  message="Item count is limited by current stock reserve."
+  onValidate={async (e) => {
+    const { value } = e.data;
+    const { maxAvailable } = await Calls.getItemAvailability();
+    if (value > maxAvailable) {
+      return {
+        feedback: "error",
+        messageParams: [maxAvailable],
+        message: {
+          en: "Unfortunately, %d items are currently available.",
+        },
+      };
+    }
+  }}
+/>
+```
+
+### 4.2 Form Validation
+```javascript
+<Uu5Forms.Form
+  gridLayout="count, color"
+  onSubmit={(e) => {
+    const values = e.data.value;
+    // TODO some call to server for storing data
+  }}
+  onValidate={async (e) => {
+    const values = e.data.value;
+    const { count, color } = values;
+    const { maxAvailable } = await Calls.checkItemAvailability(values);
+    if (count > maxAvailable) {
+      return {
+        feedback: "error",
+        messageParams: [maxAvailable, color],
+        message: {
+          en: "Unfortunately, %s %s items are currently available.",
+        },
+      };
+    }
+  }}
+>
+  {/* form inputs */}
+</Uu5Forms.Form>
+```
+
+## 5. Layout Configuration
+
+### 5.1 Grid Layout
+Use `gridLayout` for simple form layouting:
+
+```javascript
+<Uu5Forms.Form
+  gridLayout={{
+    xs: "firstName, surname, note, submit",
+    m: "firstName note, surname note, submit submit"
+  }}
+  onSubmit={(e) => {
+    const values = e.data.value;
+    // TODO some call to server for storing data
+  }}
+>
+  <Uu5Forms.FormText
+    name="firstName"
+    label="Name"
+    required
+    style={{ gridArea: "firstName" }}
+  />
+  <Uu5Forms.FormText
+    name="surname"
+    label="Surname"
+    required
+    style={{ gridArea: "surname" }}
+  />
+  <Uu5Forms.FormTextArea
+    name="note"
+    label="Note"
+    style={{ gridArea: "note" }}
+  />
+  <Uu5Forms.SubmitButton
+    name="submit"
+    className={Config.Css.css({ justifySelf: "end" })}
+  />
+</Uu5Forms.Form>
+```
+
+### 5.2 Form Layout Props
+Set layout properties on the form to apply to all inputs:
+
+```javascript
+<Uu5Forms.Form
+  gridLayout="firstName, surname, note"
+  size="xl"
+  layout="1:2"
+  borderRadius="full"
+  onSubmit={async (e) => {
+    const values = e.data.value;
+    // TODO some call to server for storing data
+  }}
+>
+  <Uu5Forms.FormText name="firstName" label="Name" required />
+  <Uu5Forms.FormText name="surname" label="Surname" required />
+  <Uu5Forms.FormTextArea name="note" label="Note" />
+  <Uu5Forms.SubmitButton
+    className={Config.Css.css({ justifySelf: "end" })}
+  />
+</Uu5Forms.Form>
+```
+
+## 6. Best Practices
+
+### 6.1 Form Structure
+- Always use the Form component as the wrapper
+- Use appropriate input components for data types
+- Include proper validation
+- Use LSI for all user-facing text
+
+### 6.2 Validation
+- Use native validation props when possible (`min`, `max`, `pattern`, etc.)
+- Implement custom validation for business logic
+- Provide clear error messages
+- Use both synchronous and asynchronous validation as needed
+
+### 6.3 Layout
+- Use `gridLayout` for responsive form layout
+- Set layout properties on the form to apply to all inputs
+- Use appropriate sizing and spacing
+- Consider different screen sizes in layout configuration
+
+### 6.4 Accessibility
+- Always provide meaningful labels
+- Use `required` prop for mandatory fields
+- Provide helpful info and message text
+- Ensure proper form structure
+
+### 6.5 Performance
+- Use async validation sparingly
+- Implement proper error handling
+- Consider form state management for complex forms
+
+### 6.6 Common Form Inputs
+
+**Text Inputs:**
+- `FormText` - Single line text
+- `FormTextArea` - Multi-line text
+- `FormPassword` - Password input
+- `FormNumber` - Numeric input
+- `FormDate` - Date input
+
+**Selection Inputs:**
+- `FormSelect` - Dropdown selection
+- `FormSwitchSelect` - Switch-based selection
+- `FormCheckbox` - Single checkbox
+- `FormCheckboxes` - Multiple checkboxes
+- `FormRadios` - Radio button group
+
+**Other Inputs:**
+- `FormFile` - File upload
+- `FormSlider` - Range slider
+- `FormSwitch` - Toggle switch
+
+## 7. Troubleshooting
+
+### 7.1 Error Handling
+
+**Validation Errors:**
+- Return validation objects with `feedback: "error"`
+- Provide meaningful error messages
+- Use `messageParams` for dynamic content
+- Support LSI for error messages
+
+**Form Submission Errors:**
+- Handle async operations in `onSubmit`
+- Provide user feedback for submission status
+- Implement proper error recovery
+
+### 7.2 Testing
+
+**Unit Tests:**
+- Test form validation logic
+- Test form submission
+- Test error handling
+- Test accessibility features
+
+**Integration Tests:**
+- Test complete form workflows
+- Test with different data scenarios
+- Test responsive behavior
+- Test with various user interactions
+
+### 7.3 Examples
+
+**Simple Contact Form:**
+```javascript
+<Uu5Forms.Form
+  gridLayout="name, email, message, submit"
+  onSubmit={async (e) => {
+    const values = e.data.value;
+    await Calls.submitContactForm(values);
+  }}
+>
+  <Uu5Forms.FormText
+    name="name"
+    label="Full Name"
+    required
+  />
+  <Uu5Forms.FormText
+    name="email"
+    label="Email"
+    type="email"
+    required
+  />
+  <Uu5Forms.FormTextArea
+    name="message"
+    label="Message"
+    required
+  />
+  <Uu5Forms.SubmitButton />
+</Uu5Forms.Form>
+```
+
+**Complex Form with Validation:**
+```javascript
+<Uu5Forms.Form
+  gridLayout="product, quantity, color, submit"
+  onSubmit={async (e) => {
+    const values = e.data.value;
+    await Calls.createOrder(values);
+  }}
+  onValidate={async (e) => {
+    const { product, quantity } = e.data.value;
+    const availability = await Calls.checkAvailability(product);
+    if (quantity > availability) {
+      return {
+        feedback: "error",
+        message: "Insufficient stock available"
+      };
+    }
+  }}
+>
+  <Uu5Forms.FormSelect
+    name="product"
+    label="Product"
+    itemList={productOptions}
+    required
+  />
+  <Uu5Forms.FormNumber
+    name="quantity"
+    label="Quantity"
+    min={1}
+    max={10}
+    required
+  />
+  <Uu5Forms.FormSwitchSelect
+    name="color"
+    label="Color"
+    itemList={colorOptions}
+    required
+  />
+  <Uu5Forms.SubmitButton />
+</Uu5Forms.Form>
+```
+
+**Form in Modal:**
+```javascript
+//@@viewOn:imports
+import { createVisualComponent, createComponent, useState } from "uu5g05";
+import Uu5Forms from "uu5g05-forms";
+import Uu5Elements from "uu5g05-elements";
+import Config from "./config/config.js";
+//@@viewOff:imports
+
+const BuyModal = createVisualComponent({
+  //@@viewOn:statics
+  uu5Tag: Config.TAG + "BuyModal",
+  //@@viewOff:statics
+
+  render(props) {
+    //@@viewOn:private
+    let deliveryDateMin = new UuDate();
+    deliveryDateMin.setDay(deliveryDateMin.getDay() + 3, 0, 0, 0, 0);
+    //@@viewOff:private
+
+    //@@viewOn:render
+    return (
+      <Uu5Forms.Form.Provider
+        onSubmit={(e) => {
+          if (!navigator.onLine) throw new Error("Demo submit error example.");
+          alert("Submitted with values:\n" + JSON.stringify(e.data.value, null, 2));
+          props.onClose();
+        }}
+      >
+        {({ cancel }) => (
+          <Uu5Elements.Modal
+            {...props}
+            onClose={async () => {
+              const leave = await cancel();
+              if (leave) props.onClose();
+            }}
+            header="Buy a T-shirt"
+            info="Buy a Red Monster T-shirt in a limited edition and win one of interesting presents."
+            footer={
+              <Uu5Elements.Grid
+                templateColumns={{ xs: "repeat(2, 1fr)", s: "repeat(2, auto)" }}
+                columnGap={Uu5Elements.UuGds.SpacingPalette.getValue(["fixed", "c"])}
+                justifyContent={{ s: "end" }}
+              >
+                <Uu5Forms.CancelButton onClick={props.onClose} />
+                <Uu5Forms.SubmitButton>Buy</Uu5Forms.SubmitButton>
+              </Uu5Elements.Grid>
+            }
+          >
+            <Uu5Forms.Form.View>
+              <div
+                className={Config.Css.css({
+                  display: "grid",
+                  rowGap: 8,
+                  columnGap: 32,
+                  gridAutoFlow: "column",
+                  gridTemplateRows: "repeat(4, auto)",
+                  marginBottom: 8,
+                })}
+              >
+                <div>
+                  <Uu5Forms.FormRadios
+                    name="sex"
+                    label="Gender"
+                    itemList={[
+                      { value: "man", children: "For Man" },
+                      { value: "woman", children: "For Woman" },
+                    ]}
+                    required
+                  />
+                </div>
+
+                <div>
+                  <Uu5Forms.FormSwitchSelect
+                    name="size"
+                    label="Size"
+                    initialValue="M"
+                    itemList={[{ value: "S" }, { value: "M" }, { value: "L" }, { value: "XL" }, { value: "XXL" }]}
+                  />
+                </div>
+
+                <div>
+                  <Uu5Forms.FormNumber
+                    name="count"
+                    label="Item count"
+                    required
+                    min={1}
+                    initialValue={1}
+                    message="Item count is limited by current stock reserve."
+                    onValidate={async (e) => {
+                      const { value } = e.data;
+                      const { maxAvailable } = await Calls.getItemAvailability();
+                      if (value > maxAvailable) {
+                        return {
+                          messageParams: [maxAvailable],
+                          message: {
+                            en: "Unfortunately, only %d items are currently available.",
+                          },
+                        };
+                      }
+                    }}
+                  />
+                </div>
+
+                <div className={Config.Css.css({ display: "grid", rowGap: 8 })}>
+                  <Uu5Forms.FormSelect
+                    name="destination"
+                    label="Destination"
+                    initialValue="prague"
+                    itemList={[
+                      { value: "prague", children: "Prague" },
+                      { value: "plzen", children: "Plzeň" },
+                      { value: "hk", children: "Hradec Králové" },
+                      { value: "brno", children: "Brno" },
+                      { value: "bratislava", children: "Bratislava" },
+                      { value: "kosice", children: "Košice" },
+                      { value: "kyiv", children: "Kyiv" },
+                      { value: "ternopil", children: "Ternopil" },
+                    ]}
+                  />
+
+                  <Uu5Forms.FormDate
+                    name="deliveryDate"
+                    label="Preferred delivery date"
+                    min={deliveryDateMin.toIsoString()}
+                  />
+                </div>
+
+                <div>
+                  <Uu5Forms.FormText name="name" label="Name" placeholder="Name and surname" required />
+                </div>
+                <div>
+                  <Uu5Forms.FormText
+                    name="phone"
+                    label="Phone"
+                    iconLeft="uugds-phone"
+                    prefix="+420"
+                    type="tel"
+                    required
+                  />
+                </div>
+                <div>
+                  <Uu5Forms.FormEmail name="email" label="E-mail" required />
+                </div>
+                <div>
+                  <Uu5Forms.FormTextArea name="desc" label="Notes" />
+                </div>
+              </div>
+
+              <Uu5Forms.FormCheckbox
+                name="conditions"
+                label={
+                  <>
+                    I agree to <Uu5Elements.Link>Terms and conditions</Uu5Elements.Link>
+                  </>
+                }
+                required
+              />
+            </Uu5Forms.Form.View>
+          </Uu5Elements.Modal>
+        )}
+      </Uu5Forms.Form.Provider>
+    );
+    //@@viewOff:render
+  },
+});
+
+const Page = createComponent({
+  render() {
+    //@@viewOn:private
+    const [modalOpen, setModalOpen] = useState(false);
+    //@@viewOff:private
+
+    //@@viewOn:render
+    return (
+      <div>
+        <Uu5Elements.Button onClick={() => setModalOpen(true)}>Buy a T-shirt</Uu5Elements.Button>
+        <BuyModal open={modalOpen} onClose={() => setModalOpen(false)} />
+      </div>
+    );
+    //@@viewOff:render
+  },
+});
+```
+
+### 7.4 ESLint Fix
+> After completing all testing and validation, you MUST run eslint fix to resolve any linting errors:
+> 
+> **Run ESLint Fix**:
+> ```bash
+> # Option 1: Direct eslint command
+> npx eslint src/ --fix
+> 
+> # Option 2: Using project-specific eslint config
+> npx eslint "src/**/*.js" --fix
+> ```
+> 
+> **Verify ESLint Results**:
+> - Check that all linting errors are resolved
+> - Ensure code follows project style guidelines
+> - Verify no new warnings are introduced
+> - Confirm all files pass linting checks
+> 
+> **If ESLint errors persist**:
+> - Review and fix any remaining manual errors
+> - Check for configuration issues
+> - Ensure all imports and dependencies are correct
+> - Re-run eslint fix until all errors are resolved
+> 
+> **Purpose**: Ensures the form component code follows project standards and is free of linting errors before completion.
+
+## Related Documentation
+- [Detail Component Guide](mdc:docs/uu5/detail-component-guide.md)
+- [Content Container Guide](mdc:docs/uu5/content-container-guide.md)
+- [LSI Guide](mdc:docs/uu5/lsi-guide.md)
+- [UU5 Library Textbook](mdc:docs/uu5/uu5_library_textbook.md)

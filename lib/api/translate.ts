@@ -31,13 +31,28 @@ export class TranslateError extends Error {
    * this to render a "sign in to use search" prompt instead of a generic error.
    */
   public readonly requiresAuth: boolean;
+  /**
+   * `true` when DeepL produced a translation but its back-translation diverged
+   * from the user's input — almost always a diacritic-less Czech query that
+   * matches multiple lemmas (`pracka` → `pračka` vs `prácka`). UI uses this to
+   * render a "DeepL si není jistý — zkus diakritiku" hint instead of the
+   * generic red error box.
+   */
+  public readonly ambiguous: boolean;
+  /**
+   * Optional human-readable hint surfacing DeepL's best guess so the user can
+   * confirm or reject it. Provided only with `ambiguous: true`.
+   */
+  public readonly hint: string | undefined;
   constructor(
     message: string,
-    options?: { cause?: unknown; requiresAuth?: boolean },
+    options?: { cause?: unknown; requiresAuth?: boolean; ambiguous?: boolean; hint?: string },
   ) {
     super(message, options?.cause !== undefined ? { cause: options.cause } : undefined);
     this.name = "TranslateError";
     this.requiresAuth = options?.requiresAuth ?? false;
+    this.ambiguous = options?.ambiguous ?? false;
+    this.hint = options?.hint;
   }
 }
 
@@ -112,6 +127,24 @@ export async function lookupWord(query: string): Promise<LookupResult> {
         "Přihlášení vypršelo. Přihlas se znovu v záložce Profil.",
         { requiresAuth: true },
       );
+    }
+    // 422 = backend detected an ambiguous diacritic-less query (e.g. `pracka`
+    // could be `pračka` or `prácka`). Body has `ambiguous: true` and a `hint`
+    // mentioning DeepL's best guess so the user can decide whether to retry
+    // with diacritics.
+    if (response.status === 422) {
+      let body: { error?: string; ambiguous?: boolean; hint?: string } = {};
+      try {
+        body = (await response.json()) as typeof body;
+      } catch {
+        /* ignore parse errors */
+      }
+      if (body.ambiguous) {
+        throw new TranslateError(
+          body.error ?? "DeepL si nebyl jistý — zkus zadat slovo s českou diakritikou.",
+          { ambiguous: true, hint: body.hint },
+        );
+      }
     }
     let detail = "";
     try {

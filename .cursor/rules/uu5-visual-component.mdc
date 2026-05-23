@@ -1,0 +1,680 @@
+---
+description: Visual component creation guide covering component types, structure, ContentContainer integration, and testing requirements for UU5 framework
+globs:
+  - "**/*-core/src/**/*.js"
+  - "**/*-hi/src/**/*.js"
+  - "**/*-bricks/src/**/*.js"
+alwaysApply: false
+---
+# Visual Component Development
+
+## Table of Contents
+
+1. @Introduction
+2. @Specifications and Confirmation
+3. @Component Types
+4. @Component Structure
+5. @ContentContainer Integration
+6. @Implementation Guidelines
+7. @Naming Conventions
+8. @Testing Requirements
+9. @Best Practices
+10. @Troubleshooting
+
+## 1. Introduction
+
+Visual components are the building blocks of the UU5 framework UI, where:
+
+- Components follow standard framework patterns
+- Components can optionally integrate with ContentContainer for consistent layout
+- Implementation follows structured approach with specific file organization
+- Components can be simple UI elements or complex data-driven components
+
+For detailed implementation guides, see:
+- Component structure and patterns - [visual-component-guide.md](mdc:docs/uu5/visual-component-guide.md)
+- ContentContainer integration - [content-container-guide.md](mdc:docs/uu5/content-container-guide.md)
+- Testing guidelines - [uu5-test-guide.md](mdc:docs/uu5/uu5-test-guide.md)
+
+### 1.1 Fundamental Rule
+
+⚠️ **ABSOLUTE MANDATORY REQUIREMENT** ⚠️
+
+**NO IMPLEMENTATION BEFORE USER CONFIRMATION - ZERO EXCEPTIONS!**
+
+Before writing ANY code, you MUST ALWAYS:
+
+1. 🔍 **ANALYZE WORKSPACE** to infer component location:
+   - List workspace root to discover available packages
+   - Identify package patterns (`*-hi/`, `*-core/`, `*-bricks/`, etc.)
+   - Infer most likely location based on:
+     - If only `*-hi/` exists → suggest **uuSubApp**
+     - If multiple packages exist → analyze component name for clues
+     - If unclear → default to **uuSubApp** as most common
+
+2. 🛑 **STOP and CONFIRM** with the user:
+   - Component name (PascalCase, e.g., `UserCard` or dot notation like `User.Profile`)
+   - Component module (folder inside package `src/`, e.g., `user-card/`) - **only if not specified via dot notation**
+   - **Inferred location** (present as suggestion, require confirmation):
+     - **"uuSubApp"** = Application package (`*-hi/src/`)
+     - **"uu5Lib"** = Library package (`*-core/src/`, `*-bricks/src/`, etc.)
+   - If uu5Lib: which specific library package name (e.g., `uu_frontend_aicodingg01-core`)
+   - Component type - **Always defaults to "simple"** unless user confirms otherwise:
+     - Analyze name for type hints (Detail, List, Create, etc.)
+     - If name suggests non-simple type, ask user to confirm
+     - If user doesn't specify, use **"simple"**
+   - Any special requirements or constraints (optional - only if not clear from context)
+
+   **Note on Location Inference**: Always present inferred location as a suggestion, not a decision. User MUST confirm or correct it.
+   
+   **Note on Component Type**: Default is always **"simple"**. Only suggest other types if component name clearly indicates it (e.g., ends with "Detail", "List", "Create") and **require user confirmation**.
+   
+   **Note on Purpose**: Component purpose should be inferred from name and type. Only ask for clarification if unclear.
+   
+   **Note on Dot Notation**: Dot notation automatically specifies the module:
+   - `User.Profile` = module `user/`, component `Profile`
+   - `Internal.User.Profile` = module `internal/user/`, component `Profile`
+
+3. 🛑 **VALIDATE** that the confirmed package directory exists before proceeding.
+
+4. 🛑 **WAIT** for explicit user confirmation of these specifications before proceeding with implementation.
+
+5. 🛑 **DO NOT PROCEED** with ANY implementation until you have received clear specifications AND validated the directory exists.
+
+## 2. Specifications and Confirmation
+
+**MANDATORY PROCESS: Location Inference → Confirmation → Validation**
+
+### Step 1: Infer Location from Workspace
+
+Before asking user, ALWAYS analyze workspace structure:
+
+1. **List workspace root** to discover packages
+2. **Identify available packages:**
+   - `*-hi/` → uuSubApp (application-specific components)
+   - `*-core/` → uu5Lib core library
+   - `*-bricks/` → uu5Lib bricks library
+   - Other `*-{suffix}/` → uu5Lib custom libraries
+
+3. **Infer most likely location:**
+   - If **only `*-hi/` exists** → Infer **uuSubApp**
+   - If **multiple packages exist:**
+     - Check component name for hints (e.g., `Auction.*` might suggest uuSubApp if auction is app domain)
+     - Consider if component is reusable (→ uu5Lib) or app-specific (→ uuSubApp)
+     - **Default to uuSubApp** if unclear (most common case)
+   - If **no clear pattern** → Default to **uuSubApp**
+
+4. **Prepare suggestion** with reasoning for user confirmation
+
+### Step 2: Confirm with User
+
+Present inferred location and confirm all specifications:
+
+- [ ] Component name (PascalCase or dot notation: `UserCard` or `User.Profile`)
+  - If dot notation is used (e.g., `User.Profile`), module is automatically derived
+  - If simple name is used (e.g., `UserCard`), module folder name must be specified separately (kebab-case)
+  
+- [ ] **Inferred location** (MUST present as suggestion, not decision):
+  - Present: "Based on workspace analysis, I suggest **[inferred location]** because [reason]"
+  - Ask: "Is this correct, or should I use a different location?"
+  - Options:
+    - [ ] **uuSubApp** (application package)
+    - [ ] **uu5Lib** (library package - if selected, ask for specific package name)
+  
+- [ ] Component type - **Default is always "simple"** unless user confirms otherwise
+  - Analyze component name for type hints (Detail, List, Create, etc.)
+  - If name suggests different type, ask user to confirm
+  - If user doesn't specify, use **"simple"** as default
+
+**Component Type Inference Rules:**
+- **Default**: Always assume **"simple"** type unless:
+  - Component name ends with "Detail" → suggest "detail" type (requires user confirmation)
+  - Component name ends with "List" → suggest "list" type (requires user confirmation)
+  - Component name ends with "Create" or "Form" → suggest "create" type (requires user confirmation)
+  - User explicitly mentions ContentContainer → suggest "with ContentContainer" (requires user confirmation)
+- **User must confirm** any type other than "simple"
+- If uncertain, always default to **"simple"**
+
+**Component Purpose:**
+- Component purpose should be **inferred** from component name and type
+- Only ask for purpose clarification if it's unclear from context
+- Examples where purpose is clear:
+  - `Auction.Progress` + type "simple" = Progress indicator for auction
+  - `User.Detail` + type "detail" (confirmed) = User profile detail view
+  - `Product.List` + type "list" (confirmed) = Product listing with filters
+- Only ask if the name and type don't clearly indicate the purpose
+
+**Optional (only ask if user mentions or if relevant to component type):**
+- [ ] Props and data handling requirements
+- [ ] Any special requirements or constraints
+- [ ] Nesting level support needed
+- [ ] Route integration requirements
+- [ ] LSI (localization) requirements
+
+### Step 3: Validate Confirmed Location
+
+After user confirmation:
+1. Verify the confirmed package directory exists
+2. If directory doesn't exist, report error and ask user to clarify
+3. Only proceed if validation passes
+
+### 2.1 Location Type Guide
+
+**⚠️ CRITICAL: There are only TWO location types!**
+
+| Location Type | Pattern | Examples | Purpose |
+|--------------|---------|----------|---------|
+| **uuSubApp** | `*-hi/src/` | `uu_frontend_aicodingg01-hi/src/` | Application-specific UI components |
+| **uu5Lib** | `*-{suffix}/src/` | `uu_frontend_aicodingg01-core/src/`<br>`uu_frontend_aicodingg01-bricks/src/` | Reusable library components |
+
+**NEW Decision Flow with Inference:**
+1. **Analyze workspace** to discover available packages
+2. **Infer location** based on workspace structure:
+   - Only `*-hi/` exists → Infer **uuSubApp**
+   - Multiple packages exist → Analyze component name and purpose
+   - Default to **uuSubApp** if unclear
+3. **Present suggestion** to user: **"Based on workspace, I suggest [location] because [reason]. Is this correct?"**
+4. **Confirm with user**:
+   - If **uuSubApp**: Use `*-hi/src/` directory
+   - If **uu5Lib**: Ask **"Which library package?"** (user specifies: core, bricks, or other)
+5. **Validate** confirmed directory exists
+
+**Inference Examples:**
+
+| Workspace Structure | Component Name | Inferred Location | Reasoning |
+|------------------|---------------|------------------|-----------|
+| Only `*-hi/` | `Auction.Progress` | **uuSubApp** | Only application package exists |
+| `*-hi/`, `*-core/` | `Button` | **uuSubApp** (ask) | Generic name, likely app-specific but could be library |
+| `*-hi/`, `*-core/` | `Auction.Detail` | **uuSubApp** | Domain-specific (Auction), likely app component |
+| `*-hi/`, `*-bricks/` | `GenericCard` | **uu5Lib** (bricks) | Generic reusable component |
+
+**Confirmation Examples:**
+- Inferred: "uuSubApp" → Confirm: **"I suggest uuSubApp (uu_frontend_aicodingg01-hi/src/) because only the application package exists. Is this correct?"**
+- Inferred: "uu5Lib (core)" → Confirm: **"I suggest uu5Lib core (uu_frontend_aicodingg01-core/src/) because this looks like a reusable library component. Is this correct?"**
+- Unclear → Default: **"I suggest uuSubApp (uu_frontend_aicodingg01-hi/src/) as the most common location. Is this correct, or should I use uu5Lib?"**
+
+### 2.2 Location Inference and Validation
+
+**⚠️ MANDATORY: Always infer, confirm, then validate before implementation!**
+
+**Complete Process:**
+
+**Phase 1: Inference (ALWAYS FIRST)**
+1. 🔍 **List workspace root** to identify available packages
+   ```
+   list_dir(".")
+   ```
+2. 🔍 **Analyze discovered packages:**
+   - Look for `*-hi/` (uuSubApp)
+   - Look for `*-core/`, `*-bricks/`, etc. (uu5Lib)
+   - Count and categorize available packages
+3. 🧠 **Infer most likely location:**
+   - Use decision logic from Section 2.1
+   - Prepare reasoning for suggestion
+   - Default to uuSubApp if unclear
+
+**Phase 2: Confirmation (ALWAYS REQUIRED)**
+4. 💬 **Present suggestion to user:**
+   ```
+   "Based on workspace analysis, I suggest [location] because [reason].
+   Is this correct, or should I use a different location?"
+   ```
+5. ⏸️ **Wait for user confirmation or correction**
+6. 📝 **Record confirmed location** (may differ from inference)
+
+**Phase 3: Validation (AFTER CONFIRMATION)**
+7. ✅ **Verify** the confirmed package directory exists
+   ```javascript
+   // For confirmed uuSubApp
+   list_dir("uu_frontend_aicodingg01-hi")
+   list_dir("uu_frontend_aicodingg01-hi/src")
+   
+   // For confirmed uu5Lib (core)
+   list_dir("uu_frontend_aicodingg01-core")
+   list_dir("uu_frontend_aicodingg01-core/src")
+   ```
+8. ✅ **Proceed** only if validation passes
+9. ❌ **Stop and report** if directory does not exist - ask user to clarify
+
+**Complete Example:**
+
+```javascript
+// User requests: "Create Auction.Progress component"
+
+// PHASE 1: INFERENCE
+// 1. List workspace root
+list_dir(".") 
+// Result: uu_frontend_aicodingg01-hi/, uu_frontend_aicodingg01-core/
+
+// 2. Analyze: Found both uuSubApp and uu5Lib
+// 3. Infer: "Auction.Progress" suggests app-specific domain → uuSubApp
+
+// PHASE 2: CONFIRMATION
+// 4. Present: "Based on workspace analysis, I suggest uuSubApp 
+//    (uu_frontend_aicodingg01-hi/src/) because 'Auction' appears to be 
+//    an application-specific domain. Is this correct?"
+// 5. Wait for user: User confirms "Yes"
+// 6. Confirmed: uuSubApp (uu_frontend_aicodingg01-hi/src/)
+
+// PHASE 3: VALIDATION
+// 7. Verify directories
+list_dir("uu_frontend_aicodingg01-hi")
+list_dir("uu_frontend_aicodingg01-hi/src")
+// 8. Validation passed → Proceed with implementation
+
+// Final result: uu_frontend_aicodingg01-hi/src/auction/progress.js
+```
+
+**Important Notes:**
+- **Never skip inference** - always analyze workspace first
+- **Never assume** - always confirm inferred location with user
+- **Never proceed** without validation after confirmation
+- **Inference is a suggestion** - user has final decision
+
+### 2.3 Directory Rules
+
+**MANDATORY DIRECTORY STRUCTURE**:
+- ✅ **CORRECT**: Components go directly in `{package}/src/[component-module]/`
+- ❌ **INCORRECT**: Never create `{package}/src/components/[component-module]/`
+- ❌ **INCORRECT**: Never nest components in arbitrary subdirectories
+
+**Pattern:**
+```
+{package-name}/src/{component-module}/{component-name}.js
+```
+
+**Examples:**
+```
+✅ CORRECT (uuSubApp):
+uu_frontend_aicodingg01-hi/src/user-card/user-card.js
+uu_frontend_aicodingg01-hi/src/dashboard/dashboard.js
+
+✅ CORRECT (uu5Lib):
+uu_frontend_aicodingg01-core/src/user/profile.js
+uu_frontend_aicodingg01-bricks/src/product-list/product-list.js
+
+❌ INCORRECT:
+uu_frontend_aicodingg01-core/src/components/user/profile.js
+uu_frontend_aicodingg01-hi/src/components/user-card/user-card.js
+```
+
+## 3. Component Types
+
+Visual components come in five main types:
+
+| Type | Purpose | When to Use | Detailed Guide |
+|------|---------|-------------|----------------|
+| **Simple** (default) | Basic UI elements | Buttons, cards, badges, progress indicators, simple displays | [visual-component-guide.md](mdc:docs/uu5/visual-component-guide.md) |
+| **With ContentContainer** | Standard layout with header/actions | Components needing consistent layout and spacing | [content-container-guide.md](mdc:docs/uu5/content-container-guide.md) |
+| **Detail** | Single entity CRUD | User profiles, product details, order details | [Detail Component Rule](mdc:.cursor/rules/uu5-detail-component.mdc) |
+| **List** | Collections with filtering/sorting | User lists, product catalogs, order histories | [List Component Rule](mdc:.cursor/rules/uu5-list-component.mdc) |
+| **Create** | Entity creation forms | Add user, create product, submit order | [Create Component Rule](mdc:.cursor/rules/uu5-create-component.mdc) |
+
+### 3.1 Type Selection Strategy
+
+**Default Type: "simple"**
+- Always start with "simple" as the default assumption
+- Only suggest other types if component name explicitly indicates otherwise
+
+**Type Inference from Component Name:**
+
+| Component Name Pattern | Suggested Type | Example | Requires Confirmation? |
+|----------------------|---------------|---------|----------------------|
+| `*.Progress`, `*.Card`, `*.Badge`, etc. | **simple** | `Auction.Progress` | ❌ No (default) |
+| `*.Detail` | **detail** | `User.Detail` | ✅ Yes |
+| `*.List` | **list** | `Product.List` | ✅ Yes |
+| `*.Create`, `*.Form` | **create** | `Order.Create` | ✅ Yes |
+| User mentions "ContentContainer" | **with ContentContainer** | Any component | ✅ Yes |
+| Unclear or ambiguous | **simple** | Any component | ❌ No (default) |
+
+**Important**: Any type other than "simple" requires explicit user confirmation.
+
+## 4. Component Structure
+
+Every visual component requires these files:
+
+```
+component-module/
+├── component-name.js              # Main component implementation
+├── content.js                     # Content component (if using ContentContainer)
+├── config/
+│   └── config.js                 # Component configuration and constants
+└── test/
+    └── component-name.test.js    # Component tests
+```
+
+### 4.1 Required Files
+
+1. **Main component file** - Uses `createVisualComponent` with appropriate configuration
+2. **Config file** - Defines TAG and CSS module configuration
+3. **Test file** - Covers rendering, props, interactions, and error states
+4. **Content file** (optional) - For ContentContainer integration
+
+For complete implementation patterns and examples, see [Visual Component Guide](mdc:docs/uu5/visual-component-guide.md).
+
+## 5. ContentContainer Integration
+
+**IMPORTANT**: "ContentContainer" ALWAYS refers to `ContentContainer` from the "uu_plus4u5g02-elements" package.
+
+### 5.1 When to Use
+
+Use ContentContainer when your component needs:
+- Standard header with title and subtitle
+- Action buttons in header
+- Consistent padding and spacing
+- Proper nesting level management
+- Loading and error states
+
+### 5.2 Implementation Checklist
+
+When using `ContentContainer`, you **MUST** follow this checklist:
+
+1. ✅ Import from `uu_plus4u5g02-elements` package
+2. ✅ Create dedicated Content component with proper nesting levels
+3. ✅ Use `ContentContainer.getComponentNestingLevel()` for parent component
+4. ✅ Use `ContentContainer.splitProps()` to separate container and content props
+5. ✅ Provide meaningful metadata (title, subtitle, info, getActionList)
+6. ✅ For routes: Place `RouteBar` outside ContentContainer
+
+Any deviation from this checklist will be treated as a defect.
+
+For complete implementation guide, examples, and patterns, see [ContentContainer Guide](mdc:docs/uu5/content-container-guide.md).
+
+## 6. Implementation Guidelines
+
+Follow this process for each component:
+
+1. **Infer component location** - Analyze workspace structure first (see Section 2.1, 2.2)
+   - List workspace root to discover available packages
+   - Apply inference logic to suggest most likely location
+   - Prepare reasoning for suggestion
+2. **Confirm specifications** - Get user confirmation (see Section 2)
+   - Present inferred location with reasoning
+   - **Component type**: Always default to **"simple"** unless user confirms otherwise
+   - Analyze name for type hints, but require confirmation for non-simple types
+   - Wait for user confirmation or corrections
+3. **Validate confirmed location** - Use `list_dir` to verify target package exists (see Section 2.2)
+   - Verify package directory exists
+   - Verify src/ subdirectory exists
+   - Stop if validation fails
+4. **Choose component type** - Use confirmed type or default to **"simple"** (see Section 3)
+5. **Create file structure** - Set up all required files (see Section 4)
+6. **Implement component** - Use `createVisualComponent` with appropriate nesting levels
+7. **Add prop types** - Define clear propTypes and sensible defaults
+8. **Integrate ContentContainer** - Follow checklist if needed (see Section 5)
+9. **Add LSI translations** - Provide localized strings (only if user specifies or component needs localization)
+10. **Create tests** - Cover rendering, props, interactions, and error states
+
+### 6.1 Location Inference and Validation Process
+
+**Before creating any files, ALWAYS follow the complete inference → confirmation → validation flow:**
+
+**Step 1: Infer Location from Workspace**
+```javascript
+// 1. List workspace root to discover packages
+list_dir(".")
+// Expected result: uu_frontend_aicodingg01-hi/, uu_frontend_aicodingg01-core/, etc.
+
+// 2. Analyze available packages
+// - Identify uuSubApp packages (*-hi/)
+// - Identify uu5Lib packages (*-core/, *-bricks/, etc.)
+// - Apply inference logic from Section 2.1
+
+// 3. Prepare suggestion with reasoning
+```
+
+**Step 2: Confirm with User**
+```javascript
+// Present inferred location to user:
+// "Based on workspace analysis, I suggest [location] because [reason].
+// Is this correct, or should I use a different location?"
+
+// Wait for user confirmation
+// User may confirm or correct the inference
+```
+
+**Step 3: Validate Confirmed Location**
+```javascript
+// After user confirmation, verify directories exist:
+
+// For confirmed uuSubApp:
+list_dir("uu_frontend_aicodingg01-hi")
+list_dir("uu_frontend_aicodingg01-hi/src")
+
+// For confirmed uu5Lib (example: core):
+list_dir("uu_frontend_aicodingg01-core")
+list_dir("uu_frontend_aicodingg01-core/src")
+```
+
+**Step 4: Proceed or Stop**
+- ✅ **If all validations pass** → Proceed with component creation
+- ❌ **If any validation fails** → Stop, report error, ask user to clarify
+
+**Complete Example Flow:**
+```javascript
+// User: "Create Auction.Progress component"
+
+// STEP 1: INFER
+list_dir(".")
+// → Found: uu_frontend_aicodingg01-hi/, uu_frontend_aicodingg01-core/
+// → Inference: "Auction" is domain-specific → suggest uuSubApp
+
+// STEP 2: CONFIRM
+// AI: "Based on workspace, I suggest uuSubApp (uu_frontend_aicodingg01-hi/src/)
+//      because 'Auction' appears to be application-specific. Is this correct?"
+// User: "Yes" ✅
+
+// STEP 3: VALIDATE
+list_dir("uu_frontend_aicodingg01-hi")     // ✅ exists
+list_dir("uu_frontend_aicodingg01-hi/src") // ✅ exists
+
+// STEP 4: PROCEED
+// Create: uu_frontend_aicodingg01-hi/src/auction/progress.js
+```
+
+**Critical Reminders:**
+- 🚫 **Never skip inference** - always analyze workspace first
+- 🚫 **Never assume** - always confirm with user
+- 🚫 **Never proceed** without validation
+- ✅ **Always present reasoning** for inferred location
+
+### 6.2 Nesting Levels
+
+Components should use appropriate nesting levels based on their usage context. Common nesting levels include:
+- **area**: Top-level container
+- **box**: Section container  
+- **inline**: Inline content
+- **spot**: Small inline elements
+
+**Note**: Use sensible defaults unless user specifies different nesting level requirements.
+
+### 6.3 State Management
+
+Use appropriate hooks:
+- `useState` - Local component state
+- `useDataList` - List data with pagination
+- `useDataObject` - Single object data
+- `useEffect` - Side effects and lifecycle
+
+For detailed implementation patterns, see [Visual Component Guide](mdc:docs/uu5/visual-component-guide.md).
+
+### 6.4 ESLint Fix
+> After completing component implementation and integration, you MUST run eslint fix to resolve any linting errors:
+> 
+> **Run ESLint Fix**:
+> ```bash
+> # Option 1: Direct eslint command
+> npx eslint src/ --fix
+> 
+> # Option 2: Using project-specific eslint config
+> npx eslint "src/**/*.js" --fix
+> ```
+> 
+> **Verify ESLint Results**:
+> - Check that all linting errors are resolved
+> - Ensure code follows project style guidelines
+> - Verify no new warnings are introduced
+> - Confirm all files pass linting checks
+> 
+> **If ESLint errors persist**:
+> - Review and fix any remaining manual errors
+> - Check for configuration issues
+> - Ensure all imports and dependencies are correct
+> - Re-run eslint fix until all errors are resolved
+> 
+> **Purpose**: Ensures the visual component code follows project standards and is free of linting errors before completion.
+
+## 7. Naming Conventions
+
+### 7.1 Dot Notation for Module Specification
+
+**IMPORTANT**: Users can specify both component name and module using dot notation.
+
+| Input Format | Module Path | Component Name | File Location |
+|--------------|-------------|----------------|---------------|
+| `UserProfile` | Must be specified separately | `UserProfile` | `[module]/user-profile.js` |
+| `User.Profile` | `user/` | `Profile` | `user/profile.js` |
+| `Internal.User.Profile` | `internal/user/` | `Profile` | `internal/user/profile.js` |
+
+**Rules**:
+1. **No dots** = Component name only, user must specify module separately
+2. **One dot** = `Module.Component` format, module is derived from first part
+3. **Multiple dots** = `Module1.Module2.Component` format, creates nested module structure
+
+**Examples with Location Inference**:
+
+```
+Example 1: Auction.Progress (with inference)
+- Workspace: uu_frontend_aicodingg01-hi/, uu_frontend_aicodingg01-core/
+- Component name: Progress
+- Inferred location: uuSubApp (because "Auction" is domain-specific)
+- Confirmation: "I suggest uuSubApp because 'Auction' appears to be application-specific. Is this correct?"
+- User confirms: Yes
+- Module: auction/
+- Type: simple (default - no confirmation needed)
+- Result: uu_frontend_aicodingg01-hi/src/auction/progress.js
+
+Example 2: User.Detail (with inference)
+- Workspace: uu_frontend_aicodingg01-hi/, uu_frontend_aicodingg01-core/
+- Component name: Detail
+- Inferred location: uuSubApp (domain-specific, default)
+- Confirmation: "I suggest uuSubApp for User.Detail. Is this correct, or should I use uu5Lib?"
+- User corrects: "Use uu5Lib core"
+- Module: user/
+- Type: Name suggests "detail" type → Ask user to confirm
+- Result: uu_frontend_aicodingg01-core/src/user/detail.js
+
+Example 3: GenericButton (with inference)
+- Workspace: uu_frontend_aicodingg01-hi/, uu_frontend_aicodingg01-bricks/
+- Component name: GenericButton
+- Inferred location: uu5Lib (bricks) (because "Generic" suggests reusable component)
+- Confirmation: "I suggest uu5Lib bricks because 'GenericButton' appears to be a reusable component. Is this correct?"
+- User confirms: Yes
+- Module: Must ask user (e.g., "generic-button")
+- Type: simple (default - no confirmation needed)
+- Result: uu_frontend_aicodingg01-bricks/src/generic-button/generic-button.js
+
+Example 4: UserProfile (only uuSubApp exists)
+- Workspace: uu_frontend_aicodingg01-hi/
+- Component name: UserProfile
+- Inferred location: uuSubApp (only package available)
+- Confirmation: "I suggest uuSubApp because it's the only package available. Is this correct?"
+- User confirms: Yes
+- Module: Must ask user (e.g., "user-profile")
+- Type: simple (default - no confirmation needed)
+- Result: uu_frontend_aicodingg01-hi/src/user-profile/user-profile.js
+```
+
+### 7.2 General Naming Conventions
+
+| Element | Convention | Example |
+|---------|-----------|---------|
+| Component name | PascalCase | `UserCard`, `ProductList`, `Profile` |
+| File name | kebab-case | `user-card.js`, `product-list.js`, `profile.js` |
+| Module name | kebab-case | `user-card/`, `product-list/`, `user/` |
+| Variables/functions | camelCase | `handleClick`, `userData` |
+| Constants | UPPER_CASE | `MAX_ITEMS`, `DEFAULT_TITLE` |
+
+**File naming rules**:
+- Main component: `component-name.js`
+- Content: `content.js`
+- Config: `config/config.js`
+- Test: `component-name.test.js`
+
+For detailed guidelines, see [Naming Conventions](mdc:docs/general-rules/naming-conventions.md).
+
+## 8. Testing Requirements
+
+All components must have tests covering:
+- ✅ Component rendering with different props
+- ✅ User interactions (clicks, inputs, etc.)
+- ✅ Error states and error handling
+- ✅ Loading states
+- ✅ Edge cases and boundary conditions
+
+**Optional test coverage** (only if specified by user or relevant to component):
+- ✅ Different nesting levels
+- ✅ Route integration
+- ✅ LSI translations
+
+For complete testing patterns and examples, see [UU5 Test Guide](mdc:docs/uu5/uu5-test-guide.md).
+
+## 9. Best Practices
+
+| Category | Best Practices |
+|----------|---------------|
+| **Component Design** | Single responsibility • Separation of concerns • Reusability • Composability |
+| **Props Design** | Meaningful names • Minimal props • Sensible defaults • Always define propTypes |
+| **Performance** | Avoid unnecessary renders • Lazy loading • Efficient updates • Stable keys for lists |
+| **Accessibility** | Semantic HTML • ARIA labels • Keyboard navigation • Focus management |
+| **Code Organization** | Consistent structure • Clear imports • Self-documenting code • Minimal comments |
+
+For detailed guidelines, see:
+- [Clean Code](mdc:docs/general-rules/clean-code.md)
+- [Style Guidelines](mdc:docs/general-rules/style-guidelines.md)
+- [Code Organization](mdc:docs/general-rules/code-organization.md)
+- [Visual Component Guide](mdc:docs/uu5/visual-component-guide.md)
+
+## 10. Troubleshooting
+
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| **Workspace analysis failed** | Unable to list workspace root or packages | Check workspace path • Verify file system permissions • List workspace root manually • Ask user to specify location directly |
+| **Incorrect location inferred** | Inference logic didn't match user's intent | Always confirm inferred location with user • Accept user corrections gracefully • Update inference if user provides better reasoning |
+| **Package not found** | Invalid package name or directory doesn't exist | Follow complete inference process • List workspace directories • Verify package exists • Ask user to clarify location |
+| **User disagrees with inference** | Different understanding of component purpose | Present inference as suggestion, not decision • Accept user's choice • Learn from correction for future inferences |
+| **Multiple matching packages** | Unclear which package to use | Present all options to user • Explain differences between uuSubApp and uu5Lib • Ask user which one fits their needs |
+| **Component not rendering** | Nesting level incompatibility or incorrect props | Check nesting level compatibility • Verify props are passed correctly • Check console for errors |
+| **ContentContainer not working** | Incorrect import or improper usage | Verify import from `uu_plus4u5g02-elements` • Check `splitProps` is called correctly • Ensure `nestingLevelList` is provided |
+| **Props not updating** | Component not re-rendering properly | Check component re-rendering logic • Verify state management • Check for reference equality issues |
+| **Tests failing** | Incorrect test setup or mock data | Verify test setup • Check mock data matches expected structure • Handle async operations properly |
+| **Nesting level errors** | Unsupported nesting level used | Verify parent component supports the nesting level • Check `nestingLevel` array definition |
+| **CSS not applying** | CSS module not configured correctly | Check config file • Verify CSS import • Ensure TAG is properly defined |
+
+**Debugging Tips**:
+- Use React DevTools to inspect component hierarchy and props
+- Add strategic console.log statements for debugging state
+- Use browser debugger breakpoints for step-through debugging
+- Check existing similar components in codebase for reference
+- Review workspace structure to understand available packages
+- Compare inferred location with similar existing components
+
+## Related Documentation
+
+**Component-Specific Rules**:
+- [Detail Component Rule](mdc:.cursor/rules/uu5-detail-component.mdc) - Full CRUD component implementation
+- [List Component Rule](mdc:.cursor/rules/uu5-list-component.mdc) - List components with filtering/sorting
+- [Create Component Rule](mdc:.cursor/rules/uu5-create-component.mdc) - Entity creation forms
+- [Form Component Rule](mdc:.cursor/rules/uu5-form-component.mdc) - Form validation and handling
+
+**UU5 Documentation**:
+- [Visual Component Guide](mdc:docs/uu5/visual-component-guide.md) - Detailed implementation patterns
+- [ContentContainer Guide](mdc:docs/uu5/content-container-guide.md) - ContentContainer integration
+- [UU5 Test Guide](mdc:docs/uu5/uu5-test-guide.md) - Testing patterns and examples
+- [LSI Guide](mdc:docs/uu5/lsi-guide.md) - Localization and translations
+- [Route Guide](mdc:docs/uu5/route-guide.md) - Route components
+
+**General Rules**:
+- [Clean Code](mdc:docs/general-rules/clean-code.md) - Code quality principles
+- [Style Guidelines](mdc:docs/general-rules/style-guidelines.md) - Coding style standards
+- [Naming Conventions](mdc:docs/general-rules/naming-conventions.md) - Naming rules
+- [Code Organization](mdc:docs/general-rules/code-organization.md) - File and code structure

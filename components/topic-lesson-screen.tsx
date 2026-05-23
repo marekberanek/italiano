@@ -8,9 +8,11 @@ import { PlayButton } from "@/components/play-button";
 import { Screen } from "@/components/screen";
 import { ScreenHeader } from "@/components/screen-header";
 import { SectionCard } from "@/components/section-card";
-import { Palette, Radius, Spacing, Typography } from "@/constants/theme";
+import type { ColorPalette } from "@/constants/theme";
+import { Radius, Spacing, Typography } from "@/constants/theme";
 import type { ContentBundleId } from "@/lib/content/bundle-ids";
 import { useItalianTts } from "@/hooks/use-italian-tts";
+import { useThemedStyles } from "@/hooks/use-themed-styles";
 import { useSyncedJson } from "@/hooks/use-synced-json";
 
 const TONES = ["brand", "accent", "ochre", "navy"] as const;
@@ -26,6 +28,7 @@ type Props = {
 export function TopicLessonScreen({ bundleId, fallback, title, subtitle }: Props) {
   const { data } = useSyncedJson(bundleId, fallback);
   const tts = useItalianTts();
+  const styles = useThemedStyles(createStyles);
   const [filter, setFilter] = useState<string>(ALL_FILTER);
 
   const visibleSections = useMemo(
@@ -95,36 +98,38 @@ export function TopicLessonScreen({ bundleId, fallback, title, subtitle }: Props
   );
 }
 
-const styles = StyleSheet.create({
-  chipsRow: {
-    gap: Spacing.sm,
-    paddingVertical: Spacing.xs,
-    paddingRight: Spacing.lg,
-  },
-  row: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: Spacing.md,
-    padding: Spacing.md,
-    borderRadius: Radius.md,
-    backgroundColor: Palette.surfaceMuted,
-  },
-  it: {
-    fontFamily: Typography.bodyStrong.fontFamily,
-    color: Palette.textStrong,
-    fontSize: 15,
-    fontStyle: "italic",
-  },
-  pron: {
-    ...Typography.small,
-    color: Palette.textMuted,
-    fontStyle: "italic",
-    fontSize: 12,
-  },
-  cz: { ...Typography.body, color: Palette.text, fontSize: 14 },
-  hint: {
-    ...Typography.small,
-    color: Palette.accent,
-    fontSize: 12,
-  },
-});
+function createStyles(p: ColorPalette) {
+  return StyleSheet.create({
+    chipsRow: {
+      gap: Spacing.sm,
+      paddingVertical: Spacing.xs,
+      paddingRight: Spacing.lg,
+    },
+    row: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: Spacing.md,
+      padding: Spacing.md,
+      borderRadius: Radius.md,
+      backgroundColor: p.surfaceMuted,
+    },
+    it: {
+      fontFamily: Typography.bodyStrong.fontFamily,
+      color: p.textStrong,
+      fontSize: 15,
+      fontStyle: "italic",
+    },
+    pron: {
+      ...Typography.small,
+      color: p.textMuted,
+      fontStyle: "italic",
+      fontSize: 12,
+    },
+    cz: { ...Typography.body, color: p.text, fontSize: 14 },
+    hint: {
+      ...Typography.small,
+      color: p.accent,
+      fontSize: 12,
+    },
+  });
+}

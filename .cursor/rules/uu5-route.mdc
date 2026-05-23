@@ -1,0 +1,329 @@
+---
+description: Route creation guide for UU5 applications including route registration, LSI configuration, ContentContainer integration, and mandatory testing requirements
+globs: 
+alwaysApply: false
+---
+# Creating a New Route in UU5 Application
+
+## Table of Contents
+
+1. @Introduction
+2. @Specifications and Confirmation
+3. @Route Creation Process
+4. @Registration and Integration
+5. @Testing Requirements
+6. @Best Practices
+7. @Troubleshooting
+
+## 1. Introduction
+
+This guide explains the process of adding a new route to your UU5 application.
+
+### 1.1 When to Use
+
+Use this guide when:
+- Creating new application routes
+- Adding navigation pages
+- Implementing route-level components
+
+### 1.2 Fundamental Rule
+
+⚠️ **ABSOLUTE MANDATORY REQUIREMENT** ⚠️
+
+**NO IMPLEMENTATION BEFORE USER CONFIRMATION - ZERO EXCEPTIONS!**
+
+Before writing ANY code, you MUST ALWAYS:
+
+1. 🛑 STOP and ASK the user to specify:
+   - Route name (descriptive of purpose)
+   - Route content type (blank, with component+RouteBar, or with component without RouteBar)
+   - Custom component name (if applicable)
+
+2. 🛑 WAIT for explicit user confirmation before proceeding.
+
+3. 🛑 DO NOT proceed with ANY implementation until you have received clear specifications.
+
+## 2. Specifications and Confirmation
+
+### 2.1 Define Route Name - MANDATORY
+
+Before creating a new route, you MUST define its name. The route name should:
+- Be descriptive of the route's purpose
+- Follow naming conventions (see Best Practices section)
+- Be unique within the application
+
+IMPORTANT: If the route name is not explicitly provided in the initial prompt, you MUST ask the user:
+"What would you like to name this route? The name should be descriptive of its purpose."
+
+DO NOT proceed with route creation until you have confirmed the route name with the user.
+
+### 2.2 Choose Route Content Type - MANDATORY
+
+After defining the route name, you NEED to determine what content the route will contain. Ask the user to choose between:
+
+1) **Blank route** - A minimal route with just the basic structure and RouteBar component
+2) **Route with custom component (with RouteBar)** - A route that includes a custom component and the RouteBar navigation
+3) **Route with custom component (without RouteBar)** - A route that includes a custom component that already has its own PositionBar
+
+If the user chooses option 2 or 3, ask them:
+"What is the name of the custom component you would like to include in this route?"
+
+DO NOT proceed with route creation until you have confirmed the route content with the user.
+
+## 3. Route Creation Process
+
+### 3.1 Update Language Files
+
+Do this only for routes with RouteBar inside.
+
+Before creating the route file, ensure that the route name is added to the language files (LSI):
+- Add the route name to the Menu section in `*-hi/src/lsi/en.json` and `*-hi/src/lsi/cs.json`
+- Confirm with the user what the display name should be in both English and Czech
+
+### 3.2 Create a New Route Component
+
+**MANDATORY – Verify Dependencies**
+
+Before you start importing any UI component (e.g. charts, tables) into the new route, you **MUST** ensure that the component's NPM package is already declared in the corresponding `package.json` and installed locally.  If the package is missing:
+
+1. Add it to `dependencies` in the correct `package.json`.
+2. Run the install command exactly as described in the [Package Management Guidelines](mdc:docs/general-rules/package-management.md) so that `node_modules` and the lock file are updated.
+
+🚫 **Do NOT continue with the route implementation until the installation succeeds.**
+
+Create a new component file in the `*-hi/src/routes` folder with the confirmed name.
+
+### IMPORTANT IMPLEMENTATION DETAILS:
+
+For **Option 1 (Blank route)** or **Option 2 (Route with custom component with RouteBar)**:
+- You MUST import the RouteBar component: `import RouteBar from "../core/route-bar.js";`
+- You MUST include the RouteBar component in the render method: `<RouteBar />`
+
+For **Option 3 (Route with custom component without RouteBar)**:
+- Do NOT include the RouteBar component
+
+**Assistant Rule (for AI usage)**
+
+Whenever a user requests to add components inside a grid, the AI assistant **MUST** consult and apply the instructions from this guide to place the components within a responsive grid layout, more in [grid-guide.md](mdc:docs/uu5/grid-guide.md)
+
+### ContentContainer Usage:
+
+**IMPORTANT**: When using ContentContainer in routes, ALWAYS use ContentContainer from the "uu_plus4u5g02-elements" package:
+
+```javascript
+//@@viewOn:imports
+import { ContentContainer } from "uu_plus4u5g02-elements";
+//@@viewOff:imports
+```
+
+Never create custom ContentContainer components. Always use the provided ContentContainer from the "uu_plus4u5g02-elements" package.
+
+**IMPORTANT: Do NOT forget to create tests for the route component**
+
+## 4. Registration and Integration
+
+### 4.1 Register the Route
+
+After creating the route file, update:
+1. The `ROUTE_MAP` in `*-hi/src/core/spa.js`
+2. The `actionList` in `*-hi/src/core/route-bar.js`
+
+## 5. Testing Requirements
+
+### 5.1 Create Tests - MANDATORY
+
+Every route MUST have corresponding tests located in `*-hi/test/routes/[routeFileName].test.js`.
+
+**MANDATORY – Implement Route Tests**
+
+1. Create a test file that follows the same naming convention as the route file (e.g., `nominations.js` → `nominations.test.js`)
+2. Tests MUST include:
+   - Basic UU5 property tests using `VisualComponent.testProperties`
+3. Test structure must follow the [UU5 Test Guide](mdc:docs/uu5/uu5-test-guide.md) for proper organization
+4. For routes ALWAYS implement the Recommended Utility described in [uu5-test-guide.md](mdc:docs/uu5/uu5-test-guide.md)
+
+```javascript
+//@@viewOn:imports
+// Example minimal test structure
+import { VisualComponent } from "uu5g05-test";
+import { createComponent } from "uu5g05";
+import RouteComponent from "../../src/routes/your-route.js";
+//@@viewOff:imports
+
+//@@viewOn:helpers
+// Setup component wrapper for testing
+const TestComponent = createComponent({
+  render(props) {
+    return <RouteComponent {...props} />;
+  }
+});
+
+async function setup(props = {}, opts) {
+  return VisualComponent.setup(TestComponent, props, { ...opts });
+}
+//@@viewOff:helpers
+
+describe(`YourRouteComponent`, () => {
+  // Basic UU5 property tests
+  describe(`uu5 base tests`, () => {
+    VisualComponent.testProperties(setup);
+  });
+  
+  // Component-specific tests (at least one required)
+  describe(`specific tests`, () => {
+    test("renders without crashing", async () => {
+      const component = await setup();
+      expect(component).toBeTruthy();
+    });
+  });
+});
+```
+
+🚫 **Do NOT consider route implementation complete until tests pass successfully.**
+
+Run the tests using `npm test -- -t YourRouteName` to verify they work correctly.
+
+### 5.2 ESLint Fix
+> After completing all testing and validation, you MUST run eslint fix to resolve any linting errors:
+> 
+> **Run ESLint Fix**:
+> ```bash
+> # Option 1: Direct eslint command
+> npx eslint src/ --fix
+> 
+> # Option 2: Using project-specific eslint config
+> npx eslint "src/**/*.js" --fix
+> ```
+> 
+> **Verify ESLint Results**:
+> - Check that all linting errors are resolved
+> - Ensure code follows project style guidelines
+> - Verify no new warnings are introduced
+> - Confirm all files pass linting checks
+> 
+> **If ESLint errors persist**:
+> - Review and fix any remaining manual errors
+> - Check for configuration issues
+> - Ensure all imports and dependencies are correct
+> - Re-run eslint fix until all errors are resolved
+> 
+> **Purpose**: Ensures the route component code follows project standards and is free of linting errors before completion.
+
+## 6. Best Practices
+
+- **Use PascalCase** for component files (e.g., `JokesManager.js`)
+- **Use kebab-case** for route URLs (e.g., `jokes-manager`)
+- **Group related routes** in subdirectories if your application grows
+- **Consider lazy loading** for larger routes to improve performance
+- **Use Plus4u5Elements.ContentContainer** when a route needs a container component
+- **Always include RouteBar** unless the component has its own PositionBar
+- **Import only what you need** to avoid dead code
+- **Remove empty sections** from component structure
+- **Test routes** with different props and scenarios
+
+## 7. Troubleshooting
+
+- If your route is not rendering, check that it is properly imported and registered in the `ROUTE_MAP`.
+- Ensure your component is properly exported as the default export.
+- Check the browser console for any errors.
+
+### 7.1 Visual Component Pattern
+
+> **NEW MANDATORY PATTERN (effective immediately)**
+> Each route component **MUST** follow this exact structure:
+> 1. Define the raw visual component in a variable whose name starts with an underscore (e.g. `_MyRoute`).
+> 2. Set `displayName` (or `uu5Tag`) with `Config.TAG + "MyRoute"`.
+> 3. Wrap the raw component using `withRoute(...)` and assign the result to a constant with the final component name (e.g. `const MyRoute = withRoute(_MyRoute, { authenticated: true });`).
+> 5. Use the `//@@viewOn` / `//@@viewOff` markers and `Utils.VisualComponent.getAttrs` (or `splitProps`) inside the component body.
+>
+> Any route that does not adhere to this pattern is considered invalid.
+
+### 7.2 Avoiding Dead Code in Route Components
+
+When creating route components or any visual components, follow these guidelines to avoid dead code:
+
+1. **Import Only What You Need**
+   - Only import components and utilities that are actually used in the file
+   - Remove any unused imports like `importLsi` if you're not using LSI strings directly
+
+2. **Remove Empty Sections**
+   - Don't include empty section markers like `//@@viewOn:constants` and `//@@viewOff:constants` if there are no constants
+   - Similarly for helpers, private sections, and interface sections - only include them if they contain code
+
+3. **Simplified Component Structure**
+   - Include only the necessary lifecycle methods and sections that contain actual code
+   - For a basic route, you typically only need:
+     - Imports
+     - CSS (if using custom styles)
+     - The component definition with statics, props, and render function
+     - Exports
+
+4. **Render Function Simplification**
+   - Only include private variables in the render function if they're actually used
+   - If you're not using LSI strings directly in the component, don't import or initialize them
+
+5. **Testing**
+   - After creating a component, review it for unused code before finalizing
+
+### 7.3 Example of a Clean Visual Component
+
+```javascript
+//@@viewOn:imports
+import { createVisualComponent, Utils } from "uu5g05";
+import { withRoute } from "uu_plus4u5g02-app";
+import Config from "./config/config.js";
+import RouteBar from "../core/route-bar.js";
+//@@viewOff:imports
+
+//@@viewOn:css
+const Css = {
+  main: (props) => Config.Css.css({}),
+};
+//@@viewOff:css
+
+const _MyComponent = createVisualComponent({
+  //@@viewOn:statics
+  uu5Tag: Config.TAG + "MyComponent",
+  nestingLevel: ["areaCollection", "area"],
+  //@@viewOff:statics
+
+  //@@viewOn:propTypes
+  propTypes: {},
+  //@@viewOff:propTypes
+
+  //@@viewOn:defaultProps
+  defaultProps: {},
+  //@@viewOff:defaultProps
+
+  render(props) {
+    //@@viewOn:render
+    const attrs = Utils.VisualComponent.getAttrs(props, Css.main(props));
+    return (
+      <div {...attrs}>
+        <RouteBar />
+        <div>MyComponent content goes here</div>
+      </div>
+    );
+    //@@viewOff:render
+  },
+});
+
+const MyComponent = withRoute(_MyComponent, { authenticated: true });
+
+//@@viewOn:exports
+export { MyComponent };
+export default MyComponent;
+//@@viewOff:exports
+```
+
+### 7.4 Test Your Component - MANDATORY
+   - Follow the [UU5 Test Guide](mdc:uu5-test-guide.md) for structure and best practices
+   - Include at least:
+     - `uu5 base tests` via `VisualComponent.testProperties`
+     - At least one component-specific test case
+   - **Location**: place test files under the `test` folder located next to `src`, mirroring the component's folder structure (e.g. `test/widgets/status-bar.test.js` for `src/widgets/status-bar.js`)
+   - Ensure tests run via `npm test` before committing
+   - 🚫 **NO ROUTE IS CONSIDERED COMPLETE WITHOUT TESTS** 
+
+
+

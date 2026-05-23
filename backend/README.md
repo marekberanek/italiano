@@ -26,6 +26,29 @@ Response body:
 
 DeepL detects the source language automatically. Czech input → Italian output, Italian input → Czech output. The handler picks the target language based on the detected source.
 
+## Multiple meanings (optional, LLM-backed)
+
+`POST /api/translate-meanings` returns up to four disambiguated senses for an ambiguous word (e.g. `sušička` → na prádlo / na potraviny / na vlasy). Used by the **„Další významy"** button on the *Hledat* screen.
+
+Request body:
+
+```json
+{ "query": "sušička" }
+```
+
+Response body:
+
+```json
+{
+  "meanings": [
+    { "it": "asciugatrice", "cz": "sušička", "gloss": "na prádlo", "example_it": "Ho comprato una nuova asciugatrice.", "example_cz": "Koupil jsem novou sušičku." },
+    { "it": "essiccatore", "cz": "sušička", "gloss": "na potraviny" }
+  ]
+}
+```
+
+Requires `ANTHROPIC_API_KEY` in env (Anthropic Claude Haiku). When unset, the endpoint returns **503** and the mobile app hides the button — DeepL translate still works.
+
 ## Local setup (Vercel)
 
 ```bash

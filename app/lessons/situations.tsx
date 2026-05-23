@@ -9,11 +9,15 @@ import { PlayButton } from "@/components/play-button";
 import { Screen } from "@/components/screen";
 import { ScreenHeader } from "@/components/screen-header";
 import { SectionCard } from "@/components/section-card";
-import { Palette, Radius, Spacing, Typography } from "@/constants/theme";
+import type { ColorPalette } from "@/constants/theme";
+import { Radius, Spacing, Typography } from "@/constants/theme";
+import { useThemedStyles } from "@/hooks/use-themed-styles";
+
 import { useItalianTts } from "@/hooks/use-italian-tts";
 import { useSyncedJson } from "@/hooks/use-synced-json";
 
 export default function SituationsScreen() {
+  const styles = useThemedStyles(createStyles);
   const { data } = useSyncedJson("situations", situationsFallback as SituationsData);
   const tts = useItalianTts();
   const [activeId, setActiveId] = useState<string>(situationsFallback.categories[0]?.id ?? "");
@@ -62,7 +66,8 @@ export default function SituationsScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+function createStyles(p: ColorPalette) {
+  return StyleSheet.create({
   chipsRow: {
     flexDirection: "row",
     flexWrap: "wrap",
@@ -74,19 +79,20 @@ const styles = StyleSheet.create({
     gap: Spacing.md,
     padding: Spacing.md,
     borderRadius: Radius.md,
-    backgroundColor: Palette.surfaceMuted,
+    backgroundColor: p.surfaceMuted,
   },
   it: {
     fontFamily: Typography.bodyStrong.fontFamily,
-    color: Palette.textStrong,
+    color: p.textStrong,
     fontSize: 15,
     fontStyle: "italic",
   },
   pron: {
     fontFamily: Typography.smallStrong.fontFamily,
-    color: Palette.accent,
+    color: p.accent,
     fontSize: 12,
     fontStyle: "italic",
   },
-  cz: { ...Typography.small, color: Palette.text },
-});
+  cz: { ...Typography.small, color: p.text },
+  });
+}

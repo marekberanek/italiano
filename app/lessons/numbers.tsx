@@ -9,13 +9,17 @@ import { PlayButton } from "@/components/play-button";
 import { Screen } from "@/components/screen";
 import { ScreenHeader } from "@/components/screen-header";
 import { SectionCard } from "@/components/section-card";
-import { Palette, Radius, Spacing, Typography } from "@/constants/theme";
+import type { ColorPalette } from "@/constants/theme";
+import { Radius, Spacing, Typography } from "@/constants/theme";
+import { useThemedStyles } from "@/hooks/use-themed-styles";
+
 import { useItalianTts } from "@/hooks/use-italian-tts";
 import { useSyncedJson } from "@/hooks/use-synced-json";
 
 type Section = "basic" | "composition";
 
 export default function NumbersScreen() {
+  const styles = useThemedStyles(createStyles);
   const { data } = useSyncedJson("numbers", numbersFallback as NumbersData);
   const tts = useItalianTts();
   const [section, setSection] = useState<Section>("basic");
@@ -75,7 +79,8 @@ export default function NumbersScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+function createStyles(p: ColorPalette) {
+  return StyleSheet.create({
   chipsRow: {
     flexDirection: "row",
     flexWrap: "wrap",
@@ -91,18 +96,18 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: Spacing.sm,
-    backgroundColor: Palette.ochreSoft,
+    backgroundColor: p.ochreSoft,
     borderRadius: Radius.md,
     padding: Spacing.md,
   },
   num: {
     fontFamily: Typography.display.fontFamily,
-    color: Palette.ochre,
+    color: p.ochre,
     fontSize: 18,
   },
   label: {
     ...Typography.small,
-    color: Palette.text,
+    color: p.text,
     fontSize: 12,
   },
   compRow: {
@@ -111,24 +116,25 @@ const styles = StyleSheet.create({
     gap: Spacing.md,
     padding: Spacing.md,
     borderRadius: Radius.md,
-    backgroundColor: Palette.brandSoft,
+    backgroundColor: p.brandSoft,
   },
   compNum: {
     fontFamily: Typography.display.fontFamily,
-    color: Palette.brandDark,
+    color: p.brandDark,
     fontSize: 18,
     minWidth: 36,
   },
   compLabel: {
     fontFamily: Typography.bodyStrong.fontFamily,
-    color: Palette.textStrong,
+    color: p.textStrong,
     fontSize: 14,
   },
   pron: {
     ...Typography.small,
-    color: Palette.textMuted,
+    color: p.textMuted,
     fontStyle: "italic",
     fontSize: 11,
     marginTop: 2,
   },
-});
+  });
+}

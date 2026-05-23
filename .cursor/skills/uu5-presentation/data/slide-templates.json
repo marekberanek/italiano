@@ -1,0 +1,4095 @@
+[
+  {
+    "id": "slide_01",
+    "name": "Welcome",
+    "category": "system",
+    "description": "Opening title slide with surtitle, title, and presenter on dark gradient background.",
+    "keywords": [
+      "welcome",
+      "intro",
+      "opening",
+      "title",
+      "presenter",
+      "first"
+    ],
+    "placeholders": [
+      "{{SURTITLE}}",
+      "{{TITLE}}",
+      "{{PRESENTER_NAME}}",
+      "{{PRESENTER_TITLE}}"
+    ],
+    "template": {
+      "uu5Tag": "Uu5Bricks.Background",
+      "props": {
+        "borderRadius": "none",
+        "margin": 0,
+        "gradient": "linear-gradient(to bottom, #001659 0%, #00154A 100%)"
+      },
+      "children": [
+        {
+          "uu5Tag": "Uu5Bricks.Slide",
+          "props": {
+            "contentEditable": true,
+            "padding": "<uu5json/>{}"
+          },
+          "children": [
+            {
+              "uu5Tag": "Uu5Bricks.Section",
+              "props": {
+                "style": "height:100%",
+                "contentPadding": "40px 40px 40px 40px",
+                "margin": 0,
+                "headerSeparator": false
+              },
+              "children": [
+                {
+                  "uu5Tag": "Uu5Bricks.Layout",
+                  "props": {
+                    "type": "columns",
+                    "margin": 0,
+                    "padding": 0,
+                    "style": "height:100%;"
+                  },
+                  "children": [
+                    {
+                      "uu5Tag": "Uu5Bricks.Layout.Item",
+                      "props": {
+                        "colSpan": "m: 12;",
+                        "alignSelf": "center"
+                      },
+                      "children": []
+                    },
+                    {
+                      "uu5Tag": "Uu5Bricks.Layout.Item",
+                      "props": {
+                        "colSpan": "m: 12;",
+                        "alignSelf": "end"
+                      },
+                      "children": [
+                        {
+                          "uu5Tag": "Uu5Bricks.Section",
+                          "props": {
+                            "headerSeparator": false,
+                            "margin": 0,
+                            "contentPadding": 0
+                          },
+                          "children": [
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"color\\\":\\\"#90CAF9\\\",\\\"fontSize\\\":\\\"16px\\\"}\">{{SURTITLE}}</span></strong>"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"color\\\":\\\"#FFFFFF\\\",\\\"fontSize\\\":\\\"32px\\\"}\">{{TITLE}}</span></strong>"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5Bricks.Layout",
+                              "props": {
+                                "type": "columns",
+                                "margin": "24px 0 0 0",
+                                "padding": 0,
+                                "minTileWidth": "200px",
+                                "tileLastRowJustify": "start"
+                              },
+                              "children": [
+                                {
+                                  "uu5Tag": "Uu5Bricks.Layout.Item",
+                                  "props": {
+                                    "colSpan": "m: 6;"
+                                  },
+                                  "children": [
+                                    {
+                                      "uu5Tag": "Uu5Bricks.InfoItem",
+                                      "props": {
+                                        "title": "{{PRESENTER_NAME}}",
+                                        "subtitle": "{{PRESENTER_TITLE}}",
+                                        "size": "xl",
+                                        "colorScheme": "primary",
+                                        "significance": "highlighted"
+                                      }
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "slide_02",
+    "name": "Demo",
+    "category": "system",
+    "description": "Static transition slide for live demo. Centered 'Demo' text on dark gradient.",
+    "keywords": [
+      "demo",
+      "live",
+      "transition"
+    ],
+    "placeholders": [],
+    "template": {
+      "uu5Tag": "Uu5Bricks.Background",
+      "props": {
+        "borderRadius": "none",
+        "margin": 0,
+        "gradient": "linear-gradient(to bottom, #001659 0%, #00154A 100%)"
+      },
+      "children": [
+        {
+          "uu5Tag": "Uu5Bricks.Slide",
+          "props": {
+            "contentEditable": true,
+            "padding": "<uu5json/>{}"
+          },
+          "children": [
+            {
+              "uu5Tag": "Uu5Bricks.Section",
+              "props": {
+                "style": "height:100%",
+                "contentPadding": "40px 40px 40px 40px",
+                "margin": 0,
+                "headerSeparator": false
+              },
+              "children": [
+                {
+                  "uu5Tag": "Uu5Bricks.Layout",
+                  "props": {
+                    "type": "columns",
+                    "margin": 0,
+                    "padding": 0,
+                    "style": "height:100%;"
+                  },
+                  "children": [
+                    {
+                      "uu5Tag": "Uu5Bricks.Layout.Item",
+                      "props": {
+                        "colSpan": "m: 12;",
+                        "alignSelf": "center",
+                        "style": "text-align:center;"
+                      },
+                      "children": [
+                        {
+                          "uu5Tag": "Uu5RichTextBricks.Block",
+                          "props": {
+                            "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"color\\\":\\\"#FFFFFF\\\",\\\"fontSize\\\":\\\"32px\\\"}\">Demo</span></strong>"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "slide_03",
+    "name": "Thank You",
+    "category": "system",
+    "description": "Closing slide. Centered 'Thank you for your attention' on dark gradient.",
+    "keywords": [
+      "thank",
+      "closing",
+      "end",
+      "final",
+      "outro"
+    ],
+    "placeholders": [],
+    "template": {
+      "uu5Tag": "Uu5Bricks.Background",
+      "props": {
+        "borderRadius": "none",
+        "margin": 0,
+        "gradient": "linear-gradient(to bottom, #001659 0%, #00154A 100%)"
+      },
+      "children": [
+        {
+          "uu5Tag": "Uu5Bricks.Slide",
+          "props": {
+            "contentEditable": true,
+            "padding": "<uu5json/>{}"
+          },
+          "children": [
+            {
+              "uu5Tag": "Uu5Bricks.Section",
+              "props": {
+                "style": "height:100%",
+                "contentPadding": "40px 40px 40px 40px",
+                "margin": 0,
+                "headerSeparator": false
+              },
+              "children": [
+                {
+                  "uu5Tag": "Uu5Bricks.Layout",
+                  "props": {
+                    "type": "columns",
+                    "margin": 0,
+                    "padding": 0,
+                    "style": "height:100%;"
+                  },
+                  "children": [
+                    {
+                      "uu5Tag": "Uu5Bricks.Layout.Item",
+                      "props": {
+                        "colSpan": "m: 12;",
+                        "alignSelf": "center",
+                        "style": "text-align:center;"
+                      },
+                      "children": [
+                        {
+                          "uu5Tag": "Uu5RichTextBricks.Block",
+                          "props": {
+                            "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"color\\\":\\\"#FFFFFF\\\",\\\"fontSize\\\":\\\"32px\\\"}\">Thank you for your attention</span></strong>"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "slide_04",
+    "name": "Key Points + Chart 1:1",
+    "category": "split",
+    "description": "Left blue panel with subtitle, title, 3 key point blocks. Right side for chart.",
+    "keywords": [
+      "key points",
+      "chart",
+      "split",
+      "1:1",
+      "status",
+      "progress"
+    ],
+    "placeholders": [
+      "{{SUBTITLE}}",
+      "{{TITLE}}",
+      "{{BLOCK_1_TITLE}}",
+      "{{BLOCK_1_BULLET_1}}",
+      "{{BLOCK_1_BULLET_2}}",
+      "{{BLOCK_2_TITLE}}",
+      "{{BLOCK_2_BULLET_1}}",
+      "{{BLOCK_2_BULLET_2}}",
+      "{{BLOCK_3_TITLE}}",
+      "{{BLOCK_3_BULLET_1}}",
+      "{{BLOCK_3_BULLET_2}}",
+      "{{CHART_PLACEHOLDER}}"
+    ],
+    "template": {
+      "uu5Tag": "Uu5Bricks.Slide",
+      "props": {
+        "contentEditable": true,
+        "padding": "0px"
+      },
+      "children": [
+        {
+          "uu5Tag": "Uu5Bricks.Background",
+          "props": {
+            "gradient": "linear-gradient(to bottom, #CAE6FC 0.5%, #FFFFFF 40%)",
+            "background": "soft",
+            "style": "height:100%; width:100%;",
+            "margin": 0,
+            "padding": 0,
+            "borderRadius": "none"
+          },
+          "children": [
+            {
+              "uu5Tag": "Uu5Bricks.Section",
+              "props": {
+                "style": "height: 100%",
+                "contentPadding": "40px 40px 0px 40px",
+                "margin": 0,
+                "headerSeparator": false
+              },
+              "children": [
+                {
+                  "uu5Tag": "Uu5Bricks.Layout",
+                  "props": {
+                    "type": "columns",
+                    "margin": 0,
+                    "padding": 0
+                  },
+                  "children": [
+                    {
+                      "uu5Tag": "Uu5Bricks.Layout.Item",
+                      "props": {
+                        "colSpan": "m: 6;"
+                      },
+                      "children": [
+                        {
+                          "uu5Tag": "Uu5Bricks.Background",
+                          "props": {
+                            "background": "soft",
+                            "color": "#E3F2FD",
+                            "borderRadius": "elementStandard",
+                            "padding": "c",
+                            "style": "height:100%"
+                          },
+                          "children": [
+                            {
+                              "uu5Tag": "Uu5Bricks.Section",
+                              "props": {
+                                "headerSeparator": false,
+                                "margin": "0 0 40px 0",
+                                "contentPadding": 0
+                              },
+                              "children": [
+                                {
+                                  "uu5Tag": "Uu5RichTextBricks.Block",
+                                  "props": {
+                                    "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"color\\\":\\\"#1976D2\\\",\\\"fontSize\\\":\\\"16px\\\"}\">{{SUBTITLE}}</span></strong>"
+                                  }
+                                },
+                                {
+                                  "uu5Tag": "Uu5RichTextBricks.Block",
+                                  "props": {
+                                    "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"color\\\":\\\"rgb(0, 0, 0)\\\",\\\"fontSize\\\":\\\"32px\\\"}\">{{TITLE}}</span></strong>"
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "uu5Tag": "Uu5Bricks.Section",
+                              "props": {
+                                "headerSeparator": false,
+                                "margin": "0 0 24px 0",
+                                "contentPadding": 0
+                              },
+                              "children": [
+                                {
+                                  "uu5Tag": "Uu5RichTextBricks.Block",
+                                  "props": {
+                                    "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"18px\\\"}\">{{BLOCK_1_TITLE}}</span></strong>"
+                                  }
+                                },
+                                {
+                                  "uu5Tag": "Uu5RichTextBricks.Block",
+                                  "props": {
+                                    "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"16px\\\"}\">{{BLOCK_1_BULLET_1}}</span>"
+                                  }
+                                },
+                                {
+                                  "uu5Tag": "Uu5RichTextBricks.Block",
+                                  "props": {
+                                    "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"16px\\\"}\">{{BLOCK_1_BULLET_2}}</span>"
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "uu5Tag": "Uu5Bricks.Section",
+                              "props": {
+                                "headerSeparator": false,
+                                "margin": "0 0 24px 0",
+                                "contentPadding": 0
+                              },
+                              "children": [
+                                {
+                                  "uu5Tag": "Uu5RichTextBricks.Block",
+                                  "props": {
+                                    "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"18px\\\"}\">{{BLOCK_2_TITLE}}</span></strong>"
+                                  }
+                                },
+                                {
+                                  "uu5Tag": "Uu5RichTextBricks.Block",
+                                  "props": {
+                                    "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"16px\\\"}\">{{BLOCK_2_BULLET_1}}</span>"
+                                  }
+                                },
+                                {
+                                  "uu5Tag": "Uu5RichTextBricks.Block",
+                                  "props": {
+                                    "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"16px\\\"}\">{{BLOCK_2_BULLET_2}}</span>"
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "uu5Tag": "Uu5Bricks.Section",
+                              "props": {
+                                "headerSeparator": false,
+                                "margin": "0 0 24px 0",
+                                "contentPadding": 0
+                              },
+                              "children": [
+                                {
+                                  "uu5Tag": "Uu5RichTextBricks.Block",
+                                  "props": {
+                                    "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"18px\\\"}\">{{BLOCK_3_TITLE}}</span></strong>"
+                                  }
+                                },
+                                {
+                                  "uu5Tag": "Uu5RichTextBricks.Block",
+                                  "props": {
+                                    "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"16px\\\"}\">{{BLOCK_3_BULLET_1}}</span>"
+                                  }
+                                },
+                                {
+                                  "uu5Tag": "Uu5RichTextBricks.Block",
+                                  "props": {
+                                    "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"16px\\\"}\">{{BLOCK_3_BULLET_2}}</span>"
+                                  }
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "uu5Tag": "Uu5Bricks.Layout.Item",
+                      "props": {
+                        "colSpan": "m: 6;"
+                      },
+                      "children": [
+                        {
+                          "uu5Tag": "Uu5RichTextBricks.Block",
+                          "props": {
+                            "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"color\\\":\\\"#757575\\\",\\\"fontSize\\\":\\\"16px\\\"}\">{{CHART_PLACEHOLDER}}</span>"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "slide_05",
+    "name": "Info Blocks + Chart 1:1",
+    "category": "split",
+    "description": "Left blue panel with subtitle, title, 3 icon-led info blocks. Right side for chart.",
+    "keywords": [
+      "info blocks",
+      "chart",
+      "split",
+      "1:1",
+      "categories",
+      "capabilities"
+    ],
+    "placeholders": [
+      "{{SUBTITLE}}",
+      "{{TITLE}}",
+      "{{ICON_1}}",
+      "{{BLOCK_1_HEADING}}",
+      "{{BLOCK_1_DESCRIPTION}}",
+      "{{ICON_2}}",
+      "{{BLOCK_2_HEADING}}",
+      "{{BLOCK_2_DESCRIPTION}}",
+      "{{ICON_3}}",
+      "{{BLOCK_3_HEADING}}",
+      "{{BLOCK_3_DESCRIPTION}}",
+      "{{CHART_PLACEHOLDER}}"
+    ],
+    "template": {
+      "uu5Tag": "Uu5Bricks.Slide",
+      "props": {
+        "contentEditable": true,
+        "padding": "0px"
+      },
+      "children": [
+        {
+          "uu5Tag": "Uu5Bricks.Background",
+          "props": {
+            "gradient": "linear-gradient(to bottom, #CAE6FC 0.5%, #FFFFFF 40%)",
+            "background": "soft",
+            "style": "height:100%; width:100%;",
+            "margin": 0,
+            "padding": 0,
+            "borderRadius": "none"
+          },
+          "children": [
+            {
+              "uu5Tag": "Uu5Bricks.Section",
+              "props": {
+                "style": "height: 100%",
+                "contentPadding": "40px 40px 0px 40px",
+                "margin": 0,
+                "headerSeparator": false
+              },
+              "children": [
+                {
+                  "uu5Tag": "Uu5Bricks.Layout",
+                  "props": {
+                    "type": "columns",
+                    "margin": 0,
+                    "padding": 0
+                  },
+                  "children": [
+                    {
+                      "uu5Tag": "Uu5Bricks.Layout.Item",
+                      "props": {
+                        "colSpan": "m: 6;"
+                      },
+                      "children": [
+                        {
+                          "uu5Tag": "Uu5Bricks.Background",
+                          "props": {
+                            "background": "soft",
+                            "color": "#E3F2FD",
+                            "borderRadius": "elementStandard",
+                            "padding": "c",
+                            "style": "height:100%"
+                          },
+                          "children": [
+                            {
+                              "uu5Tag": "Uu5Bricks.Section",
+                              "props": {
+                                "headerSeparator": false,
+                                "margin": "0 0 40px 0",
+                                "contentPadding": 0
+                              },
+                              "children": [
+                                {
+                                  "uu5Tag": "Uu5RichTextBricks.Block",
+                                  "props": {
+                                    "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"color\\\":\\\"#1976D2\\\",\\\"fontSize\\\":\\\"16px\\\"}\">{{SUBTITLE}}</span></strong>"
+                                  }
+                                },
+                                {
+                                  "uu5Tag": "Uu5RichTextBricks.Block",
+                                  "props": {
+                                    "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"color\\\":\\\"rgb(0, 0, 0)\\\",\\\"fontSize\\\":\\\"32px\\\"}\">{{TITLE}}</span></strong>"
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "uu5Tag": "Uu5Bricks.Layout",
+                              "props": {
+                                "type": "columns",
+                                "margin": "xs: 0px 0 24px;",
+                                "padding": "xs: 0;",
+                                "rowGap": "d",
+                                "alignItems": "start",
+                                "columnGap": "d"
+                              },
+                              "children": [
+                                {
+                                  "uu5Tag": "Uu5Bricks.Layout.Item",
+                                  "props": {
+                                    "colSpan": "m: 1; s: 1; xs: 1; l: 1; xl: 1;"
+                                  },
+                                  "children": [
+                                    {
+                                      "uu5Tag": "Uu5Bricks.InfoItem",
+                                      "props": {
+                                        "icon": "{{ICON_1}}",
+                                        "size": "l",
+                                        "colorScheme": "primary",
+                                        "margin": 0,
+                                        "significance": "highlighted"
+                                      }
+                                    }
+                                  ]
+                                },
+                                {
+                                  "uu5Tag": "Uu5Bricks.Layout.Item",
+                                  "props": {
+                                    "colSpan": "m: 11; xs: 11; s: 11; l: 11; xl: 11;"
+                                  },
+                                  "children": [
+                                    {
+                                      "uu5Tag": "Uu5Bricks.Section",
+                                      "props": {
+                                        "margin": 0,
+                                        "contentPadding": 0,
+                                        "headerSeparator": false,
+                                        "padding": "0 0 0 16px"
+                                      },
+                                      "children": [
+                                        {
+                                          "uu5Tag": "Uu5RichTextBricks.Block",
+                                          "props": {
+                                            "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"18px\\\"}\">{{BLOCK_1_HEADING}}</span></strong>"
+                                          }
+                                        },
+                                        {
+                                          "uu5Tag": "Uu5RichTextBricks.Block",
+                                          "props": {
+                                            "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"16px\\\"}\">{{BLOCK_1_DESCRIPTION}}</span>"
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "uu5Tag": "Uu5Bricks.Layout",
+                              "props": {
+                                "type": "columns",
+                                "margin": "xs: 0px 0 24px;",
+                                "padding": "xs: 0;",
+                                "rowGap": "d",
+                                "alignItems": "start",
+                                "columnGap": "d"
+                              },
+                              "children": [
+                                {
+                                  "uu5Tag": "Uu5Bricks.Layout.Item",
+                                  "props": {
+                                    "colSpan": "m: 1; s: 1; xs: 1; l: 1; xl: 1;"
+                                  },
+                                  "children": [
+                                    {
+                                      "uu5Tag": "Uu5Bricks.InfoItem",
+                                      "props": {
+                                        "icon": "{{ICON_2}}",
+                                        "size": "l",
+                                        "colorScheme": "primary",
+                                        "margin": 0,
+                                        "significance": "highlighted"
+                                      }
+                                    }
+                                  ]
+                                },
+                                {
+                                  "uu5Tag": "Uu5Bricks.Layout.Item",
+                                  "props": {
+                                    "colSpan": "m: 11; xs: 11; s: 11; l: 11; xl: 11;"
+                                  },
+                                  "children": [
+                                    {
+                                      "uu5Tag": "Uu5Bricks.Section",
+                                      "props": {
+                                        "margin": 0,
+                                        "contentPadding": 0,
+                                        "headerSeparator": false,
+                                        "padding": "0 0 0 16px"
+                                      },
+                                      "children": [
+                                        {
+                                          "uu5Tag": "Uu5RichTextBricks.Block",
+                                          "props": {
+                                            "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"18px\\\"}\">{{BLOCK_2_HEADING}}</span></strong>"
+                                          }
+                                        },
+                                        {
+                                          "uu5Tag": "Uu5RichTextBricks.Block",
+                                          "props": {
+                                            "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"16px\\\"}\">{{BLOCK_2_DESCRIPTION}}</span>"
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "uu5Tag": "Uu5Bricks.Layout",
+                              "props": {
+                                "type": "columns",
+                                "margin": "xs: 0px 0 24px;",
+                                "padding": "xs: 0;",
+                                "rowGap": "d",
+                                "alignItems": "start",
+                                "columnGap": "d"
+                              },
+                              "children": [
+                                {
+                                  "uu5Tag": "Uu5Bricks.Layout.Item",
+                                  "props": {
+                                    "colSpan": "m: 1; s: 1; xs: 1; l: 1; xl: 1;"
+                                  },
+                                  "children": [
+                                    {
+                                      "uu5Tag": "Uu5Bricks.InfoItem",
+                                      "props": {
+                                        "icon": "{{ICON_3}}",
+                                        "size": "l",
+                                        "colorScheme": "primary",
+                                        "margin": 0,
+                                        "significance": "highlighted"
+                                      }
+                                    }
+                                  ]
+                                },
+                                {
+                                  "uu5Tag": "Uu5Bricks.Layout.Item",
+                                  "props": {
+                                    "colSpan": "m: 11; xs: 11; s: 11; l: 11; xl: 11;"
+                                  },
+                                  "children": [
+                                    {
+                                      "uu5Tag": "Uu5Bricks.Section",
+                                      "props": {
+                                        "margin": 0,
+                                        "contentPadding": 0,
+                                        "headerSeparator": false,
+                                        "padding": "0 0 0 16px"
+                                      },
+                                      "children": [
+                                        {
+                                          "uu5Tag": "Uu5RichTextBricks.Block",
+                                          "props": {
+                                            "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"18px\\\"}\">{{BLOCK_3_HEADING}}</span></strong>"
+                                          }
+                                        },
+                                        {
+                                          "uu5Tag": "Uu5RichTextBricks.Block",
+                                          "props": {
+                                            "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"16px\\\"}\">{{BLOCK_3_DESCRIPTION}}</span>"
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "uu5Tag": "Uu5Bricks.Layout.Item",
+                      "props": {
+                        "colSpan": "m: 6;"
+                      },
+                      "children": [
+                        {
+                          "uu5Tag": "Uu5RichTextBricks.Block",
+                          "props": {
+                            "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"color\\\":\\\"#757575\\\",\\\"fontSize\\\":\\\"16px\\\"}\">{{CHART_PLACEHOLDER}}</span>"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "slide_06",
+    "name": "Description + Chart 1:1",
+    "category": "split",
+    "description": "Left blue panel with subtitle, title, 1-2 description paragraphs. Right side for chart.",
+    "keywords": [
+      "description",
+      "chart",
+      "split",
+      "1:1",
+      "summary",
+      "narrative"
+    ],
+    "placeholders": [
+      "{{SUBTITLE}}",
+      "{{TITLE}}",
+      "{{DESCRIPTION_1}}",
+      "{{DESCRIPTION_2}}",
+      "{{CHART_PLACEHOLDER}}"
+    ],
+    "template": {
+      "uu5Tag": "Uu5Bricks.Slide",
+      "props": {
+        "contentEditable": true,
+        "padding": "0px"
+      },
+      "children": [
+        {
+          "uu5Tag": "Uu5Bricks.Background",
+          "props": {
+            "gradient": "linear-gradient(to bottom, #CAE6FC 0.5%, #FFFFFF 40%)",
+            "background": "soft",
+            "style": "height:100%; width:100%;",
+            "margin": 0,
+            "padding": 0,
+            "borderRadius": "none"
+          },
+          "children": [
+            {
+              "uu5Tag": "Uu5Bricks.Section",
+              "props": {
+                "style": "height: 100%",
+                "contentPadding": "40px 40px 0px 40px",
+                "margin": 0,
+                "headerSeparator": false
+              },
+              "children": [
+                {
+                  "uu5Tag": "Uu5Bricks.Layout",
+                  "props": {
+                    "type": "columns",
+                    "margin": 0,
+                    "padding": 0
+                  },
+                  "children": [
+                    {
+                      "uu5Tag": "Uu5Bricks.Layout.Item",
+                      "props": {
+                        "colSpan": "m: 6;"
+                      },
+                      "children": [
+                        {
+                          "uu5Tag": "Uu5Bricks.Background",
+                          "props": {
+                            "background": "soft",
+                            "color": "#E3F2FD",
+                            "borderRadius": "elementStandard",
+                            "padding": "c",
+                            "style": "height:100%"
+                          },
+                          "children": [
+                            {
+                              "uu5Tag": "Uu5Bricks.Section",
+                              "props": {
+                                "headerSeparator": false,
+                                "margin": "0 0 40px 0",
+                                "contentPadding": 0
+                              },
+                              "children": [
+                                {
+                                  "uu5Tag": "Uu5RichTextBricks.Block",
+                                  "props": {
+                                    "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"color\\\":\\\"#1976D2\\\",\\\"fontSize\\\":\\\"16px\\\"}\">{{SUBTITLE}}</span></strong>"
+                                  }
+                                },
+                                {
+                                  "uu5Tag": "Uu5RichTextBricks.Block",
+                                  "props": {
+                                    "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"color\\\":\\\"rgb(0, 0, 0)\\\",\\\"fontSize\\\":\\\"32px\\\"}\">{{TITLE}}</span></strong>"
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"16px\\\"}\">{{DESCRIPTION_1}}</span>"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"16px\\\"}\">{{DESCRIPTION_2}}</span>"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "uu5Tag": "Uu5Bricks.Layout.Item",
+                      "props": {
+                        "colSpan": "m: 6;"
+                      },
+                      "children": [
+                        {
+                          "uu5Tag": "Uu5RichTextBricks.Block",
+                          "props": {
+                            "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"color\\\":\\\"#757575\\\",\\\"fontSize\\\":\\\"16px\\\"}\">{{CHART_PLACEHOLDER}}</span>"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "slide_07",
+    "name": "Key Points + Image 1:1",
+    "category": "split",
+    "description": "Left white area with subtitle, title, 3 key point blocks. Right blue panel for image.",
+    "keywords": [
+      "key points",
+      "image",
+      "split",
+      "1:1",
+      "screenshot",
+      "product"
+    ],
+    "placeholders": [
+      "{{SUBTITLE}}",
+      "{{TITLE}}",
+      "{{BLOCK_1_TITLE}}",
+      "{{BLOCK_1_BULLET_1}}",
+      "{{BLOCK_1_BULLET_2}}",
+      "{{BLOCK_2_TITLE}}",
+      "{{BLOCK_2_BULLET_1}}",
+      "{{BLOCK_2_BULLET_2}}",
+      "{{BLOCK_3_TITLE}}",
+      "{{BLOCK_3_BULLET_1}}",
+      "{{BLOCK_3_BULLET_2}}",
+      "{{IMAGE_PLACEHOLDER}}"
+    ],
+    "template": {
+      "uu5Tag": "Uu5Bricks.Slide",
+      "props": {
+        "contentEditable": true,
+        "padding": "0px"
+      },
+      "children": [
+        {
+          "uu5Tag": "Uu5Bricks.Background",
+          "props": {
+            "gradient": "linear-gradient(to bottom, #CAE6FC 0.5%, #FFFFFF 40%)",
+            "background": "soft",
+            "style": "height:100%; width:100%;",
+            "margin": 0,
+            "padding": 0,
+            "borderRadius": "none"
+          },
+          "children": [
+            {
+              "uu5Tag": "Uu5Bricks.Section",
+              "props": {
+                "style": "height: 100%",
+                "contentPadding": "40px 40px 0px 40px",
+                "margin": 0,
+                "headerSeparator": false
+              },
+              "children": [
+                {
+                  "uu5Tag": "Uu5Bricks.Layout",
+                  "props": {
+                    "type": "columns",
+                    "margin": 0,
+                    "padding": 0
+                  },
+                  "children": [
+                    {
+                      "uu5Tag": "Uu5Bricks.Layout.Item",
+                      "props": {
+                        "colSpan": "m: 6;"
+                      },
+                      "children": [
+                        {
+                          "uu5Tag": "Uu5Bricks.Section",
+                          "props": {
+                            "headerSeparator": false,
+                            "margin": "0 0 40px 0",
+                            "contentPadding": 0
+                          },
+                          "children": [
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"color\\\":\\\"#1976D2\\\",\\\"fontSize\\\":\\\"16px\\\"}\">{{SUBTITLE}}</span></strong>"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"color\\\":\\\"rgb(0, 0, 0)\\\",\\\"fontSize\\\":\\\"32px\\\"}\">{{TITLE}}</span></strong>"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "uu5Tag": "Uu5Bricks.Section",
+                          "props": {
+                            "headerSeparator": false,
+                            "margin": "0 0 24px 0",
+                            "contentPadding": 0
+                          },
+                          "children": [
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"18px\\\"}\">{{BLOCK_1_TITLE}}</span></strong>"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"16px\\\"}\">{{BLOCK_1_BULLET_1}}</span>"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"16px\\\"}\">{{BLOCK_1_BULLET_2}}</span>"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "uu5Tag": "Uu5Bricks.Section",
+                          "props": {
+                            "headerSeparator": false,
+                            "margin": "0 0 24px 0",
+                            "contentPadding": 0
+                          },
+                          "children": [
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"18px\\\"}\">{{BLOCK_2_TITLE}}</span></strong>"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"16px\\\"}\">{{BLOCK_2_BULLET_1}}</span>"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"16px\\\"}\">{{BLOCK_2_BULLET_2}}</span>"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "uu5Tag": "Uu5Bricks.Section",
+                          "props": {
+                            "headerSeparator": false,
+                            "margin": "0 0 24px 0",
+                            "contentPadding": 0
+                          },
+                          "children": [
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"18px\\\"}\">{{BLOCK_3_TITLE}}</span></strong>"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"16px\\\"}\">{{BLOCK_3_BULLET_1}}</span>"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"16px\\\"}\">{{BLOCK_3_BULLET_2}}</span>"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "uu5Tag": "Uu5Bricks.Layout.Item",
+                      "props": {
+                        "colSpan": "m: 6;"
+                      },
+                      "children": [
+                        {
+                          "uu5Tag": "Uu5Bricks.Background",
+                          "props": {
+                            "background": "soft",
+                            "color": "#E3F2FD",
+                            "borderRadius": "elementStandard",
+                            "padding": "c",
+                            "style": "height:100%"
+                          },
+                          "children": [
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"color\\\":\\\"#757575\\\",\\\"fontSize\\\":\\\"16px\\\"}\">{{IMAGE_PLACEHOLDER}}</span>"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "slide_08",
+    "name": "Info Blocks + Image 1:1",
+    "category": "split",
+    "description": "Left white area with subtitle, title, 3 icon-led info blocks. Right blue panel for image.",
+    "keywords": [
+      "info blocks",
+      "image",
+      "split",
+      "1:1",
+      "capabilities",
+      "screenshot"
+    ],
+    "placeholders": [
+      "{{SUBTITLE}}",
+      "{{TITLE}}",
+      "{{ICON_1}}",
+      "{{BLOCK_1_HEADING}}",
+      "{{BLOCK_1_DESCRIPTION}}",
+      "{{ICON_2}}",
+      "{{BLOCK_2_HEADING}}",
+      "{{BLOCK_2_DESCRIPTION}}",
+      "{{ICON_3}}",
+      "{{BLOCK_3_HEADING}}",
+      "{{BLOCK_3_DESCRIPTION}}",
+      "{{IMAGE_PLACEHOLDER}}"
+    ],
+    "template": {
+      "uu5Tag": "Uu5Bricks.Slide",
+      "props": {
+        "contentEditable": true,
+        "padding": "0px"
+      },
+      "children": [
+        {
+          "uu5Tag": "Uu5Bricks.Background",
+          "props": {
+            "gradient": "linear-gradient(to bottom, #CAE6FC 0.5%, #FFFFFF 40%)",
+            "background": "soft",
+            "style": "height:100%; width:100%;",
+            "margin": 0,
+            "padding": 0,
+            "borderRadius": "none"
+          },
+          "children": [
+            {
+              "uu5Tag": "Uu5Bricks.Section",
+              "props": {
+                "style": "height: 100%",
+                "contentPadding": "40px 40px 0px 40px",
+                "margin": 0,
+                "headerSeparator": false
+              },
+              "children": [
+                {
+                  "uu5Tag": "Uu5Bricks.Layout",
+                  "props": {
+                    "type": "columns",
+                    "margin": 0,
+                    "padding": 0
+                  },
+                  "children": [
+                    {
+                      "uu5Tag": "Uu5Bricks.Layout.Item",
+                      "props": {
+                        "colSpan": "m: 6;"
+                      },
+                      "children": [
+                        {
+                          "uu5Tag": "Uu5Bricks.Section",
+                          "props": {
+                            "headerSeparator": false,
+                            "margin": "0 0 40px 0",
+                            "contentPadding": 0
+                          },
+                          "children": [
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"color\\\":\\\"#1976D2\\\",\\\"fontSize\\\":\\\"16px\\\"}\">{{SUBTITLE}}</span></strong>"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"color\\\":\\\"rgb(0, 0, 0)\\\",\\\"fontSize\\\":\\\"32px\\\"}\">{{TITLE}}</span></strong>"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "uu5Tag": "Uu5Bricks.Layout",
+                          "props": {
+                            "type": "columns",
+                            "margin": "xs: 0px 0 24px;",
+                            "padding": "xs: 0;",
+                            "rowGap": "d",
+                            "alignItems": "start",
+                            "columnGap": "d"
+                          },
+                          "children": [
+                            {
+                              "uu5Tag": "Uu5Bricks.Layout.Item",
+                              "props": {
+                                "colSpan": "m: 1; s: 1; xs: 1; l: 1; xl: 1;"
+                              },
+                              "children": [
+                                {
+                                  "uu5Tag": "Uu5Bricks.InfoItem",
+                                  "props": {
+                                    "icon": "{{ICON_1}}",
+                                    "size": "l",
+                                    "colorScheme": "primary",
+                                    "margin": 0,
+                                    "significance": "highlighted"
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "uu5Tag": "Uu5Bricks.Layout.Item",
+                              "props": {
+                                "colSpan": "m: 11; xs: 11; s: 11; l: 11; xl: 11;"
+                              },
+                              "children": [
+                                {
+                                  "uu5Tag": "Uu5Bricks.Section",
+                                  "props": {
+                                    "margin": 0,
+                                    "contentPadding": 0,
+                                    "headerSeparator": false,
+                                    "padding": "0 0 0 16px"
+                                  },
+                                  "children": [
+                                    {
+                                      "uu5Tag": "Uu5RichTextBricks.Block",
+                                      "props": {
+                                        "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"18px\\\"}\">{{BLOCK_1_HEADING}}</span></strong>"
+                                      }
+                                    },
+                                    {
+                                      "uu5Tag": "Uu5RichTextBricks.Block",
+                                      "props": {
+                                        "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"16px\\\"}\">{{BLOCK_1_DESCRIPTION}}</span>"
+                                      }
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "uu5Tag": "Uu5Bricks.Layout",
+                          "props": {
+                            "type": "columns",
+                            "margin": "xs: 0px 0 24px;",
+                            "padding": "xs: 0;",
+                            "rowGap": "d",
+                            "alignItems": "start",
+                            "columnGap": "d"
+                          },
+                          "children": [
+                            {
+                              "uu5Tag": "Uu5Bricks.Layout.Item",
+                              "props": {
+                                "colSpan": "m: 1; s: 1; xs: 1; l: 1; xl: 1;"
+                              },
+                              "children": [
+                                {
+                                  "uu5Tag": "Uu5Bricks.InfoItem",
+                                  "props": {
+                                    "icon": "{{ICON_2}}",
+                                    "size": "l",
+                                    "colorScheme": "primary",
+                                    "margin": 0,
+                                    "significance": "highlighted"
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "uu5Tag": "Uu5Bricks.Layout.Item",
+                              "props": {
+                                "colSpan": "m: 11; xs: 11; s: 11; l: 11; xl: 11;"
+                              },
+                              "children": [
+                                {
+                                  "uu5Tag": "Uu5Bricks.Section",
+                                  "props": {
+                                    "margin": 0,
+                                    "contentPadding": 0,
+                                    "headerSeparator": false,
+                                    "padding": "0 0 0 16px"
+                                  },
+                                  "children": [
+                                    {
+                                      "uu5Tag": "Uu5RichTextBricks.Block",
+                                      "props": {
+                                        "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"18px\\\"}\">{{BLOCK_2_HEADING}}</span></strong>"
+                                      }
+                                    },
+                                    {
+                                      "uu5Tag": "Uu5RichTextBricks.Block",
+                                      "props": {
+                                        "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"16px\\\"}\">{{BLOCK_2_DESCRIPTION}}</span>"
+                                      }
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "uu5Tag": "Uu5Bricks.Layout",
+                          "props": {
+                            "type": "columns",
+                            "margin": "xs: 0px 0 24px;",
+                            "padding": "xs: 0;",
+                            "rowGap": "d",
+                            "alignItems": "start",
+                            "columnGap": "d"
+                          },
+                          "children": [
+                            {
+                              "uu5Tag": "Uu5Bricks.Layout.Item",
+                              "props": {
+                                "colSpan": "m: 1; s: 1; xs: 1; l: 1; xl: 1;"
+                              },
+                              "children": [
+                                {
+                                  "uu5Tag": "Uu5Bricks.InfoItem",
+                                  "props": {
+                                    "icon": "{{ICON_3}}",
+                                    "size": "l",
+                                    "colorScheme": "primary",
+                                    "margin": 0,
+                                    "significance": "highlighted"
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "uu5Tag": "Uu5Bricks.Layout.Item",
+                              "props": {
+                                "colSpan": "m: 11; xs: 11; s: 11; l: 11; xl: 11;"
+                              },
+                              "children": [
+                                {
+                                  "uu5Tag": "Uu5Bricks.Section",
+                                  "props": {
+                                    "margin": 0,
+                                    "contentPadding": 0,
+                                    "headerSeparator": false,
+                                    "padding": "0 0 0 16px"
+                                  },
+                                  "children": [
+                                    {
+                                      "uu5Tag": "Uu5RichTextBricks.Block",
+                                      "props": {
+                                        "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"18px\\\"}\">{{BLOCK_3_HEADING}}</span></strong>"
+                                      }
+                                    },
+                                    {
+                                      "uu5Tag": "Uu5RichTextBricks.Block",
+                                      "props": {
+                                        "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"16px\\\"}\">{{BLOCK_3_DESCRIPTION}}</span>"
+                                      }
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "uu5Tag": "Uu5Bricks.Layout.Item",
+                      "props": {
+                        "colSpan": "m: 6;"
+                      },
+                      "children": [
+                        {
+                          "uu5Tag": "Uu5Bricks.Background",
+                          "props": {
+                            "background": "soft",
+                            "color": "#E3F2FD",
+                            "borderRadius": "elementStandard",
+                            "padding": "c",
+                            "style": "height:100%"
+                          },
+                          "children": [
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"color\\\":\\\"#757575\\\",\\\"fontSize\\\":\\\"16px\\\"}\">{{IMAGE_PLACEHOLDER}}</span>"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "slide_09",
+    "name": "Description + Image 1:1",
+    "category": "split",
+    "description": "Left white area with subtitle, title, description paragraphs. Right blue panel for image.",
+    "keywords": [
+      "description",
+      "image",
+      "split",
+      "1:1",
+      "summary",
+      "screenshot"
+    ],
+    "placeholders": [
+      "{{SUBTITLE}}",
+      "{{TITLE}}",
+      "{{DESCRIPTION_1}}",
+      "{{DESCRIPTION_2}}",
+      "{{IMAGE_PLACEHOLDER}}"
+    ],
+    "template": {
+      "uu5Tag": "Uu5Bricks.Slide",
+      "props": {
+        "contentEditable": true,
+        "padding": "0px"
+      },
+      "children": [
+        {
+          "uu5Tag": "Uu5Bricks.Background",
+          "props": {
+            "gradient": "linear-gradient(to bottom, #CAE6FC 0.5%, #FFFFFF 40%)",
+            "background": "soft",
+            "style": "height:100%; width:100%;",
+            "margin": 0,
+            "padding": 0,
+            "borderRadius": "none"
+          },
+          "children": [
+            {
+              "uu5Tag": "Uu5Bricks.Section",
+              "props": {
+                "style": "height: 100%",
+                "contentPadding": "40px 40px 0px 40px",
+                "margin": 0,
+                "headerSeparator": false
+              },
+              "children": [
+                {
+                  "uu5Tag": "Uu5Bricks.Layout",
+                  "props": {
+                    "type": "columns",
+                    "margin": 0,
+                    "padding": 0
+                  },
+                  "children": [
+                    {
+                      "uu5Tag": "Uu5Bricks.Layout.Item",
+                      "props": {
+                        "colSpan": "m: 6;"
+                      },
+                      "children": [
+                        {
+                          "uu5Tag": "Uu5Bricks.Section",
+                          "props": {
+                            "headerSeparator": false,
+                            "margin": "0 0 40px 0",
+                            "contentPadding": 0
+                          },
+                          "children": [
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"color\\\":\\\"#1976D2\\\",\\\"fontSize\\\":\\\"16px\\\"}\">{{SUBTITLE}}</span></strong>"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"color\\\":\\\"rgb(0, 0, 0)\\\",\\\"fontSize\\\":\\\"32px\\\"}\">{{TITLE}}</span></strong>"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "uu5Tag": "Uu5RichTextBricks.Block",
+                          "props": {
+                            "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"16px\\\"}\">{{DESCRIPTION_1}}</span>"
+                          }
+                        },
+                        {
+                          "uu5Tag": "Uu5RichTextBricks.Block",
+                          "props": {
+                            "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"16px\\\"}\">{{DESCRIPTION_2}}</span>"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "uu5Tag": "Uu5Bricks.Layout.Item",
+                      "props": {
+                        "colSpan": "m: 6;"
+                      },
+                      "children": [
+                        {
+                          "uu5Tag": "Uu5Bricks.Background",
+                          "props": {
+                            "background": "soft",
+                            "color": "#E3F2FD",
+                            "borderRadius": "elementStandard",
+                            "padding": "c",
+                            "style": "height:100%"
+                          },
+                          "children": [
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"color\\\":\\\"#757575\\\",\\\"fontSize\\\":\\\"16px\\\"}\">{{IMAGE_PLACEHOLDER}}</span>"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "slide_10",
+    "name": "Key Points + Image Gradient",
+    "category": "split",
+    "description": "Full gradient background with subtitle, title, 3 key point blocks left, image right.",
+    "keywords": [
+      "key points",
+      "image",
+      "gradient",
+      "split",
+      "visual",
+      "branded"
+    ],
+    "placeholders": [
+      "{{SUBTITLE}}",
+      "{{TITLE}}",
+      "{{BLOCK_1_TITLE}}",
+      "{{BLOCK_1_BULLET_1}}",
+      "{{BLOCK_1_BULLET_2}}",
+      "{{BLOCK_2_TITLE}}",
+      "{{BLOCK_2_BULLET_1}}",
+      "{{BLOCK_2_BULLET_2}}",
+      "{{BLOCK_3_TITLE}}",
+      "{{BLOCK_3_BULLET_1}}",
+      "{{BLOCK_3_BULLET_2}}",
+      "{{IMAGE_PLACEHOLDER}}"
+    ],
+    "template": {
+      "uu5Tag": "Uu5Bricks.Slide",
+      "props": {
+        "contentEditable": true,
+        "padding": "0px"
+      },
+      "children": [
+        {
+          "uu5Tag": "Uu5Bricks.Background",
+          "props": {
+            "gradient": "linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 50%, #E8F5E9 100%)",
+            "style": "height:100%; width:100%;",
+            "margin": 0,
+            "padding": 0,
+            "borderRadius": "none"
+          },
+          "children": [
+            {
+              "uu5Tag": "Uu5Bricks.Section",
+              "props": {
+                "style": "height: 100%",
+                "contentPadding": "40px",
+                "margin": 0,
+                "headerSeparator": false
+              },
+              "children": [
+                {
+                  "uu5Tag": "Uu5Bricks.Section",
+                  "props": {
+                    "headerSeparator": false,
+                    "margin": "0 0 40px 0",
+                    "contentPadding": 0
+                  },
+                  "children": [
+                    {
+                      "uu5Tag": "Uu5RichTextBricks.Block",
+                      "props": {
+                        "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"color\\\":\\\"#1976D2\\\",\\\"fontSize\\\":\\\"16px\\\"}\">{{SUBTITLE}}</span></strong>"
+                      }
+                    },
+                    {
+                      "uu5Tag": "Uu5RichTextBricks.Block",
+                      "props": {
+                        "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"color\\\":\\\"rgb(0, 0, 0)\\\",\\\"fontSize\\\":\\\"32px\\\"}\">{{TITLE}}</span></strong>"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "uu5Tag": "Uu5Bricks.Layout",
+                  "props": {
+                    "type": "columns",
+                    "margin": 0,
+                    "padding": 0
+                  },
+                  "children": [
+                    {
+                      "uu5Tag": "Uu5Bricks.Layout.Item",
+                      "props": {
+                        "colSpan": "m: 6;"
+                      },
+                      "children": [
+                        {
+                          "uu5Tag": "Uu5Bricks.Section",
+                          "props": {
+                            "headerSeparator": false,
+                            "margin": "0 0 24px 0",
+                            "contentPadding": 0
+                          },
+                          "children": [
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"18px\\\"}\">{{BLOCK_1_TITLE}}</span></strong>"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"16px\\\"}\">{{BLOCK_1_BULLET_1}}</span>"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"16px\\\"}\">{{BLOCK_1_BULLET_2}}</span>"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "uu5Tag": "Uu5Bricks.Section",
+                          "props": {
+                            "headerSeparator": false,
+                            "margin": "0 0 24px 0",
+                            "contentPadding": 0
+                          },
+                          "children": [
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"18px\\\"}\">{{BLOCK_2_TITLE}}</span></strong>"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"16px\\\"}\">{{BLOCK_2_BULLET_1}}</span>"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"16px\\\"}\">{{BLOCK_2_BULLET_2}}</span>"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "uu5Tag": "Uu5Bricks.Section",
+                          "props": {
+                            "headerSeparator": false,
+                            "margin": "0 0 24px 0",
+                            "contentPadding": 0
+                          },
+                          "children": [
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"18px\\\"}\">{{BLOCK_3_TITLE}}</span></strong>"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"16px\\\"}\">{{BLOCK_3_BULLET_1}}</span>"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"16px\\\"}\">{{BLOCK_3_BULLET_2}}</span>"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "uu5Tag": "Uu5Bricks.Layout.Item",
+                      "props": {
+                        "colSpan": "m: 6;"
+                      },
+                      "children": [
+                        {
+                          "uu5Tag": "Uu5RichTextBricks.Block",
+                          "props": {
+                            "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"color\\\":\\\"#757575\\\",\\\"fontSize\\\":\\\"16px\\\"}\">{{IMAGE_PLACEHOLDER}}</span>"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "slide_13",
+    "name": "2 Cards",
+    "category": "cards",
+    "description": "Subtitle, title, 2-column grid with icon cards. Moderate content per card.",
+    "keywords": [
+      "cards",
+      "2",
+      "two",
+      "comparison",
+      "priorities"
+    ],
+    "placeholders": [
+      "{{SUBTITLE}}",
+      "{{TITLE}}",
+      "{{CARD_1_ICON}}",
+      "{{CARD_1_HEADING}}",
+      "{{CARD_1_TEXT}}",
+      "{{CARD_2_ICON}}",
+      "{{CARD_2_HEADING}}",
+      "{{CARD_2_TEXT}}"
+    ],
+    "template": {
+      "uu5Tag": "Uu5Bricks.Slide",
+      "props": {
+        "contentEditable": true,
+        "padding": "0px"
+      },
+      "children": [
+        {
+          "uu5Tag": "Uu5Bricks.Background",
+          "props": {
+            "gradient": "linear-gradient(to bottom, #CAE6FC 0.5%, #FFFFFF 40%)",
+            "background": "soft",
+            "style": "height:100%; width:100%;",
+            "margin": 0,
+            "padding": 0,
+            "borderRadius": "none"
+          },
+          "children": [
+            {
+              "uu5Tag": "Uu5Bricks.Section",
+              "props": {
+                "style": "height: 100%",
+                "contentPadding": "40px 40px 0px 40px",
+                "margin": 0,
+                "headerSeparator": false
+              },
+              "children": [
+                {
+                  "uu5Tag": "Uu5Bricks.Section",
+                  "props": {
+                    "headerSeparator": false,
+                    "margin": "0 0 40px 0",
+                    "contentPadding": 0
+                  },
+                  "children": [
+                    {
+                      "uu5Tag": "Uu5RichTextBricks.Block",
+                      "props": {
+                        "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"color\\\":\\\"#1976D2\\\",\\\"fontSize\\\":\\\"16px\\\"}\">{{SUBTITLE}}</span></strong>"
+                      }
+                    },
+                    {
+                      "uu5Tag": "Uu5RichTextBricks.Block",
+                      "props": {
+                        "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"color\\\":\\\"rgb(0, 0, 0)\\\",\\\"fontSize\\\":\\\"32px\\\"}\">{{TITLE}}</span></strong>"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "uu5Tag": "Uu5Bricks.Layout",
+                  "props": {
+                    "type": "columns",
+                    "margin": 0,
+                    "padding": 0,
+                    "columnGap": "d"
+                  },
+                  "children": [
+                    {
+                      "uu5Tag": "Uu5Bricks.Layout.Item",
+                      "props": {
+                        "colSpan": "m: 6;"
+                      },
+                      "children": [
+                        {
+                          "uu5Tag": "Uu5Bricks.Card",
+                          "props": {
+                            "headerSeparator": false,
+                            "significance": "distinct",
+                            "margin": 0,
+                            "contentPadding": "b c",
+                            "colorScheme": "primary"
+                          },
+                          "children": [
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "style": "margin-bottom:16px;",
+                                "uu5String": "<uu5string/><Uu5Elements.Icon icon=\"{{CARD_1_ICON}}\" style=\"<uu5json/>{\\\"fontSize\\\":\\\"32px\\\", \\\"color\\\":\\\"#1976D2\\\"}\" />"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"18px\\\"}\">{{CARD_1_HEADING}}</span></strong>"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"15px\\\"}\">{{CARD_1_TEXT}}</span>"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "uu5Tag": "Uu5Bricks.Layout.Item",
+                      "props": {
+                        "colSpan": "m: 6;"
+                      },
+                      "children": [
+                        {
+                          "uu5Tag": "Uu5Bricks.Card",
+                          "props": {
+                            "headerSeparator": false,
+                            "significance": "distinct",
+                            "margin": 0,
+                            "contentPadding": "b c",
+                            "colorScheme": "primary"
+                          },
+                          "children": [
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "style": "margin-bottom:16px;",
+                                "uu5String": "<uu5string/><Uu5Elements.Icon icon=\"{{CARD_2_ICON}}\" style=\"<uu5json/>{\\\"fontSize\\\":\\\"32px\\\", \\\"color\\\":\\\"#1976D2\\\"}\" />"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"18px\\\"}\">{{CARD_2_HEADING}}</span></strong>"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"15px\\\"}\">{{CARD_2_TEXT}}</span>"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "slide_14",
+    "name": "3 Cards",
+    "category": "cards",
+    "description": "Subtitle, title, 3-column grid with icon cards. Compressed content per card.",
+    "keywords": [
+      "cards",
+      "3",
+      "three",
+      "priorities",
+      "capabilities"
+    ],
+    "placeholders": [
+      "{{SUBTITLE}}",
+      "{{TITLE}}",
+      "{{CARD_1_ICON}}",
+      "{{CARD_1_HEADING}}",
+      "{{CARD_1_TEXT}}",
+      "{{CARD_2_ICON}}",
+      "{{CARD_2_HEADING}}",
+      "{{CARD_2_TEXT}}",
+      "{{CARD_3_ICON}}",
+      "{{CARD_3_HEADING}}",
+      "{{CARD_3_TEXT}}"
+    ],
+    "template": {
+      "uu5Tag": "Uu5Bricks.Slide",
+      "props": {
+        "contentEditable": true,
+        "padding": "0px"
+      },
+      "children": [
+        {
+          "uu5Tag": "Uu5Bricks.Background",
+          "props": {
+            "gradient": "linear-gradient(to bottom, #CAE6FC 0.5%, #FFFFFF 40%)",
+            "background": "soft",
+            "style": "height:100%; width:100%;",
+            "margin": 0,
+            "padding": 0,
+            "borderRadius": "none"
+          },
+          "children": [
+            {
+              "uu5Tag": "Uu5Bricks.Section",
+              "props": {
+                "style": "height: 100%",
+                "contentPadding": "40px 40px 0px 40px",
+                "margin": 0,
+                "headerSeparator": false
+              },
+              "children": [
+                {
+                  "uu5Tag": "Uu5Bricks.Section",
+                  "props": {
+                    "headerSeparator": false,
+                    "margin": "0 0 40px 0",
+                    "contentPadding": 0
+                  },
+                  "children": [
+                    {
+                      "uu5Tag": "Uu5RichTextBricks.Block",
+                      "props": {
+                        "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"color\\\":\\\"#1976D2\\\",\\\"fontSize\\\":\\\"16px\\\"}\">{{SUBTITLE}}</span></strong>"
+                      }
+                    },
+                    {
+                      "uu5Tag": "Uu5RichTextBricks.Block",
+                      "props": {
+                        "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"color\\\":\\\"rgb(0, 0, 0)\\\",\\\"fontSize\\\":\\\"32px\\\"}\">{{TITLE}}</span></strong>"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "uu5Tag": "Uu5Bricks.Layout",
+                  "props": {
+                    "type": "columns",
+                    "margin": 0,
+                    "padding": 0,
+                    "columnGap": "d"
+                  },
+                  "children": [
+                    {
+                      "uu5Tag": "Uu5Bricks.Layout.Item",
+                      "props": {
+                        "colSpan": "m: 4;"
+                      },
+                      "children": [
+                        {
+                          "uu5Tag": "Uu5Bricks.Card",
+                          "props": {
+                            "headerSeparator": false,
+                            "significance": "distinct",
+                            "margin": 0,
+                            "contentPadding": "b c",
+                            "colorScheme": "primary"
+                          },
+                          "children": [
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "style": "margin-bottom:16px;",
+                                "uu5String": "<uu5string/><Uu5Elements.Icon icon=\"{{CARD_1_ICON}}\" style=\"<uu5json/>{\\\"fontSize\\\":\\\"32px\\\", \\\"color\\\":\\\"#1976D2\\\"}\" />"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"18px\\\"}\">{{CARD_1_HEADING}}</span></strong>"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"15px\\\"}\">{{CARD_1_TEXT}}</span>"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "uu5Tag": "Uu5Bricks.Layout.Item",
+                      "props": {
+                        "colSpan": "m: 4;"
+                      },
+                      "children": [
+                        {
+                          "uu5Tag": "Uu5Bricks.Card",
+                          "props": {
+                            "headerSeparator": false,
+                            "significance": "distinct",
+                            "margin": 0,
+                            "contentPadding": "b c",
+                            "colorScheme": "primary"
+                          },
+                          "children": [
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "style": "margin-bottom:16px;",
+                                "uu5String": "<uu5string/><Uu5Elements.Icon icon=\"{{CARD_2_ICON}}\" style=\"<uu5json/>{\\\"fontSize\\\":\\\"32px\\\", \\\"color\\\":\\\"#1976D2\\\"}\" />"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"18px\\\"}\">{{CARD_2_HEADING}}</span></strong>"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"15px\\\"}\">{{CARD_2_TEXT}}</span>"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "uu5Tag": "Uu5Bricks.Layout.Item",
+                      "props": {
+                        "colSpan": "m: 4;"
+                      },
+                      "children": [
+                        {
+                          "uu5Tag": "Uu5Bricks.Card",
+                          "props": {
+                            "headerSeparator": false,
+                            "significance": "distinct",
+                            "margin": 0,
+                            "contentPadding": "b c",
+                            "colorScheme": "primary"
+                          },
+                          "children": [
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "style": "margin-bottom:16px;",
+                                "uu5String": "<uu5string/><Uu5Elements.Icon icon=\"{{CARD_3_ICON}}\" style=\"<uu5json/>{\\\"fontSize\\\":\\\"32px\\\", \\\"color\\\":\\\"#1976D2\\\"}\" />"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"18px\\\"}\">{{CARD_3_HEADING}}</span></strong>"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"15px\\\"}\">{{CARD_3_TEXT}}</span>"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "slide_44",
+    "name": "4 Cards",
+    "category": "cards",
+    "description": "Subtitle, title, 2x2 grid with icon cards. One short line per card.",
+    "keywords": [
+      "cards",
+      "4",
+      "four",
+      "grid",
+      "priorities",
+      "status"
+    ],
+    "placeholders": [
+      "{{SUBTITLE}}",
+      "{{TITLE}}",
+      "{{CARD_1_ICON}}",
+      "{{CARD_1_HEADING}}",
+      "{{CARD_1_TEXT}}",
+      "{{CARD_2_ICON}}",
+      "{{CARD_2_HEADING}}",
+      "{{CARD_2_TEXT}}",
+      "{{CARD_3_ICON}}",
+      "{{CARD_3_HEADING}}",
+      "{{CARD_3_TEXT}}",
+      "{{CARD_4_ICON}}",
+      "{{CARD_4_HEADING}}",
+      "{{CARD_4_TEXT}}"
+    ],
+    "template": {
+      "uu5Tag": "Uu5Bricks.Slide",
+      "props": {
+        "contentEditable": true,
+        "padding": "0px"
+      },
+      "children": [
+        {
+          "uu5Tag": "Uu5Bricks.Background",
+          "props": {
+            "gradient": "linear-gradient(to bottom, #CAE6FC 0.5%, #FFFFFF 40%)",
+            "background": "soft",
+            "style": "height:100%; width:100%;",
+            "margin": 0,
+            "padding": 0,
+            "borderRadius": "none"
+          },
+          "children": [
+            {
+              "uu5Tag": "Uu5Bricks.Section",
+              "props": {
+                "style": "height: 100%",
+                "contentPadding": "40px 40px 0px 40px",
+                "margin": 0,
+                "headerSeparator": false
+              },
+              "children": [
+                {
+                  "uu5Tag": "Uu5Bricks.Section",
+                  "props": {
+                    "headerSeparator": false,
+                    "margin": "0 0 40px 0",
+                    "contentPadding": 0
+                  },
+                  "children": [
+                    {
+                      "uu5Tag": "Uu5RichTextBricks.Block",
+                      "props": {
+                        "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"color\\\":\\\"#1976D2\\\",\\\"fontSize\\\":\\\"16px\\\"}\">{{SUBTITLE}}</span></strong>"
+                      }
+                    },
+                    {
+                      "uu5Tag": "Uu5RichTextBricks.Block",
+                      "props": {
+                        "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"color\\\":\\\"rgb(0, 0, 0)\\\",\\\"fontSize\\\":\\\"32px\\\"}\">{{TITLE}}</span></strong>"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "uu5Tag": "Uu5Bricks.Layout",
+                  "props": {
+                    "type": "columns",
+                    "margin": 0,
+                    "padding": 0,
+                    "columnGap": "d",
+                    "rowGap": "d"
+                  },
+                  "children": [
+                    {
+                      "uu5Tag": "Uu5Bricks.Layout.Item",
+                      "props": {
+                        "colSpan": "m: 6;"
+                      },
+                      "children": [
+                        {
+                          "uu5Tag": "Uu5Bricks.Card",
+                          "props": {
+                            "headerSeparator": false,
+                            "significance": "distinct",
+                            "margin": 0,
+                            "contentPadding": "b c",
+                            "colorScheme": "primary"
+                          },
+                          "children": [
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "style": "margin-bottom:16px;",
+                                "uu5String": "<uu5string/><Uu5Elements.Icon icon=\"{{CARD_1_ICON}}\" style=\"<uu5json/>{\\\"fontSize\\\":\\\"32px\\\", \\\"color\\\":\\\"#1976D2\\\"}\" />"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"18px\\\"}\">{{CARD_1_HEADING}}</span></strong>"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"15px\\\"}\">{{CARD_1_TEXT}}</span>"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "uu5Tag": "Uu5Bricks.Layout.Item",
+                      "props": {
+                        "colSpan": "m: 6;"
+                      },
+                      "children": [
+                        {
+                          "uu5Tag": "Uu5Bricks.Card",
+                          "props": {
+                            "headerSeparator": false,
+                            "significance": "distinct",
+                            "margin": 0,
+                            "contentPadding": "b c",
+                            "colorScheme": "primary"
+                          },
+                          "children": [
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "style": "margin-bottom:16px;",
+                                "uu5String": "<uu5string/><Uu5Elements.Icon icon=\"{{CARD_2_ICON}}\" style=\"<uu5json/>{\\\"fontSize\\\":\\\"32px\\\", \\\"color\\\":\\\"#1976D2\\\"}\" />"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"18px\\\"}\">{{CARD_2_HEADING}}</span></strong>"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"15px\\\"}\">{{CARD_2_TEXT}}</span>"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "uu5Tag": "Uu5Bricks.Layout.Item",
+                      "props": {
+                        "colSpan": "m: 6;"
+                      },
+                      "children": [
+                        {
+                          "uu5Tag": "Uu5Bricks.Card",
+                          "props": {
+                            "headerSeparator": false,
+                            "significance": "distinct",
+                            "margin": 0,
+                            "contentPadding": "b c",
+                            "colorScheme": "primary"
+                          },
+                          "children": [
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "style": "margin-bottom:16px;",
+                                "uu5String": "<uu5string/><Uu5Elements.Icon icon=\"{{CARD_3_ICON}}\" style=\"<uu5json/>{\\\"fontSize\\\":\\\"32px\\\", \\\"color\\\":\\\"#1976D2\\\"}\" />"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"18px\\\"}\">{{CARD_3_HEADING}}</span></strong>"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"15px\\\"}\">{{CARD_3_TEXT}}</span>"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "uu5Tag": "Uu5Bricks.Layout.Item",
+                      "props": {
+                        "colSpan": "m: 6;"
+                      },
+                      "children": [
+                        {
+                          "uu5Tag": "Uu5Bricks.Card",
+                          "props": {
+                            "headerSeparator": false,
+                            "significance": "distinct",
+                            "margin": 0,
+                            "contentPadding": "b c",
+                            "colorScheme": "primary"
+                          },
+                          "children": [
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "style": "margin-bottom:16px;",
+                                "uu5String": "<uu5string/><Uu5Elements.Icon icon=\"{{CARD_4_ICON}}\" style=\"<uu5json/>{\\\"fontSize\\\":\\\"32px\\\", \\\"color\\\":\\\"#1976D2\\\"}\" />"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"18px\\\"}\">{{CARD_4_HEADING}}</span></strong>"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"15px\\\"}\">{{CARD_4_TEXT}}</span>"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "slide_15",
+    "name": "6 Cards",
+    "category": "cards",
+    "description": "Subtitle, title, 3x2 grid with icon cards. Overview-level, very compact.",
+    "keywords": [
+      "cards",
+      "6",
+      "six",
+      "grid",
+      "overview",
+      "capabilities"
+    ],
+    "placeholders": [
+      "{{SUBTITLE}}",
+      "{{TITLE}}",
+      "{{CARD_1_ICON}}",
+      "{{CARD_1_HEADING}}",
+      "{{CARD_1_TEXT}}",
+      "{{CARD_2_ICON}}",
+      "{{CARD_2_HEADING}}",
+      "{{CARD_2_TEXT}}",
+      "{{CARD_3_ICON}}",
+      "{{CARD_3_HEADING}}",
+      "{{CARD_3_TEXT}}",
+      "{{CARD_4_ICON}}",
+      "{{CARD_4_HEADING}}",
+      "{{CARD_4_TEXT}}",
+      "{{CARD_5_ICON}}",
+      "{{CARD_5_HEADING}}",
+      "{{CARD_5_TEXT}}",
+      "{{CARD_6_ICON}}",
+      "{{CARD_6_HEADING}}",
+      "{{CARD_6_TEXT}}"
+    ],
+    "template": {
+      "uu5Tag": "Uu5Bricks.Slide",
+      "props": {
+        "contentEditable": true,
+        "padding": "0px"
+      },
+      "children": [
+        {
+          "uu5Tag": "Uu5Bricks.Background",
+          "props": {
+            "gradient": "linear-gradient(to bottom, #CAE6FC 0.5%, #FFFFFF 40%)",
+            "background": "soft",
+            "style": "height:100%; width:100%;",
+            "margin": 0,
+            "padding": 0,
+            "borderRadius": "none"
+          },
+          "children": [
+            {
+              "uu5Tag": "Uu5Bricks.Section",
+              "props": {
+                "style": "height: 100%",
+                "contentPadding": "40px 40px 0px 40px",
+                "margin": 0,
+                "headerSeparator": false
+              },
+              "children": [
+                {
+                  "uu5Tag": "Uu5Bricks.Section",
+                  "props": {
+                    "headerSeparator": false,
+                    "margin": "0 0 40px 0",
+                    "contentPadding": 0
+                  },
+                  "children": [
+                    {
+                      "uu5Tag": "Uu5RichTextBricks.Block",
+                      "props": {
+                        "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"color\\\":\\\"#1976D2\\\",\\\"fontSize\\\":\\\"16px\\\"}\">{{SUBTITLE}}</span></strong>"
+                      }
+                    },
+                    {
+                      "uu5Tag": "Uu5RichTextBricks.Block",
+                      "props": {
+                        "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"color\\\":\\\"rgb(0, 0, 0)\\\",\\\"fontSize\\\":\\\"32px\\\"}\">{{TITLE}}</span></strong>"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "uu5Tag": "Uu5Bricks.Layout",
+                  "props": {
+                    "type": "columns",
+                    "margin": 0,
+                    "padding": 0,
+                    "columnGap": "d",
+                    "rowGap": "d"
+                  },
+                  "children": [
+                    {
+                      "uu5Tag": "Uu5Bricks.Layout.Item",
+                      "props": {
+                        "colSpan": "m: 4;"
+                      },
+                      "children": [
+                        {
+                          "uu5Tag": "Uu5Bricks.Card",
+                          "props": {
+                            "headerSeparator": false,
+                            "significance": "distinct",
+                            "margin": 0,
+                            "contentPadding": "b c",
+                            "colorScheme": "primary"
+                          },
+                          "children": [
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "style": "margin-bottom:16px;",
+                                "uu5String": "<uu5string/><Uu5Elements.Icon icon=\"{{CARD_1_ICON}}\" style=\"<uu5json/>{\\\"fontSize\\\":\\\"32px\\\", \\\"color\\\":\\\"#1976D2\\\"}\" />"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"18px\\\"}\">{{CARD_1_HEADING}}</span></strong>"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"15px\\\"}\">{{CARD_1_TEXT}}</span>"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "uu5Tag": "Uu5Bricks.Layout.Item",
+                      "props": {
+                        "colSpan": "m: 4;"
+                      },
+                      "children": [
+                        {
+                          "uu5Tag": "Uu5Bricks.Card",
+                          "props": {
+                            "headerSeparator": false,
+                            "significance": "distinct",
+                            "margin": 0,
+                            "contentPadding": "b c",
+                            "colorScheme": "primary"
+                          },
+                          "children": [
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "style": "margin-bottom:16px;",
+                                "uu5String": "<uu5string/><Uu5Elements.Icon icon=\"{{CARD_2_ICON}}\" style=\"<uu5json/>{\\\"fontSize\\\":\\\"32px\\\", \\\"color\\\":\\\"#1976D2\\\"}\" />"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"18px\\\"}\">{{CARD_2_HEADING}}</span></strong>"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"15px\\\"}\">{{CARD_2_TEXT}}</span>"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "uu5Tag": "Uu5Bricks.Layout.Item",
+                      "props": {
+                        "colSpan": "m: 4;"
+                      },
+                      "children": [
+                        {
+                          "uu5Tag": "Uu5Bricks.Card",
+                          "props": {
+                            "headerSeparator": false,
+                            "significance": "distinct",
+                            "margin": 0,
+                            "contentPadding": "b c",
+                            "colorScheme": "primary"
+                          },
+                          "children": [
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "style": "margin-bottom:16px;",
+                                "uu5String": "<uu5string/><Uu5Elements.Icon icon=\"{{CARD_3_ICON}}\" style=\"<uu5json/>{\\\"fontSize\\\":\\\"32px\\\", \\\"color\\\":\\\"#1976D2\\\"}\" />"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"18px\\\"}\">{{CARD_3_HEADING}}</span></strong>"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"15px\\\"}\">{{CARD_3_TEXT}}</span>"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "uu5Tag": "Uu5Bricks.Layout.Item",
+                      "props": {
+                        "colSpan": "m: 4;"
+                      },
+                      "children": [
+                        {
+                          "uu5Tag": "Uu5Bricks.Card",
+                          "props": {
+                            "headerSeparator": false,
+                            "significance": "distinct",
+                            "margin": 0,
+                            "contentPadding": "b c",
+                            "colorScheme": "primary"
+                          },
+                          "children": [
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "style": "margin-bottom:16px;",
+                                "uu5String": "<uu5string/><Uu5Elements.Icon icon=\"{{CARD_4_ICON}}\" style=\"<uu5json/>{\\\"fontSize\\\":\\\"32px\\\", \\\"color\\\":\\\"#1976D2\\\"}\" />"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"18px\\\"}\">{{CARD_4_HEADING}}</span></strong>"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"15px\\\"}\">{{CARD_4_TEXT}}</span>"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "uu5Tag": "Uu5Bricks.Layout.Item",
+                      "props": {
+                        "colSpan": "m: 4;"
+                      },
+                      "children": [
+                        {
+                          "uu5Tag": "Uu5Bricks.Card",
+                          "props": {
+                            "headerSeparator": false,
+                            "significance": "distinct",
+                            "margin": 0,
+                            "contentPadding": "b c",
+                            "colorScheme": "primary"
+                          },
+                          "children": [
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "style": "margin-bottom:16px;",
+                                "uu5String": "<uu5string/><Uu5Elements.Icon icon=\"{{CARD_5_ICON}}\" style=\"<uu5json/>{\\\"fontSize\\\":\\\"32px\\\", \\\"color\\\":\\\"#1976D2\\\"}\" />"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"18px\\\"}\">{{CARD_5_HEADING}}</span></strong>"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"15px\\\"}\">{{CARD_5_TEXT}}</span>"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "uu5Tag": "Uu5Bricks.Layout.Item",
+                      "props": {
+                        "colSpan": "m: 4;"
+                      },
+                      "children": [
+                        {
+                          "uu5Tag": "Uu5Bricks.Card",
+                          "props": {
+                            "headerSeparator": false,
+                            "significance": "distinct",
+                            "margin": 0,
+                            "contentPadding": "b c",
+                            "colorScheme": "primary"
+                          },
+                          "children": [
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "style": "margin-bottom:16px;",
+                                "uu5String": "<uu5string/><Uu5Elements.Icon icon=\"{{CARD_6_ICON}}\" style=\"<uu5json/>{\\\"fontSize\\\":\\\"32px\\\", \\\"color\\\":\\\"#1976D2\\\"}\" />"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"18px\\\"}\">{{CARD_6_HEADING}}</span></strong>"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"15px\\\"}\">{{CARD_6_TEXT}}</span>"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "slide_17",
+    "name": "3 Info Blocks",
+    "category": "content",
+    "description": "Subtitle, title, 3 stacked icon-led info blocks without card containers.",
+    "keywords": [
+      "info blocks",
+      "3",
+      "three",
+      "open",
+      "icon",
+      "items"
+    ],
+    "placeholders": [
+      "{{SUBTITLE}}",
+      "{{TITLE}}",
+      "{{ICON_1}}",
+      "{{BLOCK_1_HEADING}}",
+      "{{BLOCK_1_DESCRIPTION}}",
+      "{{ICON_2}}",
+      "{{BLOCK_2_HEADING}}",
+      "{{BLOCK_2_DESCRIPTION}}",
+      "{{ICON_3}}",
+      "{{BLOCK_3_HEADING}}",
+      "{{BLOCK_3_DESCRIPTION}}"
+    ],
+    "template": {
+      "uu5Tag": "Uu5Bricks.Slide",
+      "props": {
+        "contentEditable": true,
+        "padding": "0px"
+      },
+      "children": [
+        {
+          "uu5Tag": "Uu5Bricks.Background",
+          "props": {
+            "gradient": "linear-gradient(to bottom, #CAE6FC 0.5%, #FFFFFF 40%)",
+            "background": "soft",
+            "style": "height:100%; width:100%;",
+            "margin": 0,
+            "padding": 0,
+            "borderRadius": "none"
+          },
+          "children": [
+            {
+              "uu5Tag": "Uu5Bricks.Section",
+              "props": {
+                "style": "height: 100%",
+                "contentPadding": "40px 40px 0px 40px",
+                "margin": 0,
+                "headerSeparator": false
+              },
+              "children": [
+                {
+                  "uu5Tag": "Uu5Bricks.Section",
+                  "props": {
+                    "headerSeparator": false,
+                    "margin": "0 0 40px 0",
+                    "contentPadding": 0
+                  },
+                  "children": [
+                    {
+                      "uu5Tag": "Uu5RichTextBricks.Block",
+                      "props": {
+                        "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"color\\\":\\\"#1976D2\\\",\\\"fontSize\\\":\\\"16px\\\"}\">{{SUBTITLE}}</span></strong>"
+                      }
+                    },
+                    {
+                      "uu5Tag": "Uu5RichTextBricks.Block",
+                      "props": {
+                        "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"color\\\":\\\"rgb(0, 0, 0)\\\",\\\"fontSize\\\":\\\"32px\\\"}\">{{TITLE}}</span></strong>"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "uu5Tag": "Uu5Bricks.Layout",
+                  "props": {
+                    "type": "columns",
+                    "margin": "xs: 0px 0 24px;",
+                    "padding": "xs: 0;",
+                    "rowGap": "d",
+                    "alignItems": "start",
+                    "columnGap": "d"
+                  },
+                  "children": [
+                    {
+                      "uu5Tag": "Uu5Bricks.Layout.Item",
+                      "props": {
+                        "colSpan": "m: 1; s: 1; xs: 1; l: 1; xl: 1;"
+                      },
+                      "children": [
+                        {
+                          "uu5Tag": "Uu5Bricks.InfoItem",
+                          "props": {
+                            "icon": "{{ICON_1}}",
+                            "size": "l",
+                            "colorScheme": "primary",
+                            "margin": 0,
+                            "significance": "highlighted"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "uu5Tag": "Uu5Bricks.Layout.Item",
+                      "props": {
+                        "colSpan": "m: 11; xs: 11; s: 11; l: 11; xl: 11;"
+                      },
+                      "children": [
+                        {
+                          "uu5Tag": "Uu5Bricks.Section",
+                          "props": {
+                            "margin": 0,
+                            "contentPadding": 0,
+                            "headerSeparator": false,
+                            "padding": "0 0 0 16px"
+                          },
+                          "children": [
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"18px\\\"}\">{{BLOCK_1_HEADING}}</span></strong>"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"16px\\\"}\">{{BLOCK_1_DESCRIPTION}}</span>"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "uu5Tag": "Uu5Bricks.Layout",
+                  "props": {
+                    "type": "columns",
+                    "margin": "xs: 0px 0 24px;",
+                    "padding": "xs: 0;",
+                    "rowGap": "d",
+                    "alignItems": "start",
+                    "columnGap": "d"
+                  },
+                  "children": [
+                    {
+                      "uu5Tag": "Uu5Bricks.Layout.Item",
+                      "props": {
+                        "colSpan": "m: 1; s: 1; xs: 1; l: 1; xl: 1;"
+                      },
+                      "children": [
+                        {
+                          "uu5Tag": "Uu5Bricks.InfoItem",
+                          "props": {
+                            "icon": "{{ICON_2}}",
+                            "size": "l",
+                            "colorScheme": "primary",
+                            "margin": 0,
+                            "significance": "highlighted"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "uu5Tag": "Uu5Bricks.Layout.Item",
+                      "props": {
+                        "colSpan": "m: 11; xs: 11; s: 11; l: 11; xl: 11;"
+                      },
+                      "children": [
+                        {
+                          "uu5Tag": "Uu5Bricks.Section",
+                          "props": {
+                            "margin": 0,
+                            "contentPadding": 0,
+                            "headerSeparator": false,
+                            "padding": "0 0 0 16px"
+                          },
+                          "children": [
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"18px\\\"}\">{{BLOCK_2_HEADING}}</span></strong>"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"16px\\\"}\">{{BLOCK_2_DESCRIPTION}}</span>"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "uu5Tag": "Uu5Bricks.Layout",
+                  "props": {
+                    "type": "columns",
+                    "margin": "xs: 0px 0 24px;",
+                    "padding": "xs: 0;",
+                    "rowGap": "d",
+                    "alignItems": "start",
+                    "columnGap": "d"
+                  },
+                  "children": [
+                    {
+                      "uu5Tag": "Uu5Bricks.Layout.Item",
+                      "props": {
+                        "colSpan": "m: 1; s: 1; xs: 1; l: 1; xl: 1;"
+                      },
+                      "children": [
+                        {
+                          "uu5Tag": "Uu5Bricks.InfoItem",
+                          "props": {
+                            "icon": "{{ICON_3}}",
+                            "size": "l",
+                            "colorScheme": "primary",
+                            "margin": 0,
+                            "significance": "highlighted"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "uu5Tag": "Uu5Bricks.Layout.Item",
+                      "props": {
+                        "colSpan": "m: 11; xs: 11; s: 11; l: 11; xl: 11;"
+                      },
+                      "children": [
+                        {
+                          "uu5Tag": "Uu5Bricks.Section",
+                          "props": {
+                            "margin": 0,
+                            "contentPadding": 0,
+                            "headerSeparator": false,
+                            "padding": "0 0 0 16px"
+                          },
+                          "children": [
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"18px\\\"}\">{{BLOCK_3_HEADING}}</span></strong>"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"16px\\\"}\">{{BLOCK_3_DESCRIPTION}}</span>"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "slide_19",
+    "name": "2 Images + Description",
+    "category": "media",
+    "description": "Subtitle, title, 2-column grid with image placeholder + heading + description per image.",
+    "keywords": [
+      "images",
+      "2",
+      "two",
+      "gallery",
+      "comparison",
+      "screenshots"
+    ],
+    "placeholders": [
+      "{{SUBTITLE}}",
+      "{{TITLE}}",
+      "{{IMAGE_1_PLACEHOLDER}}",
+      "{{IMAGE_1_HEADING}}",
+      "{{IMAGE_1_DESCRIPTION}}",
+      "{{IMAGE_2_PLACEHOLDER}}",
+      "{{IMAGE_2_HEADING}}",
+      "{{IMAGE_2_DESCRIPTION}}"
+    ],
+    "template": {
+      "uu5Tag": "Uu5Bricks.Slide",
+      "props": {
+        "contentEditable": true,
+        "padding": "0px"
+      },
+      "children": [
+        {
+          "uu5Tag": "Uu5Bricks.Background",
+          "props": {
+            "gradient": "linear-gradient(to bottom, #CAE6FC 0.5%, #FFFFFF 40%)",
+            "background": "soft",
+            "style": "height:100%; width:100%;",
+            "margin": 0,
+            "padding": 0,
+            "borderRadius": "none"
+          },
+          "children": [
+            {
+              "uu5Tag": "Uu5Bricks.Section",
+              "props": {
+                "style": "height: 100%",
+                "contentPadding": "40px 40px 0px 40px",
+                "margin": 0,
+                "headerSeparator": false
+              },
+              "children": [
+                {
+                  "uu5Tag": "Uu5Bricks.Section",
+                  "props": {
+                    "headerSeparator": false,
+                    "margin": "0 0 40px 0",
+                    "contentPadding": 0
+                  },
+                  "children": [
+                    {
+                      "uu5Tag": "Uu5RichTextBricks.Block",
+                      "props": {
+                        "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"color\\\":\\\"#1976D2\\\",\\\"fontSize\\\":\\\"16px\\\"}\">{{SUBTITLE}}</span></strong>"
+                      }
+                    },
+                    {
+                      "uu5Tag": "Uu5RichTextBricks.Block",
+                      "props": {
+                        "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"color\\\":\\\"rgb(0, 0, 0)\\\",\\\"fontSize\\\":\\\"32px\\\"}\">{{TITLE}}</span></strong>"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "uu5Tag": "Uu5Bricks.Layout",
+                  "props": {
+                    "type": "columns",
+                    "margin": 0,
+                    "padding": 0,
+                    "columnGap": "d"
+                  },
+                  "children": [
+                    {
+                      "uu5Tag": "Uu5Bricks.Layout.Item",
+                      "props": {
+                        "colSpan": "m: 6;"
+                      },
+                      "children": [
+                        {
+                          "uu5Tag": "Uu5RichTextBricks.Block",
+                          "props": {
+                            "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"color\\\":\\\"#757575\\\",\\\"fontSize\\\":\\\"16px\\\"}\">{{IMAGE_1_PLACEHOLDER}}</span>"
+                          }
+                        },
+                        {
+                          "uu5Tag": "Uu5RichTextBricks.Block",
+                          "props": {
+                            "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"18px\\\"}\">{{IMAGE_1_HEADING}}</span></strong>"
+                          }
+                        },
+                        {
+                          "uu5Tag": "Uu5RichTextBricks.Block",
+                          "props": {
+                            "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"16px\\\"}\">{{IMAGE_1_DESCRIPTION}}</span>"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "uu5Tag": "Uu5Bricks.Layout.Item",
+                      "props": {
+                        "colSpan": "m: 6;"
+                      },
+                      "children": [
+                        {
+                          "uu5Tag": "Uu5RichTextBricks.Block",
+                          "props": {
+                            "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"color\\\":\\\"#757575\\\",\\\"fontSize\\\":\\\"16px\\\"}\">{{IMAGE_2_PLACEHOLDER}}</span>"
+                          }
+                        },
+                        {
+                          "uu5Tag": "Uu5RichTextBricks.Block",
+                          "props": {
+                            "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"18px\\\"}\">{{IMAGE_2_HEADING}}</span></strong>"
+                          }
+                        },
+                        {
+                          "uu5Tag": "Uu5RichTextBricks.Block",
+                          "props": {
+                            "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"16px\\\"}\">{{IMAGE_2_DESCRIPTION}}</span>"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "slide_27",
+    "name": "Statistics + Key Points 1:1",
+    "category": "data",
+    "description": "Left blue panel with subtitle, title, 4 KPIs in 2x2 grid. Right side with 3 key point groups.",
+    "keywords": [
+      "statistics",
+      "KPI",
+      "metrics",
+      "key points",
+      "dashboard",
+      "numbers"
+    ],
+    "placeholders": [
+      "{{SUBTITLE}}",
+      "{{TITLE}}",
+      "{{STAT_1_VALUE}}",
+      "{{STAT_1_LABEL}}",
+      "{{STAT_2_VALUE}}",
+      "{{STAT_2_LABEL}}",
+      "{{STAT_3_VALUE}}",
+      "{{STAT_3_LABEL}}",
+      "{{STAT_4_VALUE}}",
+      "{{STAT_4_LABEL}}",
+      "{{GROUP_1_TITLE}}",
+      "{{GROUP_1_BULLET_1}}",
+      "{{GROUP_1_BULLET_2}}",
+      "{{GROUP_2_TITLE}}",
+      "{{GROUP_2_BULLET_1}}",
+      "{{GROUP_2_BULLET_2}}",
+      "{{GROUP_3_TITLE}}",
+      "{{GROUP_3_BULLET_1}}",
+      "{{GROUP_3_BULLET_2}}"
+    ],
+    "template": {
+      "uu5Tag": "Uu5Bricks.Slide",
+      "props": {
+        "contentEditable": true,
+        "padding": "0px"
+      },
+      "children": [
+        {
+          "uu5Tag": "Uu5Bricks.Background",
+          "props": {
+            "gradient": "linear-gradient(to bottom, #CAE6FC 0.5%, #FFFFFF 40%)",
+            "background": "soft",
+            "style": "height:100%; width:100%;",
+            "margin": 0,
+            "padding": 0,
+            "borderRadius": "none"
+          },
+          "children": [
+            {
+              "uu5Tag": "Uu5Bricks.Section",
+              "props": {
+                "style": "height: 100%",
+                "contentPadding": "40px 40px 0px 40px",
+                "margin": 0,
+                "headerSeparator": false
+              },
+              "children": [
+                {
+                  "uu5Tag": "Uu5Bricks.Layout",
+                  "props": {
+                    "type": "columns",
+                    "margin": 0,
+                    "padding": 0
+                  },
+                  "children": [
+                    {
+                      "uu5Tag": "Uu5Bricks.Layout.Item",
+                      "props": {
+                        "colSpan": "m: 6;"
+                      },
+                      "children": [
+                        {
+                          "uu5Tag": "Uu5Bricks.Background",
+                          "props": {
+                            "background": "soft",
+                            "color": "#E3F2FD",
+                            "borderRadius": "elementStandard",
+                            "padding": "c",
+                            "style": "height:100%"
+                          },
+                          "children": [
+                            {
+                              "uu5Tag": "Uu5Bricks.Section",
+                              "props": {
+                                "headerSeparator": false,
+                                "margin": "0 0 40px 0",
+                                "contentPadding": 0
+                              },
+                              "children": [
+                                {
+                                  "uu5Tag": "Uu5RichTextBricks.Block",
+                                  "props": {
+                                    "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"color\\\":\\\"#1976D2\\\",\\\"fontSize\\\":\\\"16px\\\"}\">{{SUBTITLE}}</span></strong>"
+                                  }
+                                },
+                                {
+                                  "uu5Tag": "Uu5RichTextBricks.Block",
+                                  "props": {
+                                    "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"color\\\":\\\"rgb(0, 0, 0)\\\",\\\"fontSize\\\":\\\"32px\\\"}\">{{TITLE}}</span></strong>"
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "uu5Tag": "Uu5Bricks.Layout",
+                              "props": {
+                                "type": "columns",
+                                "margin": 0,
+                                "padding": 0
+                              },
+                              "children": [
+                                {
+                                  "uu5Tag": "Uu5Bricks.Layout.Item",
+                                  "props": {
+                                    "colSpan": "m: 6;"
+                                  },
+                                  "children": [
+                                    {
+                                      "uu5Tag": "Uu5Bricks.Section",
+                                      "props": {
+                                        "headerSeparator": false,
+                                        "margin": 0,
+                                        "contentPadding": 0
+                                      },
+                                      "children": [
+                                        {
+                                          "uu5Tag": "Uu5RichTextBricks.Block",
+                                          "props": {
+                                            "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"color\\\":\\\"#1976D2\\\",\\\"fontSize\\\":\\\"32px\\\"}\">{{STAT_1_VALUE}}</span></strong>"
+                                          }
+                                        },
+                                        {
+                                          "uu5Tag": "Uu5RichTextBricks.Block",
+                                          "props": {
+                                            "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"15px\\\"}\">{{STAT_1_LABEL}}</span>"
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "uu5Tag": "Uu5Bricks.Layout.Item",
+                                  "props": {
+                                    "colSpan": "m: 6;"
+                                  },
+                                  "children": [
+                                    {
+                                      "uu5Tag": "Uu5Bricks.Section",
+                                      "props": {
+                                        "headerSeparator": false,
+                                        "margin": 0,
+                                        "contentPadding": 0
+                                      },
+                                      "children": [
+                                        {
+                                          "uu5Tag": "Uu5RichTextBricks.Block",
+                                          "props": {
+                                            "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"color\\\":\\\"#1976D2\\\",\\\"fontSize\\\":\\\"32px\\\"}\">{{STAT_2_VALUE}}</span></strong>"
+                                          }
+                                        },
+                                        {
+                                          "uu5Tag": "Uu5RichTextBricks.Block",
+                                          "props": {
+                                            "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"15px\\\"}\">{{STAT_2_LABEL}}</span>"
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "uu5Tag": "Uu5Bricks.Layout.Item",
+                                  "props": {
+                                    "colSpan": "m: 6;"
+                                  },
+                                  "children": [
+                                    {
+                                      "uu5Tag": "Uu5Bricks.Section",
+                                      "props": {
+                                        "headerSeparator": false,
+                                        "margin": 0,
+                                        "contentPadding": 0
+                                      },
+                                      "children": [
+                                        {
+                                          "uu5Tag": "Uu5RichTextBricks.Block",
+                                          "props": {
+                                            "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"color\\\":\\\"#1976D2\\\",\\\"fontSize\\\":\\\"32px\\\"}\">{{STAT_3_VALUE}}</span></strong>"
+                                          }
+                                        },
+                                        {
+                                          "uu5Tag": "Uu5RichTextBricks.Block",
+                                          "props": {
+                                            "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"15px\\\"}\">{{STAT_3_LABEL}}</span>"
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "uu5Tag": "Uu5Bricks.Layout.Item",
+                                  "props": {
+                                    "colSpan": "m: 6;"
+                                  },
+                                  "children": [
+                                    {
+                                      "uu5Tag": "Uu5Bricks.Section",
+                                      "props": {
+                                        "headerSeparator": false,
+                                        "margin": 0,
+                                        "contentPadding": 0
+                                      },
+                                      "children": [
+                                        {
+                                          "uu5Tag": "Uu5RichTextBricks.Block",
+                                          "props": {
+                                            "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"color\\\":\\\"#1976D2\\\",\\\"fontSize\\\":\\\"32px\\\"}\">{{STAT_4_VALUE}}</span></strong>"
+                                          }
+                                        },
+                                        {
+                                          "uu5Tag": "Uu5RichTextBricks.Block",
+                                          "props": {
+                                            "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"15px\\\"}\">{{STAT_4_LABEL}}</span>"
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "uu5Tag": "Uu5Bricks.Layout.Item",
+                      "props": {
+                        "colSpan": "m: 6;"
+                      },
+                      "children": [
+                        {
+                          "uu5Tag": "Uu5Bricks.Section",
+                          "props": {
+                            "headerSeparator": false,
+                            "margin": "0 0 24px 0",
+                            "contentPadding": 0
+                          },
+                          "children": [
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"18px\\\"}\">{{GROUP_1_TITLE}}</span></strong>"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"16px\\\"}\">{{GROUP_1_BULLET_1}}</span>"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"16px\\\"}\">{{GROUP_1_BULLET_2}}</span>"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "uu5Tag": "Uu5Bricks.Section",
+                          "props": {
+                            "headerSeparator": false,
+                            "margin": "0 0 24px 0",
+                            "contentPadding": 0
+                          },
+                          "children": [
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"18px\\\"}\">{{GROUP_2_TITLE}}</span></strong>"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"16px\\\"}\">{{GROUP_2_BULLET_1}}</span>"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"16px\\\"}\">{{GROUP_2_BULLET_2}}</span>"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "uu5Tag": "Uu5Bricks.Section",
+                          "props": {
+                            "headerSeparator": false,
+                            "margin": "0 0 24px 0",
+                            "contentPadding": 0
+                          },
+                          "children": [
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"18px\\\"}\">{{GROUP_3_TITLE}}</span></strong>"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"16px\\\"}\">{{GROUP_3_BULLET_1}}</span>"
+                              }
+                            },
+                            {
+                              "uu5Tag": "Uu5RichTextBricks.Block",
+                              "props": {
+                                "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"16px\\\"}\">{{GROUP_3_BULLET_2}}</span>"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "slide_28",
+    "name": "Statistics + Chart 1:1",
+    "category": "data",
+    "description": "Left blue panel with subtitle, title, 4 KPIs in 2x2 grid. Right side for chart.",
+    "keywords": [
+      "statistics",
+      "KPI",
+      "chart",
+      "metrics",
+      "trend",
+      "numbers"
+    ],
+    "placeholders": [
+      "{{SUBTITLE}}",
+      "{{TITLE}}",
+      "{{STAT_1_VALUE}}",
+      "{{STAT_1_LABEL}}",
+      "{{STAT_2_VALUE}}",
+      "{{STAT_2_LABEL}}",
+      "{{STAT_3_VALUE}}",
+      "{{STAT_3_LABEL}}",
+      "{{STAT_4_VALUE}}",
+      "{{STAT_4_LABEL}}",
+      "{{CHART_PLACEHOLDER}}"
+    ],
+    "template": {
+      "uu5Tag": "Uu5Bricks.Slide",
+      "props": {
+        "contentEditable": true,
+        "padding": "0px"
+      },
+      "children": [
+        {
+          "uu5Tag": "Uu5Bricks.Background",
+          "props": {
+            "gradient": "linear-gradient(to bottom, #CAE6FC 0.5%, #FFFFFF 40%)",
+            "background": "soft",
+            "style": "height:100%; width:100%;",
+            "margin": 0,
+            "padding": 0,
+            "borderRadius": "none"
+          },
+          "children": [
+            {
+              "uu5Tag": "Uu5Bricks.Section",
+              "props": {
+                "style": "height: 100%",
+                "contentPadding": "40px 40px 0px 40px",
+                "margin": 0,
+                "headerSeparator": false
+              },
+              "children": [
+                {
+                  "uu5Tag": "Uu5Bricks.Layout",
+                  "props": {
+                    "type": "columns",
+                    "margin": 0,
+                    "padding": 0
+                  },
+                  "children": [
+                    {
+                      "uu5Tag": "Uu5Bricks.Layout.Item",
+                      "props": {
+                        "colSpan": "m: 6;"
+                      },
+                      "children": [
+                        {
+                          "uu5Tag": "Uu5Bricks.Background",
+                          "props": {
+                            "background": "soft",
+                            "color": "#E3F2FD",
+                            "borderRadius": "elementStandard",
+                            "padding": "c",
+                            "style": "height:100%"
+                          },
+                          "children": [
+                            {
+                              "uu5Tag": "Uu5Bricks.Section",
+                              "props": {
+                                "headerSeparator": false,
+                                "margin": "0 0 40px 0",
+                                "contentPadding": 0
+                              },
+                              "children": [
+                                {
+                                  "uu5Tag": "Uu5RichTextBricks.Block",
+                                  "props": {
+                                    "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"color\\\":\\\"#1976D2\\\",\\\"fontSize\\\":\\\"16px\\\"}\">{{SUBTITLE}}</span></strong>"
+                                  }
+                                },
+                                {
+                                  "uu5Tag": "Uu5RichTextBricks.Block",
+                                  "props": {
+                                    "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"color\\\":\\\"rgb(0, 0, 0)\\\",\\\"fontSize\\\":\\\"32px\\\"}\">{{TITLE}}</span></strong>"
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "uu5Tag": "Uu5Bricks.Layout",
+                              "props": {
+                                "type": "columns",
+                                "margin": 0,
+                                "padding": 0
+                              },
+                              "children": [
+                                {
+                                  "uu5Tag": "Uu5Bricks.Layout.Item",
+                                  "props": {
+                                    "colSpan": "m: 6;"
+                                  },
+                                  "children": [
+                                    {
+                                      "uu5Tag": "Uu5Bricks.Section",
+                                      "props": {
+                                        "headerSeparator": false,
+                                        "margin": 0,
+                                        "contentPadding": 0
+                                      },
+                                      "children": [
+                                        {
+                                          "uu5Tag": "Uu5RichTextBricks.Block",
+                                          "props": {
+                                            "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"color\\\":\\\"#1976D2\\\",\\\"fontSize\\\":\\\"32px\\\"}\">{{STAT_1_VALUE}}</span></strong>"
+                                          }
+                                        },
+                                        {
+                                          "uu5Tag": "Uu5RichTextBricks.Block",
+                                          "props": {
+                                            "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"15px\\\"}\">{{STAT_1_LABEL}}</span>"
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "uu5Tag": "Uu5Bricks.Layout.Item",
+                                  "props": {
+                                    "colSpan": "m: 6;"
+                                  },
+                                  "children": [
+                                    {
+                                      "uu5Tag": "Uu5Bricks.Section",
+                                      "props": {
+                                        "headerSeparator": false,
+                                        "margin": 0,
+                                        "contentPadding": 0
+                                      },
+                                      "children": [
+                                        {
+                                          "uu5Tag": "Uu5RichTextBricks.Block",
+                                          "props": {
+                                            "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"color\\\":\\\"#1976D2\\\",\\\"fontSize\\\":\\\"32px\\\"}\">{{STAT_2_VALUE}}</span></strong>"
+                                          }
+                                        },
+                                        {
+                                          "uu5Tag": "Uu5RichTextBricks.Block",
+                                          "props": {
+                                            "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"15px\\\"}\">{{STAT_2_LABEL}}</span>"
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "uu5Tag": "Uu5Bricks.Layout.Item",
+                                  "props": {
+                                    "colSpan": "m: 6;"
+                                  },
+                                  "children": [
+                                    {
+                                      "uu5Tag": "Uu5Bricks.Section",
+                                      "props": {
+                                        "headerSeparator": false,
+                                        "margin": 0,
+                                        "contentPadding": 0
+                                      },
+                                      "children": [
+                                        {
+                                          "uu5Tag": "Uu5RichTextBricks.Block",
+                                          "props": {
+                                            "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"color\\\":\\\"#1976D2\\\",\\\"fontSize\\\":\\\"32px\\\"}\">{{STAT_3_VALUE}}</span></strong>"
+                                          }
+                                        },
+                                        {
+                                          "uu5Tag": "Uu5RichTextBricks.Block",
+                                          "props": {
+                                            "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"15px\\\"}\">{{STAT_3_LABEL}}</span>"
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "uu5Tag": "Uu5Bricks.Layout.Item",
+                                  "props": {
+                                    "colSpan": "m: 6;"
+                                  },
+                                  "children": [
+                                    {
+                                      "uu5Tag": "Uu5Bricks.Section",
+                                      "props": {
+                                        "headerSeparator": false,
+                                        "margin": 0,
+                                        "contentPadding": 0
+                                      },
+                                      "children": [
+                                        {
+                                          "uu5Tag": "Uu5RichTextBricks.Block",
+                                          "props": {
+                                            "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"color\\\":\\\"#1976D2\\\",\\\"fontSize\\\":\\\"32px\\\"}\">{{STAT_4_VALUE}}</span></strong>"
+                                          }
+                                        },
+                                        {
+                                          "uu5Tag": "Uu5RichTextBricks.Block",
+                                          "props": {
+                                            "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"15px\\\"}\">{{STAT_4_LABEL}}</span>"
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "uu5Tag": "Uu5Bricks.Layout.Item",
+                      "props": {
+                        "colSpan": "m: 6;"
+                      },
+                      "children": [
+                        {
+                          "uu5Tag": "Uu5RichTextBricks.Block",
+                          "props": {
+                            "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"color\\\":\\\"#757575\\\",\\\"fontSize\\\":\\\"16px\\\"}\">{{CHART_PLACEHOLDER}}</span>"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "slide_30",
+    "name": "Quote",
+    "category": "text",
+    "description": "Centered attributed quote (italic) with author attribution below.",
+    "keywords": [
+      "quote",
+      "testimonial",
+      "attribution",
+      "centered"
+    ],
+    "placeholders": [
+      "{{QUOTE_TEXT}}",
+      "{{QUOTE_AUTHOR}}"
+    ],
+    "template": {
+      "uu5Tag": "Uu5Bricks.Slide",
+      "props": {
+        "contentEditable": true,
+        "padding": "0px"
+      },
+      "children": [
+        {
+          "uu5Tag": "Uu5Bricks.Background",
+          "props": {
+            "gradient": "linear-gradient(to bottom, #CAE6FC 0.5%, #FFFFFF 40%)",
+            "background": "soft",
+            "style": "height:100%; width:100%;",
+            "margin": 0,
+            "padding": 0,
+            "borderRadius": "none"
+          },
+          "children": [
+            {
+              "uu5Tag": "Uu5Bricks.Section",
+              "props": {
+                "style": "height: 100%",
+                "contentPadding": "40px 40px 0px 40px",
+                "margin": 0,
+                "headerSeparator": false
+              },
+              "children": [
+                {
+                  "uu5Tag": "Uu5Bricks.Section",
+                  "props": {
+                    "headerSeparator": false,
+                    "margin": "auto",
+                    "contentPadding": "80px 60px",
+                    "style": "text-align:center; max-width:800px;"
+                  },
+                  "children": [
+                    {
+                      "uu5Tag": "Uu5RichTextBricks.Block",
+                      "props": {
+                        "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"32px\\\"}\">\"{{QUOTE_TEXT}}\"</span>"
+                      }
+                    },
+                    {
+                      "uu5Tag": "Uu5RichTextBricks.Block",
+                      "props": {
+                        "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"color\\\":\\\"#757575\\\",\\\"fontSize\\\":\\\"15px\\\"}\">— {{QUOTE_AUTHOR}}</span>"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "slide_32",
+    "name": "Statement",
+    "category": "text",
+    "description": "Centered bold business statement with optional supporting line.",
+    "keywords": [
+      "statement",
+      "declaration",
+      "message",
+      "centered",
+      "finding"
+    ],
+    "placeholders": [
+      "{{STATEMENT_TEXT}}",
+      "{{SUPPORTING_TEXT}}"
+    ],
+    "template": {
+      "uu5Tag": "Uu5Bricks.Slide",
+      "props": {
+        "contentEditable": true,
+        "padding": "0px"
+      },
+      "children": [
+        {
+          "uu5Tag": "Uu5Bricks.Background",
+          "props": {
+            "gradient": "linear-gradient(to bottom, #CAE6FC 0.5%, #FFFFFF 40%)",
+            "background": "soft",
+            "style": "height:100%; width:100%;",
+            "margin": 0,
+            "padding": 0,
+            "borderRadius": "none"
+          },
+          "children": [
+            {
+              "uu5Tag": "Uu5Bricks.Section",
+              "props": {
+                "style": "height: 100%",
+                "contentPadding": "40px 40px 0px 40px",
+                "margin": 0,
+                "headerSeparator": false
+              },
+              "children": [
+                {
+                  "uu5Tag": "Uu5Bricks.Section",
+                  "props": {
+                    "headerSeparator": false,
+                    "margin": "auto",
+                    "contentPadding": "80px 60px",
+                    "style": "text-align:center; max-width:800px;"
+                  },
+                  "children": [
+                    {
+                      "uu5Tag": "Uu5RichTextBricks.Block",
+                      "props": {
+                        "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"32px\\\"}\">{{STATEMENT_TEXT}}</span></strong>"
+                      }
+                    },
+                    {
+                      "uu5Tag": "Uu5RichTextBricks.Block",
+                      "props": {
+                        "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"16px\\\"}\">{{SUPPORTING_TEXT}}</span>"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "slide_35",
+    "name": "Title + Description + Chart",
+    "category": "content",
+    "description": "Subtitle, title, short description, then full-width chart below.",
+    "keywords": [
+      "title",
+      "description",
+      "chart",
+      "trend",
+      "performance",
+      "full width"
+    ],
+    "placeholders": [
+      "{{SUBTITLE}}",
+      "{{TITLE}}",
+      "{{DESCRIPTION}}",
+      "{{CHART_PLACEHOLDER}}"
+    ],
+    "template": {
+      "uu5Tag": "Uu5Bricks.Slide",
+      "props": {
+        "contentEditable": true,
+        "padding": "0px"
+      },
+      "children": [
+        {
+          "uu5Tag": "Uu5Bricks.Background",
+          "props": {
+            "gradient": "linear-gradient(to bottom, #CAE6FC 0.5%, #FFFFFF 40%)",
+            "background": "soft",
+            "style": "height:100%; width:100%;",
+            "margin": 0,
+            "padding": 0,
+            "borderRadius": "none"
+          },
+          "children": [
+            {
+              "uu5Tag": "Uu5Bricks.Section",
+              "props": {
+                "style": "height: 100%",
+                "contentPadding": "40px 40px 0px 40px",
+                "margin": 0,
+                "headerSeparator": false
+              },
+              "children": [
+                {
+                  "uu5Tag": "Uu5Bricks.Section",
+                  "props": {
+                    "headerSeparator": false,
+                    "margin": "0 0 40px 0",
+                    "contentPadding": 0
+                  },
+                  "children": [
+                    {
+                      "uu5Tag": "Uu5RichTextBricks.Block",
+                      "props": {
+                        "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"color\\\":\\\"#1976D2\\\",\\\"fontSize\\\":\\\"16px\\\"}\">{{SUBTITLE}}</span></strong>"
+                      }
+                    },
+                    {
+                      "uu5Tag": "Uu5RichTextBricks.Block",
+                      "props": {
+                        "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"color\\\":\\\"rgb(0, 0, 0)\\\",\\\"fontSize\\\":\\\"32px\\\"}\">{{TITLE}}</span></strong>"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "uu5Tag": "Uu5RichTextBricks.Block",
+                  "props": {
+                    "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"16px\\\"}\">{{DESCRIPTION}}</span>"
+                  }
+                },
+                {
+                  "uu5Tag": "Uu5Bricks.Section",
+                  "props": {
+                    "headerSeparator": false,
+                    "margin": "24px 0 0 0",
+                    "contentPadding": 0
+                  },
+                  "children": [
+                    {
+                      "uu5Tag": "Uu5RichTextBricks.Block",
+                      "props": {
+                        "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"color\\\":\\\"#757575\\\",\\\"fontSize\\\":\\\"16px\\\"}\">{{CHART_PLACEHOLDER}}</span>"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "slide_37",
+    "name": "Title + Description + Image",
+    "category": "content",
+    "description": "Subtitle, title, short description, then full-width image below.",
+    "keywords": [
+      "title",
+      "description",
+      "image",
+      "screenshot",
+      "full width",
+      "visual"
+    ],
+    "placeholders": [
+      "{{SUBTITLE}}",
+      "{{TITLE}}",
+      "{{DESCRIPTION}}",
+      "{{IMAGE_PLACEHOLDER}}"
+    ],
+    "template": {
+      "uu5Tag": "Uu5Bricks.Slide",
+      "props": {
+        "contentEditable": true,
+        "padding": "0px"
+      },
+      "children": [
+        {
+          "uu5Tag": "Uu5Bricks.Background",
+          "props": {
+            "gradient": "linear-gradient(to bottom, #CAE6FC 0.5%, #FFFFFF 40%)",
+            "background": "soft",
+            "style": "height:100%; width:100%;",
+            "margin": 0,
+            "padding": 0,
+            "borderRadius": "none"
+          },
+          "children": [
+            {
+              "uu5Tag": "Uu5Bricks.Section",
+              "props": {
+                "style": "height: 100%",
+                "contentPadding": "40px 40px 0px 40px",
+                "margin": 0,
+                "headerSeparator": false
+              },
+              "children": [
+                {
+                  "uu5Tag": "Uu5Bricks.Section",
+                  "props": {
+                    "headerSeparator": false,
+                    "margin": "0 0 40px 0",
+                    "contentPadding": 0
+                  },
+                  "children": [
+                    {
+                      "uu5Tag": "Uu5RichTextBricks.Block",
+                      "props": {
+                        "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"color\\\":\\\"#1976D2\\\",\\\"fontSize\\\":\\\"16px\\\"}\">{{SUBTITLE}}</span></strong>"
+                      }
+                    },
+                    {
+                      "uu5Tag": "Uu5RichTextBricks.Block",
+                      "props": {
+                        "uu5String": "<uu5string/><strong><span style=\"<uu5json/>{\\\"color\\\":\\\"rgb(0, 0, 0)\\\",\\\"fontSize\\\":\\\"32px\\\"}\">{{TITLE}}</span></strong>"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "uu5Tag": "Uu5RichTextBricks.Block",
+                  "props": {
+                    "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"fontSize\\\":\\\"16px\\\"}\">{{DESCRIPTION}}</span>"
+                  }
+                },
+                {
+                  "uu5Tag": "Uu5Bricks.Section",
+                  "props": {
+                    "headerSeparator": false,
+                    "margin": "24px 0 0 0",
+                    "contentPadding": 0
+                  },
+                  "children": [
+                    {
+                      "uu5Tag": "Uu5RichTextBricks.Block",
+                      "props": {
+                        "uu5String": "<uu5string/><span style=\"<uu5json/>{\\\"color\\\":\\\"#757575\\\",\\\"fontSize\\\":\\\"16px\\\"}\">{{IMAGE_PLACEHOLDER}}</span>"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+]

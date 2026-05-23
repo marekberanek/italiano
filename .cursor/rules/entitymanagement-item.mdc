@@ -1,0 +1,368 @@
+---
+description: uuEntityManagement entity item creation guide — concrete instances of entity definitions with custom attributes, entity references, temporal validity (date intervals), and CRUD operations
+alwaysApply: false
+---
+
+# Entity Item Creation Guide
+
+## Table of Contents
+1. Introduction
+2. Core Structure
+3. Custom Attributes
+4. Entity References
+5. Temporal Data Management
+6. CRUD Operations
+7. Complete Examples
+8. Interactive Creation Process
+
+## 1. Introduction
+
+EntityItems are concrete instances of data that conform to EntityDefinitions. They represent:
+
+- Actual business or configuration data stored in the system
+- Instances with specific values for attributes defined in the EntityDefinition
+- Time-valid data with specified date intervals
+- Potentially references to other entity items
+
+### 1.1 EntityItem Purpose
+
+EntityItems serve to:
+- Store actual data values according to a predefined structure
+- Maintain validity periods for temporal data tracking
+- Establish relationships between business entities
+- Provide a standardized data format with built-in system attributes
+
+### 1.2 Relationship to EntityDefinition
+
+- Each EntityItem is associated with one EntityDefinition via `entityDefinitionCode`
+- The EntityDefinition determines:
+  - What attributes the item can contain
+  - Validation rules for those attributes
+  - Reference relationships to other entity types
+  - Authorization for accessing the item
+
+## 2. Core Structure
+
+Every EntityItem contains these essential system elements:
+
+### 2.1 System Identification
+
+```json
+{
+  "id": "012345678901234567890123",     // MongoDB ObjectId (generated)
+  "awid": "22222222222222222222222222", // Application workspace ID
+  "sys": {
+    "cts": "2025-01-01T12:00:00.000Z",  // Creation timestamp
+    "mts": "2025-01-01T12:00:00.000Z",  // Last modification timestamp
+    "rev": 0                            // Revision number
+  }
+}
+```
+
+### 2.2 Definition Reference
+
+```json
+{
+  "entityDefinitionCode": "accountHolder", // Link to the EntityDefinition
+  "code": "ACC-001"                        // Logical entity identifier (business key)
+}
+```
+
+### 2.3 Temporal Validity
+
+```json
+{
+  "dateInterval": {
+    "from": "2023-01-01",               // Start of validity (inclusive)
+    "to": "2050-12-31"                  // End of validity (inclusive)
+  }
+}
+```
+
+#### 2.3.1 Optional Temporal Elements
+
+For bitemporal model support:
+
+```json
+{
+  "transactionInterval": {              // When the transaction is valid
+    "from": "2023-01-01T12:00:00.000Z",
+    "to": "9999-12-31T23:59:59.999Z"    // "Forever" in the future
+  },
+  "validityInterval": {                 // Business validity period
+    "from": "2023-01-01",
+    "to": "2050-12-31"
+  }
+}
+```
+
+## 3. Custom Attributes
+
+Beyond system fields, EntityItems contain domain-specific attributes as defined in the EntityDefinition:
+
+### 3.1 Basic Attributes
+
+```json
+{
+  "name": "Acme Corporation",           // String attribute
+  "establishedYear": 1985,              // Number attribute
+  "active": true,                       // Boolean attribute
+  "registrationDate": "2020-05-15"      // Date attribute
+}
+```
+
+### 3.2 Attribute Validation
+
+All attributes must conform to the validation rules in the EntityDefinition:
+
+- String attributes must meet length requirements
+- Number attributes must be within defined ranges
+- Required attributes must be present
+- All values must match the defined data types
+- Custom validation rules must be satisfied
+
+## 4. Entity References
+
+References to other entities are stored as attribute values:
+
+### 4.1 Simple References
+
+```json
+{
+  "country": "US",                      // Reference by code
+  "type": "CORPORATE"                   // Reference by code
+}
+```
+
+### 4.2 Artifact References
+
+```json
+{
+  "issuingBody": "00000000000000000000000000000001", // Reference by artifactId
+  "artifactId": "00000000000000000000000000000002"   // OBC reference for this item
+}
+```
+
+### 4.3 Multiple References
+
+```json
+{
+  "categories": ["CAT1", "CAT2", "CAT3"]  // Multiple references by code
+}
+```
+
+## 5. Temporal Data Management
+
+### 5.1 Basic Validity Period
+
+All entity items must have a validity period:
+
+```json
+{
+  "dateInterval": {
+    "from": "2023-01-01",  // First day of validity
+    "to": "2050-12-31"     // Last day of validity
+  }
+}
+```
+
+### 5.2 Overlapping Validity Strategies
+
+When creating or updating items, different strategies for handling overlapping items:
+
+- `overlappingOpen`: Allow overlapping periods
+- `overlappingClosed`: Allow overlapping with open/closed intervals
+- `nonOverlappingOpen`: No overlap allowed, open intervals
+- `nonOverlappingClosed`: No overlap allowed, closed intervals
+
+### 5.3 Bitemporal Model
+
+For full bitemporal tracking (when enabled in definition):
+
+```json
+{
+  "dateInterval": {         // Combined validity
+    "from": "2023-01-01",
+    "to": "2050-12-31"
+  },
+  "validityInterval": {     // Business validity
+    "from": "2023-01-01",
+    "to": "2050-12-31"
+  },
+  "transactionInterval": {  // System transaction validity
+    "from": "2023-01-01T12:00:00.000Z",
+    "to": "9999-12-31T23:59:59.999Z"
+  }
+}
+```
+
+## 6. CRUD Operations
+
+### 6.1 Create Entity Item
+
+Basic create operation:
+
+```json
+// POST /entityItem/create
+{
+  "entityDefinitionCode": "accountHolder",
+  "code": "ACC-001",
+  "dateInterval": {
+    "from": "2023-01-01",
+    "to": "2050-12-31"
+  },
+  "name": "Acme Corporation",
+  "type": "CORPORATE",
+  "address": "123 Main St, Anytown, USA"
+}
+```
+
+### 6.2 Read Entity Item
+
+Get operation:
+
+```json
+// GET /entityItem/get
+{
+  "code": "ACC-001",
+  "entityDefinitionCode": "accountHolder"
+}
+```
+
+Load operation (with more details):
+
+```json
+// GET /entityItem/load
+{
+  "id": "012345678901234567890123",
+  "entityDefinitionCode": "accountHolder"
+}
+```
+
+### 6.3 Update Entity Item
+
+Update operation:
+
+```json
+// POST /entityItem/update
+{
+  "id": "012345678901234567890123",
+  "name": "Acme Global Corporation",
+  "address": "456 Business Ave, Metropolis, USA"
+}
+```
+
+### 6.4 Delete Entity Item
+
+Delete operation:
+
+```json
+// POST /entityItem/delete
+{
+  "id": "012345678901234567890123"
+}
+```
+
+## 7. Complete Examples
+
+### 7.1 Simple Lookup Entity Item
+
+For a country definition:
+
+```json
+{
+  "entityDefinitionCode": "country",
+  "code": "US",
+  "dateInterval": {
+    "from": "2000-01-01",
+    "to": "2099-12-31"
+  },
+  "name": "United States"
+}
+```
+
+### 7.2 Complex Entity Item with References
+
+For an accountHolder definition:
+
+```json
+{
+  "entityDefinitionCode": "accountHolder",
+  "code": "ACME-CORP",
+  "dateInterval": {
+    "from": "2023-01-01",
+    "to": "2050-12-31"
+  },
+  "name": "Acme Corporation",
+  "type": "CORPORATE",
+  "country": "US",
+  "issuingBody": "00000000000000000000000000000001",
+  "address": "123 Main St, Anytown, USA",
+  "active": true,
+  "establishedYear": 1985
+}
+```
+
+### 7.3 Entity Item with Bitemporal Data
+
+```json
+{
+  "entityDefinitionCode": "registryCertificate",
+  "code": "CERT-123",
+  "dateInterval": {
+    "from": "2023-01-01",
+    "to": "2023-12-31"
+  },
+  "validityInterval": {
+    "from": "2023-01-01",
+    "to": "2023-12-31"
+  },
+  "transactionInterval": {
+    "from": "2023-01-01T00:00:00.000Z",
+    "to": "9999-12-31T23:59:59.999Z"
+  },
+  "certificateType": "GREEN",
+  "issueDate": "2023-01-01",
+  "expiryDate": "2023-12-31",
+  "status": "ACTIVE"
+}
+```
+
+## 8. Interactive Creation Process
+
+For creating a new entity item, follow these steps:
+
+### 8.1 Basic Information
+- Entity definition code (which definition to use)
+- Item code (logical identifier)
+- Validity period (dateInterval)
+
+### 8.2 Required Attributes
+- Identify all required attributes from the definition
+- Provide values for each required attribute
+- Ensure values match validation requirements
+
+### 8.3 Optional Attributes
+- Decide which optional attributes to include
+- Provide values for included optional attributes
+- Ensure values match validation requirements
+
+### 8.4 References
+- Identify references to other entities
+- Ensure referenced entities exist
+- Use correct reference keys (code, artifactId)
+
+### 8.5 Temporal Validity
+- Determine validity period
+- Consider overlapping with existing items
+- Set appropriate transaction and validity intervals if using bitemporal model
+
+### 8.6 Special Attributes
+- Handle artifact ID for authorization
+- Add any system-specific attributes
+
+### 8.7 Validation and Testing
+- Verify all required fields are provided
+- Check validation constraints
+- Test CRUD operations
+- Verify authorization works as expected

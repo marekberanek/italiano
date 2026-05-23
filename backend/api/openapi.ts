@@ -69,6 +69,52 @@ const spec = {
           error: { type: "string", example: "DEEPL_API_KEY is not configured." },
         },
       },
+      WordMeaning: {
+        type: "object",
+        required: ["it", "cz", "gloss"],
+        properties: {
+          it: { type: "string", example: "asciugatrice" },
+          cz: { type: "string", example: "sušička" },
+          gloss: {
+            type: "string",
+            description: "Brief Czech disambiguator (1–4 words), e.g. „na prádlo\", „na potraviny\".",
+            example: "na prádlo",
+          },
+          example_it: { type: "string", nullable: true, example: "Ho comprato una nuova asciugatrice." },
+          example_cz: { type: "string", nullable: true, example: "Koupil jsem novou sušičku." },
+        },
+      },
+      MeaningsRequest: {
+        type: "object",
+        required: ["query"],
+        properties: {
+          query: { type: "string", description: "Ambiguous Czech or Italian word.", example: "sušička" },
+        },
+      },
+      MeaningsResponse: {
+        type: "object",
+        required: ["meanings"],
+        properties: {
+          meanings: {
+            type: "array",
+            items: { $ref: "#/components/schemas/WordMeaning" },
+            maxItems: 4,
+          },
+        },
+      },
+      AmbiguousQueryError: {
+        type: "object",
+        required: ["error", "ambiguous"],
+        properties: {
+          error: { type: "string", example: "DeepL si nebyl jistý významem — zkus zadat slovo s českou diakritikou." },
+          ambiguous: { type: "boolean", enum: [true] },
+          hint: {
+            type: "string",
+            description: "Human-readable hint mentioning DeepL's best guess so the user can disambiguate.",
+            example: "DeepL si tipl: „práce\" → „lavoro\". Pokud to není ten význam, zadej slovo znovu s diakritikou.",
+          },
+        },
+      },
       ApiVersion: {
         type: "object",
         required: ["name", "version"],
@@ -183,8 +229,48 @@ const spec = {
           "400": { description: "Missing or invalid `query`.", content: { "application/json": { schema: { $ref: "#/components/schemas/Error" } } } },
           "401": { description: "Missing or invalid Bearer JWT.", content: { "application/json": { schema: { $ref: "#/components/schemas/Error" } } } },
           "405": { description: "Method other than POST." },
+          "422": {
+            description:
+              "DeepL produced a translation but its round-trip back to Czech diverged from the input — usually a diacritic-less query mapping to multiple lemmas (e.g. `pracka` → `pračka` vs `prácka`). The client should prompt the user to re-enter the query with diacritics.",
+            content: {
+              "application/json": { schema: { $ref: "#/components/schemas/AmbiguousQueryError" } },
+            },
+          },
           "500": { description: "Server misconfigured (Supabase env missing).", content: { "application/json": { schema: { $ref: "#/components/schemas/Error" } } } },
           "502": { description: "Upstream DeepL failure or missing API key.", content: { "application/json": { schema: { $ref: "#/components/schemas/Error" } } } },
+        },
+      },
+    },
+    "/api/translate-meanings": {
+      post: {
+        tags: ["Translation"],
+        summary: "List multiple disambiguated meanings for an ambiguous word.",
+        description:
+          "LLM-backed (Anthropic Claude Haiku) dictionary lookup that returns up to four senses " +
+          "for an ambiguous Czech / Italian word, e.g. `sušička` → na prádlo / na potraviny / " +
+          "na vlasy. Used by the *Další významy* button on the Hledat screen. " +
+          "Requires `ANTHROPIC_API_KEY` on the server — when unset, returns **503** and the " +
+          "mobile UI hides the trigger. Requires a valid Supabase Bearer JWT (same auth as `/api/translate`).",
+        security: [{ BearerJwt: [] }],
+        requestBody: {
+          required: true,
+          content: {
+            "application/json": { schema: { $ref: "#/components/schemas/MeaningsRequest" } },
+          },
+        },
+        responses: {
+          "200": {
+            description: "OK",
+            content: {
+              "application/json": { schema: { $ref: "#/components/schemas/MeaningsResponse" } },
+            },
+          },
+          "400": { description: "Missing or invalid `query`.", content: { "application/json": { schema: { $ref: "#/components/schemas/Error" } } } },
+          "401": { description: "Missing or invalid Bearer JWT.", content: { "application/json": { schema: { $ref: "#/components/schemas/Error" } } } },
+          "405": { description: "Method other than POST." },
+          "500": { description: "Server misconfigured (Supabase env missing).", content: { "application/json": { schema: { $ref: "#/components/schemas/Error" } } } },
+          "502": { description: "Upstream LLM failure or unparsable response.", content: { "application/json": { schema: { $ref: "#/components/schemas/Error" } } } },
+          "503": { description: "Feature disabled — `ANTHROPIC_API_KEY` is not set on the server.", content: { "application/json": { schema: { $ref: "#/components/schemas/Error" } } } },
         },
       },
     },

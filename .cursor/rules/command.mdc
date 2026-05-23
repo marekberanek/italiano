@@ -1,0 +1,503 @@
+---
+description: uuApp server-side command development guide — Controller, ABL, validation, error definitions, and DAO files for create/get/update/delete/list operations with mandatory dtoIn confirmation before implementation
+alwaysApply: false
+---
+
+# Command Development
+
+## Table of Contents
+1. @Introduction
+2. @Specifications and Confirmation
+3. @Command Structure
+4. @Mandatory Components
+5. @Implementation Guidelines
+6. @Configuration Management
+7. @Validation Process
+8. @Error Handling
+9. @Best Practices
+10. @Troubleshooting
+
+## 1. Introduction
+
+Commands provide the API endpoints for accessing application functionality, where:
+
+- Each command represents a specific operation (create, get, update, delete, list)
+- Commands follow strict validation of input parameters (dtoIn)
+- Command implementation consists of multiple mandatory components
+- Implementation follows a structured approach with specific file organization
+
+### 1.1 Command-to-Implementation Mapping
+
+Each command maps to specific implementation files:
+
+- Controller - Entry point handling HTTP requests
+- ABL (Application Business Logic) - Business logic implementation
+- Validation - Input validation schemas
+- Error definitions - Error codes and messages
+- DAO (Data Access Object) - Database operations (if required)
+
+### 1.2 Fundamental Rule
+
+⚠️ **ABSOLUTE MANDATORY REQUIREMENT** ⚠️
+
+**NO IMPLEMENTATION BEFORE USER CONFIRMATION - ZERO EXCEPTIONS!**
+
+Before writing ANY code, you MUST ALWAYS:
+
+1. 🛑 STOP and ASK the user to specify:
+   - Precisely what the input structure (dtoIn) should be for each operation
+   - If a DAO needs to be created
+   - Any other special requirements or constraints
+
+2. 🛑 WAIT for explicit user confirmation of these specifications before proceeding with implementation.
+
+3. 🛑 DO NOT proceed with ANY implementation until you have received clear specifications.
+
+## 2. Specifications and Confirmation
+
+### 2.1 No Assumptions Policy
+
+- NEVER assume what operations are needed even if the user request seems clear
+- NEVER create a dtoIn structure without explicit confirmation
+- NEVER skip asking for specifications regardless of how obvious they might seem
+
+### 2.2 Required Specifications
+
+For each command, you must confirm:
+
+1. **Command name and purpose**
+   - Entity name and operation (e.g., joke/create, joke/get)
+   - Purpose and functionality of the command
+
+2. **Input structure (dtoIn)**
+   - All required and optional fields
+   - Data types and validation constraints
+   - Default values (if any)
+
+3. **Output structure (dtoOut)**
+   - All returned fields and their formats
+   - Error handling behavior (uuAppErrorMap)
+
+4. **Data persistence requirements**
+   - If a DAO is needed
+   - What data should be stored
+   - Relationships to other entities
+
+5. **Special considerations**
+   - Authorization requirements
+   - External service calls
+   - Complex business logic
+
+6. **External command design**
+   - For external commands, request design documentation or appmodel
+   - Get access to algorithm structure (not just dtoIn/dtoOut)
+   - Understand both happy day and alternative scenarios
+
+### 2.3 Confirmation Process
+
+Always follow this sequence:
+1. Gather information from source code
+2. 🛑 ASK for specifications - this is REQUIRED, MANDATORY and NON-OPTIONAL
+3. 🛑 WAIT for user confirmation of specifications
+4. 🛑 ASK for devkit command parameters based on confirmed specifications
+5. 🛑 WAIT for confirmation of devkit parameters before running `npm run uuCmdCreate`
+6. Only after explicit confirmation, execute devkit command and implement business logic
+
+### 2.4 DevKit Parameter Confirmation
+
+Before running the devkit command, you must confirm these parameters with the user:
+
+1. **use case**: Derived from the command operation name
+2. **entity**: Derived from the entity being worked with
+3. **privileged?**: Based on security requirements (`yes`/`no`)
+4. **two-phase?**: Based on complexity requirements (`yes`/`no`) - typically `no`
+5. **HTTP method**: Based on operation type (`GET` for queries, `POST` for modifications)
+6. **profileList**: Based on authorization requirements (e.g., `Authorities, Executives`)
+7. **create DAO stub?**: Based on data persistence needs (`yes`/`no`)
+8. **create test stub?**: Typically `yes` for test coverage (`yes`/`no`)
+
+Present these parameters clearly to the user and wait for explicit confirmation before proceeding.
+
+## 3. Command Structure
+
+### 3.1 Command Naming Convention
+
+Commands must follow this naming structure:
+
+- `entity/create` - Creates a new entity
+- `entity/get` - Retrieves a single entity by ID
+- `entity/update` - Updates an existing entity
+- `entity/delete` - Deletes an entity
+- `entity/list` - Lists multiple entities with filtering
+
+### 3.2 Component File Structure
+
+Each command consists of these components:
+
+1. **Controller**
+   - Located in `app/api/controllers/[entity]-controller.js`
+   - Handles HTTP requests and responses
+   - Maps to ABL implementation using cmd parameter
+
+2. **ABL (Application Business Logic)**
+   - Located in `app/abl/[entity]/[command]-abl.js`
+   - Each command has its own separate ABL file
+   - Implements business logic
+   - Follows structured error handling
+
+3. **Validation Schema**
+   - Located in `app/api/validation_types/[entity]-types.js`
+   - Defines input validation schemas
+   - Includes detailed validation rules
+
+4. **Error Definitions**
+   - Located in `app/api/errors/[entity]-error.js`
+   - Defines error codes and messages
+   - Follows standard error format
+
+5. **DAO (if required)**
+   - Located in `app/dao/[entity]-mongo.js`
+   - Implements database operations
+   - Must be registered in persistence.json
+
+## 4. Mandatory Components
+
+### 4.1 ABL (Application Business Logic)
+
+ABL implements the core business logic of each command, following these rules:
+
+- Each command has its own separate ABL file
+- ABL files must be placed in folder structure: `app/abl/[entity]/`
+- File naming pattern: `[command]-abl.js`
+- Example: For command `joke/create`, the file should be `app/abl/joke/create-abl.js`
+- ABL follows structured validation and error handling
+- Implements both happy day scenario (hds) and alternative scenarios (as)
+- Uses standard error codes with entity-specific prefixes
+
+For detailed guidelines, see [abl.md](mdc:docs/command/abl.md).
+
+### 4.2 Controller and Mapping
+
+Controllers handle HTTP requests and map to ABL implementations:
+- Controllers define URL routes for commands
+- Controllers are organized by entity
+- Each controller exports a `create`, `get`, etc. function that maps to ABL
+- Controller maps HTTP request to ABL using `Errors.handle` wrapper
+- Define user profile authorization for each command
+
+For detailed guidelines, see [controller.md](mdc:docs/command/controller.md) and [mappings.md](mdc:docs/command/mappings.md). Do not forget to check the [mapping rules](mdc:docs/command/mapping-rules.md) for the correct mapping of the command.
+
+### 4.3 Error Handling
+
+All commands must implement standardized error handling:
+- Define error codes for each potential failure
+- Follow the error prefix pattern: `uu-appname-subapp/entity/operation/errorCode`
+- Include appropriate error parameters
+- Handle both validation errors and business logic errors
+- Use the standard AppError class from app-core
+- All errors must be documented in the entity error file
+
+For detailed guidelines, see [errors.md](mdc:docs/command/errors.md).
+
+### 4.4 Validation Schema
+
+Input validation is mandatory for all commands:
+- Define comprehensive validation schemas
+- Include validation for all input fields with proper types
+- Follow established validation patterns with proper constraints
+- Use proper validation functions (string, integer, array, oneOf, etc.)
+- Document all validation constraints clearly
+- Use named types for better maintainability
+- Use Basic Data Types for validation as much as possible. Do not use uu5String for example unless absolutely necessary and specified in the request.
+
+For detailed guidelines, see [validation-scheme.md](mdc:docs/command/validation-scheme.md) and [validation.md](mdc:docs/command/validation.md).
+
+### 4.5 Profile Registration
+
+Each command must be registered in profiles:
+- Commands must be registered in the appropriate profile file
+- Authorization must be properly configured (Authorities, Executives, etc.)
+- Use standard profile types (Authorities, Executives, StandardUsers)
+- Each command requires explicit "CMD" permission
+
+For detailed guidelines, see [profiles.md](mdc:docs/command/profiles.md).
+
+### 4.6 DAO (if required)
+
+When data persistence is needed:
+- Implement DAO for database operations
+- Register DAO in persistence.json
+- Follow established DAO patterns with standard CRUD operations
+- Use proper MongoDB indexing
+- Implement schema validation at the database level
+
+For detailed guidelines, see [dao.md](mdc:docs/command/dao.md) and [persistence.md](mdc:docs/command/persistence.md).
+
+## 5. Implementation Guidelines
+
+### 5.1 DevKit Command Generation (MANDATORY FIRST STEP)
+
+⚠️ **USE DEVKIT TASK FOR COMMAND STRUCTURE GENERATION** ⚠️
+
+**NEVER manually create command files. ALWAYS use the devkit task first!**
+
+#### Step 1: Generate Command Structure Using DevKit
+
+Before implementing ANY command functionality, you MUST use the devkit command to generate the complete file structure:
+
+```bash
+# Basic syntax
+npm run uuCmdCreate -- --useCase=<useCase> --entity=<entity> [options]
+
+# Available parameters:
+# --useCase=<string>      - Command use case (e.g., topic/create, user/list)
+# --entity=<string>       - Entity name for file naming
+# --privileged            - Mark as privileged command (flag, no value)
+# --httpMethod=<GET|POST> - HTTP method [default: GET]
+# --profileList=<string>  - Comma-separated profiles (e.g., "Authorities,Executives")
+# --daoStub=<true|false>  - Create DAO stub [default: false]
+# --testStub=<true|false> - Create test stub [default: false]
+# --twoPhase=<true|false> - Use two-phase implementation [default: false]
+
+# Examples:
+# Create a topic CRUD operation with DAO and tests
+npm run uuCmdCreate -- --useCase=topic/create --entity=topic --httpMethod=POST --profileList="Authorities,Executives" --daoStub=true --testStub=true
+
+# Create a simple GET operation
+npm run uuCmdCreate -- --useCase=document/list --entity=document --httpMethod=GET --profileList="Authorities,Executives" --testStub=true
+
+# Create a privileged admin operation
+npm run uuCmdCreate -- --useCase=user/delete --entity=user --privileged --httpMethod=POST --profileList="Authorities" --testStub=true
+
+# Create a workspace initialization command
+npm run uuCmdCreate -- --useCase=sys/uuAppWorkspace/init --entity=sysUuAppWorkspace --privileged --httpMethod=POST --profileList="AwidInitiator" --daoStub=true --testStub=true --twoPhase=true
+```
+
+#### Step 2: Implementation Process After DevKit Generation
+
+After generating the command structure with devkit, follow this process:
+
+1. **Confirm specifications with user** ✅ (WAIT for confirmation)
+2. **Run devkit command** - Execute `npm run uuCmdCreate` with confirmed parameters
+3. **Fix ABL structure** - ⚠️ **MANDATORY**: Reorganize ABL files to correct structure (see §5.1.1)
+4. **Review generated files** - Show user what files were created and restructured
+5. **Implement business logic** - Fill in the generated ABL stub with actual implementation
+6. **Extend validation** - Enhance the generated validation schemas if needed
+7. **Customize error handling** - Add specific error cases to generated error definitions
+8. **Complete DAO implementation** - Implement actual database operations in DAO stub (if created)
+
+#### Implementation Rules After DevKit
+
+- **NEVER manually create command structure files**
+- **ALWAYS use devkit task as the first step**
+- **Focus on implementing business logic in generated stubs**
+- **Enhance generated validation and error handling as needed**
+- **Test the command after implementation**
+
+### 5.1.1 ABL Structure Correction After DevKit (MANDATORY)
+
+⚠️ **CRITICAL**: The devkit generates ABL files in wrong structure. You MUST fix this immediately after running devkit!
+
+#### Problem
+
+DevKit creates ABL files as: `app/abl/[entity]-abl.js` (WRONG)
+
+#### Required Structure
+
+ABL files must be: `app/abl/[entity]/[command]-abl.js` (CORRECT)
+
+#### Fix Process (MANDATORY AFTER DEVKIT)
+
+1. **Create entity directory**: Create `app/abl/[entity]/` directory
+2. **Move and rename ABL file**:
+   - From: `app/abl/[entity]-abl.js`
+   - To: `app/abl/[entity]/[command]-abl.js`
+3. **Update controller references**: Ensure controller imports point to new ABL location
+4. **Verify structure**: Confirm all ABL files follow the correct pattern
+
+#### Example Fix
+
+For command `product/create` with entity `product`:
+
+**Before (DevKit generates):**
+```
+app/abl/product-abl.js
+```
+
+**After (You must fix to):**
+```
+app/abl/product/create-abl.js
+```
+
+**Controller Import Update:**
+```javascript
+// Update controller to reference correct ABL location
+const ProductCreateAbl = require("../../abl/product/create-abl.js");
+```
+
+#### Multiple Commands
+
+For multiple commands of same entity, each gets its own ABL file:
+```
+app/abl/product/create-abl.js
+app/abl/product/get-abl.js
+app/abl/product/update-abl.js
+app/abl/product/delete-abl.js
+app/abl/product/list-abl.js
+```
+
+### 5.2 External Command Calls & Design Requirements
+
+When calling external commands:
+
+- Never assume input/output structure
+- Ask user for command details and specifications
+- **MANDATORY**: Request and review the complete external command design/algorithm (appmodel) - simply ask user for clarification and providing more detail
+- Understand the complete API behavior (not just dtoIn structure)
+- Implement proper error handling for external calls
+- Use system identity for cross-application communication (see §5.4)
+
+For detailed guidelines, see [command-orchestration.md](mdc:docs/command/command-orchestration.md).
+
+### 5.3 Authentication and Authorization
+
+Always follow proper authentication practices:
+- Verify user permissions through profiles
+- Apply proper access controls
+- Check authorization in ABL
+- Handle authorization errors consistently
+- Document required user roles
+- For cross-application calls, use system identity (see §5.4)
+
+For detailed guidelines, see [authentication.md](mdc:docs/command/authentication.md).
+
+### 5.4 System Identity & Cross-App Calls
+
+When calling commands in other applications:
+
+- **MUST USE SYSTEM IDENTITY**: All calls across application boundaries must use system identity
+- **NEVER REUSE USER TOKENS**: Never use end-user session tokens for crossing application boundaries
+
+#### Authentication Modes
+
+1. **User-Initiated Flows**:
+   - Use system identity WITH actor claim
+   - The actor claim contains the end user's uuIdentity who initiated the request
+   - Example: `{ actor: "1234-5678-9012" }`
+
+2. **System-Initiated Flows**:
+   - Use system identity WITHOUT actor claim
+   - For background jobs, scheduled tasks, or system maintenance
+   - No end user association
+
+#### OIDC Client Usage
+
+- Each application has its own OIDC client credentials (client_id/client_secret)
+- Always use your application's OIDC client when calling other applications
+- Never hardcode tokens; obtain them through the token service
+
+#### AppClient Usage (MANDATORY)
+
+Always use the AppClient for cross-application calls:
+
+```javascript
+// CORRECT: Using AppClient with system identity
+const AppClient = require("uu_appg01_server").AppClient;
+
+// For user-initiated requests (with actor)
+const systemToken = await getSystemToken(ucEnv.getSession().getIdentity().getUuIdentity());
+const dtoOut = await AppClient.post("https://uuapp.plus4u.net/uu-app/id/command", dtoIn, {
+  session: systemToken
+});
+
+// For system-initiated requests (no actor)
+const pureSystemToken = await getSystemToken();
+const dtoOut = await AppClient.post("https://uuapp.plus4u.net/uu-app/id/command", dtoIn, {
+  session: pureSystemToken
+});
+```
+
+```javascript
+// INCORRECT: Direct HTTP calls or user token reuse
+// DON'T DO THIS
+const axios = require("axios");
+const userToken = ucEnv.getSession().getToken();
+const response = await axios.post("https://uuapp.plus4u.net/uu-app/id/command", dtoIn, {
+  headers: { Authorization: `Bearer ${userToken}` }
+});
+```
+
+## 6. Configuration Management
+
+Configuration management is crucial for proper command operation across different environments and deployment scenarios. Commands must handle configuration properly to ensure they work correctly in development, testing, and production environments.
+
+### 6.1 Server Configuration
+
+Commands must access configuration values using the standardized `Config.get()` method:
+
+```javascript
+const { Utils } = require("uu_appg01_server");
+const { Config } = Utils;
+
+// Get configuration value
+const externalApiUrl = Config.get("externalApiUrl");
+if (!externalApiUrl) {
+  throw new Errors.ConfigurationMissing({ uuAppErrorMap }, { key: "externalApiUrl" });
+}
+```
+
+### 6.2 Configuration Validation
+
+Always validate configuration values before use:
+
+```javascript
+// Validate required configuration
+const businessChatBaseUri = Config.get("businessChatBaseUri");
+if (!businessChatBaseUri) {
+  throw new Errors.Ask.BusinessChatBaseUriMissing({ uuAppErrorMap });
+}
+
+// Provide default values where appropriate
+const timeout = Config.get("apiTimeout") || 30000;
+const maxRetries = Config.get("maxRetries") || 3;
+```
+
+### 6.3 Environment Configuration
+
+For uuScript environments, use the `EnvironmentClient` to access configuration:
+
+```javascript
+const environmentClient = new EnvironmentClient(mainContext);
+const environment = await environmentClient.getByUser(instructionSetCode);
+
+// Access base URIs
+const baseUri = environment.mergedEnvironmentsData.environmentData?.uuBusinessTerritoryBaseUri;
+if (!baseUri) {
+  throw new Errors.MissingBaseUri({}, { missingUri: "uuBusinessTerritoryBaseUri" });
+}
+```
+
+### 6.4 Configuration Files
+
+Commands rely on various configuration files:
+- **`app/config/mappings.json`** - URL to controller mappings
+- **`app/config/profiles.json`** - Authorization profiles
+- **`app/config/persistence.json`** - Database configurations
+- **`env/development.json`** - Development environment settings
+- **`env/production.json`** - Production environment settings
+
+### 6.5 Configuration Error Handling
+
+Define specific error types for configuration issues:
+
+```javascript
+ConfigurationMissing: class extends UseCaseError {
+  constructor() {
+    super(...arguments);
+    this.code = `${UC_CODE}configurationMissing`;
+    this.message = "Required configuration parameter is missing.";
+  }
+}
+```
+
+For comprehensive configuration management guidelines, see [configuration.md](mdc:docs/command/configuration.md).

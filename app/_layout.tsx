@@ -13,9 +13,9 @@ import { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
-import { Palette } from "@/constants/theme";
 import { useVocabReminders } from "@/hooks/use-vocab-reminders";
 import { AuthProvider } from "@/lib/auth/auth-context";
+import { ThemeProvider, useTheme } from "@/lib/theme/theme-context";
 import { syncRemoteContent } from "@/lib/content/sync-content";
 import { installNotificationHandler } from "@/lib/notifications/scheduler";
 
@@ -71,13 +71,23 @@ export default function RootLayout() {
   if (!loaded) return null;
 
   return (
-    <GestureHandlerRootView style={{ flex: 1, backgroundColor: Palette.background }}>
+    <ThemeProvider>
+      <RootNavigation />
+    </ThemeProvider>
+  );
+}
+
+function RootNavigation() {
+  const { palette, colorScheme } = useTheme();
+
+  return (
+    <GestureHandlerRootView style={{ flex: 1, backgroundColor: palette.background }}>
       <SafeAreaProvider>
         <AuthProvider>
           {/* Reminder scheduler must live INSIDE AuthProvider — it reads the
               session via useAuth() and cancels notifications on sign-out. */}
           <RemindersScheduler />
-          <Stack screenOptions={{ contentStyle: { backgroundColor: Palette.background } }}>
+          <Stack screenOptions={{ contentStyle: { backgroundColor: palette.background } }}>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen
             name="lessons/grammar"
@@ -123,7 +133,7 @@ export default function RootLayout() {
           <Stack.Screen name="lessons/false-friends" options={{ title: "Falešní přátelé", headerShown: false }} />
           <Stack.Screen name="lessons/abbreviations" options={{ title: "Zkratky", headerShown: false }} />
           </Stack>
-          <StatusBar style="dark" />
+          <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
         </AuthProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>

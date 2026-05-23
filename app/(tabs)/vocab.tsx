@@ -23,7 +23,10 @@ import { Screen } from "@/components/screen";
 import { ScreenHeader } from "@/components/screen-header";
 import { StatTile } from "@/components/stat-tile";
 import { VocabRow } from "@/components/vocab-row";
-import { Palette, Radius, Shadow, Spacing, Typography } from "@/constants/theme";
+import type { ColorPalette, ThemeShadows } from "@/constants/theme";
+import { Radius, Spacing, Typography } from "@/constants/theme";
+import { useThemedStyles } from "@/hooks/use-themed-styles";
+import { useTheme } from "@/lib/theme/theme-context";
 import { useItalianTts } from "@/hooks/use-italian-tts";
 import { useVocabStore, type AddWordInput } from "@/hooks/use-vocab-store";
 import { TranslateError, lookupWord } from "@/lib/api/translate";
@@ -34,6 +37,9 @@ import { inferVocabKind } from "@/lib/vocab/infer-kind";
 type KindFilter = "all" | VocabKind;
 
 export default function VocabScreen() {
+  const { palette } = useTheme();
+  const styles = useThemedStyles(createStyles);
+
   const tts = useItalianTts();
   const router = useRouter();
   const { user } = useAuth();
@@ -86,7 +92,7 @@ export default function VocabScreen() {
             onPress={() => setShowAdd(true)}
             style={({ pressed }) => [styles.addButton, pressed && styles.pressed]}
           >
-            <MaterialIcons name="add" size={20} color={Palette.brandDark} />
+            <MaterialIcons name="add" size={20} color={palette.brandDark} />
             <Text style={styles.addLabel}>Přidat slovíčko</Text>
           </Pressable>
         ) : (
@@ -94,7 +100,7 @@ export default function VocabScreen() {
             onPress={() => router.push("/(tabs)/profile")}
             style={({ pressed }) => [styles.addButton, pressed && styles.pressed]}
           >
-            <MaterialIcons name="login" size={20} color={Palette.brandDark} />
+            <MaterialIcons name="login" size={20} color={palette.brandDark} />
             <Text style={styles.addLabel}>Přihlas se pro přidávání</Text>
           </Pressable>
         )}
@@ -105,7 +111,7 @@ export default function VocabScreen() {
           <MaterialIcons
             name={search ? "search-off" : "search"}
             size={20}
-            color={Palette.textMuted}
+            color={palette.textMuted}
           />
         </Pressable>
       </View>
@@ -133,12 +139,12 @@ export default function VocabScreen() {
 
       {search ? (
         <View style={styles.searchBox}>
-          <MaterialIcons name="search" size={18} color={Palette.textMuted} />
+          <MaterialIcons name="search" size={18} color={palette.textMuted} />
           <TextInput
             value={search.trim()}
             onChangeText={setSearch}
             placeholder="Hledat ve slovíčkách"
-            placeholderTextColor={Palette.textMuted}
+            placeholderTextColor={palette.textMuted}
             autoFocus
             autoCapitalize="none"
             style={styles.searchField}
@@ -203,6 +209,8 @@ function AddWordModal({
   onSubmit: (input: AddInput) => void;
   isOwned: (italian: string) => boolean;
 }) {
+  const { palette } = useTheme();
+  const styles = useThemedStyles(createStyles);
   const tts = useItalianTts();
   const router = useRouter();
   const insets = useSafeAreaInsets();
@@ -292,7 +300,7 @@ function AddWordModal({
               <View style={styles.modalHeader}>
                 <Text style={styles.modalTitle}>Přidat slovíčko</Text>
                 <Pressable onPress={close} hitSlop={8}>
-                  <MaterialIcons name="close" size={22} color={Palette.textMuted} />
+                  <MaterialIcons name="close" size={22} color={palette.textMuted} />
                 </Pressable>
               </View>
 
@@ -302,13 +310,13 @@ function AddWordModal({
 
               <View style={styles.searchRow}>
                 <View style={styles.searchInput}>
-                  <MaterialIcons name="search" size={18} color={Palette.textMuted} />
+                  <MaterialIcons name="search" size={18} color={palette.textMuted} />
                   <TextInput
                     value={query}
                     onChangeText={setQuery}
                     onSubmitEditing={search}
                     placeholder="např. „voda“ nebo „acqua“"
-                    placeholderTextColor={Palette.textMuted}
+                    placeholderTextColor={palette.textMuted}
                     autoCapitalize="none"
                     autoCorrect={false}
                     returnKeyType="search"
@@ -325,7 +333,7 @@ function AddWordModal({
                   ]}
                 >
                   {loading ? (
-                    <ActivityIndicator color={Palette.textInverse} />
+                    <ActivityIndicator color={palette.textInverse} />
                   ) : (
                     <Text style={styles.searchBtnLabel}>Hledat</Text>
                   )}
@@ -335,7 +343,7 @@ function AddWordModal({
               {error ? (
                 <View style={styles.errorBox}>
                   <View style={styles.errorRow}>
-                    <MaterialIcons name="error-outline" size={18} color={Palette.danger} />
+                    <MaterialIcons name="error-outline" size={18} color={palette.danger} />
                     <Text style={styles.errorText}>{error}</Text>
                   </View>
                   {errorRequiresAuth ? (
@@ -411,7 +419,7 @@ function AddWordModal({
                   <MaterialIcons
                     name={alreadyOwned ? "check" : "add"}
                     size={20}
-                    color={Palette.textInverse}
+                    color={palette.textInverse}
                   />
                   <Text style={styles.modalSubmitLabel}>
                     {alreadyOwned ? "Už máš ve slovíčkách" : "Přidat do slovíček"}
@@ -426,7 +434,8 @@ function AddWordModal({
   );
 }
 
-const styles = StyleSheet.create({
+function createStyles(p: ColorPalette, s: ThemeShadows) {
+  return StyleSheet.create({
   statsRow: { flexDirection: "row", gap: Spacing.sm + 2 },
   actionRow: { flexDirection: "row", gap: Spacing.sm + 2 },
   filterRow: {
@@ -444,22 +453,22 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     paddingHorizontal: Spacing.lg,
     borderRadius: Radius.pill,
-    backgroundColor: Palette.brandSoft,
+    backgroundColor: p.brandSoft,
     borderWidth: 1.5,
-    borderColor: Palette.brand,
+    borderColor: p.brand,
   },
   addLabel: {
     fontFamily: Typography.display.fontFamily,
-    color: Palette.brandDark,
+    color: p.brandDark,
     fontSize: 14,
   },
   iconButton: {
     width: 50,
     height: 50,
     borderRadius: Radius.pill,
-    backgroundColor: Palette.surface,
+    backgroundColor: p.surface,
     borderWidth: 1,
-    borderColor: Palette.border,
+    borderColor: p.border,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -471,14 +480,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.lg,
     height: 48,
     borderRadius: Radius.pill,
-    backgroundColor: Palette.surface,
+    backgroundColor: p.surface,
     borderWidth: 1,
-    borderColor: Palette.border,
+    borderColor: p.border,
   },
-  searchField: { flex: 1, ...Typography.body, color: Palette.textStrong },
+  searchField: { flex: 1, ...Typography.body, color: p.textStrong },
   list: { gap: Spacing.sm + 2 },
   empty: { alignItems: "center", paddingVertical: Spacing.xxl },
-  emptyText: { ...Typography.body, color: Palette.textMuted, fontStyle: "italic" },
+  emptyText: { ...Typography.body, color: p.textMuted, fontStyle: "italic" },
   modalKavRoot: { flex: 1 },
   modalScrim: {
     flex: 1,
@@ -486,11 +495,11 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   modalCard: {
-    backgroundColor: Palette.surface,
+    backgroundColor: p.surface,
     borderTopLeftRadius: Radius.xl,
     borderTopRightRadius: Radius.xl,
     maxHeight: "88%",
-    ...Shadow.pop,
+    ...s.pop,
   },
   modalScrollContent: {
     padding: Spacing.xl,
@@ -504,11 +513,11 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontFamily: Typography.display.fontFamily,
     fontSize: 20,
-    color: Palette.textStrong,
+    color: p.textStrong,
   },
   modalHint: {
     ...Typography.small,
-    color: Palette.textMuted,
+    color: p.textMuted,
   },
   searchRow: { flexDirection: "row", gap: Spacing.sm + 2, alignItems: "stretch" },
   searchInput: {
@@ -517,13 +526,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: Spacing.sm,
     paddingHorizontal: Spacing.md,
-    backgroundColor: Palette.surfaceMuted,
+    backgroundColor: p.surfaceMuted,
     borderRadius: Radius.pill,
     minHeight: 48,
   },
-  modalSearchField: { flex: 1, ...Typography.body, color: Palette.textStrong },
+  modalSearchField: { flex: 1, ...Typography.body, color: p.textStrong },
   searchBtn: {
-    backgroundColor: Palette.brand,
+    backgroundColor: p.brand,
     paddingHorizontal: Spacing.lg,
     minHeight: 48,
     minWidth: 88,
@@ -534,23 +543,23 @@ const styles = StyleSheet.create({
   searchBtnDisabled: { opacity: 0.5 },
   searchBtnLabel: {
     fontFamily: Typography.display.fontFamily,
-    color: Palette.textInverse,
+    color: p.textInverse,
     fontSize: 14,
   },
   errorBox: {
     gap: Spacing.sm,
     padding: Spacing.md,
     borderRadius: Radius.md,
-    backgroundColor: Palette.accentSoft,
+    backgroundColor: p.accentSoft,
   },
   errorRow: {
     flexDirection: "row",
     alignItems: "center",
     gap: Spacing.sm,
   },
-  errorText: { ...Typography.smallStrong, color: Palette.danger, flex: 1 },
+  errorText: { ...Typography.smallStrong, color: p.danger, flex: 1 },
   previewCard: {
-    backgroundColor: Palette.brand,
+    backgroundColor: p.brand,
     borderRadius: Radius.lg,
     padding: Spacing.lg,
     gap: Spacing.sm,
@@ -565,51 +574,53 @@ const styles = StyleSheet.create({
     flex: 1,
     fontFamily: Typography.display.fontFamily,
     fontSize: 24,
-    color: Palette.textInverse,
+    color: p.textInverse,
   },
   previewPron: {
     ...Typography.bodyStrong,
-    color: Palette.textOnDark,
+    color: p.textOnDark,
     fontStyle: "italic",
   },
   previewCz: {
     fontFamily: Typography.display.fontFamily,
     fontSize: 18,
-    color: Palette.textInverse,
+    color: p.textInverse,
   },
   kindRow: { gap: Spacing.sm },
-  kindLabel: { ...Typography.smallStrong, color: Palette.textMuted },
+  kindLabel: { ...Typography.smallStrong, color: p.textMuted },
   kindChips: { flexDirection: "row", gap: Spacing.sm },
   kindChip: {
     paddingVertical: 8,
     paddingHorizontal: Spacing.lg,
     borderRadius: Radius.pill,
-    backgroundColor: Palette.surfaceMuted,
+    backgroundColor: p.surfaceMuted,
     borderWidth: 1.5,
-    borderColor: Palette.border,
+    borderColor: p.border,
   },
   kindChipActive: {
-    backgroundColor: Palette.brandSoft,
-    borderColor: Palette.brand,
+    backgroundColor: p.brandSoft,
+    borderColor: p.brand,
   },
-  kindChipText: { ...Typography.smallStrong, color: Palette.textMuted },
-  kindChipTextActive: { color: Palette.brandDark },
+  kindChipText: { ...Typography.smallStrong, color: p.textMuted },
+  kindChipTextActive: { color: p.brandDark },
   pressedChip: { opacity: 0.85 },
   modalSubmit: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     gap: Spacing.sm,
-    backgroundColor: Palette.brand,
+    backgroundColor: p.brand,
     paddingVertical: 14,
     borderRadius: Radius.pill,
   },
   modalSubmitDisabled: {
-    backgroundColor: Palette.border,
+    backgroundColor: p.border,
   },
   modalSubmitLabel: {
     fontFamily: Typography.display.fontFamily,
-    color: Palette.textInverse,
+    color: p.textInverse,
     fontSize: 16,
   },
-});
+  });
+}
+

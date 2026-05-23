@@ -1,0 +1,726 @@
+---
+description: Complete CRUD component creation guide generating List, Create, and Detail components with full integration, validation, and demo configuration
+globs: 
+alwaysApply: false
+---
+# CRUD Components Creation Guide
+
+## Table of Contents
+
+1. @Introduction
+2. @Specifications and Confirmation
+3. @Prerequisites
+4. @List Component Generation
+5. @Create Component Generation
+6. @Detail Component Generation
+7. @Integration and Configuration
+8. @Demo Configuration
+9. @Best Practices
+10. @Troubleshooting
+
+## 1. Introduction
+
+This guide outlines the process for creating complete CRUD (Create, Read, Update, Delete) components using the uu5Generate command. This rule creates List, Create, and Detail components for a given module based on user input.
+
+### 1.1 When to Use
+
+Use this guide when creating complete CRUD implementations for entities that require:
+- List view with filtering and sorting
+- Creation forms with validation
+- Detail view with full entity information
+
+### 1.2 Fundamental Rule
+
+⚠️ **ABSOLUTE MANDATORY REQUIREMENT** ⚠️
+
+**NO IMPLEMENTATION BEFORE USER CONFIRMATION - ZERO EXCEPTIONS!**
+
+Before writing ANY code, you MUST ALWAYS:
+
+1. 🛑 STOP and ASK the user to specify:
+   - Module name (e.g., `Library`, `Note`, `Workspace`)
+   - Schema description (text or uuSchema documentation link)
+   - BaseUri for demo sites
+
+2. 🛑 WAIT for explicit user confirmation before proceeding.
+
+3. 🛑 DO NOT proceed with ANY implementation until you have received clear specifications.
+
+> **CRUD COMPONENTS RULE**  
+> When a user wants to create new **CRUD components** (List, Create, Detail), you MUST use the uu5Generate command in the **-core library** to generate all three components.  
+> This rule combines the functionality of list-component, create-component, and detail-component rules.
+
+## 2. Specifications and Confirmation
+
+Before implementation, confirm with the user:
+
+- [ ] Module name (e.g., `Library`, `Note`, `Workspace`)
+- [ ] Schema description (text or uuSchema documentation link)
+- [ ] BaseUri for demo sites
+- [ ] Any special requirements or constraints
+
+**Default Values** (when user doesn't specify):
+- **sub-app** – derived from library name (e.g. `uu_frontend_aicodingg01-core` → `uu_frontend_aicodingg01`)  
+- **brick-uu5-tag** – `"-"` (empty)  
+- **redirect-uu5-route** – `"-"` (empty)  
+- **generate-brick** – `no-generate-brick` (do not generate brick components)
+
+**IMPORTANT**: ALWAYS use cmd when calling uu5Generate. Do NOT use PowerShell as it causes syntax issues with the command execution.
+
+**Process Overview**:
+1. **Gather all required information** from the user
+2. **Generate List component** using uu5Generate listComponent command
+3. **Generate Create component** using uu5Generate visualComponent command  
+4. **Generate Detail component** using uu5Generate detailComponent command
+5. **Configure all components** based on schema description
+6. **Handle workspace provider removal** if requested
+7. **Configure demo pages** with provided baseUri
+8. **Format and compile** all code
+
+## 3. Prerequisites
+
+### 3.1 Package Installation Check
+Before starting any component creation, you MUST gather the required information from the user:
+
+**Ask the user for**:
+1. **Module name** (e.g., "Library", "Note", "Workspace")
+2. **Schema description** - Either:
+   - A text description of the object/entity structure, OR
+   - A link to uuSchema documentation that describes the object
+3. **BaseUri for Demo** - The baseUri to use for demo sites
+
+**Example questions**:
+- "What module name should be used for the CRUD components? (e.g., Library, Note, Workspace)"
+- "Please provide a schema description for the object/entity. This can be either a text description or a link to uuSchema documentation."
+- "What baseUri should be used for the demo sites?"
+
+**STEP 2 - Package Installation Check**:
+Before starting any component creation, you MUST verify that all required packages are installed:
+
+**Check for uu-safe-install script in ROOT folder (where uuapp.json is located)**:
+```bash
+# Navigate to the root folder where uuapp.json is located
+cd ..
+# Check if required packages are already installed
+npm list uu5g05-forms uu_plus4u5g02
+```
+
+**If packages are already installed**:
+- Verify that `uu5g05-forms` and `uu_plus4u5g02` packages are available
+- **CRITICAL**: Also check that packages are registered in the -core library's package.json
+- Navigate to the -core library directory and verify package.json contains the required dependencies
+- If packages are in node_modules but not in package.json, they need to be properly registered
+- Proceed with component creation only if both conditions are met
+
+**If packages are missing OR uu-safe-install script exists in root**:
+```bash
+# Run uu-safe-install command
+npm run uu-safe-install
+```
+- Run the command to install all required packages
+- Verify that `uu5g05-forms` and `uu_plus4u5g02` packages are available
+- Proceed with component creation
+
+**If uu-safe-install script does NOT exist in root**:
+- **ERROR**: Cannot proceed with CRUD component creation
+- The required packages (`uu5g05-forms`, `uu_plus4u5g02`) must be installed first
+- Add missing packages to package.json dependencies in the appropriate workspace
+- Use appropriate install command (npm install, yarn install, etc.)
+- **STOP**: Do not proceed with component creation until packages are available
+
+**Required Packages**:
+- `uu5g05-forms` - For Uu5Forms components (Form, FormText, FormTextArea, etc.)
+- `uu_plus4u5g02` - For Plus4U5.Utils.AppClient API calls
+
+## 4. List Component Generation
+
+### 4.1 Generate List Component
+Generate the List component using uu5Generate command following the **list-component rule**:
+
+**Generate List Component**:
+```bash
+cmd /c "npm run uu5Generate listComponent <module>.List -- --sub-app=uu_frontend_aicodingg01 --brick-uu5-tag=- --redirect-uu5-route=-"
+```
+
+**CRITICAL**: Always run uu5Generate commands using `cmd /c` wrapper, never use PowerShell directly for these commands.
+
+**Follow list-component rule steps**:
+1. **Object Description** - Use the schema description provided by user
+2. **SeriesList Configuration** - Configure based on object attributes
+3. **List Command Verification** - Verify command parameters and structure
+4. **Object ID Configuration** - Configure correct identifier attribute
+5. **BaseUri Configuration** - Handle workspace provider removal if requested
+6. **Code Formatting** - Run prettify
+7. **Compilation Verification** - Run build
+8. **Demo Configuration** - Configure demo with provided baseUri
+
+## 5. Create Component Generation
+
+### 5.1 Generate Create Component
+Generate the Create component using uu5Generate command following the **create-component rule**:
+
+**Generate Main Create Component**:
+```bash
+cmd /c "npm run uu5Generate visualComponent <module>.Create"
+```
+
+**Generate Content Component**:
+```bash
+cmd /c "npm run uu5Generate visualComponent <module>.CreateContent -- --no-demo --no-register"
+```
+
+**Follow create-component rule steps**:
+1. **Object Description** - Use the schema description provided by user
+2. **Create Command Verification** - Verify command parameters and structure
+3. **Visual Component Generation** - Generate main and content components
+4. **Form Field Configuration** - Configure form fields with Uu5Forms components
+5. **LSI Structure Configuration** - Update LSI labels following proper structure
+6. **Modal Integration** - Implement modal with useModal hook
+7. **BaseUri Configuration** - Configure baseUri prop (no workspace check)
+8. **Form Validation Implementation** - Implement comprehensive validation
+9. **Success Handling** - Configure success handling for create operation
+10. **Code Formatting** - Run prettify
+11. **Compilation Verification** - Run build
+12. **Demo Configuration** - Configure demo with provided baseUri
+13. **Advanced Form Features** - Implement advanced features if needed
+14. **Testing and Validation** - Ensure comprehensive testing
+15. **ESLint Fix** - Run eslint fix
+
+## 6. Detail Component Generation
+
+### 6.1 Generate Detail Component
+Generate the Detail component using uu5Generate command following the **detail-component rule**:
+
+**Generate Detail Component**:
+```bash
+cmd /c "npm run uu5Generate detailComponent <module>.Detail -- --sub-app=uu_frontend_aicodingg01 --brick-uu5-tag=- --redirect-uu5-route=-"
+```
+
+**Follow detail-component rule steps**:
+1. **Object Description** - Use the schema description provided by user
+2. **Load/Get Command Verification** - Verify load or get command parameters
+3. **Object ID Configuration** - Configure correct identifier attribute
+4. **BaseUri Configuration** - Handle workspace provider removal if requested
+5. **Content Implementation** - Implement hybrid approach with InfoGroup and ListLayout
+6. **Code Formatting** - Run prettify
+7. **Compilation Verification** - Run build
+8. **Demo Configuration** - Configure demo with provided baseUri
+
+## 7. Integration and Configuration
+
+### 7.1 API Calls Configuration
+Update `src/calls.js` with all necessary API calls:
+
+**Required API calls**:
+- `[module]/list` - for list component
+- `[module]/create` - for create component  
+- `[module]/load` or `[module]/get` - for detail component
+
+**Implementation**:
+```javascript
+// Add to src/calls.js
+const Calls = {
+  // ... existing calls
+  [module]: {
+    list: (baseUri, dtoIn) => Plus4U5.Utils.AppClient.get(`${baseUri}/[module]/list`, dtoIn),
+    create: (baseUri, dtoIn) => Plus4U5.Utils.AppClient.post(`${baseUri}/[module]/create`, dtoIn),
+    load: (baseUri, dtoIn) => Plus4U5.Utils.AppClient.get(`${baseUri}/[module]/load`, dtoIn),
+    // or get: (baseUri, dtoIn) => Plus4U5.Utils.AppClient.get(`${baseUri}/[module]/get`, dtoIn)
+  }
+};
+```
+
+### 7.2 LSI Configuration
+Update `src/lsi/en.json` with all necessary LSI labels for all components:
+
+**LSI Structure Requirements**:
+1. **Use component uu5Tag as keys**: The LSI structure must use the component's uu5Tag as the main key
+2. **Follow hierarchical structure**: Organize labels by component hierarchy
+3. **Use descriptive keys**: Make keys descriptive of their content
+4. **Include all form fields**: Add labels for every form field used
+
+**Correct LSI Structure Example**:
+```json
+{
+  "UuApp.Module.List": {
+    "title": "Module List",
+    "loading": "Loading modules...",
+    "error": "Error loading modules"
+  },
+  "UuApp.Module.Create": {
+    "openButton": "Create Module",
+    "header": "Create New Module",
+    "info": "Fill in the details to create a new module",
+    "cancel": "Cancel",
+    "submit": "Create Module"
+  },
+  "UuApp.Module.CreateContent": {
+    "titleLabel": "Title",
+    "titlePlaceholder": "Enter title",
+    "descriptionLabel": "Description",
+    "descriptionPlaceholder": "Enter description"
+  },
+  "UuApp.Module.Detail.View": {
+    "title": "Module Details",
+    "subtitle": "View module information",
+    "info": "Detailed information about the selected module",
+    "loading": "Loading module details...",
+    "error": "Error loading module details"
+  },
+  "UuApp.Module.Detail.Content": {
+    "field1": "Field 1 Label",
+    "field2": "Field 2 Label",
+    "nestedObject": "Nested Object Label",
+    "nestedField1": "Nested Field 1 Label",
+    "nestedField2": "Nested Field 2 Label"
+  },
+  "UuApp.Module.Detail": {
+    "title": "Module Detail",
+    "loading": "Loading module...",
+    "error": "Error loading module"
+  }
+}
+```
+
+### 7.3 Workspace Provider Configuration
+Always remove WorkspaceProvider from all components:
+
+**Remove WorkspaceProvider**:
+1. **Remove WorkspaceProvider** import and usage from all components
+2. **Pass baseUri directly** to [Module]Provider in all components
+3. **Update propTypes** to use [Module]Provider.propTypes.baseUri
+4. **Clean up unused workspace components**:
+   - Delete `src/workspace/workspace.js`
+   - Delete `src/workspace/config/config.js`
+   - Delete `src/workspace/provider.js`
+   - Delete `src/workspace/use-workspace.js`
+   - Remove workspace-related calls from `src/calls.js`
+   - Remove workspace exports from `src/exports.js` and `src/index.js`
+5. **Update demo pages** to pass baseUri directly to components
+
+### 7.4 Code Formatting
+After completing all configuration steps, you MUST format the code using prettify:
+
+**Run prettify**:
+```bash
+cd uu_frontend_aicodingg01-core
+npm run prettify
+```
+
+**This will automatically**:
+- Fix code formatting issues (indentation, spacing, line breaks)
+- Ensure consistent code style across all files
+- Remove unnecessary whitespace and newlines
+- Apply project-specific formatting rules
+
+### 7.5 Compilation Verification
+After formatting the code, you MUST verify that the source code compiles successfully:
+
+**Run compilation check**:
+```bash
+cd ..
+npm run build
+```
+
+**Verify successful compilation**:
+- Check that the build process completes without errors
+- Verify that all CRUD components are properly integrated
+- Confirm that all imports and dependencies are resolved correctly
+- Ensure no TypeScript/JavaScript compilation errors are present
+
+**If compilation fails**:
+- Fix any syntax errors or missing imports
+- Resolve dependency issues
+- Re-run `npm run build` until compilation succeeds
+- Document any issues found and their solutions
+
+## 8. Demo Configuration
+
+### 8.1 Configure Demo Pages
+After successful compilation, you MUST configure all demo pages with the provided baseUri:
+
+**⚠️ CRITICAL**: This step is MANDATORY and must ALWAYS be completed. Do NOT skip asking for demo configuration.
+
+**Update all demo pages**:
+1. **List demo** (`demo/[module]/list.html`):
+   - Set the `BASE_URI` variable to the provided baseUri
+   - Set the identifier variable (e.g., `OID`, `ID`, `CODE`) to a test value
+   - Update any other configuration values as needed
+
+2. **Create demo** (`demo/[module]/create.html`):
+   - Set the `BASE_URI` variable to the provided baseUri
+   - Set sample values for form fields
+   - Update any other configuration values as needed
+
+3. **Detail demo** (`demo/[module]/detail.html`):
+   - Set the `BASE_URI` variable to the provided baseUri
+   - Set the identifier variable (e.g., `OID`, `ID`, `CODE`) to a test value
+   - Update any other configuration values as needed
+
+**Example demo configuration**:
+```javascript
+// Update these values with the provided test data
+const BASE_URI = "https://your-test-server.com";
+const CODE = "your-test-module-code";
+const SAMPLE_NAME = "Sample Module";
+const SAMPLE_DESCRIPTION = "This is a sample module for testing";
+```
+
+### 8.2 ESLint Fix
+After completing all configuration and testing, you MUST run eslint fix to resolve any linting errors:
+
+**Run ESLint Fix**:
+```bash
+# Option 1: Direct eslint command
+npx eslint src/ --fix
+
+# Option 2: Using project-specific eslint config
+npx eslint "src/**/*.js" --fix
+```
+
+**Verify ESLint Results**:
+- Check that all linting errors are resolved
+- Ensure code follows project style guidelines
+- Verify no new warnings are introduced
+- Confirm all files pass linting checks
+
+**If ESLint errors persist**:
+- Review and fix any remaining manual errors
+- Check for configuration issues
+- Ensure all imports and dependencies are correct
+- Re-run eslint fix until all errors are resolved
+
+### 8.3 Final Verification
+After completing all steps, you MUST perform final verification:
+
+**Verification Checklist**:
+1. **All components generated**:
+   - List component with proper seriesList configuration
+   - Create component with form fields and validation
+   - Detail component with InfoGroup implementation
+
+2. **All API calls configured**:
+   - List command properly configured
+   - Create command properly configured
+   - Load/Get command properly configured
+
+3. **All LSI labels added**:
+   - List component labels
+   - Create component labels
+   - Detail component labels
+
+4. **WorkspaceProvider handling**:
+   - Always removed from all components
+
+5. **Demo pages configured**:
+   - All demo pages updated with provided baseUri
+   - All demo pages functional
+
+6. **Code quality**:
+   - All code formatted with prettify
+   - All code passes ESLint checks
+   - All code compiles successfully
+
+7. **Integration**:
+   - All components properly integrated
+   - All exports updated
+   - All registrations completed
+
+### 8.4 Create Component Integration
+After completing all configuration and testing, you MUST check if there are create components in the same module directory and add them to the actionList prop in the list component.
+
+**Check for Create Component**:
+1. **Create Component Check**: Look for `src/[module]/create/` directory  
+   - If create component exists, add it to actionList in the list view
+
+**ActionList Implementation**:
+When create components are found in the same module directory, you MUST update the list component's view.js file to include them in the actionList prop:
+
+```javascript
+// In src/[module]/list/view.js
+const actionList = [
+  { component: FilterButton }, 
+  { component: SorterButton },
+  // Add create component if it exists  
+  ...(Create ? [{ component: <Create baseUri={baseUri} onSuccess={() => [module]DataList.handlerMap.load()} /> }] : [])
+];
+```
+
+**Required imports**:
+Add the necessary imports at the top of the view.js file:
+```javascript
+// Add this import if the create component exists
+import Create from "../create.js";
+```
+
+**Purpose**: This ensures that list components automatically include related create components as actions, providing a complete interface when create components are present in the same module directory.
+
+### 8.5 Detail Action Integration
+After completing create component integration, you MUST add detail actions to each row of the list component if a detail component exists.
+
+**Check for Detail Component**:
+1. **Detail Component Check**: Look for `src/[module]/detail/` directory or `src/[module]/detail.js` file
+   - If detail component exists, add it to item actions
+
+**Detail Action Implementation**:
+When detail components are found in the same module directory, you MUST update the list component's view.js file to include detail actions:
+
+```javascript
+// In src/[module]/list/view.js
+import Detail from "../detail.js";
+import { useModal } from "uu5g05-elements";
+
+// In the render function
+const [detailModalProps, openDetailModal, closeDetailModal] = useModal();
+
+// Update getItemActions function
+function getItemActions({ [Module]Dto }, baseUri, openDetailModal) {
+  const actionList = [
+    {
+      icon: "uugds-open-in-modal",
+      colorScheme: "blue",
+      tooltip: "View Details",
+      onClick: (e) => {
+        openDetailModal({
+          data: {
+            baseUri,
+            [identifier]: [Module]Dto.data.[identifier]
+          }
+        });
+      },
+      collapsed: false,
+    },
+  ];
+  return actionList;
+}
+
+// Update handleGetItemActionList
+const handleGetItemActionList = ({ data: [Module]Dto }) => {
+  return getItemActions({ [Module]Dto }, baseUri, openDetailModal);
+};
+
+// Add modal rendering
+{detailModalProps.open && (
+  <Detail
+    {...detailModalProps}
+    baseUri={detailModalProps.data?.baseUri}
+    [identifier]={detailModalProps.data?.[identifier]}
+    displayAsModal={true}
+    onClose={closeDetailModal}
+  />
+)}
+```
+
+**Required imports**:
+Add the necessary imports at the top of the view.js file:
+```javascript
+//@@viewOn:imports
+import Detail from "../detail.js";
+import { useModal } from "uu5g05-elements";
+//@@viewOff:imports
+```
+
+**Purpose**: This ensures that list components automatically include detail actions when detail components are present, providing a complete interface for viewing individual entity details.
+
+### 8.6 Display Value Guidelines
+After completing all component integration, you MUST ensure proper display of values in detail components.
+
+**Display Guidelines**:
+1. **Exclude system attributes**: Do NOT display sysCts, sysMts, sysRev, or other system-generated fields
+2. **Show only relevant data**: Display only business-relevant fields that users need to see
+3. **Proper data formatting**: Format dates, numbers, and other data types appropriately
+4. **Handle null/undefined values**: Gracefully handle missing or empty data
+5. **State Badge rendering**: Render state fields as color-coded badges with CamelCase formatting
+
+### 8.7 State Badge Rendering
+After completing all component integration, you MUST implement Badge rendering for state fields in both list and detail components.
+
+**State Badge Implementation**:
+When state fields are present in components, you MUST update the content files to render state values as Badges:
+
+**For List Components** (`src/[module]/list/content.js`):
+```javascript
+import { Badge } from "uu5g05-elements";
+
+// Add helper methods to Content component
+toCamelCase(str) {
+  if (!str) return str;
+  return str
+    .toLowerCase()
+    .replace(/[-_\s]+(.)?/g, (_, char) => (char ? char.toUpperCase() : ''))
+    .replace(/^(.)/, (char) => char.toUpperCase());
+},
+
+getStateColorScheme(state) {
+  switch (state?.toLowerCase()) {
+    case "active":
+    case "running":
+      return "green";
+    case "inactive":
+    case "stopped":
+      return "red";
+    case "pending":
+    case "waiting":
+      return "orange";
+    case "completed":
+    case "finished":
+      return "blue";
+    default:
+      return "cyan";
+  }
+},
+
+// Update columnList to use custom StateCellWrapper for state column
+const StateCellWrapper = (cellProps) => {
+  const { data } = cellProps;
+  const stateValue = data?.data?.state;
+  
+  return (
+    <Cell {...cellProps} onClick={onItemClick}>
+      {stateValue && (
+        <Badge colorScheme={Content.getStateColorScheme(stateValue)} size="xl">
+          {Content.toCamelCase(stateValue)}
+        </Badge>
+      )}
+    </Cell>
+  );
+};
+```
+
+**For Detail Components** (`src/[module]/detail/content.js`):
+```javascript
+import { Badge } from "uu5g05-elements";
+
+// Add helper methods to Content component (same as above)
+toCamelCase(str) { /* ... */ },
+getStateColorScheme(state) { /* ... */ },
+
+// Update InfoGroup itemList to render state as Badge
+const itemList = [
+  // ... other fields
+  {
+    subtitle: lsi.state,
+    title: data.state ? (
+      <Badge colorScheme={Content.getStateColorScheme(data.state)} size="xl">
+        {Content.toCamelCase(data.state)}
+      </Badge>
+    ) : null
+  },
+  // ... more fields
+];
+```
+
+**Purpose**: This ensures that state fields in both list and detail components are rendered as prominent, color-coded badges with proper CamelCase formatting for consistent user experience across all components.
+
+### 8.8 Date Alignment
+After implementing state Badge rendering, you MUST align date and datetime fields to the right in list components.
+
+**Date Alignment Implementation**:
+When date or datetime fields are present in list components, you MUST add alignment properties and use DateTime component in the getSerieList function:
+
+```javascript
+// In src/[module]/list/view.js
+import { DateTime } from "uu5g05-elements";
+
+function getSerieList(viewLsi) {
+  return [
+    // ... other fields
+    {
+      value: "dateField",
+      label: viewLsi.dateField,
+      dataItem: ({ data: entityDto }) => entityDto.data.dateField ? (
+        <DateTime value={entityDto.data.dateField} />
+      ) : null,
+      horizontalAlignment: "right",
+    },
+    {
+      value: "datetimeField", 
+      label: viewLsi.datetimeField,
+      dataItem: ({ data: entityDto }) => entityDto.data.datetimeField ? (
+        <DateTime value={entityDto.data.datetimeField} />
+      ) : null,
+      horizontalAlignment: "right",
+    },
+    // ... more fields
+  ];
+}
+```
+
+**Purpose**: This ensures that date and datetime fields are right-aligned in the table for better readability and professional appearance, following standard table formatting conventions.
+
+### 8.9 DateTime Rendering
+After implementing date alignment, you MUST render date and datetime fields using the DateTime component in both list and detail components.
+
+**DateTime Rendering Implementation**:
+
+**For List Components** (`src/[module]/list/view.js`):
+```javascript
+import { DateTime } from "uu5g05-elements";
+
+// Update dataItem functions to use DateTime component
+{
+  value: "dateField",
+  label: viewLsi.dateField,
+  dataItem: ({ data: entityDto }) => entityDto.data.dateField ? (
+    <DateTime value={entityDto.data.dateField} dateFormat="short" timeFormat="none" />
+  ) : null,
+  horizontalAlignment: "right",
+}
+```
+
+**For Detail Components** (`src/[module]/detail/content.js`):
+```javascript
+import { InfoGroup, ListLayout, DateTime } from "uu5g05-elements";
+
+// Update InfoGroup itemList to render date fields with DateTime component
+const itemList = [
+  // ... other fields
+  { 
+    subtitle: lsi.dateField, 
+    title: data.dateField ? <DateTime value={data.dateField} dateFormat="short" timeFormat="none" /> : null 
+  },
+  { 
+    subtitle: lsi.datetimeField, 
+    title: data.datetimeField ? <DateTime value={data.datetimeField} dateFormat="short" timeFormat="none" /> : null 
+  },
+  // ... more fields
+];
+```
+
+**Purpose**: This ensures that all date and datetime fields are rendered using the proper DateTime component for consistent formatting, proper localization, and better user experience across all components.
+
+## 9. Best Practices
+
+- **Always confirm specifications** before starting CRUD implementation
+- **Use cmd /c wrapper** for all uu5Generate commands
+- **Generate components in order**: List → Create → Detail
+- **Configure workspace provider removal** when not needed
+- **Integrate components** with proper action lists and modal handlers
+- **Test each component** individually before integration
+- **Configure all demo pages** with real test data
+- **Format and compile** after each major step
+- **Follow display guidelines** for state badges and date fields
+
+## 10. Troubleshooting
+
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| Component generation fails | Missing parameters or wrong shell | Use cmd /c and provide ALL parameters |
+| WorkspaceProvider errors | Unnecessary workspace dependency | Remove WorkspaceProvider and use baseUri directly |
+| List/Detail integration fails | Missing imports or incorrect props | Check imports and verify baseUri/identifier props |
+| Create button not showing | ActionList not configured | Add Create component to actionList in list view |
+| Detail modal not opening | Missing useModal or incorrect handler | Import useModal and implement proper handler |
+| State badges not rendering | Missing Badge component or helpers | Import Badge and add helper methods (toCamelCase, getStateColorScheme) |
+| Date alignment incorrect | Missing horizontalAlignment prop | Add horizontalAlignment: "right" to date columns |
+| Demo pages not working | Missing configuration or test data | Configure BASE_URI and test data for all demo pages |
+| ESLint errors persist | Code style issues | Run eslint --fix and manually fix remaining issues |
+
+**Final Result**:
+The user will have a complete CRUD implementation with:
+- **List component** for displaying and managing lists of entities
+- **Create component** for creating new entities with proper form validation
+- **Detail component** for viewing individual entity details
+- **Proper API integration** with all necessary calls
+- **Complete LSI support** for internationalization
+- **Functional demo pages** for testing and demonstration
+- **Clean, formatted code** that follows project standards

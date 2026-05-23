@@ -1,0 +1,227 @@
+---
+description: Appmodelkit (command design / appmodel) creation guide — standardized methodology for preparing command designs with proper UU5String escaping, statement formatting, DAO patterns, variable handling, and post-design validation
+alwaysApply: false
+---
+
+# Appmodelkit Design
+
+## Table of Contents
+
+1. Introduction
+2. High-Level Design Principles
+3. Trigger and Usage
+4. Documentation Resources
+5. Post-Design Validation
+6. Validation Output
+
+## 1. Introduction
+
+Appmodelkit provides a standardized methodology for preparing command designs (appmodels) following established patterns and guidelines, where:
+
+- Each design follows strict structure and metadata requirements
+- Designs use proper UU5String escaping rules
+- Statement types follow specific formatting and labeling patterns
+- DAO operations and variables follow mandatory patterns
+- Validation ensures compliance with all established rules
+
+## 2. High-Level Design Principles
+
+**CRITICAL**: Designs should represent business logic at an appropriate abstraction level, not implementation details.
+
+### 2.1 Combine Operation and Result Assignment
+
+**NEVER separate API/DAO calls from their result assignments into sub-steps.**
+
+- **WRONG**: Step 2.2 "Call MasterDataClient.entityItemGet", then Step 2.2.1 "Save result to periodForAuction"
+- **CORRECT**: Step 2.2 "Call MasterDataClient.entityItemGet and save result to periodForAuction"
+
+The description should contain both the operation and the result assignment in a single step using the pattern:
+`System calls [operation] and saves result to <UuApp.DesignKit.Variable>variableName</UuApp.DesignKit.Variable>.`
+
+### 2.2 Group Related Operations into Logical Sequences
+
+**Operations that together accomplish a single business goal should be grouped in one sequence.**
+
+- **WRONG**: 4 separate root-level steps for async job (prepare URI, fetch token, build input, create job)
+- **CORRECT**: 1 sequence "Prepare and submit async job" containing related sub-steps
+
+Examples of logical units that should be sequences:
+- Async job preparation and submission
+- External service call with error handling
+- Multi-step validation with conditional errors
+- Data transformation with multiple related operations
+- **Entity retrieval with existence validation** (see §2.5)
+- Job listing followed by create/reschedule decision
+
+### 2.5 Entity Load with Existence Validation Pattern
+
+**CRITICAL**: When loading an entity and checking if it exists, these operations MUST be grouped in a single sequence.
+
+**Pattern**: If you call an API/DAO to retrieve an entity and then throw an error if it doesn't exist, both operations belong in the same sequence.
+
+- **WRONG**: Step 3 "Call entityItemGet", then Step 4 "Error: entity not found"
+- **CORRECT**: Sequence 3 "Load period entity" containing:
+  - 3.1 Algorithm call to get entity (with call error handling)
+  - 3.2 Conditional error if entity was not found
+
+✅ **Correct - Entity load + existence check in one sequence:**
+```javascript
+{
+  "type": "sequence",
+  "label": "3.",
+  "name": "Load period for auction",
+  "desc": "<uu5string/>Load the period entity and validate it exists.",
+  "statementList": [
+    {
+      "type": "algorithmCall",
+      "label": "3.1.",
+      "name": "Get period entity",
+      "desc": "<uu5string/>System calls <strong>MasterDataClient.entityItemGet</strong> and save result to <UuApp.DesignKit.Variable>periodForAuction</UuApp.DesignKit.Variable>.",
+      "algorithmUri": "...",
+      "withCatch": true,
+      "statementList": [
+        {
+          "type": "error",
+          "label": "3.1.1.",
+          "message": "Failed to get period entity.",
+          "code": "periodGetFailed"
+        }
+      ]
+    },
+    {
+      "type": "error",
+      "label": "3.2.",
+      "conditional": true,
+      "condition": "<uu5string/><UuApp.DesignKit.Variable>periodForAuction</UuApp.DesignKit.Variable> was not found",
+      "message": "Period entity does not exist.",
+      "code": "periodDoesNotExist"
+    }
+  ]
+}
+```
+
+❌ **Incorrect - Separate root-level steps:**
+```javascript
+// Step 3: Algorithm call
+{
+  "type": "algorithmCall",
+  "label": "3.",
+  "name": "Get period entity"
+}
+// Step 4: Error check - WRONG! Should be inside the same sequence as Step 3
+{
+  "type": "error",
+  "label": "4.",
+  "conditional": true,
+  "condition": "periodForAuction was not found"
+}
+```
+
+**Rule of thumb**: If an error condition directly validates the result of the previous operation, they belong together in one sequence.
+
+### 2.3 Internal Method References
+
+**For internal helper methods (e.g., `_resolveExpensesMpsTrigger`, `_fetchToken`):**
+
+1. **NEVER use `algorithmUri: "#methodName"`** - This format causes invalid reference errors
+2. **ALWAYS ask user for documentation link** before creating an algorithmCall
+3. If user cannot provide documentation link, use one of these fallbacks:
+   - Include the method's logic inline in the parent algorithm
+   - Create a step with `comment: "TODO: replace by algorithmCall when documentation available"`
+
+See [appmodel-statement-types.md](mdc:docs/appmodelkit/appmodel-statement-types.md) §4.1 for the complete Interactive Flow for Missing Links.
+
+### 2.4 Appropriate Abstraction Level
+
+Design steps should be at a business-meaningful level, not too granular:
+
+- **Too granular**: "Initialize xnRule as empty string" + "Get period entity" + "Save period entity" + "Extract contract type code" + "Uppercase contract type code" (5 steps)
+- **Appropriate**: "Resolve Xn Rule based on period contract type" (1 sequence with business logic)
+
+Rule of thumb: If a step only assigns a value or performs a trivial transformation, it should be part of the parent step's description, not a separate sub-step.
+
+## 3. Trigger and Usage
+
+When you see a message like "prepare a design for command-name", automatically apply all appmodelkit documentation rules.
+
+### 3.1 Usage Examples
+
+```text
+prepare a design for person-card/create
+prepare a design for organization-representative/update
+prepare a design for bem-main/initialize
+```
+
+## 4. Documentation Resources
+
+**IMPORTANT**: The following comprehensive documentation is available and should be referenced during implementation:
+
+- **Appmodel Structure** - General patterns, metadata, escaping: [appmodel-structure.md](mdc:docs/appmodelkit/appmodel-structure.md)
+- **Statement Types** - Statement structuring, conditions, algorithm calls: [appmodel-statement-types.md](mdc:docs/appmodelkit/appmodel-statement-types.md)
+- **DAO Specifications** - DAO operation descriptions: [dao-specifications.md](mdc:docs/appmodelkit/dao-specifications.md)
+- **Variable Usage** - Variable definition and references: [variable-usage.md](mdc:docs/appmodelkit/variable-usage.md).
+
+## 5. Post-Design Validation
+
+**CRITICAL**: Immediately after design preparation, validate against all rules and fix any violations.
+
+### 5.1 Structure Validation
+
+For detailed guidelines, see [appmodel-structure.md](mdc:docs/appmodelkit/appmodel-structure.md).
+
+- Metadata complete: schemaVersion, id, name, desc, errorPrefix
+- Input/output definitions match validation_types files
+- audited_attributes section present
+- CmdLoaderBuilder.loadAll pattern applied where applicable (§3.6)
+
+### 5.2 UU5String Escaping - ZERO TOLERANCE
+
+For detailed guidelines, see [appmodel-structure.md](mdc:docs/appmodelkit/appmodel-structure.md) §4.3.
+
+- All `<uu5string/>` content properly escaped (see §4.3.1)
+- Multi-layer escaping correct in paramMap values (see §4.3.6)
+- Variable tags `<UuApp.DesignKit.Variable>` NOT escaped inside UU5Strings
+- No over-escaping (`\n` not `\\n`, `\"` not `\\\"`)
+
+### 5.3 Statement Types Validation
+
+For detailed guidelines, see [appmodel-statement-types.md](mdc:docs/appmodelkit/appmodel-statement-types.md).
+
+- Conditions are human-readable, not technical (§1)
+- All statements have unique hexa32 IDs
+- Labels follow numbering pattern (1., 1.1., 1.1.1.)
+- Sequences collapsed appropriately (§6)
+- Algorithm calls use documentation links or TODO fallback (§4.1)
+- Entity load + existence check grouped in same sequence (§2.5)
+- Related operations (e.g., list + create/update) grouped logically (§2.2)
+
+### 5.4 DAO Operations Validation
+
+For detailed guidelines, see [dao-specifications.md](mdc:docs/appmodelkit/dao-specifications.md).
+
+- **Mandatory structure**: "System calls `<entity>` DAO `<method>` to `<purpose>`"
+- Entity and method names match actual DAO implementations
+
+### 5.5 Variables Validation
+
+For detailed guidelines, see [variable-usage.md](mdc:docs/appmodelkit/variable-usage.md).
+
+- Variables defined via `variablesDefinition` before first use
+- References use `<UuApp.DesignKit.Variable>` tags
+- Assignments use "save result to" pattern (not "saves result to the")
+- Constants use access "r", dynamic variables use "rw"
+
+### 5.6 Errors and Warnings Validation
+
+For detailed guidelines, see [appmodel-statement-types.md](mdc:docs/appmodelkit/appmodel-statement-types.md) §5.
+
+- Error codes align with errorPrefix pattern
+- All errors have `exception: true`
+- Required fields present: code, message, params, apiError
+
+## 6. Validation Output
+
+After validation, respond with ONE of:
+
+- **Issues found**: List each issue with short rationale citing the rule doc name, then provide minimal concrete edits
+- **No issues**: "Design complies with all rules."

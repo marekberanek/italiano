@@ -2,22 +2,27 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Tabs } from "expo-router";
 
 import { ItalianoTabBar } from "@/components/italiano-tab-bar";
-import { Palette } from "@/constants/theme";
+import { TabBarMetrics } from "@/constants/theme";
+import { useTheme } from "@/lib/theme/theme-context";
+
+const TAB_ICON = TabBarMetrics.iconSize;
 
 export default function TabLayout() {
+  const { palette } = useTheme();
+
   return (
     <Tabs
       tabBar={(props) => <ItalianoTabBar {...props} />}
       screenOptions={{
         headerShown: false,
-        sceneStyle: { backgroundColor: Palette.background },
+        sceneStyle: { backgroundColor: palette.background },
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
           title: "Hledat",
-          tabBarIcon: ({ color }) => <MaterialIcons name="search" size={20} color={color} />,
+          tabBarIcon: ({ color }) => <MaterialIcons name="search" size={TAB_ICON} color={color} />,
         }}
       />
       <Tabs.Screen
@@ -25,7 +30,7 @@ export default function TabLayout() {
         options={{
           title: "Slovíčka",
           tabBarIcon: ({ color }) => (
-            <MaterialIcons name="bookmarks" size={20} color={color} />
+            <MaterialIcons name="bookmarks" size={TAB_ICON} color={color} />
           ),
         }}
       />
@@ -34,7 +39,7 @@ export default function TabLayout() {
         options={{
           title: "Lekce",
           tabBarIcon: ({ color }) => (
-            <MaterialIcons name="school" size={20} color={color} />
+            <MaterialIcons name="school" size={TAB_ICON} color={color} />
           ),
         }}
       />
@@ -43,7 +48,7 @@ export default function TabLayout() {
         options={{
           title: "Opakování",
           tabBarIcon: ({ color }) => (
-            <MaterialIcons name="track-changes" size={20} color={color} />
+            <MaterialIcons name="track-changes" size={TAB_ICON} color={color} />
           ),
         }}
       />
@@ -51,7 +56,7 @@ export default function TabLayout() {
         name="profile"
         options={{
           title: "Profil",
-          tabBarIcon: ({ color }) => <MaterialIcons name="person" size={20} color={color} />,
+          tabBarIcon: ({ color }) => <MaterialIcons name="person" size={TAB_ICON} color={color} />,
         }}
       />
     </Tabs>

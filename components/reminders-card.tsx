@@ -16,13 +16,10 @@ import {
 } from "react-native";
 
 import { CategoryChip } from "@/components/category-chip";
-import {
-  Palette,
-  Radius,
-  Shadow,
-  Spacing,
-  Typography,
-} from "@/constants/theme";
+import type { ColorPalette, ThemeShadows } from "@/constants/theme";
+import { Radius, Spacing, Typography } from "@/constants/theme";
+import { useThemedStyles } from "@/hooks/use-themed-styles";
+import { useTheme } from "@/lib/theme/theme-context";
 import { useVocabStore } from "@/hooks/use-vocab-store";
 import { emitReminderSettingsChange } from "@/lib/notifications/reminder-events";
 import {
@@ -85,6 +82,8 @@ function dateFromHourMinute(hour: number, minute: number): Date {
 }
 
 export function RemindersCard() {
+  const { palette } = useTheme();
+  const styles = useThemedStyles(createStyles);
   const { state, hydrated: vocabHydrated } = useVocabStore();
   const [settings, setSettings] = useState<ReminderSettings>(
     DEFAULT_REMINDER_SETTINGS,
@@ -208,15 +207,15 @@ export function RemindersCard() {
           <MaterialIcons
             name="notifications-active"
             size={22}
-            color={Palette.brandDark}
+            color={palette.brandDark}
           />
           <Text style={styles.title}>Připomínky</Text>
         </View>
         <Switch
           value={settings.enabled && permGranted}
           onValueChange={(v) => void toggleEnabled(v)}
-          trackColor={{ false: Palette.borderStrong, true: Palette.brand }}
-          thumbColor={Palette.surface}
+          trackColor={{ false: palette.borderStrong, true: palette.brand }}
+          thumbColor={palette.surface}
         />
       </View>
 
@@ -227,7 +226,7 @@ export function RemindersCard() {
 
       {!permGranted && settings.enabled ? (
         <View style={styles.permBox}>
-          <MaterialIcons name="info-outline" size={18} color={Palette.danger} />
+          <MaterialIcons name="info-outline" size={18} color={palette.danger} />
           <View style={{ flex: 1, gap: 4 }}>
             <Text style={styles.permTitle}>Notifikace nejsou povolené</Text>
             <Pressable
@@ -309,7 +308,7 @@ export function RemindersCard() {
                 <MaterialIcons
                   name="schedule"
                   size={18}
-                  color={Palette.brandDark}
+                  color={palette.brandDark}
                 />
                 <Text style={styles.timePillLabel}>
                   {formatTime(settings.hour, settings.minute)}
@@ -317,7 +316,7 @@ export function RemindersCard() {
                 <MaterialIcons
                   name="edit"
                   size={16}
-                  color={Palette.textMuted}
+                  color={palette.textMuted}
                 />
               </Pressable>
 
@@ -420,6 +419,7 @@ function DayChip({
   active: boolean;
   onPress: () => void;
 }) {
+  const styles = useThemedStyles(createStyles);
   return (
     <Pressable
       onPress={onPress}
@@ -445,6 +445,7 @@ function PresetLink({
   active: boolean;
   onPress: () => void;
 }) {
+  const styles = useThemedStyles(createStyles);
   return (
     <Pressable
       onPress={onPress}
@@ -458,16 +459,17 @@ function PresetLink({
   );
 }
 
-const styles = StyleSheet.create({
+function createStyles(p: ColorPalette, s: ThemeShadows) {
+  return StyleSheet.create({
   card: {
-    backgroundColor: Palette.surface,
+    backgroundColor: p.surface,
     borderRadius: Radius.lg,
     borderWidth: 1,
-    borderColor: Palette.border,
+    borderColor: p.border,
     padding: Spacing.lg,
     marginBottom: Spacing.md,
     gap: Spacing.md,
-    ...Shadow.card,
+    ...s.card,
   },
   header: {
     flexDirection: "row",
@@ -479,15 +481,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: Spacing.sm,
   },
-  title: { ...Typography.sectionTitle, color: Palette.textStrong },
-  subtitle: { ...Typography.small, color: Palette.textMuted, lineHeight: 18 },
+  title: { ...Typography.sectionTitle, color: p.textStrong },
+  subtitle: { ...Typography.small, color: p.textMuted, lineHeight: 18 },
   sectionLabel: {
     ...Typography.smallStrong,
-    color: Palette.textMuted,
+    color: p.textMuted,
     marginTop: Spacing.xs,
   },
   modeRow: { flexDirection: "row", flexWrap: "wrap", gap: Spacing.sm },
-  hint: { ...Typography.small, color: Palette.textMuted, fontStyle: "italic" },
+  hint: { ...Typography.small, color: p.textMuted, fontStyle: "italic" },
   dayRow: { flexDirection: "row", gap: 6, flexWrap: "wrap" },
   dayChip: {
     minWidth: 40,
@@ -495,28 +497,28 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: Radius.pill,
     borderWidth: 1,
-    borderColor: Palette.border,
-    backgroundColor: Palette.surface,
+    borderColor: p.border,
+    backgroundColor: p.surface,
     alignItems: "center",
   },
   dayChipActive: {
-    backgroundColor: Palette.brand,
-    borderColor: Palette.brandDark,
+    backgroundColor: p.brand,
+    borderColor: p.brandDark,
   },
   dayChipLabel: {
     ...Typography.smallStrong,
-    color: Palette.textStrong,
+    color: p.textStrong,
     fontSize: 13,
   },
-  dayChipLabelActive: { color: Palette.textInverse },
+  dayChipLabelActive: { color: p.textInverse },
   presetRow: { flexDirection: "row", gap: Spacing.lg, flexWrap: "wrap" },
   presetLabel: {
     ...Typography.smallStrong,
-    color: Palette.textMuted,
+    color: p.textMuted,
     fontSize: 12,
   },
   presetLabelActive: {
-    color: Palette.brandDark,
+    color: p.brandDark,
     textDecorationLine: "underline",
   },
   timePill: {
@@ -527,19 +529,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.lg,
     paddingVertical: 10,
     borderRadius: Radius.pill,
-    backgroundColor: Palette.brandSoft,
+    backgroundColor: p.brandSoft,
     borderWidth: 1,
-    borderColor: Palette.brand,
+    borderColor: p.brand,
   },
   timePillLabel: {
     fontFamily: Typography.display.fontFamily,
     fontSize: 18,
-    color: Palette.brandDark,
+    color: p.brandDark,
   },
-  warn: { ...Typography.small, color: Palette.danger },
+  warn: { ...Typography.small, color: p.danger },
   footer: {
     ...Typography.small,
-    color: Palette.textMuted,
+    color: p.textMuted,
     fontStyle: "italic",
   },
   permBox: {
@@ -548,14 +550,14 @@ const styles = StyleSheet.create({
     gap: Spacing.sm,
     padding: Spacing.md,
     borderRadius: Radius.md,
-    backgroundColor: Palette.accentSoft,
+    backgroundColor: p.accentSoft,
     borderWidth: 1,
-    borderColor: Palette.danger,
+    borderColor: p.danger,
   },
-  permTitle: { ...Typography.smallStrong, color: Palette.danger, fontSize: 13 },
+  permTitle: { ...Typography.smallStrong, color: p.danger, fontSize: 13 },
   permLink: {
     ...Typography.smallStrong,
-    color: Palette.brandDark,
+    color: p.brandDark,
     textDecorationLine: "underline",
     fontSize: 13,
   },
@@ -566,7 +568,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   iosSheet: {
-    backgroundColor: Palette.surface,
+    backgroundColor: p.surface,
     paddingTop: Spacing.lg,
     paddingHorizontal: Spacing.lg,
     paddingBottom: Spacing.xl,
@@ -577,12 +579,12 @@ const styles = StyleSheet.create({
   iosTitle: {
     fontFamily: Typography.display.fontFamily,
     fontSize: 18,
-    color: Palette.textStrong,
+    color: p.textStrong,
     textAlign: "center",
   },
   iosDone: {
     alignSelf: "stretch",
-    backgroundColor: Palette.brand,
+    backgroundColor: p.brand,
     borderRadius: Radius.pill,
     paddingVertical: Spacing.md,
     alignItems: "center",
@@ -590,6 +592,7 @@ const styles = StyleSheet.create({
   iosDoneLabel: {
     fontFamily: "Nunito_700Bold",
     fontSize: 16,
-    color: Palette.textInverse,
+    color: p.textInverse,
   },
-});
+  });
+}

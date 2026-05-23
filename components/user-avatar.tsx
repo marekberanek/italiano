@@ -3,7 +3,9 @@ import { useRouter } from "expo-router";
 import { useMemo, useState } from "react";
 import { Pressable, StyleSheet, Text, View, type ViewStyle } from "react-native";
 
-import { Palette, Typography } from "@/constants/theme";
+import type { ColorPalette } from "@/constants/theme";
+import { Typography } from "@/constants/theme";
+import { useThemedStyles } from "@/hooks/use-themed-styles";
 import { useAuth } from "@/lib/auth/use-auth";
 
 type Props = {
@@ -23,6 +25,7 @@ type Props = {
 export function UserAvatar({ size = 44, style, navigateTo = "/profile" }: Props) {
   const { user } = useAuth();
   const router = useRouter();
+  const styles = useThemedStyles(createStyles);
   const [imageFailed, setImageFailed] = useState(false);
 
   const meta = (user?.user_metadata ?? {}) as Record<string, unknown>;
@@ -81,23 +84,25 @@ export function UserAvatar({ size = 44, style, navigateTo = "/profile" }: Props)
   );
 }
 
-const styles = StyleSheet.create({
-  image: {
-    backgroundColor: Palette.surfaceMuted,
-    borderWidth: 1,
-    borderColor: Palette.border,
-  },
-  fallback: {
-    backgroundColor: Palette.brandSoft,
-    borderWidth: 1,
-    borderColor: Palette.border,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  initial: {
-    fontFamily: Typography.title.fontFamily,
-    color: Palette.brandDark,
-    lineHeight: undefined,
-    includeFontPadding: false,
-  },
-});
+function createStyles(p: ColorPalette) {
+  return StyleSheet.create({
+    image: {
+      backgroundColor: p.surfaceMuted,
+      borderWidth: 1,
+      borderColor: p.border,
+    },
+    fallback: {
+      backgroundColor: p.brandSoft,
+      borderWidth: 1,
+      borderColor: p.border,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    initial: {
+      fontFamily: Typography.title.fontFamily,
+      color: p.brandDark,
+      lineHeight: undefined,
+      includeFontPadding: false,
+    },
+  });
+}

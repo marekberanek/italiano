@@ -7,11 +7,15 @@ import { PlayButton } from "@/components/play-button";
 import { Screen } from "@/components/screen";
 import { ScreenHeader } from "@/components/screen-header";
 import { SectionCard } from "@/components/section-card";
-import { Palette, Radius, Spacing, Typography } from "@/constants/theme";
+import type { ColorPalette } from "@/constants/theme";
+import { Radius, Spacing, Typography } from "@/constants/theme";
+import { useThemedStyles } from "@/hooks/use-themed-styles";
+
 import { useItalianTts } from "@/hooks/use-italian-tts";
 import { useSyncedJson } from "@/hooks/use-synced-json";
 
 export default function WeekdaysScreen() {
+  const styles = useThemedStyles(createStyles);
   const { data } = useSyncedJson("weekdays", weekdaysFallback as WeekdaysData);
   const tts = useItalianTts();
   return (
@@ -50,36 +54,38 @@ export default function WeekdaysScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+function createStyles(p: ColorPalette) {
+  return StyleSheet.create({
   row: {
     flexDirection: "row",
     alignItems: "center",
     gap: Spacing.md,
     padding: Spacing.md,
     borderRadius: Radius.md,
-    backgroundColor: Palette.brandSoft,
+    backgroundColor: p.brandSoft,
   },
   it: {
     fontFamily: Typography.bodyStrong.fontFamily,
     fontSize: 17,
-    color: Palette.textStrong,
+    color: p.textStrong,
   },
-  cz: { ...Typography.body, color: Palette.text, fontSize: 14 },
+  cz: { ...Typography.body, color: p.text, fontSize: 14 },
   pron: {
     ...Typography.small,
-    color: Palette.textMuted,
+    color: p.textMuted,
     fontStyle: "italic",
     fontSize: 12,
   },
   noteIt: {
     ...Typography.bodyStrong,
-    color: Palette.navy,
+    color: p.navy,
     fontStyle: "italic",
   },
-  noteCz: { ...Typography.small, color: Palette.text },
+  noteCz: { ...Typography.small, color: p.text },
   noteRow: {
     flexDirection: "row",
     alignItems: "center",
     gap: Spacing.md,
   },
-});
+  });
+}

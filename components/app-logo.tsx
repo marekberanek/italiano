@@ -1,6 +1,9 @@
 import { Image, StyleSheet, Text, View, type ImageStyle, type ViewStyle } from "react-native";
 
-import { Palette, Spacing, Typography } from "@/constants/theme";
+import type { ColorPalette } from "@/constants/theme";
+import { Spacing, Typography } from "@/constants/theme";
+import { useThemedStyles } from "@/hooks/use-themed-styles";
+import { useTheme } from "@/lib/theme/theme-context";
 
 const ICON_MARK = require("@/assets/images/android-icon-foreground.png");
 const ICON_FULL = require("@/assets/images/icon.png");
@@ -14,6 +17,9 @@ type Props = {
 };
 
 export function AppLogo({ variant = "badge", size = 44, style }: Props) {
+  const { palette } = useTheme();
+  const styles = useThemedStyles(createStyles);
+
   if (variant === "mark") {
     return (
       <Image
@@ -49,7 +55,7 @@ export function AppLogo({ variant = "badge", size = 44, style }: Props) {
           width: size,
           height: size,
           borderRadius: size * 0.22,
-          backgroundColor: Palette.surface,
+          backgroundColor: palette.surface,
         },
         style as ImageStyle,
       ]}
@@ -58,23 +64,25 @@ export function AppLogo({ variant = "badge", size = 44, style }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
-  lockup: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: Spacing.md,
-  },
-  lockupIcon: {
-    backgroundColor: Palette.surface,
-  },
-  lockupTitle: {
-    fontFamily: Typography.display.fontFamily,
-    fontSize: 22,
-    color: Palette.textStrong,
-    lineHeight: 26,
-  },
-  lockupTagline: {
-    ...Typography.small,
-    color: Palette.textMuted,
-  },
-});
+function createStyles(p: ColorPalette) {
+  return StyleSheet.create({
+    lockup: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: Spacing.md,
+    },
+    lockupIcon: {
+      backgroundColor: p.surface,
+    },
+    lockupTitle: {
+      fontFamily: Typography.display.fontFamily,
+      fontSize: 22,
+      color: p.textStrong,
+      lineHeight: 26,
+    },
+    lockupTagline: {
+      ...Typography.small,
+      color: p.textMuted,
+    },
+  });
+}

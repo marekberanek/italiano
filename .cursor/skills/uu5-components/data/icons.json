@@ -1,0 +1,8279 @@
+[
+  {
+    "code": "account",
+    "fullCode": "uugds-account",
+    "prefix": "uugds",
+    "name": "Account",
+    "keywords": [
+      "person",
+      "user",
+      "profile"
+    ],
+    "category": "user",
+    "isCommon": true
+  },
+  {
+    "code": "account-badge",
+    "fullCode": "uugds-account-badge",
+    "prefix": "uugds",
+    "name": "Account badge",
+    "keywords": [
+      "security",
+      "person",
+      "user",
+      "profile"
+    ],
+    "category": "user",
+    "isCommon": true
+  },
+  {
+    "code": "account-edit",
+    "fullCode": "uugdsstencil-user-account-edit",
+    "prefix": "uugdsstencil",
+    "name": "Account edit",
+    "keywords": [
+      "user",
+      "person",
+      "pencil"
+    ],
+    "category": "user"
+  },
+  {
+    "code": "account-key",
+    "fullCode": "uugdsstencil-user-account-key",
+    "prefix": "uugdsstencil",
+    "name": "Account key",
+    "keywords": [
+      "security",
+      "person",
+      "user",
+      "access",
+      "key",
+      "lock",
+      "password"
+    ],
+    "category": "user"
+  },
+  {
+    "code": "account-key-solid",
+    "fullCode": "uugdsstencil-user-account-key-solid",
+    "prefix": "uugdsstencil",
+    "name": "Account key solid",
+    "keywords": [
+      "security",
+      "person",
+      "user",
+      "access",
+      "key",
+      "lock",
+      "password",
+      "filled"
+    ],
+    "category": "user"
+  },
+  {
+    "code": "account-multi",
+    "fullCode": "uugds-account-multi",
+    "prefix": "uugds",
+    "name": "Account multi",
+    "keywords": [
+      "people",
+      "persons",
+      "multiple accounts",
+      "users",
+      "more"
+    ],
+    "category": "user",
+    "isCommon": true,
+    "rtlDisabled": true
+  },
+  {
+    "code": "account-multi-edit",
+    "fullCode": "uugdsstencil-user-account-multi-edit",
+    "prefix": "uugdsstencil",
+    "name": "Account multi edit",
+    "keywords": [
+      "people",
+      "persons",
+      "multiple accounts",
+      "users",
+      "pencil"
+    ],
+    "category": "user"
+  },
+  {
+    "code": "account-multi-search",
+    "fullCode": "uugdsstencil-user-account-multi-search",
+    "prefix": "uugdsstencil",
+    "name": "Account multi search",
+    "keywords": [
+      "people",
+      "persons",
+      "users",
+      "find"
+    ],
+    "category": "user",
+    "rtlDisabled": true
+  },
+  {
+    "code": "account-multi-solid",
+    "fullCode": "uugdsstencil-user-account-multi-solid",
+    "prefix": "uugdsstencil",
+    "name": "Account multi solid",
+    "keywords": [
+      "persons",
+      "people",
+      "multiple accounts",
+      "users",
+      "access",
+      "filled",
+      "more"
+    ],
+    "category": "user",
+    "rtlDisabled": true
+  },
+  {
+    "code": "account-plus",
+    "fullCode": "uugdsstencil-user-account-plus",
+    "prefix": "uugdsstencil",
+    "name": "Account plus",
+    "keywords": [
+      "person",
+      "user",
+      "profile",
+      "add",
+      "new",
+      "create"
+    ],
+    "category": "user",
+    "rtlDisabled": true
+  },
+  {
+    "code": "account-search",
+    "fullCode": "uugdsstencil-user-account-search",
+    "prefix": "uugdsstencil",
+    "name": "Account search",
+    "keywords": [
+      "person",
+      "user",
+      "profile",
+      "find"
+    ],
+    "category": "user",
+    "rtlDisabled": true
+  },
+  {
+    "code": "account-solid",
+    "fullCode": "uugdsstencil-user-account-solid",
+    "prefix": "uugdsstencil",
+    "name": "Account solid",
+    "keywords": [
+      "person",
+      "user",
+      "profile",
+      "filled"
+    ],
+    "category": "user"
+  },
+  {
+    "code": "account-swap",
+    "fullCode": "uugds-account-swap",
+    "prefix": "uugds",
+    "name": "Account swap",
+    "keywords": [
+      "person",
+      "user",
+      "profile",
+      "exchange",
+      "switch"
+    ],
+    "category": "user",
+    "isCommon": true,
+    "rtlDisabled": true
+  },
+  {
+    "code": "activity",
+    "fullCode": "uugds-activity",
+    "prefix": "uugds",
+    "name": "Activity",
+    "keywords": [
+      "activities",
+      "bubbles"
+    ],
+    "category": "communication",
+    "isCommon": true
+  },
+  {
+    "code": "add-column-end",
+    "fullCode": "uugdsstencil-edit-add-column-end",
+    "prefix": "uugdsstencil",
+    "name": "Add column end",
+    "keywords": [
+      "right",
+      "insert",
+      "plus"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "add-column-left",
+    "fullCode": "uugdsstencil-edit-add-column-left",
+    "prefix": "uugdsstencil",
+    "name": "Add column left",
+    "keywords": [],
+    "category": "edit",
+    "deprecated": true
+  },
+  {
+    "code": "add-column-right",
+    "fullCode": "uugdsstencil-edit-add-column-right",
+    "prefix": "uugdsstencil",
+    "name": "Add column right",
+    "keywords": [],
+    "category": "edit",
+    "deprecated": true
+  },
+  {
+    "code": "add-column-start",
+    "fullCode": "uugdsstencil-edit-add-column-start",
+    "prefix": "uugdsstencil",
+    "name": "Add column start",
+    "keywords": [
+      "left",
+      "insert",
+      "plus"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "add-row-above",
+    "fullCode": "uugdsstencil-edit-add-row-above",
+    "prefix": "uugdsstencil",
+    "name": "Add row above",
+    "keywords": [
+      "up",
+      "insert",
+      "plus"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "add-row-below",
+    "fullCode": "uugdsstencil-edit-add-row-below",
+    "prefix": "uugdsstencil",
+    "name": "Add row below",
+    "keywords": [
+      "down",
+      "insert",
+      "plus"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "ai-terri",
+    "fullCode": "uugdsstencil-it-ai-terri",
+    "prefix": "uugdsstencil",
+    "name": "AI Terri",
+    "keywords": [
+      "artificial",
+      "intelligence",
+      "assistent"
+    ],
+    "category": "it"
+  },
+  {
+    "code": "airplane",
+    "fullCode": "uugdsstencil-transport-airplane",
+    "prefix": "uugdsstencil",
+    "name": "Airplane",
+    "keywords": [
+      "fly",
+      "jet"
+    ],
+    "category": "transport"
+  },
+  {
+    "code": "alarm",
+    "fullCode": "uugdsstencil-time-alarm",
+    "prefix": "uugdsstencil",
+    "name": "Alarm",
+    "keywords": [
+      "clock"
+    ],
+    "category": "time"
+  },
+  {
+    "code": "alert",
+    "fullCode": "uugds-alert",
+    "prefix": "uugds",
+    "name": "Alert",
+    "keywords": [
+      "exclamation mark",
+      "error",
+      "warning",
+      "triangle"
+    ],
+    "category": "alert",
+    "isCommon": true
+  },
+  {
+    "code": "alert-circle",
+    "fullCode": "uugds-alert-circle",
+    "prefix": "uugds",
+    "name": "Alert circle",
+    "keywords": [
+      "exclamation mark",
+      "error",
+      "warning"
+    ],
+    "category": "alert",
+    "isCommon": true
+  },
+  {
+    "code": "alert-circle-solid",
+    "fullCode": "uugds-alert-circle-solid",
+    "prefix": "uugds",
+    "name": "Alert circle solid",
+    "keywords": [
+      "exclamation mark",
+      "error",
+      "warning",
+      "filled"
+    ],
+    "category": "alert",
+    "isCommon": true
+  },
+  {
+    "code": "alert-solid",
+    "fullCode": "uugds-alert-solid",
+    "prefix": "uugds",
+    "name": "Alert solid",
+    "keywords": [
+      "exclamation mark",
+      "error",
+      "warning",
+      "triangle",
+      "filled"
+    ],
+    "category": "alert",
+    "isCommon": true
+  },
+  {
+    "code": "align-center",
+    "fullCode": "uugdsstencil-edit-align-center",
+    "prefix": "uugdsstencil",
+    "name": "Align center",
+    "keywords": [
+      "text",
+      "paragraph",
+      "middle"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "align-center",
+    "fullCode": "uugdsstencil-layout-align-center",
+    "prefix": "uugdsstencil",
+    "name": "Align center",
+    "keywords": [],
+    "category": "layout",
+    "deprecated": true
+  },
+  {
+    "code": "align-end",
+    "fullCode": "uugdsstencil-edit-align-end",
+    "prefix": "uugdsstencil",
+    "name": "Align end",
+    "keywords": [
+      "text",
+      "paragraph",
+      "right"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "align-horizontal-center",
+    "fullCode": "uugdsstencil-layout-align-horizontal-center",
+    "prefix": "uugdsstencil",
+    "name": "Align horizontal center",
+    "keywords": [
+      "middle"
+    ],
+    "category": "layout"
+  },
+  {
+    "code": "align-horizontal-end",
+    "fullCode": "uugdsstencil-layout-align-horizontal-end",
+    "prefix": "uugdsstencil",
+    "name": "Align horizontal end",
+    "keywords": [
+      "right"
+    ],
+    "category": "layout"
+  },
+  {
+    "code": "align-horizontal-start",
+    "fullCode": "uugdsstencil-layout-align-horizontal-start",
+    "prefix": "uugdsstencil",
+    "name": "Align horizontal start",
+    "keywords": [
+      "left"
+    ],
+    "category": "layout"
+  },
+  {
+    "code": "align-justify",
+    "fullCode": "uugdsstencil-edit-align-justify",
+    "prefix": "uugdsstencil",
+    "name": "Align justify",
+    "keywords": [
+      "text",
+      "paragraph",
+      "block"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "align-left",
+    "fullCode": "uugdsstencil-edit-align-left",
+    "prefix": "uugdsstencil",
+    "name": "Align left",
+    "keywords": [],
+    "category": "edit",
+    "deprecated": true
+  },
+  {
+    "code": "align-left",
+    "fullCode": "uugdsstencil-layout-align-left",
+    "prefix": "uugdsstencil",
+    "name": "Align left",
+    "keywords": [],
+    "category": "layout",
+    "deprecated": true
+  },
+  {
+    "code": "align-right",
+    "fullCode": "uugdsstencil-edit-align-right",
+    "prefix": "uugdsstencil",
+    "name": "Align right",
+    "keywords": [],
+    "category": "edit",
+    "deprecated": true
+  },
+  {
+    "code": "align-right",
+    "fullCode": "uugdsstencil-layout-align-right",
+    "prefix": "uugdsstencil",
+    "name": "Align right",
+    "keywords": [],
+    "category": "layout",
+    "deprecated": true
+  },
+  {
+    "code": "align-start",
+    "fullCode": "uugdsstencil-edit-align-start",
+    "prefix": "uugdsstencil",
+    "name": "Align start",
+    "keywords": [
+      "text",
+      "paragraph",
+      "left"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "application",
+    "fullCode": "uugdsstencil-media-application",
+    "prefix": "uugdsstencil",
+    "name": "Application",
+    "keywords": [
+      "software",
+      "program",
+      "window",
+      "browser"
+    ],
+    "category": "media"
+  },
+  {
+    "code": "apps",
+    "fullCode": "uugds-apps",
+    "prefix": "uugds",
+    "name": "Apps",
+    "keywords": [
+      "squares",
+      "navigator",
+      "grid",
+      "matrix"
+    ],
+    "category": "layout",
+    "isCommon": true
+  },
+  {
+    "code": "apps-edit",
+    "fullCode": "uugds-apps-edit",
+    "prefix": "uugds",
+    "name": "Apps edit",
+    "keywords": [
+      "squares",
+      "navigator",
+      "grid",
+      "matrix",
+      "pencil"
+    ],
+    "category": "layout",
+    "isCommon": true
+  },
+  {
+    "code": "archive",
+    "fullCode": "uugdsstencil-uiaction-archive",
+    "prefix": "uugdsstencil",
+    "name": "Archive",
+    "keywords": [
+      "arrow",
+      "box",
+      "storage",
+      "files"
+    ],
+    "category": "uiaction"
+  },
+  {
+    "code": "arrow-down-end",
+    "fullCode": "uugdsstencil-arrow-arrow-down-end",
+    "prefix": "uugdsstencil",
+    "name": "Down end",
+    "keywords": [
+      "bottom",
+      "right"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "arrow-down-left",
+    "fullCode": "uugdsstencil-arrow-arrow-down-left",
+    "prefix": "uugdsstencil",
+    "name": "Down left",
+    "keywords": [],
+    "category": "arrow",
+    "deprecated": true
+  },
+  {
+    "code": "arrow-down-right",
+    "fullCode": "uugdsstencil-arrow-arrow-down-right",
+    "prefix": "uugdsstencil",
+    "name": "Down right",
+    "keywords": [],
+    "category": "arrow",
+    "deprecated": true
+  },
+  {
+    "code": "arrow-down-start",
+    "fullCode": "uugdsstencil-arrow-arrow-down-start",
+    "prefix": "uugdsstencil",
+    "name": "Down start",
+    "keywords": [
+      "bottom",
+      "left"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "arrow-end-up-half",
+    "fullCode": "uugdsstencil-arrow-arrow-end-up-half",
+    "prefix": "uugdsstencil",
+    "name": "End up half",
+    "keywords": [
+      "right",
+      "inherited"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "arrow-history",
+    "fullCode": "uugdsstencil-time-arrow-history",
+    "prefix": "uugdsstencil",
+    "name": "History",
+    "keywords": [
+      "arrow",
+      "timeline",
+      "clock",
+      "timing",
+      "back",
+      "past",
+      "return"
+    ],
+    "category": "time"
+  },
+  {
+    "code": "arrow-horizontal-bidirectional",
+    "fullCode": "uugdsstencil-arrow-arrow-horizontal-bidirectional",
+    "prefix": "uugdsstencil",
+    "name": "Horizontal bidirectional out",
+    "keywords": [
+      "left",
+      "right",
+      "end",
+      "start"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "arrow-horizontal-bidirectional-square",
+    "fullCode": "uugdsstencil-arrow-arrow-horizontal-bidirectional-square",
+    "prefix": "uugdsstencil",
+    "name": "Horizontal bidirectional out square",
+    "keywords": [
+      "left",
+      "right",
+      "end",
+      "start"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "arrow-right-up-half",
+    "fullCode": "uugdsstencil-arrow-arrow-right-up-half",
+    "prefix": "uugdsstencil",
+    "name": "Right up half",
+    "keywords": [],
+    "category": "arrow",
+    "deprecated": true
+  },
+  {
+    "code": "arrow-up-end",
+    "fullCode": "uugdsstencil-arrow-arrow-up-end",
+    "prefix": "uugdsstencil",
+    "name": "Up end",
+    "keywords": [
+      "top",
+      "right"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "arrow-up-left",
+    "fullCode": "uugdsstencil-arrow-arrow-up-left",
+    "prefix": "uugdsstencil",
+    "name": "Up left",
+    "keywords": [],
+    "category": "arrow",
+    "deprecated": true
+  },
+  {
+    "code": "arrow-up-right",
+    "fullCode": "uugdsstencil-arrow-arrow-up-right",
+    "prefix": "uugdsstencil",
+    "name": "Up right",
+    "keywords": [],
+    "category": "arrow",
+    "deprecated": true
+  },
+  {
+    "code": "arrow-up-start",
+    "fullCode": "uugdsstencil-arrow-arrow-up-start",
+    "prefix": "uugdsstencil",
+    "name": "Up start",
+    "keywords": [
+      "top",
+      "left"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "assignment",
+    "fullCode": "uugdsstencil-education-assignment",
+    "prefix": "uugdsstencil",
+    "name": "Assignment",
+    "keywords": [
+      "task",
+      "document",
+      "file",
+      "paper",
+      "write",
+      "summary",
+      "essay",
+      "attachment"
+    ],
+    "category": "education"
+  },
+  {
+    "code": "at-sign",
+    "fullCode": "uugdsstencil-communication-at-sign",
+    "prefix": "uugdsstencil",
+    "name": "At sign",
+    "keywords": [
+      "emails",
+      "letters",
+      "mentions",
+      "messages",
+      "@"
+    ],
+    "category": "communication",
+    "rtlDisabled": true
+  },
+  {
+    "code": "backup-password",
+    "fullCode": "uugdsstencil-security-backup-password",
+    "prefix": "uugdsstencil",
+    "name": "Backup password",
+    "keywords": [
+      "forgotten",
+      "recover"
+    ],
+    "category": "security",
+    "rtlDisabled": true
+  },
+  {
+    "code": "badge-award",
+    "fullCode": "uugdsstencil-education-badge-award",
+    "prefix": "uugdsstencil",
+    "name": "Badge award",
+    "keywords": [
+      "emblem",
+      "reward",
+      "winner",
+      "certification",
+      "acknowledge",
+      "medal",
+      "accolade"
+    ],
+    "category": "education"
+  },
+  {
+    "code": "badge-bottom-left-solid",
+    "fullCode": "uugdsstencil-edit-badge-bottom-left-solid",
+    "prefix": "uugdsstencil",
+    "name": "Badge bottom left solid",
+    "keywords": [],
+    "category": "edit",
+    "deprecated": true
+  },
+  {
+    "code": "badge-bottom-start-solid",
+    "fullCode": "uugdsstencil-edit-badge-bottom-start-solid",
+    "prefix": "uugdsstencil",
+    "name": "Badge bottom start solid",
+    "keywords": [
+      "down",
+      "filled",
+      "left",
+      "square",
+      "edge",
+      "corner"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "badge-top-end",
+    "fullCode": "uugdsstencil-edit-badge-top-end",
+    "prefix": "uugdsstencil",
+    "name": "Badge top end",
+    "keywords": [
+      "right",
+      "square",
+      "edge",
+      "corner"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "badge-top-left",
+    "fullCode": "uugdsstencil-edit-badge-top-left",
+    "prefix": "uugdsstencil",
+    "name": "Badge top left",
+    "keywords": [],
+    "category": "edit",
+    "deprecated": true
+  },
+  {
+    "code": "badge-top-left-solid",
+    "fullCode": "uugdsstencil-edit-badge-top-left-solid",
+    "prefix": "uugdsstencil",
+    "name": "Badge top left solid",
+    "keywords": [],
+    "category": "edit",
+    "deprecated": true
+  },
+  {
+    "code": "badge-top-right",
+    "fullCode": "uugdsstencil-edit-badge-top-right",
+    "prefix": "uugdsstencil",
+    "name": "Badge top right",
+    "keywords": [],
+    "category": "edit",
+    "deprecated": true
+  },
+  {
+    "code": "badge-top-start",
+    "fullCode": "uugdsstencil-edit-badge-top-start",
+    "prefix": "uugdsstencil",
+    "name": "Badge top start",
+    "keywords": [
+      "left",
+      "square",
+      "edge",
+      "corner"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "badge-top-start-solid",
+    "fullCode": "uugdsstencil-edit-badge-top-start-solid",
+    "prefix": "uugdsstencil",
+    "name": "Badge top start solid",
+    "keywords": [
+      "filled",
+      "left",
+      "square",
+      "edge",
+      "corner"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "bank",
+    "fullCode": "uugdsstencil-commerce-bank",
+    "prefix": "uugdsstencil",
+    "name": "Bank",
+    "keywords": [
+      "finance",
+      "money",
+      "banking",
+      "business",
+      "building"
+    ],
+    "category": "commerce"
+  },
+  {
+    "code": "bank-notes",
+    "fullCode": "uugdsstencil-commerce-bank-notes",
+    "prefix": "uugdsstencil",
+    "name": "Bank notes",
+    "keywords": [
+      "finance",
+      "money",
+      "currency",
+      "papers",
+      "bills",
+      "stock",
+      "pay"
+    ],
+    "category": "commerce"
+  },
+  {
+    "code": "bar-chart",
+    "fullCode": "uugdsstencil-chart-bar-chart",
+    "prefix": "uugdsstencil",
+    "name": "Bar chart",
+    "keywords": [
+      "graph",
+      "statistics",
+      "analytics",
+      "report"
+    ],
+    "category": "chart",
+    "rtlDisabled": true
+  },
+  {
+    "code": "bar-chart-axes",
+    "fullCode": "uugdsstencil-chart-bar-chart-axes",
+    "prefix": "uugdsstencil",
+    "name": "Bar chart axes",
+    "keywords": [
+      "graph",
+      "statistics",
+      "analytics",
+      "report"
+    ],
+    "category": "chart",
+    "rtlDisabled": true
+  },
+  {
+    "code": "bar-chart-square",
+    "fullCode": "uugdsstencil-chart-bar-chart-square",
+    "prefix": "uugdsstencil",
+    "name": "Bar chart square",
+    "keywords": [
+      "graph",
+      "statistics",
+      "analytics",
+      "report"
+    ],
+    "category": "chart",
+    "rtlDisabled": true
+  },
+  {
+    "code": "bar-chart-variant",
+    "fullCode": "uugdsstencil-chart-bar-chart-variant",
+    "prefix": "uugdsstencil",
+    "name": "Bar chart variant",
+    "keywords": [
+      "graph",
+      "statistics",
+      "analytics",
+      "report"
+    ],
+    "category": "chart",
+    "rtlDisabled": true
+  },
+  {
+    "code": "bar-line-chart",
+    "fullCode": "uugdsstencil-chart-bar-line-chart",
+    "prefix": "uugdsstencil",
+    "name": "Bar line chart",
+    "keywords": [
+      "graph",
+      "statistics",
+      "analytics",
+      "report"
+    ],
+    "category": "chart",
+    "rtlDisabled": true
+  },
+  {
+    "code": "basket",
+    "fullCode": "uugds-basket",
+    "prefix": "uugds",
+    "name": "Basket",
+    "keywords": [
+      "shopping",
+      "online store",
+      "buy"
+    ],
+    "category": "commerce",
+    "isCommon": true
+  },
+  {
+    "code": "basket-solid",
+    "fullCode": "uugdsstencil-commerce-basket-solid",
+    "prefix": "uugdsstencil",
+    "name": "Basket solid",
+    "keywords": [
+      "shopping",
+      "online store",
+      "buy"
+    ],
+    "category": "commerce"
+  },
+  {
+    "code": "bell",
+    "fullCode": "uugds-bell",
+    "prefix": "uugds",
+    "name": "Bell",
+    "keywords": [
+      "alert",
+      "notification"
+    ],
+    "category": "uiaction",
+    "isCommon": true
+  },
+  {
+    "code": "bell-off",
+    "fullCode": "uugds-bell-off",
+    "prefix": "uugds",
+    "name": "Bell off",
+    "keywords": [
+      "alert",
+      "notification",
+      "mute",
+      "silence"
+    ],
+    "category": "uiaction",
+    "isCommon": true,
+    "rtlDisabled": true
+  },
+  {
+    "code": "binary",
+    "fullCode": "uugdsstencil-media-binary",
+    "prefix": "uugdsstencil",
+    "name": "Binary",
+    "keywords": [
+      "1",
+      "0",
+      "numbers"
+    ],
+    "category": "media"
+  },
+  {
+    "code": "bold",
+    "fullCode": "uugdsstencil-edit-bold",
+    "prefix": "uugdsstencil",
+    "name": "Bold",
+    "keywords": [
+      "format",
+      "style",
+      "font",
+      "text"
+    ],
+    "category": "edit",
+    "rtlDisabled": true
+  },
+  {
+    "code": "bolt",
+    "fullCode": "uugdsstencil-weather-bolt",
+    "prefix": "uugdsstencil",
+    "name": "Bolt",
+    "keywords": [
+      "lightning",
+      "electricity",
+      "thunder",
+      "energy",
+      "flash",
+      "electrical",
+      "charge"
+    ],
+    "category": "weather"
+  },
+  {
+    "code": "book",
+    "fullCode": "uugdsstencil-education-book",
+    "prefix": "uugdsstencil",
+    "name": "Book",
+    "keywords": [
+      "library",
+      "reading",
+      "guide"
+    ],
+    "category": "education"
+  },
+  {
+    "code": "book-edit",
+    "fullCode": "uugdsstencil-education-book-edit",
+    "prefix": "uugdsstencil",
+    "name": "Book edit",
+    "keywords": [
+      "books",
+      "excersise",
+      "assignments",
+      "pencil"
+    ],
+    "category": "education"
+  },
+  {
+    "code": "book-index",
+    "fullCode": "uugds-book-index",
+    "prefix": "uugds",
+    "name": "Book index",
+    "keywords": [
+      "library",
+      "reading"
+    ],
+    "category": "education",
+    "isCommon": true
+  },
+  {
+    "code": "book-index-edit",
+    "fullCode": "uugdsstencil-education-book-index-edit",
+    "prefix": "uugdsstencil",
+    "name": "Book index edit",
+    "keywords": [
+      "library",
+      "reading",
+      "pencil"
+    ],
+    "category": "education"
+  },
+  {
+    "code": "book-index-plus",
+    "fullCode": "uugdsstencil-education-book-index-plus",
+    "prefix": "uugdsstencil",
+    "name": "Book index plus",
+    "keywords": [
+      "library",
+      "reading",
+      "create",
+      "add",
+      "new"
+    ],
+    "category": "education"
+  },
+  {
+    "code": "book-multiple",
+    "fullCode": "uugdsstencil-education-book-multiple",
+    "prefix": "uugdsstencil",
+    "name": "Book multiple",
+    "keywords": [
+      "books",
+      "excersise",
+      "assignments"
+    ],
+    "category": "education"
+  },
+  {
+    "code": "book-plus",
+    "fullCode": "uugdsstencil-education-book-plus",
+    "prefix": "uugdsstencil",
+    "name": "Book plus",
+    "keywords": [
+      "books",
+      "excersise",
+      "assignments",
+      "create",
+      "add",
+      "new"
+    ],
+    "category": "education"
+  },
+  {
+    "code": "book-search",
+    "fullCode": "uugdsstencil-education-book-search",
+    "prefix": "uugdsstencil",
+    "name": "Book search",
+    "keywords": [
+      "find",
+      "magnify"
+    ],
+    "category": "education",
+    "rtlDisabled": true
+  },
+  {
+    "code": "bookmark",
+    "fullCode": "uugds-bookmark",
+    "prefix": "uugds",
+    "name": "Bookmark",
+    "keywords": [
+      "save",
+      "store",
+      "favorites",
+      "presets"
+    ],
+    "category": "uiaction",
+    "isCommon": true
+  },
+  {
+    "code": "bookmark-off",
+    "fullCode": "uugdsstencil-uiaction-bookmark-off",
+    "prefix": "uugdsstencil",
+    "name": "Bookmark off",
+    "keywords": [
+      "save",
+      "store",
+      "favorites",
+      "presets",
+      "disable",
+      "remove"
+    ],
+    "category": "uiaction",
+    "rtlDisabled": true
+  },
+  {
+    "code": "branchkit-branch",
+    "fullCode": "uugdsstencil-it-branchkit-branch",
+    "prefix": "uugdsstencil",
+    "name": "Branchkit branch",
+    "keywords": [
+      "git",
+      "branching",
+      "versioning",
+      "control",
+      "split",
+      "fork"
+    ],
+    "category": "it"
+  },
+  {
+    "code": "branchkit-clone",
+    "fullCode": "uugdsstencil-it-branchkit-clone",
+    "prefix": "uugdsstencil",
+    "name": "Branchkit clone",
+    "keywords": [
+      "git",
+      "branching",
+      "versioning",
+      "control",
+      "create",
+      "duplicate"
+    ],
+    "category": "it"
+  },
+  {
+    "code": "branchkit-commit",
+    "fullCode": "uugdsstencil-it-branchkit-commit",
+    "prefix": "uugdsstencil",
+    "name": "Branchkit commit",
+    "keywords": [
+      "git",
+      "branching",
+      "versioning",
+      "control"
+    ],
+    "category": "it"
+  },
+  {
+    "code": "branchkit-merge",
+    "fullCode": "uugdsstencil-it-branchkit-merge",
+    "prefix": "uugdsstencil",
+    "name": "Branchkit merge",
+    "keywords": [
+      "git",
+      "branching",
+      "versioning",
+      "control",
+      "join"
+    ],
+    "category": "it"
+  },
+  {
+    "code": "briefcase",
+    "fullCode": "uugdsstencil-commerce-briefcase",
+    "prefix": "uugdsstencil",
+    "name": "Briefcase",
+    "keywords": [
+      "business",
+      "bag",
+      "suitcase",
+      "work",
+      "job"
+    ],
+    "category": "commerce"
+  },
+  {
+    "code": "brightness",
+    "fullCode": "uugdsstencil-edit-brightness",
+    "prefix": "uugdsstencil",
+    "name": "Brightness",
+    "keywords": [
+      "light",
+      "sun"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "bubble-chart",
+    "fullCode": "uugdsstencil-chart-bubble-chart",
+    "prefix": "uugdsstencil",
+    "name": "Bubble chart",
+    "keywords": [
+      "graph",
+      "statistics",
+      "analytics",
+      "report",
+      "circles"
+    ],
+    "category": "chart",
+    "rtlDisabled": true
+  },
+  {
+    "code": "bug",
+    "fullCode": "uugdsstencil-it-bug",
+    "prefix": "uugdsstencil",
+    "name": "Bug",
+    "keywords": [
+      "glitch",
+      "error",
+      "defect",
+      "issue",
+      "problem",
+      "fault",
+      "malfunction",
+      "software",
+      "coding"
+    ],
+    "category": "it"
+  },
+  {
+    "code": "buildings",
+    "fullCode": "uugdsstencil-home-buildings",
+    "prefix": "uugdsstencil",
+    "name": "Buildings",
+    "keywords": [
+      "architecture",
+      "organizations",
+      "cityscape",
+      "company"
+    ],
+    "category": "home",
+    "rtlDisabled": true
+  },
+  {
+    "code": "buildings-edit",
+    "fullCode": "uugdsstencil-home-buildings-edit",
+    "prefix": "uugdsstencil",
+    "name": "Buildings edit",
+    "keywords": [
+      "architecture",
+      "organizations",
+      "cityscape",
+      "company",
+      "pencil"
+    ],
+    "category": "home"
+  },
+  {
+    "code": "buildings-plus",
+    "fullCode": "uugdsstencil-home-buildings-plus",
+    "prefix": "uugdsstencil",
+    "name": "Buildings plus",
+    "keywords": [
+      "architecture",
+      "organizations",
+      "cityscape",
+      "company",
+      "create",
+      "add"
+    ],
+    "category": "home",
+    "rtlDisabled": true
+  },
+  {
+    "code": "buildings-search",
+    "fullCode": "uugdsstencil-home-buildings-search",
+    "prefix": "uugdsstencil",
+    "name": "Buildings search",
+    "keywords": [
+      "architecture",
+      "organizations",
+      "cityscape",
+      "company",
+      "find"
+    ],
+    "category": "home",
+    "rtlDisabled": true
+  },
+  {
+    "code": "business-card",
+    "fullCode": "uugdsstencil-user-business-card",
+    "prefix": "uugdsstencil",
+    "name": "Business card",
+    "keywords": [
+      "person",
+      "user",
+      "profile",
+      "contact",
+      "detail",
+      "information"
+    ],
+    "category": "user"
+  },
+  {
+    "code": "cake",
+    "fullCode": "uugdsstencil-home-cake",
+    "prefix": "uugdsstencil",
+    "name": "Cake",
+    "keywords": [
+      "cake"
+    ],
+    "category": "home"
+  },
+  {
+    "code": "calculator",
+    "fullCode": "uugdsstencil-commerce-calculator",
+    "prefix": "uugdsstencil",
+    "name": "Calculator",
+    "keywords": [
+      "math",
+      "electronics",
+      "calculating",
+      "accounting",
+      "finances"
+    ],
+    "category": "commerce"
+  },
+  {
+    "code": "calendar",
+    "fullCode": "uugds-calendar",
+    "prefix": "uugds",
+    "name": "Calendar",
+    "keywords": [
+      "date",
+      "schedule",
+      "planner",
+      "timetable",
+      "organizer"
+    ],
+    "category": "time",
+    "isCommon": true
+  },
+  {
+    "code": "calendar-edit",
+    "fullCode": "uugdsstencil-time-calendar-edit",
+    "prefix": "uugdsstencil",
+    "name": "Calendar edit",
+    "keywords": [
+      "date",
+      "schedule",
+      "planner",
+      "timetable",
+      "organizer",
+      "pencil"
+    ],
+    "category": "time"
+  },
+  {
+    "code": "calendar-plus",
+    "fullCode": "uugdsstencil-time-calendar-plus",
+    "prefix": "uugdsstencil",
+    "name": "Calendar plus",
+    "keywords": [
+      "date",
+      "schedule",
+      "planner",
+      "timetable",
+      "organizer",
+      "add",
+      "new",
+      "create"
+    ],
+    "category": "time"
+  },
+  {
+    "code": "calendar-search",
+    "fullCode": "uugdsstencil-time-calendar-search",
+    "prefix": "uugdsstencil",
+    "name": "Calendar search",
+    "keywords": [
+      "date",
+      "schedule",
+      "planner",
+      "timetable",
+      "organizer",
+      "zoom"
+    ],
+    "category": "time"
+  },
+  {
+    "code": "calendar-solid",
+    "fullCode": "uugdsstencil-time-calendar-solid",
+    "prefix": "uugdsstencil",
+    "name": "Calendar solid",
+    "keywords": [
+      "date",
+      "schedule",
+      "planner",
+      "timetable",
+      "organizer",
+      "filled"
+    ],
+    "category": "time"
+  },
+  {
+    "code": "calendar-time",
+    "fullCode": "uugds-calendar-time",
+    "prefix": "uugds",
+    "name": "Calendar time",
+    "keywords": [
+      "date",
+      "schedule",
+      "planner",
+      "timetable",
+      "organizer",
+      "clock"
+    ],
+    "category": "time",
+    "isCommon": true
+  },
+  {
+    "code": "camera",
+    "fullCode": "uugdsstencil-media-camera",
+    "prefix": "uugdsstencil",
+    "name": "Camera",
+    "keywords": [
+      "photography",
+      "snapshot"
+    ],
+    "category": "media"
+  },
+  {
+    "code": "cancel",
+    "fullCode": "uugdsstencil-badge-cancel",
+    "prefix": "uugdsstencil",
+    "name": "Cancel",
+    "keywords": [
+      "cross",
+      "rejected",
+      "disable"
+    ],
+    "category": "badge"
+  },
+  {
+    "code": "car",
+    "fullCode": "uugdsstencil-transport-car",
+    "prefix": "uugdsstencil",
+    "name": "Car",
+    "keywords": [
+      "automobile",
+      "vehicle",
+      "ride"
+    ],
+    "category": "transport"
+  },
+  {
+    "code": "cards",
+    "fullCode": "uugdsstencil-media-cards",
+    "prefix": "uugdsstencil",
+    "name": "Cards",
+    "keywords": [
+      "deck"
+    ],
+    "category": "media"
+  },
+  {
+    "code": "cart",
+    "fullCode": "uugds-cart",
+    "prefix": "uugds",
+    "name": "Cart",
+    "keywords": [
+      "add",
+      "shopping",
+      "trolley",
+      "buy"
+    ],
+    "category": "commerce",
+    "isCommon": true
+  },
+  {
+    "code": "cart-plus",
+    "fullCode": "uugdsstencil-commerce-cart-plus",
+    "prefix": "uugdsstencil",
+    "name": "Cart plus",
+    "keywords": [
+      "add",
+      "shopping",
+      "trolley",
+      "buy"
+    ],
+    "category": "commerce"
+  },
+  {
+    "code": "cascade",
+    "fullCode": "uugdsstencil-layout-cascade",
+    "prefix": "uugdsstencil",
+    "name": "Cascade",
+    "keywords": [
+      "levels"
+    ],
+    "category": "layout"
+  },
+  {
+    "code": "chat",
+    "fullCode": "uugdsstencil-communication-chat",
+    "prefix": "uugdsstencil",
+    "name": "Chat",
+    "keywords": [
+      "bubble",
+      "type",
+      "write",
+      "comments",
+      "messages",
+      "feedback",
+      "text"
+    ],
+    "category": "communication"
+  },
+  {
+    "code": "check",
+    "fullCode": "uugdsstencil-badge-check",
+    "prefix": "uugdsstencil",
+    "name": "Check",
+    "keywords": [
+      "done",
+      "finished",
+      "approved"
+    ],
+    "category": "badge"
+  },
+  {
+    "code": "check",
+    "fullCode": "uugds-check",
+    "prefix": "uugds",
+    "name": "Check",
+    "keywords": [
+      "done",
+      "finished",
+      "ok",
+      "success",
+      "approve"
+    ],
+    "category": "uiaction",
+    "isCommon": true,
+    "rtlDisabled": true
+  },
+  {
+    "code": "check-circle",
+    "fullCode": "uugds-check-circle",
+    "prefix": "uugds",
+    "name": "Check circle",
+    "keywords": [
+      "success",
+      "checked",
+      "complete",
+      "closed",
+      "ready",
+      "mark",
+      "ok",
+      "done"
+    ],
+    "category": "alert",
+    "isCommon": true,
+    "rtlDisabled": true
+  },
+  {
+    "code": "check-circle-solid",
+    "fullCode": "uugds-check-circle-solid",
+    "prefix": "uugds",
+    "name": "Check circle solid",
+    "keywords": [
+      "success",
+      "checked",
+      "complete",
+      "closed",
+      "ready",
+      "mark",
+      "ok",
+      "done",
+      "filled"
+    ],
+    "category": "alert",
+    "isCommon": true,
+    "rtlDisabled": true
+  },
+  {
+    "code": "checkbox-list",
+    "fullCode": "uugds-checkbox-list",
+    "prefix": "uugds",
+    "name": "Checkbox list",
+    "keywords": [
+      "form",
+      "tasks",
+      "mark",
+      "approve"
+    ],
+    "category": "edit",
+    "isCommon": true,
+    "rtlDisabled": true
+  },
+  {
+    "code": "chevron-double-down",
+    "fullCode": "uugdsstencil-arrow-chevron-double-down",
+    "prefix": "uugdsstencil",
+    "name": "Chevron double down",
+    "keywords": [
+      "collapsed",
+      "closed"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "chevron-double-down-circle",
+    "fullCode": "uugdsstencil-arrow-chevron-double-down-circle",
+    "prefix": "uugdsstencil",
+    "name": "Chevron double down circle",
+    "keywords": [],
+    "category": "arrow"
+  },
+  {
+    "code": "chevron-double-down-circle-solid",
+    "fullCode": "uugdsstencil-arrow-chevron-double-down-circle-solid",
+    "prefix": "uugdsstencil",
+    "name": "Chevron double down circle solid",
+    "keywords": [
+      "filled"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "chevron-double-end",
+    "fullCode": "uugds-chevron-double-end",
+    "prefix": "uugds",
+    "name": "Chevron double end",
+    "keywords": [
+      "right"
+    ],
+    "category": "arrow",
+    "isCommon": true
+  },
+  {
+    "code": "chevron-double-end-circle",
+    "fullCode": "uugdsstencil-arrow-chevron-double-end-circle",
+    "prefix": "uugdsstencil",
+    "name": "Chevron double end circle",
+    "keywords": [
+      "right"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "chevron-double-end-circle-solid",
+    "fullCode": "uugdsstencil-arrow-chevron-double-end-circle-solid",
+    "prefix": "uugdsstencil",
+    "name": "Chevron double end circle solid",
+    "keywords": [
+      "right"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "chevron-double-left",
+    "fullCode": "uugds-chevron-double-left",
+    "prefix": "uugds",
+    "name": "Chevron double left",
+    "keywords": [],
+    "category": "arrow",
+    "isCommon": true,
+    "deprecated": true
+  },
+  {
+    "code": "chevron-double-right",
+    "fullCode": "uugds-chevron-double-right",
+    "prefix": "uugds",
+    "name": "Chevron double right",
+    "keywords": [],
+    "category": "arrow",
+    "isCommon": true,
+    "deprecated": true
+  },
+  {
+    "code": "chevron-double-start",
+    "fullCode": "uugds-chevron-double-start",
+    "prefix": "uugds",
+    "name": "Chevron double start",
+    "keywords": [
+      "left"
+    ],
+    "category": "arrow",
+    "isCommon": true
+  },
+  {
+    "code": "chevron-double-start-circle",
+    "fullCode": "uugdsstencil-arrow-chevron-double-start-circle",
+    "prefix": "uugdsstencil",
+    "name": "Chevron double start circle",
+    "keywords": [
+      "left"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "chevron-double-start-circle-solid",
+    "fullCode": "uugdsstencil-arrow-chevron-double-start-circle-solid",
+    "prefix": "uugdsstencil",
+    "name": "Chevron double start circle solid",
+    "keywords": [
+      "left",
+      "filled"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "chevron-double-up",
+    "fullCode": "uugdsstencil-arrow-chevron-double-up",
+    "prefix": "uugdsstencil",
+    "name": "Chevron double up",
+    "keywords": [
+      "expanded",
+      "opened"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "chevron-double-up-circle",
+    "fullCode": "uugdsstencil-arrow-chevron-double-up-circle",
+    "prefix": "uugdsstencil",
+    "name": "Chevron double up circle",
+    "keywords": [],
+    "category": "arrow"
+  },
+  {
+    "code": "chevron-double-up-circle-solid",
+    "fullCode": "uugdsstencil-arrow-chevron-double-up-circle-solid",
+    "prefix": "uugdsstencil",
+    "name": "Chevron double up circle solid",
+    "keywords": [
+      "filled"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "chevron-down",
+    "fullCode": "uugds-chevron-down",
+    "prefix": "uugds",
+    "name": "Chevron down",
+    "keywords": [
+      "collapsed",
+      "closed"
+    ],
+    "category": "arrow",
+    "isCommon": true
+  },
+  {
+    "code": "chevron-down-circle",
+    "fullCode": "uugdsstencil-arrow-chevron-down-circle",
+    "prefix": "uugdsstencil",
+    "name": "Chevron down circle",
+    "keywords": [],
+    "category": "arrow"
+  },
+  {
+    "code": "chevron-down-circle-solid",
+    "fullCode": "uugdsstencil-arrow-chevron-down-circle-solid",
+    "prefix": "uugdsstencil",
+    "name": "Chevron down circle solid",
+    "keywords": [
+      "filled"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "chevron-end",
+    "fullCode": "uugds-chevron-end",
+    "prefix": "uugds",
+    "name": "Chevron end",
+    "keywords": [
+      "right"
+    ],
+    "category": "arrow",
+    "isCommon": true
+  },
+  {
+    "code": "chevron-end-circle",
+    "fullCode": "uugdsstencil-arrow-chevron-end-circle",
+    "prefix": "uugdsstencil",
+    "name": "Chevron end circle",
+    "keywords": [
+      "right"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "chevron-end-circle-solid",
+    "fullCode": "uugdsstencil-arrow-chevron-end-circle-solid",
+    "prefix": "uugdsstencil",
+    "name": "Chevron end circle solid",
+    "keywords": [
+      "right",
+      "filled"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "chevron-last-down",
+    "fullCode": "uugdsstencil-arrow-chevron-last-down",
+    "prefix": "uugdsstencil",
+    "name": "Chevron last down",
+    "keywords": [
+      "end",
+      "bottom"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "chevron-last-end",
+    "fullCode": "uugds-chevron-last-end",
+    "prefix": "uugds",
+    "name": "Chevron last end",
+    "keywords": [
+      "right"
+    ],
+    "category": "arrow",
+    "isCommon": true
+  },
+  {
+    "code": "chevron-last-left",
+    "fullCode": "uugds-chevron-last-left",
+    "prefix": "uugds",
+    "name": "Chevron last left",
+    "keywords": [],
+    "category": "arrow",
+    "isCommon": true,
+    "deprecated": true
+  },
+  {
+    "code": "chevron-last-right",
+    "fullCode": "uugds-chevron-last-right",
+    "prefix": "uugds",
+    "name": "Chevron last right",
+    "keywords": [],
+    "category": "arrow",
+    "isCommon": true,
+    "deprecated": true
+  },
+  {
+    "code": "chevron-last-start",
+    "fullCode": "uugds-chevron-last-start",
+    "prefix": "uugds",
+    "name": "Chevron last start",
+    "keywords": [
+      "left"
+    ],
+    "category": "arrow",
+    "isCommon": true
+  },
+  {
+    "code": "chevron-last-up",
+    "fullCode": "uugdsstencil-arrow-chevron-last-up",
+    "prefix": "uugdsstencil",
+    "name": "Chevron last up",
+    "keywords": [
+      "top",
+      "start"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "chevron-left",
+    "fullCode": "uugds-chevron-left",
+    "prefix": "uugds",
+    "name": "Chevron left",
+    "keywords": [],
+    "category": "arrow",
+    "isCommon": true,
+    "deprecated": true
+  },
+  {
+    "code": "chevron-right",
+    "fullCode": "uugds-chevron-right",
+    "prefix": "uugds",
+    "name": "Chevron right",
+    "keywords": [],
+    "category": "arrow",
+    "isCommon": true,
+    "deprecated": true
+  },
+  {
+    "code": "chevron-start",
+    "fullCode": "uugds-chevron-start",
+    "prefix": "uugds",
+    "name": "Chevron start",
+    "keywords": [
+      "left"
+    ],
+    "category": "arrow",
+    "isCommon": true
+  },
+  {
+    "code": "chevron-start-circle",
+    "fullCode": "uugdsstencil-arrow-chevron-start-circle",
+    "prefix": "uugdsstencil",
+    "name": "Chevron start circle",
+    "keywords": [
+      "left"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "chevron-start-circle-solid",
+    "fullCode": "uugdsstencil-arrow-chevron-start-circle-solid",
+    "prefix": "uugdsstencil",
+    "name": "Chevron start circle solid",
+    "keywords": [
+      "left",
+      "filled"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "chevron-up",
+    "fullCode": "uugds-chevron-up",
+    "prefix": "uugds",
+    "name": "Chevron up",
+    "keywords": [
+      "expanded",
+      "opened",
+      "top"
+    ],
+    "category": "arrow",
+    "isCommon": true
+  },
+  {
+    "code": "chevron-up-circle",
+    "fullCode": "uugdsstencil-arrow-chevron-up-circle",
+    "prefix": "uugdsstencil",
+    "name": "Chevron up circle",
+    "keywords": [],
+    "category": "arrow"
+  },
+  {
+    "code": "chevron-up-circle-solid",
+    "fullCode": "uugdsstencil-arrow-chevron-up-circle-solid",
+    "prefix": "uugdsstencil",
+    "name": "Chevron up circle solid",
+    "keywords": [
+      "filled"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "chip",
+    "fullCode": "uugdsstencil-it-chip",
+    "prefix": "uugdsstencil",
+    "name": "Chip",
+    "keywords": [
+      "CPU",
+      "processor"
+    ],
+    "category": "it"
+  },
+  {
+    "code": "circle",
+    "fullCode": "uugds-circle",
+    "prefix": "uugds",
+    "name": "Circle",
+    "keywords": [
+      "bullet",
+      "ring"
+    ],
+    "category": "shape",
+    "isCommon": true
+  },
+  {
+    "code": "circle-solid",
+    "fullCode": "uugds-circle-solid",
+    "prefix": "uugds",
+    "name": "Circle solid",
+    "keywords": [
+      "filled",
+      "bullet"
+    ],
+    "category": "shape",
+    "isCommon": true
+  },
+  {
+    "code": "clipboard",
+    "fullCode": "uugdsstencil-media-clipboard",
+    "prefix": "uugdsstencil",
+    "name": "Clipboard",
+    "keywords": [
+      "copy",
+      "paste"
+    ],
+    "category": "media"
+  },
+  {
+    "code": "clipboard-plus",
+    "fullCode": "uugds-clipboard-plus",
+    "prefix": "uugds",
+    "name": "Clipboard plus",
+    "keywords": [
+      "add",
+      "create",
+      "copy"
+    ],
+    "category": "media",
+    "isCommon": true
+  },
+  {
+    "code": "clock",
+    "fullCode": "uugdsstencil-badge-clock",
+    "prefix": "uugdsstencil",
+    "name": "Clock",
+    "keywords": [
+      "time",
+      "waiting"
+    ],
+    "category": "badge"
+  },
+  {
+    "code": "clock",
+    "fullCode": "uugds-clock",
+    "prefix": "uugds",
+    "name": "Clock",
+    "keywords": [
+      "watch",
+      "alarm"
+    ],
+    "category": "time",
+    "isCommon": true
+  },
+  {
+    "code": "close",
+    "fullCode": "uugds-close",
+    "prefix": "uugds",
+    "name": "Close",
+    "keywords": [
+      "delete",
+      "cancel",
+      "dismiss",
+      "exit"
+    ],
+    "category": "uiaction",
+    "isCommon": true
+  },
+  {
+    "code": "close-circle",
+    "fullCode": "uugds-close-circle",
+    "prefix": "uugds",
+    "name": "Close circle",
+    "keywords": [
+      "cross",
+      "cancel",
+      "failure",
+      "delete"
+    ],
+    "category": "alert",
+    "isCommon": true
+  },
+  {
+    "code": "close-circle-solid",
+    "fullCode": "uugds-close-circle-solid",
+    "prefix": "uugds",
+    "name": "Close circle solid",
+    "keywords": [
+      "cross",
+      "cancel",
+      "failure",
+      "delete",
+      "filled"
+    ],
+    "category": "alert",
+    "isCommon": true
+  },
+  {
+    "code": "close-octagon",
+    "fullCode": "uugds-close-octagon",
+    "prefix": "uugds",
+    "name": "Close octagon",
+    "keywords": [
+      "cross",
+      "cancel",
+      "failure",
+      "delete"
+    ],
+    "category": "alert",
+    "isCommon": true
+  },
+  {
+    "code": "cloud-download-solid",
+    "fullCode": "uugds-cloud-download-solid",
+    "prefix": "uugds",
+    "name": "Cloud download solid",
+    "keywords": [
+      "get",
+      "retrieve",
+      "filled",
+      "export"
+    ],
+    "category": "media",
+    "isCommon": true
+  },
+  {
+    "code": "cloud-off",
+    "fullCode": "uugdsstencil-media-cloud-off",
+    "prefix": "uugdsstencil",
+    "name": "Cloud off",
+    "keywords": [
+      "disabled"
+    ],
+    "category": "media",
+    "rtlDisabled": true
+  },
+  {
+    "code": "cloud-upload",
+    "fullCode": "uugds-cloud-upload",
+    "prefix": "uugds",
+    "name": "Cloud upload",
+    "keywords": [
+      "arrow",
+      "up",
+      "backup",
+      "import"
+    ],
+    "category": "media",
+    "isCommon": true
+  },
+  {
+    "code": "code",
+    "fullCode": "uugds-code",
+    "prefix": "uugds",
+    "name": "Code",
+    "keywords": [
+      "brackets"
+    ],
+    "category": "edit",
+    "isCommon": true
+  },
+  {
+    "code": "coffee",
+    "fullCode": "uugdsstencil-home-coffee",
+    "prefix": "uugdsstencil",
+    "name": "Coffee",
+    "keywords": [
+      "drink",
+      "cup",
+      "break"
+    ],
+    "category": "home"
+  },
+  {
+    "code": "coin",
+    "fullCode": "uugdsstencil-commerce-coin",
+    "prefix": "uugdsstencil",
+    "name": "Coin",
+    "keywords": [
+      "money"
+    ],
+    "category": "commerce"
+  },
+  {
+    "code": "coins",
+    "fullCode": "uugdsstencil-commerce-coins",
+    "prefix": "uugdsstencil",
+    "name": "Coins",
+    "keywords": [
+      "coins",
+      "money",
+      "currency",
+      "change",
+      "pay"
+    ],
+    "category": "commerce"
+  },
+  {
+    "code": "collapse-diagonal",
+    "fullCode": "uugds-collapse-diagonal",
+    "prefix": "uugds",
+    "name": "Collapse diagonal",
+    "keywords": [
+      "inside",
+      "against"
+    ],
+    "category": "arrow",
+    "isCommon": true
+  },
+  {
+    "code": "color-fill",
+    "fullCode": "uugdsstencil-edit-color-fill",
+    "prefix": "uugdsstencil",
+    "name": "Color fill",
+    "keywords": [
+      "paint",
+      "bucket",
+      "background"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "color-highlight",
+    "fullCode": "uugdsstencil-edit-color-highlight",
+    "prefix": "uugdsstencil",
+    "name": "Color highlight",
+    "keywords": [
+      "marker"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "color-text",
+    "fullCode": "uugdsstencil-edit-color-text",
+    "prefix": "uugdsstencil",
+    "name": "Color text",
+    "keywords": [
+      "format",
+      "style"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "columns-1-1",
+    "fullCode": "uugds-columns-1-1",
+    "prefix": "uugds",
+    "name": "Columns 1 1",
+    "keywords": [
+      "1:1",
+      "layout",
+      "two",
+      "2"
+    ],
+    "category": "layout",
+    "isCommon": true
+  },
+  {
+    "code": "columns-1-1-1",
+    "fullCode": "uugds-columns-1-1-1",
+    "prefix": "uugds",
+    "name": "Columns 1 1 1",
+    "keywords": [
+      "1:1:1",
+      "layout",
+      "three",
+      "3"
+    ],
+    "category": "layout",
+    "isCommon": true
+  },
+  {
+    "code": "columns-1-1-1-1",
+    "fullCode": "uugdsstencil-layout-columns-1-1-1-1",
+    "prefix": "uugdsstencil",
+    "name": "Columns 1 1 1 1",
+    "keywords": [
+      "1:1:1:1",
+      "layout",
+      "four",
+      "4"
+    ],
+    "category": "layout"
+  },
+  {
+    "code": "columns-1-2",
+    "fullCode": "uugds-columns-1-2",
+    "prefix": "uugds",
+    "name": "Columns 1 2",
+    "keywords": [
+      "1:2",
+      "layout",
+      "two",
+      "2"
+    ],
+    "category": "layout",
+    "isCommon": true
+  },
+  {
+    "code": "columns-1-2-1",
+    "fullCode": "uugds-columns-1-2-1",
+    "prefix": "uugds",
+    "name": "Columns 1 2 1",
+    "keywords": [
+      "1:2:1",
+      "layout",
+      "three",
+      "3"
+    ],
+    "category": "layout",
+    "isCommon": true
+  },
+  {
+    "code": "columns-1-3",
+    "fullCode": "uugds-columns-1-3",
+    "prefix": "uugds",
+    "name": "Columns 1 3",
+    "keywords": [
+      "1:2",
+      "layout",
+      "two",
+      "2"
+    ],
+    "category": "layout",
+    "isCommon": true
+  },
+  {
+    "code": "columns-2-1",
+    "fullCode": "uugds-columns-2-1",
+    "prefix": "uugds",
+    "name": "Columns 2 1",
+    "keywords": [
+      "1:2",
+      "layout",
+      "two",
+      "2"
+    ],
+    "category": "layout",
+    "isCommon": true
+  },
+  {
+    "code": "columns-3-1",
+    "fullCode": "uugds-columns-3-1",
+    "prefix": "uugds",
+    "name": "Columns 3 1",
+    "keywords": [
+      "1:2",
+      "layout",
+      "two",
+      "2"
+    ],
+    "category": "layout",
+    "isCommon": true
+  },
+  {
+    "code": "comment-text",
+    "fullCode": "uugds-comment-text",
+    "prefix": "uugds",
+    "name": "Comment text",
+    "keywords": [
+      "bubble",
+      "type",
+      "write",
+      "comment",
+      "message",
+      "feedback",
+      "text"
+    ],
+    "category": "communication",
+    "isCommon": true
+  },
+  {
+    "code": "comment-text-solid",
+    "fullCode": "uugdsstencil-communication-comment-text-solid",
+    "prefix": "uugdsstencil",
+    "name": "Comment text solid",
+    "keywords": [
+      "bubble",
+      "type",
+      "write",
+      "comments",
+      "messages",
+      "feedback",
+      "text"
+    ],
+    "category": "communication"
+  },
+  {
+    "code": "compass",
+    "fullCode": "uugdsstencil-navigation-compass",
+    "prefix": "uugdsstencil",
+    "name": "Compass",
+    "keywords": [
+      "direction",
+      "orientation",
+      "wayfinder",
+      "navigate"
+    ],
+    "category": "navigation"
+  },
+  {
+    "code": "component",
+    "fullCode": "uugdsstencil-it-component",
+    "prefix": "uugdsstencil",
+    "name": "Component",
+    "keywords": [
+      "puzzle",
+      "part",
+      "element",
+      "module",
+      "section",
+      "unit",
+      "piece"
+    ],
+    "category": "it"
+  },
+  {
+    "code": "component-error",
+    "fullCode": "uugdsstencil-it-component-error",
+    "prefix": "uugdsstencil",
+    "name": "Component error",
+    "keywords": [
+      "puzzle",
+      "part",
+      "element",
+      "module",
+      "section",
+      "unit",
+      "piece",
+      "alert",
+      "exclamation",
+      "mark"
+    ],
+    "category": "it"
+  },
+  {
+    "code": "conflict",
+    "fullCode": "uugdsstencil-it-conflict",
+    "prefix": "uugdsstencil",
+    "name": "Conflict",
+    "keywords": [
+      "bolt",
+      "flash"
+    ],
+    "category": "it"
+  },
+  {
+    "code": "connector",
+    "fullCode": "uugdsstencil-edit-connector",
+    "prefix": "uugdsstencil",
+    "name": "Connector",
+    "keywords": [
+      "arrow",
+      "line"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "console",
+    "fullCode": "uugdsstencil-it-console",
+    "prefix": "uugdsstencil",
+    "name": "Console",
+    "keywords": [
+      "terminal",
+      "command",
+      "line",
+      "interface",
+      "prompt",
+      "window",
+      "interface",
+      "text",
+      "type",
+      "write"
+    ],
+    "category": "it"
+  },
+  {
+    "code": "contain",
+    "fullCode": "uugdsstencil-layout-contain",
+    "prefix": "uugdsstencil",
+    "name": "Contain",
+    "keywords": [
+      "fit",
+      "containment"
+    ],
+    "category": "layout"
+  },
+  {
+    "code": "context",
+    "fullCode": "uugdsstencil-it-context",
+    "prefix": "uugdsstencil",
+    "name": "Context",
+    "keywords": [
+      "connection",
+      "link",
+      "relationship"
+    ],
+    "category": "it"
+  },
+  {
+    "code": "contrast",
+    "fullCode": "uugdsstencil-edit-contrast",
+    "prefix": "uugdsstencil",
+    "name": "Contrast",
+    "keywords": [
+      "black",
+      "white",
+      "circle",
+      "photo"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "copy",
+    "fullCode": "uugds-copy",
+    "prefix": "uugds",
+    "name": "Copy",
+    "keywords": [
+      "duplicate"
+    ],
+    "category": "uiaction",
+    "isCommon": true
+  },
+  {
+    "code": "corner-end-down",
+    "fullCode": "uugdsstencil-arrow-corner-end-down",
+    "prefix": "uugdsstencil",
+    "name": "Corner end down",
+    "keywords": [
+      "right"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "corner-end-up",
+    "fullCode": "uugdsstencil-arrow-corner-end-up",
+    "prefix": "uugdsstencil",
+    "name": "Corner end up",
+    "keywords": [
+      "right"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "corner-left-down",
+    "fullCode": "uugdsstencil-arrow-corner-left-down",
+    "prefix": "uugdsstencil",
+    "name": "Corner left down",
+    "keywords": [],
+    "category": "arrow",
+    "deprecated": true
+  },
+  {
+    "code": "corner-left-up",
+    "fullCode": "uugds-corner-left-up",
+    "prefix": "uugds",
+    "name": "Corner left up",
+    "keywords": [],
+    "category": "arrow",
+    "isCommon": true,
+    "deprecated": true
+  },
+  {
+    "code": "corner-right-down",
+    "fullCode": "uugdsstencil-arrow-corner-right-down",
+    "prefix": "uugdsstencil",
+    "name": "Corner right down",
+    "keywords": [],
+    "category": "arrow",
+    "deprecated": true
+  },
+  {
+    "code": "corner-right-up",
+    "fullCode": "uugdsstencil-arrow-corner-right-up",
+    "prefix": "uugdsstencil",
+    "name": "Corner right up",
+    "keywords": [],
+    "category": "arrow",
+    "deprecated": true
+  },
+  {
+    "code": "corner-start-down",
+    "fullCode": "uugdsstencil-arrow-corner-start-down",
+    "prefix": "uugdsstencil",
+    "name": "Corner start down",
+    "keywords": [
+      "left"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "corner-start-up",
+    "fullCode": "uugds-corner-start-up",
+    "prefix": "uugds",
+    "name": "Corner start up",
+    "keywords": [
+      "left"
+    ],
+    "category": "arrow",
+    "isCommon": true
+  },
+  {
+    "code": "credit-card",
+    "fullCode": "uugds-credit-card",
+    "prefix": "uugds",
+    "name": "Credit card",
+    "keywords": [
+      "debit",
+      "pay",
+      "business"
+    ],
+    "category": "commerce",
+    "isCommon": true
+  },
+  {
+    "code": "crop",
+    "fullCode": "uugdsstencil-edit-crop",
+    "prefix": "uugdsstencil",
+    "name": "Crop",
+    "keywords": [
+      "cut"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "crown",
+    "fullCode": "uugdsstencil-education-crown",
+    "prefix": "uugdsstencil",
+    "name": "Crown",
+    "keywords": [
+      "king",
+      "queen",
+      "achievement",
+      "award",
+      "prize",
+      "victory",
+      "winner",
+      "success",
+      "champion",
+      "medal",
+      "accolade"
+    ],
+    "category": "education"
+  },
+  {
+    "code": "database",
+    "fullCode": "uugdsstencil-it-database",
+    "prefix": "uugdsstencil",
+    "name": "Database",
+    "keywords": [
+      "db",
+      "storage",
+      "repository",
+      "warehouse",
+      "hub",
+      "servers"
+    ],
+    "category": "it"
+  },
+  {
+    "code": "decimals-less",
+    "fullCode": "uugdsstencil-edit-decimals-less",
+    "prefix": "uugdsstencil",
+    "name": "Decimals less",
+    "keywords": [
+      "numbers"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "decimals-more",
+    "fullCode": "uugdsstencil-edit-decimals-more",
+    "prefix": "uugdsstencil",
+    "name": "Decimals more",
+    "keywords": [
+      "numbers"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "delete",
+    "fullCode": "uugds-delete",
+    "prefix": "uugds",
+    "name": "Delete",
+    "keywords": [
+      "remove",
+      "trash",
+      "erase"
+    ],
+    "category": "uiaction",
+    "isCommon": true
+  },
+  {
+    "code": "desktop-text",
+    "fullCode": "uugdsstencil-commerce-desktop-text",
+    "prefix": "uugdsstencil",
+    "name": "Desktop text",
+    "keywords": [
+      "monitor",
+      "edit",
+      "computer",
+      "typography"
+    ],
+    "category": "commerce"
+  },
+  {
+    "code": "devices",
+    "fullCode": "uugdsstencil-commerce-devices",
+    "prefix": "uugdsstencil",
+    "name": "Devices",
+    "keywords": [
+      "electronics",
+      "tablet",
+      "phone",
+      "resposive"
+    ],
+    "category": "commerce"
+  },
+  {
+    "code": "diagonal-down-end",
+    "fullCode": "uugdsstencil-arrow-diagonal-down-end",
+    "prefix": "uugdsstencil",
+    "name": "Diagonal down end",
+    "keywords": [
+      "right"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "diagonal-down-left",
+    "fullCode": "uugdsstencil-arrow-diagonal-down-left",
+    "prefix": "uugdsstencil",
+    "name": "Diagonal down left",
+    "keywords": [],
+    "category": "arrow",
+    "deprecated": true
+  },
+  {
+    "code": "diagonal-down-right",
+    "fullCode": "uugdsstencil-arrow-diagonal-down-right",
+    "prefix": "uugdsstencil",
+    "name": "Diagonal down right",
+    "keywords": [],
+    "category": "arrow",
+    "deprecated": true
+  },
+  {
+    "code": "diagonal-down-start",
+    "fullCode": "uugdsstencil-arrow-diagonal-down-start",
+    "prefix": "uugdsstencil",
+    "name": "Diagonal down start",
+    "keywords": [
+      "left"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "diagonal-up-end",
+    "fullCode": "uugdsstencil-arrow-diagonal-up-end",
+    "prefix": "uugdsstencil",
+    "name": "Diagonal up end",
+    "keywords": [
+      "right"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "diagonal-up-left",
+    "fullCode": "uugdsstencil-arrow-diagonal-up-left",
+    "prefix": "uugdsstencil",
+    "name": "Diagonal up left",
+    "keywords": [],
+    "category": "arrow",
+    "deprecated": true
+  },
+  {
+    "code": "diagonal-up-right",
+    "fullCode": "uugdsstencil-arrow-diagonal-up-right",
+    "prefix": "uugdsstencil",
+    "name": "Diagonal up right",
+    "keywords": [],
+    "category": "arrow",
+    "deprecated": true
+  },
+  {
+    "code": "diagonal-up-start",
+    "fullCode": "uugdsstencil-arrow-diagonal-up-start",
+    "prefix": "uugdsstencil",
+    "name": "Diagonal up start",
+    "keywords": [
+      "left"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "discussion",
+    "fullCode": "uugdsstencil-communication-discussion",
+    "prefix": "uugdsstencil",
+    "name": "Discussion",
+    "keywords": [
+      "bubbles",
+      "forum",
+      "write",
+      "comments",
+      "messages",
+      "feedback",
+      "text",
+      "post"
+    ],
+    "category": "communication"
+  },
+  {
+    "code": "div",
+    "fullCode": "uugdsstencil-it-div",
+    "prefix": "uugdsstencil",
+    "name": "Div",
+    "keywords": [
+      "code",
+      "html"
+    ],
+    "category": "it"
+  },
+  {
+    "code": "document",
+    "fullCode": "uugds-document",
+    "prefix": "uugds",
+    "name": "Document",
+    "keywords": [
+      "file",
+      "paper",
+      "note",
+      "text"
+    ],
+    "category": "media",
+    "isCommon": true,
+    "rtlDisabled": true
+  },
+  {
+    "code": "document-multi",
+    "fullCode": "uugds-document-multi",
+    "prefix": "uugds",
+    "name": "Document multi",
+    "keywords": [
+      "files",
+      "documents"
+    ],
+    "category": "media",
+    "isCommon": true,
+    "rtlDisabled": true
+  },
+  {
+    "code": "document-search",
+    "fullCode": "uugdsstencil-media-document-search",
+    "prefix": "uugdsstencil",
+    "name": "Document search",
+    "keywords": [
+      "find",
+      "magnify"
+    ],
+    "category": "media",
+    "rtlDisabled": true
+  },
+  {
+    "code": "dot",
+    "fullCode": "uugdsstencil-shape-dot",
+    "prefix": "uugdsstencil",
+    "name": "Dot",
+    "keywords": [
+      "point",
+      "bullet"
+    ],
+    "category": "shape"
+  },
+  {
+    "code": "dots-horizontal",
+    "fullCode": "uugds-dots-horizontal",
+    "prefix": "uugds",
+    "name": "Dots horizontal",
+    "keywords": [
+      "additional",
+      "more",
+      "options",
+      "menu"
+    ],
+    "category": "uiaction",
+    "isCommon": true
+  },
+  {
+    "code": "dots-horizontal-circle",
+    "fullCode": "uugds-dots-horizontal-circle",
+    "prefix": "uugds",
+    "name": "Dots horizontal circle",
+    "keywords": [
+      "additional",
+      "more",
+      "options",
+      "menu"
+    ],
+    "category": "uiaction",
+    "isCommon": true
+  },
+  {
+    "code": "dots-vertical",
+    "fullCode": "uugds-dots-vertical",
+    "prefix": "uugds",
+    "name": "Dots vertical",
+    "keywords": [
+      "additional",
+      "more",
+      "options",
+      "menu"
+    ],
+    "category": "uiaction",
+    "isCommon": true
+  },
+  {
+    "code": "dots-vertical-circle",
+    "fullCode": "uugds-dots-vertical-circle",
+    "prefix": "uugds",
+    "name": "Dots vertical circle",
+    "keywords": [
+      "additional",
+      "more",
+      "options",
+      "menu"
+    ],
+    "category": "uiaction",
+    "isCommon": true
+  },
+  {
+    "code": "down",
+    "fullCode": "uugds-down",
+    "prefix": "uugds",
+    "name": "Down",
+    "keywords": [],
+    "category": "arrow",
+    "isCommon": true
+  },
+  {
+    "code": "down-circle",
+    "fullCode": "uugdsstencil-arrow-down-circle",
+    "prefix": "uugdsstencil",
+    "name": "Down circle",
+    "keywords": [
+      "bottom"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "down-circle-solid",
+    "fullCode": "uugdsstencil-arrow-down-circle-solid",
+    "prefix": "uugdsstencil",
+    "name": "Down circle solid",
+    "keywords": [
+      "bottom"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "down-end-circle",
+    "fullCode": "uugdsstencil-arrow-down-end-circle",
+    "prefix": "uugdsstencil",
+    "name": "Down end circle",
+    "keywords": [
+      "bottom",
+      "right"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "down-left-circle",
+    "fullCode": "uugdsstencil-arrow-down-left-circle",
+    "prefix": "uugdsstencil",
+    "name": "Down left circle",
+    "keywords": [],
+    "category": "arrow",
+    "deprecated": true
+  },
+  {
+    "code": "down-right-circle",
+    "fullCode": "uugdsstencil-arrow-down-right-circle",
+    "prefix": "uugdsstencil",
+    "name": "Down right circle",
+    "keywords": [],
+    "category": "arrow",
+    "deprecated": true
+  },
+  {
+    "code": "down-start-circle",
+    "fullCode": "uugdsstencil-arrow-down-start-circle",
+    "prefix": "uugdsstencil",
+    "name": "Down start circle",
+    "keywords": [
+      "left"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "download",
+    "fullCode": "uugds-download",
+    "prefix": "uugds",
+    "name": "Download",
+    "keywords": [
+      "arrow",
+      "down",
+      "save",
+      "export"
+    ],
+    "category": "uiaction",
+    "isCommon": true
+  },
+  {
+    "code": "drag-horizontal",
+    "fullCode": "uugds-drag-horizontal",
+    "prefix": "uugds",
+    "name": "Drag horizontal",
+    "keywords": [
+      "move",
+      "dots",
+      "drop"
+    ],
+    "category": "uiaction",
+    "isCommon": true
+  },
+  {
+    "code": "drag-vertical",
+    "fullCode": "uugds-drag-vertical",
+    "prefix": "uugds",
+    "name": "Drag vertical",
+    "keywords": [
+      "dots",
+      "move",
+      "drop"
+    ],
+    "category": "uiaction",
+    "isCommon": true
+  },
+  {
+    "code": "dumbbell",
+    "fullCode": "uugdsstencil-home-dumbbell",
+    "prefix": "uugdsstencil",
+    "name": "Dumbbell",
+    "keywords": [
+      "weightlift",
+      "practice"
+    ],
+    "category": "home"
+  },
+  {
+    "code": "duplicate",
+    "fullCode": "uugds-duplicate",
+    "prefix": "uugds",
+    "name": "Duplicate",
+    "keywords": [
+      "copy",
+      "clone"
+    ],
+    "category": "uiaction",
+    "isCommon": true
+  },
+  {
+    "code": "edit-inline",
+    "fullCode": "uugds-edit-inline",
+    "prefix": "uugds",
+    "name": "Edit inline",
+    "keywords": [
+      "components",
+      "block",
+      "ecc",
+      "editing",
+      "pencil"
+    ],
+    "category": "edit",
+    "isCommon": true
+  },
+  {
+    "code": "edit-uubml",
+    "fullCode": "uugdsstencil-uiaction-edit-uubml",
+    "prefix": "uugdsstencil",
+    "name": "Edit uubml",
+    "keywords": [
+      "modify",
+      "change",
+      "diagram",
+      "schema",
+      "pencil"
+    ],
+    "category": "uiaction"
+  },
+  {
+    "code": "email",
+    "fullCode": "uugds-email",
+    "prefix": "uugds",
+    "name": "E-mail",
+    "keywords": [
+      "write",
+      "comment",
+      "post",
+      "letters",
+      "messages",
+      "send"
+    ],
+    "category": "communication",
+    "isCommon": true
+  },
+  {
+    "code": "email-open",
+    "fullCode": "uugdsstencil-communication-email-open",
+    "prefix": "uugdsstencil",
+    "name": "Email open",
+    "keywords": [
+      "write",
+      "comment",
+      "post",
+      "letters",
+      "messages",
+      "send",
+      "open"
+    ],
+    "category": "communication"
+  },
+  {
+    "code": "emoji-cry",
+    "fullCode": "uugdsstencil-communication-emoji-cry",
+    "prefix": "uugdsstencil",
+    "name": "Emoji cry",
+    "keywords": [
+      "smileys",
+      "icons",
+      "social",
+      "reaction",
+      "circle",
+      "tear"
+    ],
+    "category": "communication"
+  },
+  {
+    "code": "emoji-laugh",
+    "fullCode": "uugdsstencil-communication-emoji-laugh",
+    "prefix": "uugdsstencil",
+    "name": "Emoji laugh",
+    "keywords": [
+      "smileys",
+      "icons",
+      "social",
+      "reaction",
+      "circle",
+      "happy",
+      "lol"
+    ],
+    "category": "communication"
+  },
+  {
+    "code": "emoji-plus",
+    "fullCode": "uugdsstencil-edit-emoji-plus",
+    "prefix": "uugdsstencil",
+    "name": "Emoji plus",
+    "keywords": [
+      "add",
+      "create",
+      "happy",
+      "smileys",
+      "icons",
+      "circle"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "emoji-sad",
+    "fullCode": "uugdsstencil-edit-emoji-sad",
+    "prefix": "uugdsstencil",
+    "name": "Emoji sad",
+    "keywords": [
+      "smileys",
+      "icons",
+      "social",
+      "reaction",
+      "circle",
+      "unhappy"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "emoji-smile",
+    "fullCode": "uugds-emoji-smile",
+    "prefix": "uugds",
+    "name": "Emoji smile",
+    "keywords": [
+      "smileys",
+      "icons",
+      "social",
+      "reaction",
+      "smiling",
+      "circle"
+    ],
+    "category": "edit",
+    "isCommon": true
+  },
+  {
+    "code": "end",
+    "fullCode": "uugdsstencil-badge-end",
+    "prefix": "uugdsstencil",
+    "name": "End",
+    "keywords": [],
+    "category": "badge"
+  },
+  {
+    "code": "exam",
+    "fullCode": "uugdsstencil-education-exam",
+    "prefix": "uugdsstencil",
+    "name": "Exam",
+    "keywords": [
+      "testing",
+      "learning",
+      "practicing",
+      "questions"
+    ],
+    "category": "education"
+  },
+  {
+    "code": "exclamation",
+    "fullCode": "uugdsstencil-badge-exclamation",
+    "prefix": "uugdsstencil",
+    "name": "Exclamation",
+    "keywords": [
+      "mark"
+    ],
+    "category": "badge"
+  },
+  {
+    "code": "exclamation-2",
+    "fullCode": "uugdsstencil-badge-exclamation-2",
+    "prefix": "uugdsstencil",
+    "name": "Exclamation 2",
+    "keywords": [
+      "mark"
+    ],
+    "category": "badge"
+  },
+  {
+    "code": "exclamation-3",
+    "fullCode": "uugdsstencil-badge-exclamation-3",
+    "prefix": "uugdsstencil",
+    "name": "Exclamation 3",
+    "keywords": [
+      "mark"
+    ],
+    "category": "badge"
+  },
+  {
+    "code": "exit",
+    "fullCode": "uugdsstencil-home-exit",
+    "prefix": "uugdsstencil",
+    "name": "Exit",
+    "keywords": [
+      "departure",
+      "leave",
+      "out",
+      "escape",
+      "gateway",
+      "door"
+    ],
+    "category": "home"
+  },
+  {
+    "code": "expand-diagonal",
+    "fullCode": "uugds-expand-diagonal",
+    "prefix": "uugds",
+    "name": "Expand diagonal",
+    "keywords": [
+      "bidirectional",
+      "open",
+      "full"
+    ],
+    "category": "arrow",
+    "isCommon": true
+  },
+  {
+    "code": "exposure",
+    "fullCode": "uugdsstencil-edit-exposure",
+    "prefix": "uugdsstencil",
+    "name": "Exposure",
+    "keywords": [
+      "plus",
+      "minus",
+      "circle",
+      "photo"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "eye",
+    "fullCode": "uugds-eye",
+    "prefix": "uugds",
+    "name": "Eye",
+    "keywords": [
+      "show",
+      "view",
+      "peek",
+      "visibility",
+      "reveal"
+    ],
+    "category": "uiaction",
+    "isCommon": true
+  },
+  {
+    "code": "eye-off",
+    "fullCode": "uugds-eye-off",
+    "prefix": "uugds",
+    "name": "Eye off",
+    "keywords": [
+      "hide",
+      "invisible",
+      "visibility"
+    ],
+    "category": "uiaction",
+    "isCommon": true,
+    "rtlDisabled": true
+  },
+  {
+    "code": "favorites",
+    "fullCode": "uugds-favorites",
+    "prefix": "uugds",
+    "name": "Favorites",
+    "keywords": [
+      "star",
+      "save",
+      "bookmarks"
+    ],
+    "category": "uiaction",
+    "isCommon": true
+  },
+  {
+    "code": "favorites-edit",
+    "fullCode": "uugds-favorites-edit",
+    "prefix": "uugds",
+    "name": "Favorites edit",
+    "keywords": [
+      "star",
+      "save",
+      "bookmarks",
+      "pencil"
+    ],
+    "category": "uiaction",
+    "isCommon": true
+  },
+  {
+    "code": "favorites-plus",
+    "fullCode": "uugds-favorites-plus",
+    "prefix": "uugds",
+    "name": "Favorites plus",
+    "keywords": [
+      "add",
+      "star",
+      "save",
+      "bookmarks",
+      "create"
+    ],
+    "category": "uiaction",
+    "isCommon": true
+  },
+  {
+    "code": "favorites-solid",
+    "fullCode": "uugdsstencil-uiaction-favorites-solid",
+    "prefix": "uugdsstencil",
+    "name": "Favorites solid",
+    "keywords": [
+      "star",
+      "save",
+      "bookmarks"
+    ],
+    "category": "uiaction"
+  },
+  {
+    "code": "figma-component",
+    "fullCode": "uugds-figma-component",
+    "prefix": "uugds",
+    "name": "Figma component",
+    "keywords": [
+      "software",
+      "brand",
+      "section",
+      "subset",
+      "segmentation",
+      "diamonds"
+    ],
+    "category": "it",
+    "isCommon": true
+  },
+  {
+    "code": "file",
+    "fullCode": "uugds-file",
+    "prefix": "uugds",
+    "name": "File",
+    "keywords": [
+      "document",
+      "paper",
+      "sheet"
+    ],
+    "category": "media",
+    "isCommon": true,
+    "rtlDisabled": true
+  },
+  {
+    "code": "file-check",
+    "fullCode": "uugds-file-check",
+    "prefix": "uugds",
+    "name": "File check",
+    "keywords": [
+      "document",
+      "paper",
+      "sheet",
+      "approved",
+      "successfull",
+      "ok",
+      "done"
+    ],
+    "category": "media",
+    "isCommon": true,
+    "rtlDisabled": true
+  },
+  {
+    "code": "file-download",
+    "fullCode": "uugdsstencil-media-file-download",
+    "prefix": "uugdsstencil",
+    "name": "File download",
+    "keywords": [
+      "document",
+      "paper",
+      "sheet",
+      "save",
+      "get",
+      "arrow",
+      "down"
+    ],
+    "category": "media",
+    "rtlDisabled": true
+  },
+  {
+    "code": "file-edit",
+    "fullCode": "uugdsstencil-media-file-edit",
+    "prefix": "uugdsstencil",
+    "name": "File edit",
+    "keywords": [
+      "document",
+      "paper",
+      "sheet",
+      "edit",
+      "pencil"
+    ],
+    "category": "media"
+  },
+  {
+    "code": "file-error",
+    "fullCode": "uugdsstencil-media-file-error",
+    "prefix": "uugdsstencil",
+    "name": "File error",
+    "keywords": [
+      "document",
+      "paper",
+      "sheet",
+      "exclamation",
+      "mark",
+      "alert"
+    ],
+    "category": "media",
+    "rtlDisabled": true
+  },
+  {
+    "code": "file-link",
+    "fullCode": "uugdsstencil-media-file-link",
+    "prefix": "uugdsstencil",
+    "name": "File link",
+    "keywords": [
+      "document",
+      "paper",
+      "sheet",
+      "share",
+      "connect",
+      "chain",
+      "attaachment"
+    ],
+    "category": "media",
+    "rtlDisabled": true
+  },
+  {
+    "code": "file-lock",
+    "fullCode": "uugdsstencil-media-file-lock",
+    "prefix": "uugdsstencil",
+    "name": "File lock",
+    "keywords": [
+      "document",
+      "paper",
+      "sheet",
+      "protect",
+      "secure"
+    ],
+    "category": "media",
+    "rtlDisabled": true
+  },
+  {
+    "code": "file-move-outline",
+    "fullCode": "uugdsstencil-media-file-move-outline",
+    "prefix": "uugdsstencil",
+    "name": "File move",
+    "keywords": [
+      "document",
+      "paper",
+      "sheet",
+      "transfer",
+      "shift",
+      "relocate",
+      "arrow",
+      "right"
+    ],
+    "category": "media",
+    "rtlDisabled": true
+  },
+  {
+    "code": "file-plus",
+    "fullCode": "uugdsstencil-media-file-plus",
+    "prefix": "uugdsstencil",
+    "name": "File plus",
+    "keywords": [
+      "document",
+      "paper",
+      "sheet",
+      "add",
+      "create",
+      "new"
+    ],
+    "category": "media",
+    "rtlDisabled": true
+  },
+  {
+    "code": "filter",
+    "fullCode": "uugdsstencil-edit-filter",
+    "prefix": "uugdsstencil",
+    "name": "Filter",
+    "keywords": [
+      "circles",
+      "photo"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "filter",
+    "fullCode": "uugds-filter",
+    "prefix": "uugds",
+    "name": "Filter",
+    "keywords": [
+      "organize",
+      "arrange",
+      "filtre"
+    ],
+    "category": "uiaction",
+    "isCommon": true
+  },
+  {
+    "code": "fingerprint",
+    "fullCode": "uugdsstencil-security-fingerprint",
+    "prefix": "uugdsstencil",
+    "name": "Fingerprint",
+    "keywords": [
+      "touch",
+      "protection",
+      "biometrics",
+      "thumb"
+    ],
+    "category": "security"
+  },
+  {
+    "code": "fixed",
+    "fullCode": "uugdsstencil-layout-fixed",
+    "prefix": "uugdsstencil",
+    "name": "Fixed",
+    "keywords": [
+      "original"
+    ],
+    "category": "layout"
+  },
+  {
+    "code": "flag",
+    "fullCode": "uugdsstencil-navigation-flag",
+    "prefix": "uugdsstencil",
+    "name": "Flag",
+    "keywords": [
+      "country",
+      "report",
+      "banner"
+    ],
+    "category": "navigation"
+  },
+  {
+    "code": "flash",
+    "fullCode": "uugdsstencil-badge-flash",
+    "prefix": "uugdsstencil",
+    "name": "Flash",
+    "keywords": [
+      "bolt"
+    ],
+    "category": "badge"
+  },
+  {
+    "code": "flip",
+    "fullCode": "uugdsstencil-arrow-flip",
+    "prefix": "uugdsstencil",
+    "name": "Flip",
+    "keywords": [
+      "turn"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "flip-horizontal",
+    "fullCode": "uugdsstencil-edit-flip-horizontal",
+    "prefix": "uugdsstencil",
+    "name": "Flip horizontal",
+    "keywords": [
+      "triangles",
+      "arrows"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "flip-vertical",
+    "fullCode": "uugdsstencil-edit-flip-vertical",
+    "prefix": "uugdsstencil",
+    "name": "Flip vertical",
+    "keywords": [
+      "triangles",
+      "arrows"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "flower",
+    "fullCode": "uugdsstencil-home-flower",
+    "prefix": "uugdsstencil",
+    "name": "Flower",
+    "keywords": [
+      "plant",
+      "beauty",
+      "nature",
+      "bloom"
+    ],
+    "category": "home"
+  },
+  {
+    "code": "folder",
+    "fullCode": "uugds-folder",
+    "prefix": "uugds",
+    "name": "Folder",
+    "keywords": [
+      "data",
+      "directory",
+      "browse"
+    ],
+    "category": "media",
+    "isCommon": true,
+    "rtlDisabled": true
+  },
+  {
+    "code": "folder-error",
+    "fullCode": "uugdsstencil-media-folder-error",
+    "prefix": "uugdsstencil",
+    "name": "Folder error",
+    "keywords": [
+      "issue",
+      "problem",
+      "exclamation",
+      "mark"
+    ],
+    "category": "media",
+    "rtlDisabled": true
+  },
+  {
+    "code": "folder-in",
+    "fullCode": "uugdsstencil-media-folder-in",
+    "prefix": "uugdsstencil",
+    "name": "Folder in",
+    "keywords": [
+      "arrow",
+      "up",
+      "import",
+      "upload",
+      "organize",
+      "store"
+    ],
+    "category": "media",
+    "rtlDisabled": true
+  },
+  {
+    "code": "folder-move",
+    "fullCode": "uugdsstencil-media-folder-move",
+    "prefix": "uugdsstencil",
+    "name": "Folder move",
+    "keywords": [
+      "folder",
+      "move"
+    ],
+    "category": "media"
+  },
+  {
+    "code": "folder-open",
+    "fullCode": "uugds-folder-open",
+    "prefix": "uugds",
+    "name": "Folder open",
+    "keywords": [
+      "explore",
+      "browse",
+      "empty"
+    ],
+    "category": "media",
+    "isCommon": true,
+    "rtlDisabled": true
+  },
+  {
+    "code": "folder-out",
+    "fullCode": "uugdsstencil-media-folder-out",
+    "prefix": "uugdsstencil",
+    "name": "Folder out",
+    "keywords": [
+      "arrow",
+      "up",
+      "export"
+    ],
+    "category": "media",
+    "rtlDisabled": true
+  },
+  {
+    "code": "folder-plus",
+    "fullCode": "uugdsstencil-media-folder-plus",
+    "prefix": "uugdsstencil",
+    "name": "Folder plus",
+    "keywords": [
+      "new",
+      "add",
+      "create",
+      "browse"
+    ],
+    "category": "media",
+    "rtlDisabled": true
+  },
+  {
+    "code": "folder-search",
+    "fullCode": "uugdsstencil-media-folder-search",
+    "prefix": "uugdsstencil",
+    "name": "Folder search",
+    "keywords": [
+      "find",
+      "magnify"
+    ],
+    "category": "media",
+    "rtlDisabled": true
+  },
+  {
+    "code": "form-edit",
+    "fullCode": "uugdsstencil-edit-form-edit",
+    "prefix": "uugdsstencil",
+    "name": "Form edit",
+    "keywords": [
+      "pencil",
+      "input fields"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "format-clear",
+    "fullCode": "uugds-format-clear",
+    "prefix": "uugds",
+    "name": "Format clear",
+    "keywords": [
+      "text",
+      "remove",
+      "clean",
+      "off",
+      "disable"
+    ],
+    "category": "edit",
+    "isCommon": true
+  },
+  {
+    "code": "function",
+    "fullCode": "uugdsstencil-it-function",
+    "prefix": "uugdsstencil",
+    "name": "Function",
+    "keywords": [
+      "feature",
+      "capability",
+      "operation",
+      "task",
+      "procedure",
+      "routine",
+      "action",
+      "task",
+      "count"
+    ],
+    "category": "it",
+    "rtlDisabled": true
+  },
+  {
+    "code": "game",
+    "fullCode": "uugdsstencil-education-game",
+    "prefix": "uugdsstencil",
+    "name": "Game",
+    "keywords": [
+      "gaming",
+      "controller",
+      "console",
+      "play",
+      "compete"
+    ],
+    "category": "education",
+    "rtlDisabled": true
+  },
+  {
+    "code": "gauge-chart",
+    "fullCode": "uugdsstencil-chart-gauge-chart",
+    "prefix": "uugdsstencil",
+    "name": "Gauge chart",
+    "keywords": [
+      "graph",
+      "statistics",
+      "analytics",
+      "report"
+    ],
+    "category": "chart",
+    "rtlDisabled": true
+  },
+  {
+    "code": "gds-print-off",
+    "fullCode": "uugdsstencil-it-gds-print-off",
+    "prefix": "uugdsstencil",
+    "name": "print off",
+    "keywords": [],
+    "category": "it",
+    "deprecated": true
+  },
+  {
+    "code": "gift",
+    "fullCode": "uugdsstencil-commerce-gift",
+    "prefix": "uugdsstencil",
+    "name": "Gift",
+    "keywords": [
+      "gift",
+      "present",
+      "surprise",
+      "bow",
+      "ribbon"
+    ],
+    "category": "commerce"
+  },
+  {
+    "code": "grid",
+    "fullCode": "uugdsstencil-media-grid",
+    "prefix": "uugdsstencil",
+    "name": "Grid",
+    "keywords": [
+      "layout"
+    ],
+    "category": "media"
+  },
+  {
+    "code": "grid-dots-all",
+    "fullCode": "uugdsstencil-edit-grid-dots-all",
+    "prefix": "uugdsstencil",
+    "name": "Grid dots all",
+    "keywords": [
+      "borders",
+      "table",
+      "lines"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "grid-dots-horizontal-center",
+    "fullCode": "uugdsstencil-edit-grid-dots-horizontal-center",
+    "prefix": "uugdsstencil",
+    "name": "Grid dots horizontal center",
+    "keywords": [
+      "borders",
+      "table",
+      "lines",
+      "middle"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "grid-dots-horizontal-end",
+    "fullCode": "uugdsstencil-edit-grid-dots-horizontal-end",
+    "prefix": "uugdsstencil",
+    "name": "Grid dots horizontal end",
+    "keywords": [
+      "borders",
+      "table",
+      "lines",
+      "right"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "grid-dots-horizontal-left",
+    "fullCode": "uugdsstencil-edit-grid-dots-horizontal-left",
+    "prefix": "uugdsstencil",
+    "name": "Grid dots horizontal left",
+    "keywords": [],
+    "category": "edit",
+    "deprecated": true
+  },
+  {
+    "code": "grid-dots-horizontal-right",
+    "fullCode": "uugdsstencil-edit-grid-dots-horizontal-right",
+    "prefix": "uugdsstencil",
+    "name": "Grid dots horizontal right",
+    "keywords": [],
+    "category": "edit",
+    "deprecated": true
+  },
+  {
+    "code": "grid-dots-horizontal-start",
+    "fullCode": "uugdsstencil-edit-grid-dots-horizontal-start",
+    "prefix": "uugdsstencil",
+    "name": "Grid dots horizontal start",
+    "keywords": [
+      "borders",
+      "table",
+      "lines",
+      "left"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "grid-dots-inner",
+    "fullCode": "uugdsstencil-edit-grid-dots-inner",
+    "prefix": "uugdsstencil",
+    "name": "Grid dots inner",
+    "keywords": [
+      "borders",
+      "table",
+      "lines",
+      "middle"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "grid-dots-outer",
+    "fullCode": "uugdsstencil-edit-grid-dots-outer",
+    "prefix": "uugdsstencil",
+    "name": "Grid dots outer",
+    "keywords": [
+      "borders",
+      "table",
+      "lines",
+      "frame"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "grid-dots-vertical-bottom",
+    "fullCode": "uugdsstencil-edit-grid-dots-vertical-bottom",
+    "prefix": "uugdsstencil",
+    "name": "Grid dots vertical bottom",
+    "keywords": [
+      "borders",
+      "table",
+      "lines"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "grid-dots-vertical-center",
+    "fullCode": "uugdsstencil-edit-grid-dots-vertical-center",
+    "prefix": "uugdsstencil",
+    "name": "Grid dots vertical center",
+    "keywords": [
+      "borders",
+      "table",
+      "lines",
+      "middle"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "grid-dots-vertical-top",
+    "fullCode": "uugdsstencil-edit-grid-dots-vertical-top",
+    "prefix": "uugdsstencil",
+    "name": "Grid dots vertical top",
+    "keywords": [
+      "borders",
+      "table",
+      "lines"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "grid-off",
+    "fullCode": "uugdsstencil-media-grid-off",
+    "prefix": "uugdsstencil",
+    "name": "Grid off",
+    "keywords": [
+      "layout",
+      "disable"
+    ],
+    "category": "media",
+    "rtlDisabled": true
+  },
+  {
+    "code": "hand-point",
+    "fullCode": "uugdsstencil-uiaction-hand-point",
+    "prefix": "uugdsstencil",
+    "name": "Hand point",
+    "keywords": [
+      "finger",
+      "pointing",
+      "cursor"
+    ],
+    "category": "uiaction"
+  },
+  {
+    "code": "headphones",
+    "fullCode": "uugdsstencil-communication-headphones",
+    "prefix": "uugdsstencil",
+    "name": "Headphones",
+    "keywords": [
+      "listen",
+      "music",
+      "help"
+    ],
+    "category": "communication"
+  },
+  {
+    "code": "heart",
+    "fullCode": "uugdsstencil-shape-heart",
+    "prefix": "uugdsstencil",
+    "name": "Heart",
+    "keywords": [
+      "love",
+      "romance",
+      "love icon",
+      "affection"
+    ],
+    "category": "shape"
+  },
+  {
+    "code": "heart-solid",
+    "fullCode": "uugdsstencil-shape-heart-solid",
+    "prefix": "uugdsstencil",
+    "name": "Heart solid",
+    "keywords": [
+      "filled",
+      "love"
+    ],
+    "category": "shape"
+  },
+  {
+    "code": "help",
+    "fullCode": "uugds-help",
+    "prefix": "uugds",
+    "name": "Help circle",
+    "keywords": [
+      "queston mark",
+      "support"
+    ],
+    "category": "alert",
+    "isCommon": true
+  },
+  {
+    "code": "help-circle-solid",
+    "fullCode": "uugds-help-circle-solid",
+    "prefix": "uugds",
+    "name": "Help circle solid",
+    "keywords": [
+      "question mark",
+      "filled"
+    ],
+    "category": "alert",
+    "isCommon": true
+  },
+  {
+    "code": "help-off",
+    "fullCode": "uugdsstencil-alert-help-off",
+    "prefix": "uugdsstencil",
+    "name": "Help off",
+    "keywords": [
+      "queston mark",
+      "support",
+      "disabled"
+    ],
+    "category": "alert",
+    "rtlDisabled": true
+  },
+  {
+    "code": "highlights",
+    "fullCode": "uugdsstencil-edit-highlights",
+    "prefix": "uugdsstencil",
+    "name": "Highlights",
+    "keywords": [
+      "circle",
+      "photo"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "home",
+    "fullCode": "uugds-home",
+    "prefix": "uugds",
+    "name": "Home",
+    "keywords": [
+      "house",
+      "architecture",
+      "residence",
+      "homestead",
+      "living",
+      "habitat"
+    ],
+    "category": "home",
+    "isCommon": true
+  },
+  {
+    "code": "horizontal-align-center",
+    "fullCode": "uugdsstencil-edit-horizontal-align-center",
+    "prefix": "uugdsstencil",
+    "name": "Horizontal align center",
+    "keywords": [
+      "block",
+      "content",
+      "middle",
+      "arrows"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "horizontal-align-end",
+    "fullCode": "uugdsstencil-arrow-horizontal-align-end",
+    "prefix": "uugdsstencil",
+    "name": "Horizontal align end",
+    "keywords": [
+      "right"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "horizontal-align-end",
+    "fullCode": "uugdsstencil-edit-horizontal-align-end",
+    "prefix": "uugdsstencil",
+    "name": "Horizontal align end",
+    "keywords": [
+      "block",
+      "content",
+      "right",
+      "arrow"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "horizontal-align-left",
+    "fullCode": "uugdsstencil-edit-horizontal-align-left",
+    "prefix": "uugdsstencil",
+    "name": "Horizontal align left",
+    "keywords": [],
+    "category": "edit",
+    "deprecated": true
+  },
+  {
+    "code": "horizontal-align-right",
+    "fullCode": "uugdsstencil-edit-horizontal-align-right",
+    "prefix": "uugdsstencil",
+    "name": "Horizontal align right",
+    "keywords": [],
+    "category": "edit",
+    "deprecated": true
+  },
+  {
+    "code": "horizontal-align-start",
+    "fullCode": "uugdsstencil-arrow-horizontal-align-start",
+    "prefix": "uugdsstencil",
+    "name": "Horizontal align start",
+    "keywords": [
+      "left"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "horizontal-align-start",
+    "fullCode": "uugdsstencil-edit-horizontal-align-start",
+    "prefix": "uugdsstencil",
+    "name": "Horizontal align start",
+    "keywords": [
+      "block",
+      "content",
+      "left",
+      "arrow"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "horizontal-bidir-in",
+    "fullCode": "uugdsstencil-arrow-horizontal-bidir-in",
+    "prefix": "uugdsstencil",
+    "name": "Horizontal bidierectional in",
+    "keywords": [
+      "against",
+      "collapse"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "horizontal-end",
+    "fullCode": "uugds-horizontal-end",
+    "prefix": "uugds",
+    "name": "Horizontal end",
+    "keywords": [
+      "right"
+    ],
+    "category": "arrow",
+    "isCommon": true
+  },
+  {
+    "code": "horizontal-end-circle",
+    "fullCode": "uugdsstencil-arrow-horizontal-end-circle",
+    "prefix": "uugdsstencil",
+    "name": "Horizontal end circle",
+    "keywords": [
+      "right"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "horizontal-end-circle-solid",
+    "fullCode": "uugdsstencil-arrow-horizontal-end-circle-solid",
+    "prefix": "uugdsstencil",
+    "name": "Horizontal end circle solid",
+    "keywords": [
+      "right"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "horizontal-start",
+    "fullCode": "uugds-horizontal-start",
+    "prefix": "uugds",
+    "name": "Horizontal start",
+    "keywords": [
+      "left"
+    ],
+    "category": "arrow",
+    "isCommon": true
+  },
+  {
+    "code": "horizontal-start-circle",
+    "fullCode": "uugdsstencil-arrow-horizontal-start-circle",
+    "prefix": "uugdsstencil",
+    "name": "Horizontal start circle",
+    "keywords": [
+      "left"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "horizontal-start-circle-solid",
+    "fullCode": "uugdsstencil-arrow-horizontal-start-circle-solid",
+    "prefix": "uugdsstencil",
+    "name": "Horizontal start circle solid",
+    "keywords": [
+      "left"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "html5",
+    "fullCode": "uugdsstencil-it-html5",
+    "prefix": "uugdsstencil",
+    "name": "Html5",
+    "keywords": [
+      "code",
+      "development",
+      "coding",
+      "markup",
+      "website",
+      "frontend"
+    ],
+    "category": "it",
+    "rtlDisabled": true
+  },
+  {
+    "code": "i",
+    "fullCode": "uugdsstencil-alert-i",
+    "prefix": "uugdsstencil",
+    "name": "Info",
+    "keywords": [
+      "information"
+    ],
+    "category": "alert"
+  },
+  {
+    "code": "image",
+    "fullCode": "uugds-image",
+    "prefix": "uugds",
+    "name": "Image",
+    "keywords": [
+      "picture",
+      "photo"
+    ],
+    "category": "media",
+    "isCommon": true
+  },
+  {
+    "code": "image-editor",
+    "fullCode": "uugdsstencil-media-image-editor",
+    "prefix": "uugdsstencil",
+    "name": "Image editor",
+    "keywords": [
+      "picture",
+      "photo",
+      "pencil"
+    ],
+    "category": "media"
+  },
+  {
+    "code": "image-multi",
+    "fullCode": "uugds-image-multi",
+    "prefix": "uugds",
+    "name": "Image multi",
+    "keywords": [
+      "picture",
+      "photo",
+      "group"
+    ],
+    "category": "media",
+    "isCommon": true
+  },
+  {
+    "code": "image-off",
+    "fullCode": "uugdsstencil-media-image-off",
+    "prefix": "uugdsstencil",
+    "name": "Image off",
+    "keywords": [
+      "picture",
+      "photo",
+      "disable"
+    ],
+    "category": "media",
+    "rtlDisabled": true
+  },
+  {
+    "code": "image-plus",
+    "fullCode": "uugdsstencil-media-image-plus",
+    "prefix": "uugdsstencil",
+    "name": "Image plus",
+    "keywords": [
+      "picture",
+      "photo",
+      "add",
+      "new",
+      "create"
+    ],
+    "category": "media"
+  },
+  {
+    "code": "image-preview",
+    "fullCode": "uugdsstencil-media-image-preview",
+    "prefix": "uugdsstencil",
+    "name": "Image preview",
+    "keywords": [
+      "picture",
+      "photo"
+    ],
+    "category": "media"
+  },
+  {
+    "code": "in-progress",
+    "fullCode": "uugdsstencil-edit-in-progress",
+    "prefix": "uugdsstencil",
+    "name": "In progress",
+    "keywords": [
+      "barrier",
+      "obstacle",
+      "fence",
+      "bar"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "inbox",
+    "fullCode": "uugdsstencil-communication-inbox",
+    "prefix": "uugdsstencil",
+    "name": "Inbox",
+    "keywords": [
+      "mailbox",
+      "emails",
+      "messages",
+      "tasks",
+      "work"
+    ],
+    "category": "communication"
+  },
+  {
+    "code": "incognito",
+    "fullCode": "uugdsstencil-security-incognito",
+    "prefix": "uugdsstencil",
+    "name": "Incognito",
+    "keywords": [
+      "secret",
+      "hidden"
+    ],
+    "category": "security"
+  },
+  {
+    "code": "indent-decrease",
+    "fullCode": "uugds-indent-decrease",
+    "prefix": "uugds",
+    "name": "Indent decrease",
+    "keywords": [
+      "text",
+      "paragraph",
+      "left",
+      "less",
+      "tab"
+    ],
+    "category": "edit",
+    "isCommon": true
+  },
+  {
+    "code": "indent-increase",
+    "fullCode": "uugds-indent-increase",
+    "prefix": "uugds",
+    "name": "Indent increase",
+    "keywords": [
+      "text",
+      "paragraph",
+      "right",
+      "less",
+      "tab"
+    ],
+    "category": "edit",
+    "isCommon": true
+  },
+  {
+    "code": "infinity",
+    "fullCode": "uugdsstencil-time-infinity",
+    "prefix": "uugdsstencil",
+    "name": "Infinity",
+    "keywords": [
+      "loop",
+      "endless"
+    ],
+    "category": "time"
+  },
+  {
+    "code": "info",
+    "fullCode": "uugds-info",
+    "prefix": "uugds",
+    "name": "Info circle",
+    "keywords": [
+      "information"
+    ],
+    "category": "alert",
+    "isCommon": true
+  },
+  {
+    "code": "info",
+    "fullCode": "uugdsstencil-badge-info",
+    "prefix": "uugdsstencil",
+    "name": "Info",
+    "keywords": [
+      "information"
+    ],
+    "category": "badge"
+  },
+  {
+    "code": "info-circle-solid",
+    "fullCode": "uugds-info-circle-solid",
+    "prefix": "uugds",
+    "name": "Info circle solid",
+    "keywords": [
+      "information"
+    ],
+    "category": "alert",
+    "isCommon": true
+  },
+  {
+    "code": "insert-above",
+    "fullCode": "uugds-insert-above",
+    "prefix": "uugds",
+    "name": "Insert above",
+    "keywords": [
+      "ecc",
+      "component",
+      "add",
+      "plus",
+      "top"
+    ],
+    "category": "edit",
+    "isCommon": true
+  },
+  {
+    "code": "insert-below",
+    "fullCode": "uugds-insert-below",
+    "prefix": "uugds",
+    "name": "Insert below",
+    "keywords": [
+      "ecc",
+      "component",
+      "add",
+      "plus",
+      "down"
+    ],
+    "category": "edit",
+    "isCommon": true
+  },
+  {
+    "code": "insert-end",
+    "fullCode": "uugdsstencil-edit-insert-end",
+    "prefix": "uugdsstencil",
+    "name": "Insert end",
+    "keywords": [
+      "ecc",
+      "component",
+      "add",
+      "plus",
+      "right"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "insert-left",
+    "fullCode": "uugdsstencil-edit-insert-left",
+    "prefix": "uugdsstencil",
+    "name": "Insert left",
+    "keywords": [],
+    "category": "edit",
+    "deprecated": true
+  },
+  {
+    "code": "insert-right",
+    "fullCode": "uugdsstencil-edit-insert-right",
+    "prefix": "uugdsstencil",
+    "name": "Insert right",
+    "keywords": [],
+    "category": "edit",
+    "deprecated": true
+  },
+  {
+    "code": "insert-start",
+    "fullCode": "uugdsstencil-edit-insert-start",
+    "prefix": "uugdsstencil",
+    "name": "Insert start",
+    "keywords": [
+      "ecc",
+      "component",
+      "add",
+      "plus",
+      "left"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "italic",
+    "fullCode": "uugdsstencil-edit-italic",
+    "prefix": "uugdsstencil",
+    "name": "Italic",
+    "keywords": [
+      "format",
+      "style",
+      "font",
+      "text"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "json",
+    "fullCode": "uugds-json",
+    "prefix": "uugds",
+    "name": "Json",
+    "keywords": [
+      "code",
+      "format",
+      "data",
+      "file",
+      "structured"
+    ],
+    "category": "it",
+    "isCommon": true
+  },
+  {
+    "code": "key",
+    "fullCode": "uugdsstencil-security-key",
+    "prefix": "uugdsstencil",
+    "name": "Key",
+    "keywords": [
+      "locked",
+      "password",
+      "protection"
+    ],
+    "category": "security"
+  },
+  {
+    "code": "keyboard",
+    "fullCode": "uugdsstencil-it-keyboard",
+    "prefix": "uugdsstencil",
+    "name": "Keyboard",
+    "keywords": [
+      "keys",
+      "hardware",
+      "type",
+      "write"
+    ],
+    "category": "it"
+  },
+  {
+    "code": "kid",
+    "fullCode": "uugds-kid",
+    "prefix": "uugds",
+    "name": "Kid",
+    "keywords": [
+      "children",
+      "baby"
+    ],
+    "category": "user",
+    "isCommon": true
+  },
+  {
+    "code": "lab",
+    "fullCode": "uugdsstencil-education-lab",
+    "prefix": "uugdsstencil",
+    "name": "Lab",
+    "keywords": [
+      "laboratory",
+      "experimental",
+      "try",
+      "test"
+    ],
+    "category": "education"
+  },
+  {
+    "code": "laptop",
+    "fullCode": "uugdsstencil-media-laptop",
+    "prefix": "uugdsstencil",
+    "name": "Laptop",
+    "keywords": [
+      "notebook",
+      "computer"
+    ],
+    "category": "media"
+  },
+  {
+    "code": "law-paragraph",
+    "fullCode": "uugdsstencil-communication-law-paragraph",
+    "prefix": "uugdsstencil",
+    "name": "Law paragraph",
+    "keywords": [
+      "lawyers",
+      "justice",
+      "rules",
+      "regulations"
+    ],
+    "category": "communication",
+    "rtlDisabled": true
+  },
+  {
+    "code": "layers",
+    "fullCode": "uugdsstencil-layout-layers",
+    "prefix": "uugdsstencil",
+    "name": "Layers",
+    "keywords": [
+      "overlay",
+      "stacked",
+      "arrange",
+      "overlapping",
+      "layered",
+      "squares"
+    ],
+    "category": "layout"
+  },
+  {
+    "code": "layout",
+    "fullCode": "uugdsstencil-layout-layout",
+    "prefix": "uugdsstencil",
+    "name": "Layout",
+    "keywords": [
+      "distribution",
+      "arrangement",
+      "structure",
+      "grid",
+      "composition",
+      "formatting"
+    ],
+    "category": "layout"
+  },
+  {
+    "code": "layout-area",
+    "fullCode": "uugdsstencil-layout-layout-area",
+    "prefix": "uugdsstencil",
+    "name": "Layout area",
+    "keywords": [
+      "arrangement",
+      "space",
+      "section",
+      "region",
+      "zone"
+    ],
+    "category": "layout"
+  },
+  {
+    "code": "layout-item",
+    "fullCode": "uugdsstencil-layout-layout-item",
+    "prefix": "uugdsstencil",
+    "name": "Layout item",
+    "keywords": [
+      "element",
+      "component",
+      "block",
+      "widget",
+      "module",
+      "section"
+    ],
+    "category": "layout"
+  },
+  {
+    "code": "leaf",
+    "fullCode": "uugdsstencil-home-leaf",
+    "prefix": "uugdsstencil",
+    "name": "Leaf",
+    "keywords": [
+      "ecology",
+      "bio",
+      "nature",
+      "plant"
+    ],
+    "category": "home"
+  },
+  {
+    "code": "left",
+    "fullCode": "uugds-left",
+    "prefix": "uugds",
+    "name": "Left",
+    "keywords": [],
+    "category": "arrow",
+    "isCommon": true,
+    "deprecated": true
+  },
+  {
+    "code": "left-circle",
+    "fullCode": "uugdsstencil-arrow-left-circle",
+    "prefix": "uugdsstencil",
+    "name": "Left circle",
+    "keywords": [],
+    "category": "arrow",
+    "deprecated": true
+  },
+  {
+    "code": "letter-a",
+    "fullCode": "uugdsstencil-education-letter-a",
+    "prefix": "uugdsstencil",
+    "name": "Letter a",
+    "keywords": [
+      "alphabet"
+    ],
+    "category": "education"
+  },
+  {
+    "code": "letter-spacing",
+    "fullCode": "uugdsstencil-edit-letter-spacing",
+    "prefix": "uugdsstencil",
+    "name": "Letter spacing",
+    "keywords": [
+      "tracking"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "lightbulb",
+    "fullCode": "uugdsstencil-home-lightbulb",
+    "prefix": "uugdsstencil",
+    "name": "Lightbulb",
+    "keywords": [
+      "idea",
+      "information",
+      "illumination",
+      "inspiration",
+      "bright",
+      "innovation",
+      "creativity",
+      "enlightenment",
+      "brilliance",
+      "light"
+    ],
+    "category": "home"
+  },
+  {
+    "code": "lightbulb-glow",
+    "fullCode": "uugdsstencil-home-lightbulb-glow",
+    "prefix": "uugdsstencil",
+    "name": "Lightbulb glow",
+    "keywords": [
+      "idea",
+      "information",
+      "illumination",
+      "inspiration",
+      "bright",
+      "innovation",
+      "creativity",
+      "enlightenment",
+      "brilliance",
+      "light"
+    ],
+    "category": "home"
+  },
+  {
+    "code": "line-chart-down",
+    "fullCode": "uugdsstencil-chart-line-chart-down",
+    "prefix": "uugdsstencil",
+    "name": "Line chart down",
+    "keywords": [
+      "graph",
+      "statistics",
+      "analytics",
+      "report"
+    ],
+    "category": "chart"
+  },
+  {
+    "code": "line-chart-trend-down",
+    "fullCode": "uugdsstencil-chart-line-chart-trend-down",
+    "prefix": "uugdsstencil",
+    "name": "Line chart trend down",
+    "keywords": [
+      "graph",
+      "statistics",
+      "analytics",
+      "report",
+      "arrow"
+    ],
+    "category": "chart",
+    "rtlDisabled": true
+  },
+  {
+    "code": "line-chart-trend-up",
+    "fullCode": "uugdsstencil-chart-line-chart-trend-up",
+    "prefix": "uugdsstencil",
+    "name": "Line chart trend up",
+    "keywords": [
+      "graph",
+      "statistics",
+      "analytics",
+      "report",
+      "arrow"
+    ],
+    "category": "chart",
+    "rtlDisabled": true
+  },
+  {
+    "code": "line-chart-up",
+    "fullCode": "uugdsstencil-chart-line-chart-up",
+    "prefix": "uugdsstencil",
+    "name": "Line chart up",
+    "keywords": [
+      "graph",
+      "statistics",
+      "analytics",
+      "report"
+    ],
+    "category": "chart",
+    "rtlDisabled": true
+  },
+  {
+    "code": "line-cornered",
+    "fullCode": "uugdsstencil-edit-line-cornered",
+    "prefix": "uugdsstencil",
+    "name": "Line cornered",
+    "keywords": [
+      "stroke",
+      "border"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "line-curved",
+    "fullCode": "uugdsstencil-edit-line-curved",
+    "prefix": "uugdsstencil",
+    "name": "Line curved",
+    "keywords": [
+      "stroke",
+      "border"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "line-dashed",
+    "fullCode": "uugdsstencil-edit-line-dashed",
+    "prefix": "uugdsstencil",
+    "name": "Line dashed",
+    "keywords": [
+      "stroke",
+      "border"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "line-dotted",
+    "fullCode": "uugdsstencil-edit-line-dotted",
+    "prefix": "uugdsstencil",
+    "name": "Line dotted",
+    "keywords": [
+      "stroke",
+      "border"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "line-spacing",
+    "fullCode": "uugdsstencil-edit-line-spacing",
+    "prefix": "uugdsstencil",
+    "name": "Line spacing",
+    "keywords": [
+      "line-height",
+      "leading"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "line-straight",
+    "fullCode": "uugdsstencil-edit-line-straight",
+    "prefix": "uugdsstencil",
+    "name": "Line straight",
+    "keywords": [
+      "stroke",
+      "border",
+      "solid"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "link",
+    "fullCode": "uugds-link",
+    "prefix": "uugds",
+    "name": "Link",
+    "keywords": [
+      "chain",
+      "hyperlink",
+      "connection"
+    ],
+    "category": "edit",
+    "isCommon": true
+  },
+  {
+    "code": "link-off",
+    "fullCode": "uugdsstencil-edit-link-off",
+    "prefix": "uugdsstencil",
+    "name": "Link off",
+    "keywords": [
+      "disabled",
+      "chain",
+      "hyperlink",
+      "connection"
+    ],
+    "category": "edit",
+    "rtlDisabled": true
+  },
+  {
+    "code": "list-bulleted",
+    "fullCode": "uugdsstencil-edit-list-bulleted",
+    "prefix": "uugdsstencil",
+    "name": "List bulleted",
+    "keywords": [
+      "unordered",
+      "items",
+      "lines"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "list-numbered",
+    "fullCode": "uugdsstencil-edit-list-numbered",
+    "prefix": "uugdsstencil",
+    "name": "List numbered",
+    "keywords": [
+      "ordered",
+      "items",
+      "lines"
+    ],
+    "category": "edit",
+    "rtlDisabled": true
+  },
+  {
+    "code": "lock-closed",
+    "fullCode": "uugds-lock-closed",
+    "prefix": "uugds",
+    "name": "Lock closed",
+    "keywords": [
+      "locked",
+      "password",
+      "privacy",
+      "safety"
+    ],
+    "category": "security",
+    "isCommon": true
+  },
+  {
+    "code": "lock-closed-solid",
+    "fullCode": "uugdsstencil-security-lock-closed-solid",
+    "prefix": "uugdsstencil",
+    "name": "Lock closed solid",
+    "keywords": [
+      "locked",
+      "password",
+      "privacy",
+      "safety",
+      "filled"
+    ],
+    "category": "security"
+  },
+  {
+    "code": "lock-edit",
+    "fullCode": "uugdsstencil-security-lock-edit",
+    "prefix": "uugdsstencil",
+    "name": "Lock edit",
+    "keywords": [
+      "password",
+      "privacy",
+      "safety",
+      "pencil"
+    ],
+    "category": "security"
+  },
+  {
+    "code": "lock-off",
+    "fullCode": "uugdsstencil-security-lock-off",
+    "prefix": "uugdsstencil",
+    "name": "Lock off",
+    "keywords": [
+      "disabled",
+      "locked",
+      "password",
+      "privacy",
+      "safety"
+    ],
+    "category": "security",
+    "rtlDisabled": true
+  },
+  {
+    "code": "lock-open",
+    "fullCode": "uugds-lock-open",
+    "prefix": "uugds",
+    "name": "Lock open",
+    "keywords": [
+      "unlock",
+      "password",
+      "privacy",
+      "safety"
+    ],
+    "category": "security",
+    "isCommon": true
+  },
+  {
+    "code": "lock-open-solid",
+    "fullCode": "uugdsstencil-security-lock-open-solid",
+    "prefix": "uugdsstencil",
+    "name": "Lock open solid",
+    "keywords": [
+      "unlock",
+      "password",
+      "privacy",
+      "safety"
+    ],
+    "category": "security"
+  },
+  {
+    "code": "lock-search",
+    "fullCode": "uugdsstencil-security-lock-search",
+    "prefix": "uugdsstencil",
+    "name": "Lock search",
+    "keywords": [
+      "locked",
+      "password",
+      "privacy",
+      "safety"
+    ],
+    "category": "security"
+  },
+  {
+    "code": "log-in",
+    "fullCode": "uugdsstencil-uiaction-log-in",
+    "prefix": "uugdsstencil",
+    "name": "Log in",
+    "keywords": [
+      "entry",
+      "signin",
+      "login"
+    ],
+    "category": "uiaction"
+  },
+  {
+    "code": "log-out",
+    "fullCode": "uugds-log-out",
+    "prefix": "uugds",
+    "name": "Log out",
+    "keywords": [
+      "leave",
+      "signout",
+      "logout",
+      "exit"
+    ],
+    "category": "uiaction",
+    "isCommon": true
+  },
+  {
+    "code": "magic-wand",
+    "fullCode": "uugdsstencil-uiaction-magic-wand",
+    "prefix": "uugdsstencil",
+    "name": "Magic wand",
+    "keywords": [
+      "automation",
+      "automatic",
+      "spell",
+      "create"
+    ],
+    "category": "uiaction"
+  },
+  {
+    "code": "manage-columns",
+    "fullCode": "uugds-manage-columns",
+    "prefix": "uugds",
+    "name": "Manage columns",
+    "keywords": [
+      "manager",
+      "arrange",
+      "data",
+      "table",
+      "pencil"
+    ],
+    "category": "layout",
+    "isCommon": true
+  },
+  {
+    "code": "mapmarker",
+    "fullCode": "uugds-mapmarker",
+    "prefix": "uugds",
+    "name": "Mapmarker",
+    "keywords": [
+      "pin",
+      "place",
+      "location"
+    ],
+    "category": "navigation",
+    "isCommon": true
+  },
+  {
+    "code": "mapmarker-off",
+    "fullCode": "uugdsstencil-navigation-mapmarker-off",
+    "prefix": "uugdsstencil",
+    "name": "Mapmarker off",
+    "keywords": [
+      "pin",
+      "place",
+      "location",
+      "disable",
+      "remove"
+    ],
+    "category": "navigation"
+  },
+  {
+    "code": "mapmarker-solid",
+    "fullCode": "uugdsstencil-navigation-mapmarker-solid",
+    "prefix": "uugdsstencil",
+    "name": "Mapmarker solid",
+    "keywords": [
+      "pin",
+      "place",
+      "location",
+      "filled"
+    ],
+    "category": "navigation"
+  },
+  {
+    "code": "maximize",
+    "fullCode": "uugdsstencil-uiaction-maximize",
+    "prefix": "uugdsstencil",
+    "name": "Maximize",
+    "keywords": [
+      "fullscreen",
+      "expand",
+      "enlarge",
+      "zoom",
+      "in"
+    ],
+    "category": "uiaction"
+  },
+  {
+    "code": "megaphone",
+    "fullCode": "uugdsstencil-communication-megaphone",
+    "prefix": "uugdsstencil",
+    "name": "Megaphone",
+    "keywords": [
+      "shout",
+      "notify"
+    ],
+    "category": "communication"
+  },
+  {
+    "code": "menu",
+    "fullCode": "uugds-menu",
+    "prefix": "uugds",
+    "name": "Menu",
+    "keywords": [
+      "hamburger",
+      "navigation",
+      "options"
+    ],
+    "category": "uiaction",
+    "isCommon": true
+  },
+  {
+    "code": "menu-down",
+    "fullCode": "uugds-menu-down",
+    "prefix": "uugds",
+    "name": "Menu down",
+    "keywords": [
+      "chevron",
+      "small",
+      "mini"
+    ],
+    "category": "arrow",
+    "isCommon": true
+  },
+  {
+    "code": "menu-dropdown",
+    "fullCode": "uugds-menu-dropdown",
+    "prefix": "uugds",
+    "name": "Menu dropdown",
+    "keywords": [
+      "more",
+      "expand",
+      "chevron",
+      "options",
+      "navigation",
+      "hamburger"
+    ],
+    "category": "uiaction",
+    "isCommon": true
+  },
+  {
+    "code": "menu-end",
+    "fullCode": "uugds-menu-end",
+    "prefix": "uugds",
+    "name": "Menu end",
+    "keywords": [
+      "chevron",
+      "small",
+      "mini",
+      "right"
+    ],
+    "category": "arrow",
+    "isCommon": true
+  },
+  {
+    "code": "menu-left",
+    "fullCode": "uugds-menu-left",
+    "prefix": "uugds",
+    "name": "Menu left",
+    "keywords": [],
+    "category": "arrow",
+    "isCommon": true,
+    "deprecated": true
+  },
+  {
+    "code": "menu-right",
+    "fullCode": "uugds-menu-right",
+    "prefix": "uugds",
+    "name": "Menu right",
+    "keywords": [],
+    "category": "arrow",
+    "isCommon": true,
+    "deprecated": true
+  },
+  {
+    "code": "menu-start",
+    "fullCode": "uugds-menu-start",
+    "prefix": "uugds",
+    "name": "Menu start",
+    "keywords": [
+      "chevron",
+      "small",
+      "mini",
+      "left"
+    ],
+    "category": "arrow",
+    "isCommon": true
+  },
+  {
+    "code": "menu-up",
+    "fullCode": "uugds-menu-up",
+    "prefix": "uugds",
+    "name": "Menu up",
+    "keywords": [
+      "chevron",
+      "small",
+      "mini"
+    ],
+    "category": "arrow",
+    "isCommon": true
+  },
+  {
+    "code": "merge-up",
+    "fullCode": "uugdsstencil-arrow-merge-up",
+    "prefix": "uugdsstencil",
+    "name": "Merge up",
+    "keywords": [
+      "join"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "mic",
+    "fullCode": "uugdsstencil-media-mic",
+    "prefix": "uugdsstencil",
+    "name": "Mic",
+    "keywords": [
+      "microphone",
+      "audio",
+      "sound"
+    ],
+    "category": "media",
+    "rtlDisabled": true
+  },
+  {
+    "code": "mic-off",
+    "fullCode": "uugdsstencil-media-mic-off",
+    "prefix": "uugdsstencil",
+    "name": "Mic off",
+    "keywords": [
+      "disable",
+      "microphone",
+      "audio",
+      "sound"
+    ],
+    "category": "media"
+  },
+  {
+    "code": "minus",
+    "fullCode": "uugdsstencil-badge-minus",
+    "prefix": "uugdsstencil",
+    "name": "Minus",
+    "keywords": [
+      "remove"
+    ],
+    "category": "badge"
+  },
+  {
+    "code": "minus",
+    "fullCode": "uugds-minus",
+    "prefix": "uugds",
+    "name": "Minus",
+    "keywords": [
+      "unselect",
+      "delete",
+      "subtract",
+      "remove",
+      "decrease"
+    ],
+    "category": "uiaction",
+    "isCommon": true
+  },
+  {
+    "code": "minus-circle",
+    "fullCode": "uugds-minus-circle",
+    "prefix": "uugds",
+    "name": "Minus circle",
+    "keywords": [
+      "remove",
+      "delete",
+      "unselect"
+    ],
+    "category": "uiaction",
+    "isCommon": true
+  },
+  {
+    "code": "minus-circle-solid",
+    "fullCode": "uugdsstencil-uiaction-minus-circle-solid",
+    "prefix": "uugdsstencil",
+    "name": "Minus circle solid",
+    "keywords": [
+      "remove",
+      "delete",
+      "unselect"
+    ],
+    "category": "uiaction"
+  },
+  {
+    "code": "modalbus",
+    "fullCode": "uugdsstencil-uiaction-modalbus",
+    "prefix": "uugdsstencil",
+    "name": "Modalbus",
+    "keywords": [
+      "popup",
+      "overlay",
+      "layers",
+      "box"
+    ],
+    "category": "uiaction"
+  },
+  {
+    "code": "monitor",
+    "fullCode": "uugdsstencil-media-monitor",
+    "prefix": "uugdsstencil",
+    "name": "Monitor",
+    "keywords": [
+      "hardware",
+      "desktop",
+      "display",
+      "screen"
+    ],
+    "category": "media"
+  },
+  {
+    "code": "moon",
+    "fullCode": "uugdsstencil-weather-moon",
+    "prefix": "uugdsstencil",
+    "name": "Moon",
+    "keywords": [
+      "dark",
+      "lunar"
+    ],
+    "category": "weather"
+  },
+  {
+    "code": "movie",
+    "fullCode": "uugdsstencil-media-movie",
+    "prefix": "uugdsstencil",
+    "name": "Movie",
+    "keywords": [
+      "film"
+    ],
+    "category": "media"
+  },
+  {
+    "code": "music",
+    "fullCode": "uugdsstencil-media-music",
+    "prefix": "uugdsstencil",
+    "name": "Music",
+    "keywords": [
+      "music",
+      "audio",
+      "sound"
+    ],
+    "category": "media"
+  },
+  {
+    "code": "nav-back",
+    "fullCode": "uugdsstencil-arrow-nav-back",
+    "prefix": "uugdsstencil",
+    "name": "Navigation back",
+    "keywords": [
+      "return",
+      "start",
+      "left"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "navigation-gps",
+    "fullCode": "uugdsstencil-navigation-navigation-gps",
+    "prefix": "uugdsstencil",
+    "name": "Navigation gps",
+    "keywords": [
+      "location",
+      "tracker",
+      "destination",
+      "position"
+    ],
+    "category": "navigation"
+  },
+  {
+    "code": "navigation-gps-off",
+    "fullCode": "uugdsstencil-navigation-navigation-gps-off",
+    "prefix": "uugdsstencil",
+    "name": "Navigation gps off",
+    "keywords": [
+      "location",
+      "tracker",
+      "destination",
+      "position",
+      "disable",
+      "remove",
+      "turn off"
+    ],
+    "category": "navigation"
+  },
+  {
+    "code": "navigation-marker",
+    "fullCode": "uugdsstencil-navigation-navigation-marker",
+    "prefix": "uugdsstencil",
+    "name": "Navigation marker",
+    "keywords": [
+      "destination",
+      "direction",
+      "map",
+      "navigate"
+    ],
+    "category": "navigation"
+  },
+  {
+    "code": "number",
+    "fullCode": "uugdsstencil-edit-number",
+    "prefix": "uugdsstencil",
+    "name": "Number",
+    "keywords": [
+      "digit",
+      "hashtag",
+      "no."
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "octagon",
+    "fullCode": "uugdsstencil-shape-octagon",
+    "prefix": "uugdsstencil",
+    "name": "Octagon",
+    "keywords": [
+      "geometry",
+      "polygon"
+    ],
+    "category": "shape"
+  },
+  {
+    "code": "octagon-solid",
+    "fullCode": "uugdsstencil-shape-octagon-solid",
+    "prefix": "uugdsstencil",
+    "name": "Octagon solid",
+    "keywords": [
+      "geometry",
+      "filled octagon",
+      "full octagon"
+    ],
+    "category": "shape"
+  },
+  {
+    "code": "open-detail",
+    "fullCode": "uugdsstencil-uiaction-open-detail",
+    "prefix": "uugdsstencil",
+    "name": "Open detail",
+    "keywords": [
+      "show",
+      "display",
+      "view",
+      "zoom",
+      "expand"
+    ],
+    "category": "uiaction"
+  },
+  {
+    "code": "open-in-modal",
+    "fullCode": "uugds-open-in-modal",
+    "prefix": "uugds",
+    "name": "Open in modal",
+    "keywords": [
+      "arrow",
+      "up",
+      "modal",
+      "popup"
+    ],
+    "category": "uiaction",
+    "isCommon": true
+  },
+  {
+    "code": "open-in-new",
+    "fullCode": "uugds-open-in-new",
+    "prefix": "uugds",
+    "name": "Open in new",
+    "keywords": [
+      "arrow",
+      "up",
+      "new",
+      "tab",
+      "window",
+      "link"
+    ],
+    "category": "uiaction",
+    "isCommon": true
+  },
+  {
+    "code": "operator-difference",
+    "fullCode": "uugdsstencil-edit-operator-difference",
+    "prefix": "uugdsstencil",
+    "name": "Operator difference",
+    "keywords": [
+      "logical",
+      "boolean"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "operator-intersect",
+    "fullCode": "uugdsstencil-edit-operator-intersect",
+    "prefix": "uugdsstencil",
+    "name": "Operator intersect",
+    "keywords": [
+      "logical",
+      "boolean",
+      "AND"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "operator-subtract",
+    "fullCode": "uugdsstencil-edit-operator-subtract",
+    "prefix": "uugdsstencil",
+    "name": "Operator subtract",
+    "keywords": [
+      "operator",
+      "subtract"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "operator-union",
+    "fullCode": "uugdsstencil-edit-operator-union",
+    "prefix": "uugdsstencil",
+    "name": "Operator union",
+    "keywords": [
+      "logical",
+      "boolean",
+      "OR"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "package",
+    "fullCode": "uugds-package",
+    "prefix": "uugds",
+    "name": "Package",
+    "keywords": [
+      "box",
+      "package",
+      "parcel",
+      "shipment",
+      "delivery",
+      "shipping",
+      "closed"
+    ],
+    "category": "transport",
+    "isCommon": true
+  },
+  {
+    "code": "package-open",
+    "fullCode": "uugds-package-open",
+    "prefix": "uugds",
+    "name": "Package open",
+    "keywords": [
+      "box",
+      "package",
+      "parcel",
+      "shipment",
+      "delivery",
+      "shipping"
+    ],
+    "category": "transport",
+    "isCommon": true
+  },
+  {
+    "code": "palette",
+    "fullCode": "uugdsstencil-edit-palette",
+    "prefix": "uugdsstencil",
+    "name": "Palette",
+    "keywords": [
+      "art",
+      "color",
+      "paint",
+      "schema"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "paperclip",
+    "fullCode": "uugds-paperclip",
+    "prefix": "uugds",
+    "name": "Paperclip",
+    "keywords": [
+      "attachment",
+      "image",
+      "photo",
+      "file"
+    ],
+    "category": "edit",
+    "isCommon": true
+  },
+  {
+    "code": "password",
+    "fullCode": "uugdsstencil-security-password",
+    "prefix": "uugdsstencil",
+    "name": "Password",
+    "keywords": [
+      "protected",
+      "input"
+    ],
+    "category": "security"
+  },
+  {
+    "code": "pause",
+    "fullCode": "uugdsstencil-badge-pause",
+    "prefix": "uugdsstencil",
+    "name": "Pause",
+    "keywords": [],
+    "category": "badge"
+  },
+  {
+    "code": "pause-circle",
+    "fullCode": "uugds-pause-circle",
+    "prefix": "uugds",
+    "name": "Pause circle",
+    "keywords": [
+      "controls"
+    ],
+    "category": "media",
+    "isCommon": true
+  },
+  {
+    "code": "pdf",
+    "fullCode": "uugds-pdf",
+    "prefix": "uugds",
+    "name": "Pdf",
+    "keywords": [
+      "format",
+      "file",
+      "document"
+    ],
+    "category": "media",
+    "isCommon": true,
+    "rtlDisabled": true
+  },
+  {
+    "code": "pen-circle",
+    "fullCode": "uugdsstencil-media-pen-circle",
+    "prefix": "uugdsstencil",
+    "name": "Pen circle",
+    "keywords": [
+      "drawing",
+      "writing"
+    ],
+    "category": "media"
+  },
+  {
+    "code": "pen-path",
+    "fullCode": "uugdsstencil-media-pen-path",
+    "prefix": "uugdsstencil",
+    "name": "Pen path",
+    "keywords": [
+      "tool",
+      "vector"
+    ],
+    "category": "media"
+  },
+  {
+    "code": "pencil",
+    "fullCode": "uugds-pencil",
+    "prefix": "uugds",
+    "name": "Pencil",
+    "keywords": [
+      "edit",
+      "draw",
+      "write",
+      "writing",
+      "drawing"
+    ],
+    "category": "edit",
+    "isCommon": true
+  },
+  {
+    "code": "pending",
+    "fullCode": "uugdsstencil-time-pending",
+    "prefix": "uugdsstencil",
+    "name": "Pending",
+    "keywords": [
+      "waiting",
+      "in progress",
+      "ongoing",
+      "processing",
+      "queued",
+      "delayed",
+      "unfinished"
+    ],
+    "category": "time"
+  },
+  {
+    "code": "phone",
+    "fullCode": "uugds-phone",
+    "prefix": "uugds",
+    "name": "Phone",
+    "keywords": [
+      "call",
+      "cellphone",
+      "device",
+      "hardware",
+      "telephone",
+      "speak"
+    ],
+    "category": "communication",
+    "isCommon": true
+  },
+  {
+    "code": "phone-solid",
+    "fullCode": "uugdsstencil-communication-phone-solid",
+    "prefix": "uugdsstencil",
+    "name": "Phone solid",
+    "keywords": [
+      "call",
+      "cellphone",
+      "device",
+      "hardware",
+      "telephone",
+      "speak"
+    ],
+    "category": "communication"
+  },
+  {
+    "code": "pie-chart",
+    "fullCode": "uugdsstencil-chart-pie-chart",
+    "prefix": "uugdsstencil",
+    "name": "Pie chart",
+    "keywords": [
+      "graph",
+      "statistics",
+      "analytics",
+      "report"
+    ],
+    "category": "chart",
+    "rtlDisabled": true
+  },
+  {
+    "code": "pie-chart-variant",
+    "fullCode": "uugdsstencil-chart-pie-chart-variant",
+    "prefix": "uugdsstencil",
+    "name": "Pie chart variant",
+    "keywords": [
+      "graph",
+      "statistics",
+      "analytics",
+      "report"
+    ],
+    "category": "chart",
+    "rtlDisabled": true
+  },
+  {
+    "code": "pin",
+    "fullCode": "uugdsstencil-home-pin",
+    "prefix": "uugdsstencil",
+    "name": "Pin",
+    "keywords": [
+      "needle",
+      "pointer",
+      "pushpin",
+      "marker",
+      "pinpoint"
+    ],
+    "category": "home"
+  },
+  {
+    "code": "pin-off",
+    "fullCode": "uugdsstencil-home-pin-off",
+    "prefix": "uugdsstencil",
+    "name": "Pin off",
+    "keywords": [
+      "needle",
+      "pointer",
+      "pushpin",
+      "marker",
+      "unpin",
+      "disabled"
+    ],
+    "category": "home",
+    "rtlDisabled": true
+  },
+  {
+    "code": "play",
+    "fullCode": "uugdsstencil-badge-play",
+    "prefix": "uugdsstencil",
+    "name": "Play",
+    "keywords": [],
+    "category": "badge"
+  },
+  {
+    "code": "play-circle",
+    "fullCode": "uugds-play-circle",
+    "prefix": "uugds",
+    "name": "Play circle",
+    "keywords": [
+      "controls"
+    ],
+    "category": "media",
+    "isCommon": true,
+    "rtlDisabled": true
+  },
+  {
+    "code": "play-solid",
+    "fullCode": "uugdsstencil-media-play-solid",
+    "prefix": "uugdsstencil",
+    "name": "Play solid",
+    "keywords": [
+      "controls",
+      "filled"
+    ],
+    "category": "media",
+    "rtlDisabled": true
+  },
+  {
+    "code": "plural",
+    "fullCode": "uugdsstencil-edit-plural",
+    "prefix": "uugdsstencil",
+    "name": "Plural",
+    "keywords": [
+      "multiple",
+      "more",
+      "several"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "plus",
+    "fullCode": "uugdsstencil-badge-plus",
+    "prefix": "uugdsstencil",
+    "name": "Plus",
+    "keywords": [
+      "add"
+    ],
+    "category": "badge"
+  },
+  {
+    "code": "plus",
+    "fullCode": "uugds-plus",
+    "prefix": "uugds",
+    "name": "Plus",
+    "keywords": [
+      "create",
+      "add",
+      "new"
+    ],
+    "category": "uiaction",
+    "isCommon": true
+  },
+  {
+    "code": "plus-circle",
+    "fullCode": "uugds-plus-circle",
+    "prefix": "uugds",
+    "name": "Plus circle",
+    "keywords": [
+      "create",
+      "add",
+      "new"
+    ],
+    "category": "uiaction",
+    "isCommon": true
+  },
+  {
+    "code": "plus-circle-solid",
+    "fullCode": "uugdsstencil-uiaction-plus-circle-solid",
+    "prefix": "uugdsstencil",
+    "name": "Plus circle solid",
+    "keywords": [
+      "create",
+      "add",
+      "new"
+    ],
+    "category": "uiaction"
+  },
+  {
+    "code": "plus-minus",
+    "fullCode": "uugdsstencil-uiaction-plus-minus",
+    "prefix": "uugdsstencil",
+    "name": "Plus minus",
+    "keywords": [
+      "add",
+      "remove",
+      "balance"
+    ],
+    "category": "uiaction"
+  },
+  {
+    "code": "portal",
+    "fullCode": "uugds-portal",
+    "prefix": "uugds",
+    "name": "Portal",
+    "keywords": [
+      "navigate",
+      "marker",
+      "direction",
+      "wayfinder",
+      "signpost"
+    ],
+    "category": "navigation",
+    "isCommon": true
+  },
+  {
+    "code": "presentation",
+    "fullCode": "uugdsstencil-education-presentation",
+    "prefix": "uugdsstencil",
+    "name": "Presentation",
+    "keywords": [
+      "slideshow",
+      "lecture",
+      "pitch",
+      "demonstration",
+      "talk",
+      "speech",
+      "showcase",
+      "exhibition"
+    ],
+    "category": "education"
+  },
+  {
+    "code": "print",
+    "fullCode": "uugdsstencil-it-print",
+    "prefix": "uugdsstencil",
+    "name": "Print",
+    "keywords": [
+      "printer"
+    ],
+    "category": "it"
+  },
+  {
+    "code": "print-edit",
+    "fullCode": "uugdsstencil-it-print-edit",
+    "prefix": "uugdsstencil",
+    "name": "Print edit",
+    "keywords": [
+      "printer",
+      "pencil"
+    ],
+    "category": "it"
+  },
+  {
+    "code": "print-off",
+    "fullCode": "uugdsstencil-it-print-off",
+    "prefix": "uugdsstencil",
+    "name": "Print off",
+    "keywords": [
+      "printer"
+    ],
+    "category": "it"
+  },
+  {
+    "code": "printer",
+    "fullCode": "uugdsstencil-media-printer",
+    "prefix": "uugdsstencil",
+    "name": "Printer",
+    "keywords": [
+      "printing",
+      "scan",
+      "fax"
+    ],
+    "category": "media"
+  },
+  {
+    "code": "priority",
+    "fullCode": "uugdsstencil-communication-priority",
+    "prefix": "uugdsstencil",
+    "name": "Priority",
+    "keywords": [
+      "increase",
+      "importance"
+    ],
+    "category": "communication"
+  },
+  {
+    "code": "product-info",
+    "fullCode": "uugdsstencil-communication-product-info",
+    "prefix": "uugdsstencil",
+    "name": "Product info",
+    "keywords": [
+      "card",
+      "information"
+    ],
+    "category": "communication"
+  },
+  {
+    "code": "pulse",
+    "fullCode": "uugdsstencil-chart-pulse",
+    "prefix": "uugdsstencil",
+    "name": "Pulse",
+    "keywords": [
+      "graph",
+      "statistics",
+      "analytics",
+      "report",
+      "frequency",
+      "heart beat",
+      "lifetime",
+      "medical"
+    ],
+    "category": "chart",
+    "rtlDisabled": true
+  },
+  {
+    "code": "qr-code",
+    "fullCode": "uugdsstencil-media-qr-code",
+    "prefix": "uugdsstencil",
+    "name": "Qr code",
+    "keywords": [
+      "scan"
+    ],
+    "category": "media"
+  },
+  {
+    "code": "question",
+    "fullCode": "uugdsstencil-education-question",
+    "prefix": "uugdsstencil",
+    "name": "Question",
+    "keywords": [
+      "inquiry",
+      "query",
+      "interrogation",
+      "doubt",
+      "enquiry",
+      "uncertainty",
+      "mark"
+    ],
+    "category": "education"
+  },
+  {
+    "code": "quote-close",
+    "fullCode": "uugdsstencil-edit-quote-close",
+    "prefix": "uugdsstencil",
+    "name": "Quote close",
+    "keywords": [
+      "quotation",
+      "symbol",
+      "quotes",
+      "citation",
+      "right"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "quote-open",
+    "fullCode": "uugds-quote-open",
+    "prefix": "uugds",
+    "name": "Quote open",
+    "keywords": [
+      "quotation",
+      "symbol",
+      "quotes",
+      "citation",
+      "left"
+    ],
+    "category": "edit",
+    "isCommon": true
+  },
+  {
+    "code": "radar-chart",
+    "fullCode": "uugdsstencil-chart-radar-chart",
+    "prefix": "uugdsstencil",
+    "name": "Radar chart",
+    "keywords": [
+      "graph",
+      "statistics",
+      "analytics",
+      "report"
+    ],
+    "category": "chart",
+    "rtlDisabled": true
+  },
+  {
+    "code": "radial-bar-chart",
+    "fullCode": "uugdsstencil-chart-radial-bar-chart",
+    "prefix": "uugdsstencil",
+    "name": "Radial bar chart",
+    "keywords": [
+      "graph",
+      "statistics",
+      "analytics",
+      "report",
+      "circle"
+    ],
+    "category": "chart",
+    "rtlDisabled": true
+  },
+  {
+    "code": "rain",
+    "fullCode": "uugdsstencil-weather-rain",
+    "prefix": "uugdsstencil",
+    "name": "Rain",
+    "keywords": [
+      "water",
+      "drops"
+    ],
+    "category": "weather"
+  },
+  {
+    "code": "react",
+    "fullCode": "uugds-react",
+    "prefix": "uugds",
+    "name": "React",
+    "keywords": [
+      "react",
+      "frontend",
+      "framework",
+      "component",
+      "development",
+      "interface"
+    ],
+    "category": "it",
+    "isCommon": true,
+    "rtlDisabled": true
+  },
+  {
+    "code": "rectangle-horizontal",
+    "fullCode": "uugdsstencil-shape-rectangle-horizontal",
+    "prefix": "uugdsstencil",
+    "name": "Rectangle horizontal",
+    "keywords": [
+      "polygon",
+      "geometry",
+      "solid rectangle",
+      "filled rectangle",
+      "filled"
+    ],
+    "category": "shape"
+  },
+  {
+    "code": "rectangle-horizontal-solid",
+    "fullCode": "uugdsstencil-shape-rectangle-horizontal-solid",
+    "prefix": "uugdsstencil",
+    "name": "Rectangle horizontal solid",
+    "keywords": [
+      "polygon",
+      "geometry",
+      "filled rectangle",
+      "filled"
+    ],
+    "category": "shape"
+  },
+  {
+    "code": "rectangle-vertical",
+    "fullCode": "uugdsstencil-shape-rectangle-vertical",
+    "prefix": "uugdsstencil",
+    "name": "Rectangle vertical",
+    "keywords": [
+      "geometry"
+    ],
+    "category": "shape"
+  },
+  {
+    "code": "rectangle-vertical-solid",
+    "fullCode": "uugdsstencil-shape-rectangle-vertical-solid",
+    "prefix": "uugdsstencil",
+    "name": "Rectangle vertical solid",
+    "keywords": [
+      "polygon",
+      "geometry"
+    ],
+    "category": "shape"
+  },
+  {
+    "code": "recycle",
+    "fullCode": "uugdsstencil-arrow-recycle",
+    "prefix": "uugdsstencil",
+    "name": "Recycle",
+    "keywords": [
+      "reclaim",
+      "recover",
+      "salvage"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "redo",
+    "fullCode": "uugds-redo",
+    "prefix": "uugds",
+    "name": "Redo",
+    "keywords": [
+      "again"
+    ],
+    "category": "arrow",
+    "isCommon": true
+  },
+  {
+    "code": "refresh",
+    "fullCode": "uugds-refresh",
+    "prefix": "uugds",
+    "name": "Reload",
+    "keywords": [
+      "original",
+      "back"
+    ],
+    "category": "arrow",
+    "isCommon": true
+  },
+  {
+    "code": "reload",
+    "fullCode": "uugds-reload",
+    "prefix": "uugds",
+    "name": "Repeat",
+    "keywords": [],
+    "category": "arrow",
+    "isCommon": true
+  },
+  {
+    "code": "reply-all",
+    "fullCode": "uugdsstencil-arrow-reply-all",
+    "prefix": "uugdsstencil",
+    "name": "Reply all",
+    "keywords": [
+      "respond",
+      "answer",
+      "double"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "richtext-toolbar",
+    "fullCode": "uugds-richtext-toolbar",
+    "prefix": "uugds",
+    "name": "Richtext toolbar",
+    "keywords": [
+      "richtext",
+      "format",
+      "style",
+      "text",
+      "paragraph",
+      "pencil",
+      "letter"
+    ],
+    "category": "edit",
+    "isCommon": true
+  },
+  {
+    "code": "right",
+    "fullCode": "uugds-right",
+    "prefix": "uugds",
+    "name": "Right",
+    "keywords": [],
+    "category": "arrow",
+    "isCommon": true,
+    "deprecated": true
+  },
+  {
+    "code": "right-circle",
+    "fullCode": "uugdsstencil-arrow-right-circle",
+    "prefix": "uugdsstencil",
+    "name": "Right circle",
+    "keywords": [],
+    "category": "arrow",
+    "deprecated": true
+  },
+  {
+    "code": "right-left",
+    "fullCode": "uugds-right-left",
+    "prefix": "uugds",
+    "name": "Swap horizontal",
+    "keywords": [
+      "start",
+      "end"
+    ],
+    "category": "arrow",
+    "isCommon": true
+  },
+  {
+    "code": "rocket",
+    "fullCode": "uugdsstencil-transport-rocket",
+    "prefix": "uugdsstencil",
+    "name": "Rocket",
+    "keywords": [
+      "spacecraft",
+      "spaceship",
+      "launch",
+      "fly"
+    ],
+    "category": "transport"
+  },
+  {
+    "code": "rotate",
+    "fullCode": "uugdsstencil-edit-rotate",
+    "prefix": "uugdsstencil",
+    "name": "Rotate",
+    "keywords": [
+      "turn",
+      "arrow"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "rotate-end",
+    "fullCode": "uugdsstencil-edit-rotate-end",
+    "prefix": "uugdsstencil",
+    "name": "Rotate end",
+    "keywords": [
+      "turn",
+      "arrow",
+      "right"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "rotate-left",
+    "fullCode": "uugdsstencil-edit-rotate-left",
+    "prefix": "uugdsstencil",
+    "name": "Rotate left",
+    "keywords": [],
+    "category": "edit",
+    "deprecated": true
+  },
+  {
+    "code": "rotate-right",
+    "fullCode": "uugdsstencil-edit-rotate-right",
+    "prefix": "uugdsstencil",
+    "name": "Rotate right",
+    "keywords": [],
+    "category": "edit",
+    "deprecated": true
+  },
+  {
+    "code": "rotate-start",
+    "fullCode": "uugdsstencil-edit-rotate-start",
+    "prefix": "uugdsstencil",
+    "name": "Rotate start",
+    "keywords": [
+      "turn",
+      "arrow",
+      "left"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "sail",
+    "fullCode": "uugdsstencil-transport-sail",
+    "prefix": "uugdsstencil",
+    "name": "Sail",
+    "keywords": [
+      "boat",
+      "ship",
+      "yacht"
+    ],
+    "category": "transport"
+  },
+  {
+    "code": "sand-clock",
+    "fullCode": "uugdsstencil-time-sand-clock",
+    "prefix": "uugdsstencil",
+    "name": "Sand clock",
+    "keywords": [
+      "hourglass",
+      "time",
+      "watch",
+      "waiting"
+    ],
+    "category": "time"
+  },
+  {
+    "code": "saturation",
+    "fullCode": "uugdsstencil-edit-saturation",
+    "prefix": "uugdsstencil",
+    "name": "Saturation",
+    "keywords": [
+      "filter",
+      "circle",
+      "photo"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "scale",
+    "fullCode": "uugdsstencil-commerce-scale",
+    "prefix": "uugdsstencil",
+    "name": "Scale",
+    "keywords": [
+      "weight",
+      "balance",
+      "strength"
+    ],
+    "category": "commerce"
+  },
+  {
+    "code": "scissors",
+    "fullCode": "uugdsstencil-uiaction-scissors",
+    "prefix": "uugdsstencil",
+    "name": "Scissors",
+    "keywords": [
+      "cut",
+      "snip",
+      "divide"
+    ],
+    "category": "uiaction"
+  },
+  {
+    "code": "search",
+    "fullCode": "uugds-search",
+    "prefix": "uugds",
+    "name": "Search",
+    "keywords": [
+      "zoom",
+      "find",
+      "magnify",
+      "look",
+      "view"
+    ],
+    "category": "uiaction",
+    "isCommon": true,
+    "rtlDisabled": true
+  },
+  {
+    "code": "search-reset",
+    "fullCode": "uugdsstencil-uiaction-search-reset",
+    "prefix": "uugdsstencil",
+    "name": "Search reset",
+    "keywords": [
+      "zoom",
+      "find",
+      "magnify",
+      "look",
+      "view",
+      "default"
+    ],
+    "category": "uiaction",
+    "rtlDisabled": true
+  },
+  {
+    "code": "section-plus",
+    "fullCode": "uugdsstencil-edit-section-plus",
+    "prefix": "uugdsstencil",
+    "name": "Section plus",
+    "keywords": [
+      "add",
+      "new",
+      "create",
+      "box",
+      "block"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "send",
+    "fullCode": "uugds-send",
+    "prefix": "uugds",
+    "name": "Send",
+    "keywords": [
+      "message",
+      "paper",
+      "plane",
+      "write"
+    ],
+    "category": "communication",
+    "isCommon": true
+  },
+  {
+    "code": "set-state",
+    "fullCode": "uugdsstencil-uiaction-set-state",
+    "prefix": "uugdsstencil",
+    "name": "Set state",
+    "keywords": [],
+    "category": "uiaction"
+  },
+  {
+    "code": "settings",
+    "fullCode": "uugds-settings",
+    "prefix": "uugds",
+    "name": "Settings",
+    "keywords": [
+      "preferences",
+      "options",
+      "gear",
+      "cog",
+      "configuration",
+      "setup"
+    ],
+    "category": "uiaction",
+    "isCommon": true
+  },
+  {
+    "code": "settings-solid",
+    "fullCode": "uugdsstencil-uiaction-settings-solid",
+    "prefix": "uugdsstencil",
+    "name": "Settings solid",
+    "keywords": [
+      "preferences",
+      "options",
+      "gear",
+      "cog",
+      "configuration",
+      "setup"
+    ],
+    "category": "uiaction"
+  },
+  {
+    "code": "shadows",
+    "fullCode": "uugdsstencil-edit-shadows",
+    "prefix": "uugdsstencil",
+    "name": "Shadows",
+    "keywords": [
+      "filter",
+      "circle",
+      "photo"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "share",
+    "fullCode": "uugds-share",
+    "prefix": "uugds",
+    "name": "Share",
+    "keywords": [
+      "social",
+      "connect",
+      "collaborate",
+      "distribute"
+    ],
+    "category": "uiaction",
+    "isCommon": true
+  },
+  {
+    "code": "shield",
+    "fullCode": "uugds-shield",
+    "prefix": "uugds",
+    "name": "Shield",
+    "keywords": [
+      "security",
+      "guard",
+      "protection"
+    ],
+    "category": "shape",
+    "isCommon": true
+  },
+  {
+    "code": "shield-account",
+    "fullCode": "uugdsstencil-security-shield-account",
+    "prefix": "uugdsstencil",
+    "name": "Shield account",
+    "keywords": [
+      "protection",
+      "user",
+      "person"
+    ],
+    "category": "security"
+  },
+  {
+    "code": "shield-check",
+    "fullCode": "uugds-shield-check",
+    "prefix": "uugds",
+    "name": "Shield check",
+    "keywords": [
+      "protection",
+      "safety",
+      "password",
+      "ok",
+      "done"
+    ],
+    "category": "security",
+    "isCommon": true,
+    "rtlDisabled": true
+  },
+  {
+    "code": "shield-dot",
+    "fullCode": "uugdsstencil-security-shield-dot",
+    "prefix": "uugdsstencil",
+    "name": "Shield dot",
+    "keywords": [
+      "protection",
+      "safety"
+    ],
+    "category": "security"
+  },
+  {
+    "code": "shield-off",
+    "fullCode": "uugdsstencil-security-shield-off",
+    "prefix": "uugdsstencil",
+    "name": "Shield off",
+    "keywords": [
+      "protection",
+      "safety",
+      "disabled"
+    ],
+    "category": "security",
+    "rtlDisabled": true
+  },
+  {
+    "code": "shortcut",
+    "fullCode": "uugdsstencil-uiaction-shortcut",
+    "prefix": "uugdsstencil",
+    "name": "Shortcut",
+    "keywords": [
+      "link",
+      "arrow"
+    ],
+    "category": "uiaction"
+  },
+  {
+    "code": "shuffle-end",
+    "fullCode": "uugdsstencil-arrow-shuffle-end",
+    "prefix": "uugdsstencil",
+    "name": "Shuffle",
+    "keywords": [
+      "mix up",
+      "blend"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "side-all",
+    "fullCode": "uugdsstencil-layout-side-all",
+    "prefix": "uugdsstencil",
+    "name": "Side all",
+    "keywords": [
+      "edge",
+      "border",
+      "frame",
+      "four",
+      "4"
+    ],
+    "category": "layout"
+  },
+  {
+    "code": "side-bottom",
+    "fullCode": "uugdsstencil-layout-side-bottom",
+    "prefix": "uugdsstencil",
+    "name": "Side bottom",
+    "keywords": [
+      "edge",
+      "border",
+      "frame",
+      "vertical"
+    ],
+    "category": "layout"
+  },
+  {
+    "code": "side-left",
+    "fullCode": "uugdsstencil-layout-side-left",
+    "prefix": "uugdsstencil",
+    "name": "Side left",
+    "keywords": [
+      "edge",
+      "border",
+      "frame",
+      "horizontal"
+    ],
+    "category": "layout"
+  },
+  {
+    "code": "side-left-right",
+    "fullCode": "uugdsstencil-layout-side-left-right",
+    "prefix": "uugdsstencil",
+    "name": "Sides horizontal",
+    "keywords": [
+      "edges",
+      "borders",
+      "frames",
+      "both"
+    ],
+    "category": "layout"
+  },
+  {
+    "code": "side-right",
+    "fullCode": "uugdsstencil-layout-side-right",
+    "prefix": "uugdsstencil",
+    "name": "Side right",
+    "keywords": [
+      "edge",
+      "border",
+      "frame",
+      "horizontal"
+    ],
+    "category": "layout"
+  },
+  {
+    "code": "side-top",
+    "fullCode": "uugdsstencil-layout-side-top",
+    "prefix": "uugdsstencil",
+    "name": "Side top",
+    "keywords": [
+      "edge",
+      "border",
+      "frame",
+      "vertical"
+    ],
+    "category": "layout"
+  },
+  {
+    "code": "side-top-bottom",
+    "fullCode": "uugdsstencil-layout-side-top-bottom",
+    "prefix": "uugdsstencil",
+    "name": "Side horizontal",
+    "keywords": [
+      "edges",
+      "borders",
+      "frames",
+      "both"
+    ],
+    "category": "layout"
+  },
+  {
+    "code": "sidebar-horizontal-end",
+    "fullCode": "uugds-sidebar-horizontal-end",
+    "prefix": "uugds",
+    "name": "Sidebar horizontal end",
+    "keywords": [
+      "drawer",
+      "right",
+      "panel",
+      "menu"
+    ],
+    "category": "layout",
+    "isCommon": true
+  },
+  {
+    "code": "sidebar-horizontal-start",
+    "fullCode": "uugds-sidebar-horizontal-start",
+    "prefix": "uugds",
+    "name": "Sidebar horizontal start",
+    "keywords": [
+      "drawer",
+      "left",
+      "panel",
+      "menu"
+    ],
+    "category": "layout",
+    "isCommon": true
+  },
+  {
+    "code": "sidebar-left",
+    "fullCode": "uugds-sidebar-left",
+    "prefix": "uugds",
+    "name": "Sidebar left",
+    "keywords": [],
+    "category": "layout",
+    "isCommon": true,
+    "deprecated": true
+  },
+  {
+    "code": "sidebar-right",
+    "fullCode": "uugds-sidebar-right",
+    "prefix": "uugds",
+    "name": "Sidebar right",
+    "keywords": [],
+    "category": "layout",
+    "isCommon": true,
+    "deprecated": true
+  },
+  {
+    "code": "smartphone",
+    "fullCode": "uugdsstencil-media-smartphone",
+    "prefix": "uugdsstencil",
+    "name": "Smartphone",
+    "keywords": [
+      "hardware",
+      "cellphone",
+      "smartphone",
+      "ios",
+      "android",
+      "mobile"
+    ],
+    "category": "media"
+  },
+  {
+    "code": "snowflake",
+    "fullCode": "uugdsstencil-weather-snowflake",
+    "prefix": "uugdsstencil",
+    "name": "Snowflake",
+    "keywords": [
+      "frozen",
+      "winter",
+      "cold"
+    ],
+    "category": "weather"
+  },
+  {
+    "code": "sorting",
+    "fullCode": "uugds-sorting",
+    "prefix": "uugds",
+    "name": "Sorting",
+    "keywords": [
+      "organize",
+      "order",
+      "arrange",
+      "arrow",
+      "down",
+      "decrease"
+    ],
+    "category": "uiaction",
+    "isCommon": true
+  },
+  {
+    "code": "sorting-1-9",
+    "fullCode": "uugdsstencil-uiaction-sorting-1-9",
+    "prefix": "uugdsstencil",
+    "name": "Sorting 1-9",
+    "keywords": [
+      "numbers",
+      "ascending"
+    ],
+    "category": "uiaction"
+  },
+  {
+    "code": "sorting-9-1",
+    "fullCode": "uugdsstencil-uiaction-sorting-9-1",
+    "prefix": "uugdsstencil",
+    "name": "Sorting 9-1",
+    "keywords": [
+      "numbers",
+      "descending"
+    ],
+    "category": "uiaction"
+  },
+  {
+    "code": "sorting-a-z",
+    "fullCode": "uugdsstencil-uiaction-sorting-a-z",
+    "prefix": "uugdsstencil",
+    "name": "Sorting a-z",
+    "keywords": [
+      "letters",
+      "ascending"
+    ],
+    "category": "uiaction"
+  },
+  {
+    "code": "sorting-ascending",
+    "fullCode": "uugdsstencil-arrow-sorting-ascending",
+    "prefix": "uugdsstencil",
+    "name": "Sorting ascending",
+    "keywords": [],
+    "category": "arrow"
+  },
+  {
+    "code": "sorting-descending",
+    "fullCode": "uugdsstencil-arrow-sorting-descending",
+    "prefix": "uugdsstencil",
+    "name": "Sorting descending",
+    "keywords": [],
+    "category": "arrow"
+  },
+  {
+    "code": "sorting-z-a",
+    "fullCode": "uugdsstencil-uiaction-sorting-z-a",
+    "prefix": "uugdsstencil",
+    "name": "Sorting z-a",
+    "keywords": [
+      "letters",
+      "descending"
+    ],
+    "category": "uiaction"
+  },
+  {
+    "code": "sound",
+    "fullCode": "uugdsstencil-media-sound",
+    "prefix": "uugdsstencil",
+    "name": "Sound",
+    "keywords": [
+      "music",
+      "audio",
+      "volume",
+      "loud"
+    ],
+    "category": "media"
+  },
+  {
+    "code": "sound-off",
+    "fullCode": "uugdsstencil-media-sound-off",
+    "prefix": "uugdsstencil",
+    "name": "Sound off",
+    "keywords": [
+      "disable",
+      "audio",
+      "music",
+      "mute",
+      "silence",
+      "volume"
+    ],
+    "category": "media",
+    "rtlDisabled": true
+  },
+  {
+    "code": "soundwave",
+    "fullCode": "uugdsstencil-media-soundwave",
+    "prefix": "uugdsstencil",
+    "name": "Soundwave",
+    "keywords": [
+      "listening",
+      "speaking",
+      "voice",
+      "recording",
+      "playing",
+      "music"
+    ],
+    "category": "media"
+  },
+  {
+    "code": "spacing-horizontal",
+    "fullCode": "uugdsstencil-arrow-spacing-horizontal",
+    "prefix": "uugdsstencil",
+    "name": "Spacing horizontal",
+    "keywords": [
+      "expand"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "spacing-vertical",
+    "fullCode": "uugdsstencil-arrow-spacing-vertical",
+    "prefix": "uugdsstencil",
+    "name": "Spacing vertical",
+    "keywords": [
+      "expand"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "sprint",
+    "fullCode": "uugds-sprint",
+    "prefix": "uugds",
+    "name": "Sprint",
+    "keywords": [
+      "scrum",
+      "planning"
+    ],
+    "category": "time",
+    "isCommon": true
+  },
+  {
+    "code": "square",
+    "fullCode": "uugdsstencil-shape-square",
+    "prefix": "uugdsstencil",
+    "name": "Square",
+    "keywords": [
+      "geometry"
+    ],
+    "category": "shape"
+  },
+  {
+    "code": "square-solid",
+    "fullCode": "uugdsstencil-shape-square-solid",
+    "prefix": "uugdsstencil",
+    "name": "Square solid",
+    "keywords": [
+      "geometry",
+      "filled"
+    ],
+    "category": "shape"
+  },
+  {
+    "code": "start",
+    "fullCode": "uugdsstencil-badge-start",
+    "prefix": "uugdsstencil",
+    "name": "Start",
+    "keywords": [
+      "forward"
+    ],
+    "category": "badge"
+  },
+  {
+    "code": "station",
+    "fullCode": "uugdsstencil-transport-station",
+    "prefix": "uugdsstencil",
+    "name": "Station",
+    "keywords": [
+      "gas",
+      "car",
+      "automobile",
+      "charge",
+      "hub"
+    ],
+    "category": "transport"
+  },
+  {
+    "code": "status",
+    "fullCode": "uugds-status",
+    "prefix": "uugds",
+    "name": "Status",
+    "keywords": [
+      "graph",
+      "statistics",
+      "analytics",
+      "report",
+      "assesment"
+    ],
+    "category": "chart",
+    "isCommon": true,
+    "rtlDisabled": true
+  },
+  {
+    "code": "stop",
+    "fullCode": "uugdsstencil-uiaction-stop",
+    "prefix": "uugdsstencil",
+    "name": "Stop",
+    "keywords": [
+      "halt",
+      "end",
+      "terminate",
+      "pause",
+      "forbidden",
+      "unavailable",
+      "prohibited"
+    ],
+    "category": "uiaction"
+  },
+  {
+    "code": "stop-circle",
+    "fullCode": "uugds-stop-circle",
+    "prefix": "uugds",
+    "name": "Stop circle",
+    "keywords": [
+      "controls"
+    ],
+    "category": "media",
+    "isCommon": true
+  },
+  {
+    "code": "store",
+    "fullCode": "uugdsstencil-commerce-store",
+    "prefix": "uugdsstencil",
+    "name": "Store",
+    "keywords": [
+      "shopping",
+      "building",
+      "buy",
+      "sell"
+    ],
+    "category": "commerce"
+  },
+  {
+    "code": "storm",
+    "fullCode": "uugdsstencil-weather-storm",
+    "prefix": "uugdsstencil",
+    "name": "Storm",
+    "keywords": [
+      "thunderstorm",
+      "cloud",
+      "thunderbolt"
+    ],
+    "category": "weather"
+  },
+  {
+    "code": "strikethrough",
+    "fullCode": "uugdsstencil-edit-strikethrough",
+    "prefix": "uugdsstencil",
+    "name": "Strikethrough",
+    "keywords": [
+      "format",
+      "style",
+      "font",
+      "richtext"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "string",
+    "fullCode": "uugds-string",
+    "prefix": "uugds",
+    "name": "String",
+    "keywords": [
+      "character",
+      "word",
+      "textual",
+      "symbol"
+    ],
+    "category": "it",
+    "isCommon": true,
+    "rtlDisabled": true
+  },
+  {
+    "code": "structure",
+    "fullCode": "uugdsstencil-layout-structure",
+    "prefix": "uugdsstencil",
+    "name": "Structure",
+    "keywords": [
+      "Hierarchy",
+      "Nested"
+    ],
+    "category": "layout"
+  },
+  {
+    "code": "student",
+    "fullCode": "uugdsstencil-education-student",
+    "prefix": "uugdsstencil",
+    "name": "Student",
+    "keywords": [
+      "academic",
+      "scholar",
+      "education",
+      "learning",
+      "study"
+    ],
+    "category": "education"
+  },
+  {
+    "code": "student-hat",
+    "fullCode": "uugdsstencil-education-student-hat",
+    "prefix": "uugdsstencil",
+    "name": "Student hat",
+    "keywords": [
+      "course",
+      "graduation",
+      "cap",
+      "academic",
+      "scholar",
+      "learning"
+    ],
+    "category": "education"
+  },
+  {
+    "code": "subscript",
+    "fullCode": "uugdsstencil-edit-subscript",
+    "prefix": "uugdsstencil",
+    "name": "Subscript",
+    "keywords": [
+      "down",
+      "below",
+      "smaller",
+      "tiny",
+      "format",
+      "style",
+      "font",
+      "text"
+    ],
+    "category": "edit",
+    "rtlDisabled": true
+  },
+  {
+    "code": "sum",
+    "fullCode": "uugdsstencil-commerce-sum",
+    "prefix": "uugdsstencil",
+    "name": "Sum",
+    "keywords": [
+      "math",
+      "count"
+    ],
+    "category": "commerce",
+    "rtlDisabled": true
+  },
+  {
+    "code": "sun",
+    "fullCode": "uugdsstencil-weather-sun",
+    "prefix": "uugdsstencil",
+    "name": "Sun",
+    "keywords": [
+      "light",
+      "solar",
+      "day",
+      "hot",
+      "warm"
+    ],
+    "category": "weather"
+  },
+  {
+    "code": "sunrise",
+    "fullCode": "uugdsstencil-weather-sunrise",
+    "prefix": "uugdsstencil",
+    "name": "Sunrise",
+    "keywords": [
+      "dawn",
+      "daybreak",
+      "morning"
+    ],
+    "category": "weather"
+  },
+  {
+    "code": "sunset",
+    "fullCode": "uugdsstencil-weather-sunset",
+    "prefix": "uugdsstencil",
+    "name": "Sunset",
+    "keywords": [
+      "dusk",
+      "evening"
+    ],
+    "category": "weather"
+  },
+  {
+    "code": "superscript",
+    "fullCode": "uugdsstencil-edit-superscript",
+    "prefix": "uugdsstencil",
+    "name": "Superscript",
+    "keywords": [
+      "up",
+      "above",
+      "smaller",
+      "tiny",
+      "format",
+      "style",
+      "font",
+      "text"
+    ],
+    "category": "edit",
+    "rtlDisabled": true
+  },
+  {
+    "code": "sync",
+    "fullCode": "uugds-sync",
+    "prefix": "uugds",
+    "name": "Sync",
+    "keywords": [
+      "synchronize",
+      "refresh",
+      "reload"
+    ],
+    "category": "arrow",
+    "isCommon": true
+  },
+  {
+    "code": "t-shirt",
+    "fullCode": "uugdsstencil-commerce-t-shirt",
+    "prefix": "uugdsstencil",
+    "name": "T-shirt",
+    "keywords": [
+      "clothes",
+      "fashion",
+      "wearing",
+      "clothing"
+    ],
+    "category": "commerce"
+  },
+  {
+    "code": "table",
+    "fullCode": "uugdsstencil-media-table",
+    "prefix": "uugdsstencil",
+    "name": "Table",
+    "keywords": [
+      "data",
+      "spreadsheet"
+    ],
+    "category": "media"
+  },
+  {
+    "code": "table-edit",
+    "fullCode": "uugdsstencil-media-table-edit",
+    "prefix": "uugdsstencil",
+    "name": "Table edit",
+    "keywords": [
+      "data",
+      "spreadsheet",
+      "pencil"
+    ],
+    "category": "media"
+  },
+  {
+    "code": "table-headers",
+    "fullCode": "uugdsstencil-edit-table-headers",
+    "prefix": "uugdsstencil",
+    "name": "Table headers",
+    "keywords": [
+      "columns",
+      "rows",
+      "cells",
+      "highight",
+      "format"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "tag",
+    "fullCode": "uugds-tag",
+    "prefix": "uugds",
+    "name": "Tag",
+    "keywords": [
+      "price",
+      "sale",
+      "label",
+      "shop",
+      "offer",
+      "discount",
+      "sale"
+    ],
+    "category": "commerce",
+    "isCommon": true
+  },
+  {
+    "code": "target",
+    "fullCode": "uugdsstencil-time-target",
+    "prefix": "uugdsstencil",
+    "name": "Target",
+    "keywords": [
+      "milestone",
+      "goal",
+      "aim",
+      "objective"
+    ],
+    "category": "time"
+  },
+  {
+    "code": "teacher",
+    "fullCode": "uugdsstencil-education-teacher",
+    "prefix": "uugdsstencil",
+    "name": "Teacher",
+    "keywords": [
+      "academic",
+      "scholar",
+      "education",
+      "learning",
+      "presentation"
+    ],
+    "category": "education"
+  },
+  {
+    "code": "temperature",
+    "fullCode": "uugdsstencil-weather-temperature",
+    "prefix": "uugdsstencil",
+    "name": "Temperature",
+    "keywords": [
+      "thermometer",
+      "heat",
+      "cold",
+      "climate",
+      "weather",
+      "forecast"
+    ],
+    "category": "weather"
+  },
+  {
+    "code": "text",
+    "fullCode": "uugdsstencil-edit-text",
+    "prefix": "uugdsstencil",
+    "name": "Text",
+    "keywords": [
+      "format",
+      "style",
+      "font",
+      "paragraph"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "text-box",
+    "fullCode": "uugdsstencil-media-text-box",
+    "prefix": "uugdsstencil",
+    "name": "Text box",
+    "keywords": [
+      "textbox",
+      "input",
+      "card"
+    ],
+    "category": "media"
+  },
+  {
+    "code": "text-box-edit",
+    "fullCode": "uugdsstencil-media-text-box-edit",
+    "prefix": "uugdsstencil",
+    "name": "Text box edit",
+    "keywords": [
+      "textbox",
+      "input",
+      "field",
+      "pencil"
+    ],
+    "category": "media"
+  },
+  {
+    "code": "text-box-plus",
+    "fullCode": "uugdsstencil-media-text-box-plus",
+    "prefix": "uugdsstencil",
+    "name": "Text box plus",
+    "keywords": [
+      "textbox",
+      "input",
+      "field",
+      "add",
+      "new"
+    ],
+    "category": "media"
+  },
+  {
+    "code": "text-box-search",
+    "fullCode": "uugdsstencil-media-text-box-search",
+    "prefix": "uugdsstencil",
+    "name": "Text box search",
+    "keywords": [
+      "textbox",
+      "input",
+      "field",
+      "find",
+      "magnify"
+    ],
+    "category": "media"
+  },
+  {
+    "code": "text-box-solid",
+    "fullCode": "uugdsstencil-media-text-box-solid",
+    "prefix": "uugdsstencil",
+    "name": "Text box solid",
+    "keywords": [
+      "textbox",
+      "input",
+      "card",
+      "filled"
+    ],
+    "category": "media"
+  },
+  {
+    "code": "text-paragraph",
+    "fullCode": "uugdsstencil-edit-text-paragraph",
+    "prefix": "uugdsstencil",
+    "name": "Text paragraph",
+    "keywords": [
+      "format",
+      "style",
+      "font"
+    ],
+    "category": "edit",
+    "rtlDisabled": true
+  },
+  {
+    "code": "text-plus",
+    "fullCode": "uugdsstencil-edit-text-plus",
+    "prefix": "uugdsstencil",
+    "name": "Text plus",
+    "keywords": [
+      "create",
+      "new",
+      "add",
+      "format",
+      "style",
+      "font",
+      "text"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "text-style",
+    "fullCode": "uugdsstencil-edit-text-style",
+    "prefix": "uugdsstencil",
+    "name": "Text style",
+    "keywords": [
+      "richtext",
+      "format",
+      "font",
+      "letter"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "thumb-down",
+    "fullCode": "uugdsstencil-communication-thumb-down",
+    "prefix": "uugdsstencil",
+    "name": "Thumb down",
+    "keywords": [
+      "bad",
+      "reject"
+    ],
+    "category": "communication"
+  },
+  {
+    "code": "thumb-up",
+    "fullCode": "uugdsstencil-communication-thumb-up",
+    "prefix": "uugdsstencil",
+    "name": "Thumb up",
+    "keywords": [
+      "good",
+      "ok",
+      "approve"
+    ],
+    "category": "communication"
+  },
+  {
+    "code": "thumbnails",
+    "fullCode": "uugdsstencil-media-thumbnails",
+    "prefix": "uugdsstencil",
+    "name": "Thumbnails",
+    "keywords": [
+      "carousel",
+      "preview",
+      "gallery"
+    ],
+    "category": "media"
+  },
+  {
+    "code": "thumbnails-off",
+    "fullCode": "uugdsstencil-media-thumbnails-off",
+    "prefix": "uugdsstencil",
+    "name": "Thumbnails off",
+    "keywords": [
+      "carousel",
+      "disable",
+      "hide",
+      "gallery"
+    ],
+    "category": "media",
+    "rtlDisabled": true
+  },
+  {
+    "code": "ticket",
+    "fullCode": "uugds-ticket",
+    "prefix": "uugds",
+    "name": "Ticket",
+    "keywords": [
+      "pass",
+      "entertainment",
+      "access",
+      "film",
+      "movie",
+      "show",
+      "cinema",
+      "work",
+      "entry"
+    ],
+    "category": "commerce",
+    "isCommon": true
+  },
+  {
+    "code": "timer",
+    "fullCode": "uugds-timer",
+    "prefix": "uugds",
+    "name": "Timer",
+    "keywords": [
+      "clock",
+      "stopwatch",
+      "countdown",
+      "timing",
+      "alarm"
+    ],
+    "category": "time",
+    "isCommon": true
+  },
+  {
+    "code": "toggles",
+    "fullCode": "uugdsstencil-uiaction-toggles",
+    "prefix": "uugdsstencil",
+    "name": "Toggles",
+    "keywords": [
+      "switches"
+    ],
+    "category": "uiaction"
+  },
+  {
+    "code": "traffic-cone",
+    "fullCode": "uugdsstencil-transport-traffic-cone",
+    "prefix": "uugdsstencil",
+    "name": "Traffic cone",
+    "keywords": [
+      "block",
+      "jam"
+    ],
+    "category": "transport"
+  },
+  {
+    "code": "translate",
+    "fullCode": "uugdsstencil-communication-translate",
+    "prefix": "uugdsstencil",
+    "name": "Translate",
+    "keywords": [
+      "languages",
+      "speaking",
+      "speech",
+      "translator",
+      "words"
+    ],
+    "category": "communication",
+    "rtlDisabled": true
+  },
+  {
+    "code": "tree",
+    "fullCode": "uugdsstencil-layout-tree",
+    "prefix": "uugdsstencil",
+    "name": "Tree",
+    "keywords": [
+      "branches"
+    ],
+    "category": "layout"
+  },
+  {
+    "code": "trend-down",
+    "fullCode": "uugdsstencil-chart-trend-down",
+    "prefix": "uugdsstencil",
+    "name": "Trend down",
+    "keywords": [
+      "graph",
+      "statistics",
+      "analytics",
+      "report"
+    ],
+    "category": "chart",
+    "rtlDisabled": true
+  },
+  {
+    "code": "trend-up",
+    "fullCode": "uugdsstencil-chart-trend-up",
+    "prefix": "uugdsstencil",
+    "name": "Trend up",
+    "keywords": [
+      "graph",
+      "statistics",
+      "analytics",
+      "report"
+    ],
+    "category": "chart",
+    "rtlDisabled": true
+  },
+  {
+    "code": "triangle",
+    "fullCode": "uugdsstencil-shape-triangle",
+    "prefix": "uugdsstencil",
+    "name": "Triangle",
+    "keywords": [
+      "geometry",
+      "pyramid",
+      "delta"
+    ],
+    "category": "shape"
+  },
+  {
+    "code": "triangle-solid",
+    "fullCode": "uugdsstencil-shape-triangle-solid",
+    "prefix": "uugdsstencil",
+    "name": "Triangle solid",
+    "keywords": [
+      "geometry",
+      "filled"
+    ],
+    "category": "shape"
+  },
+  {
+    "code": "trophy",
+    "fullCode": "uugdsstencil-education-trophy",
+    "prefix": "uugdsstencil",
+    "name": "Trophy",
+    "keywords": [
+      "achievement",
+      "award",
+      "prize",
+      "victory",
+      "winner",
+      "success",
+      "champion",
+      "medal",
+      "accolade"
+    ],
+    "category": "education"
+  },
+  {
+    "code": "tune-horizontal",
+    "fullCode": "uugds-tune-horizontal",
+    "prefix": "uugds",
+    "name": "Tune horizontal",
+    "keywords": [
+      "adjust",
+      "settings",
+      "equalizer",
+      "configuration"
+    ],
+    "category": "uiaction",
+    "isCommon": true
+  },
+  {
+    "code": "underline",
+    "fullCode": "uugdsstencil-edit-underline",
+    "prefix": "uugdsstencil",
+    "name": "Underline",
+    "keywords": [
+      "format",
+      "style",
+      "font",
+      "richtext"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "undo",
+    "fullCode": "uugds-undo",
+    "prefix": "uugds",
+    "name": "Undo",
+    "keywords": [
+      "return",
+      "back"
+    ],
+    "category": "arrow",
+    "isCommon": true
+  },
+  {
+    "code": "unfold-horizontal-less",
+    "fullCode": "uugds-unfold-horizontal-less",
+    "prefix": "uugds",
+    "name": "Unfold horizontal less",
+    "keywords": [
+      "collapse",
+      "close"
+    ],
+    "category": "arrow",
+    "isCommon": true
+  },
+  {
+    "code": "unfold-horizontal-more",
+    "fullCode": "uugds-unfold-horizontal-more",
+    "prefix": "uugds",
+    "name": "Unfold horizontal more",
+    "keywords": [
+      "expand"
+    ],
+    "category": "arrow",
+    "isCommon": true
+  },
+  {
+    "code": "unfold-vertical-less",
+    "fullCode": "uugds-unfold-vertical-less",
+    "prefix": "uugds",
+    "name": "Unfold vertical less",
+    "keywords": [
+      "collapse",
+      "close"
+    ],
+    "category": "arrow",
+    "isCommon": true
+  },
+  {
+    "code": "unfold-vertical-more",
+    "fullCode": "uugds-unfold-vertical-more",
+    "prefix": "uugds",
+    "name": "Unfold vertical more",
+    "keywords": [
+      "expand"
+    ],
+    "category": "arrow",
+    "isCommon": true
+  },
+  {
+    "code": "unicorn",
+    "fullCode": "uugdsstencil-it-unicorn",
+    "prefix": "uugdsstencil",
+    "name": "Unicorn",
+    "keywords": [
+      "magic",
+      "animal",
+      "software",
+      "applications",
+      "apps"
+    ],
+    "category": "it",
+    "rtlDisabled": true
+  },
+  {
+    "code": "up",
+    "fullCode": "uugds-up",
+    "prefix": "uugds",
+    "name": "Up",
+    "keywords": [
+      "up",
+      "top"
+    ],
+    "category": "arrow",
+    "isCommon": true
+  },
+  {
+    "code": "up-circle",
+    "fullCode": "uugdsstencil-arrow-up-circle",
+    "prefix": "uugdsstencil",
+    "name": "Up circle",
+    "keywords": [
+      "top"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "up-circle-solid",
+    "fullCode": "uugdsstencil-arrow-up-circle-solid",
+    "prefix": "uugdsstencil",
+    "name": "Up circle solid",
+    "keywords": [
+      "top"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "up-down-vertical",
+    "fullCode": "uugds-up-down-vertical",
+    "prefix": "uugds",
+    "name": "Swap vertical",
+    "keywords": [
+      "up",
+      "down"
+    ],
+    "category": "arrow",
+    "isCommon": true
+  },
+  {
+    "code": "up-end-circle",
+    "fullCode": "uugdsstencil-arrow-up-end-circle",
+    "prefix": "uugdsstencil",
+    "name": "Up end circle",
+    "keywords": [
+      "right"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "up-left-circle",
+    "fullCode": "uugdsstencil-arrow-up-left-circle",
+    "prefix": "uugdsstencil",
+    "name": "Up left circle",
+    "keywords": [],
+    "category": "arrow",
+    "deprecated": true
+  },
+  {
+    "code": "up-right-circle",
+    "fullCode": "uugdsstencil-arrow-up-right-circle",
+    "prefix": "uugdsstencil",
+    "name": "Up right circle",
+    "keywords": [],
+    "category": "arrow",
+    "deprecated": true
+  },
+  {
+    "code": "up-start-circle",
+    "fullCode": "uugdsstencil-arrow-up-start-circle",
+    "prefix": "uugdsstencil",
+    "name": "Up start circle",
+    "keywords": [
+      "left"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "upload",
+    "fullCode": "uugds-upload",
+    "prefix": "uugds",
+    "name": "Upload",
+    "keywords": [
+      "arrow",
+      "up",
+      "add",
+      "post",
+      "import"
+    ],
+    "category": "uiaction",
+    "isCommon": true
+  },
+  {
+    "code": "uu5",
+    "fullCode": "uugds-uu5",
+    "prefix": "uugds",
+    "name": "Uu5",
+    "keywords": [
+      "brand",
+      "developer",
+      "library",
+      "format",
+      "string",
+      "code",
+      "framework"
+    ],
+    "category": "edit",
+    "isCommon": true,
+    "rtlDisabled": true
+  },
+  {
+    "code": "vector-frame",
+    "fullCode": "uugdsstencil-media-vector-frame",
+    "prefix": "uugdsstencil",
+    "name": "Vector frame",
+    "keywords": [],
+    "category": "media"
+  },
+  {
+    "code": "vector-frame-off",
+    "fullCode": "uugdsstencil-media-vector-frame-off",
+    "prefix": "uugdsstencil",
+    "name": "Vector frame off",
+    "keywords": [
+      "disable",
+      "hide"
+    ],
+    "category": "media",
+    "rtlDisabled": true
+  },
+  {
+    "code": "vertical-align-bottom",
+    "fullCode": "uugdsstencil-arrow-vertical-align-bottom",
+    "prefix": "uugdsstencil",
+    "name": "Vertical align bottom",
+    "keywords": [
+      "bottom",
+      "end"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "vertical-align-bottom",
+    "fullCode": "uugdsstencil-edit-vertical-align-bottom",
+    "prefix": "uugdsstencil",
+    "name": "Vertical align bottom",
+    "keywords": [
+      "block",
+      "content",
+      "down",
+      "arrows"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "vertical-align-center",
+    "fullCode": "uugdsstencil-edit-vertical-align-center",
+    "prefix": "uugdsstencil",
+    "name": "Vertical align center",
+    "keywords": [
+      "block",
+      "content",
+      "middle",
+      "arrows"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "vertical-align-top",
+    "fullCode": "uugdsstencil-arrow-vertical-align-top",
+    "prefix": "uugdsstencil",
+    "name": "Vertical align top",
+    "keywords": [
+      "top",
+      "end"
+    ],
+    "category": "arrow"
+  },
+  {
+    "code": "vertical-align-top",
+    "fullCode": "uugdsstencil-edit-vertical-align-top",
+    "prefix": "uugdsstencil",
+    "name": "Vertical align top",
+    "keywords": [
+      "block",
+      "content",
+      "up",
+      "arrows"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "video",
+    "fullCode": "uugdsstencil-media-video",
+    "prefix": "uugdsstencil",
+    "name": "Video",
+    "keywords": [
+      "film",
+      "movie",
+      "play",
+      "youtube"
+    ],
+    "category": "media",
+    "rtlDisabled": true
+  },
+  {
+    "code": "view-extended",
+    "fullCode": "uugds-view-extended",
+    "prefix": "uugds",
+    "name": "View extended",
+    "keywords": [
+      "full",
+      "enlarge"
+    ],
+    "category": "layout",
+    "isCommon": true
+  },
+  {
+    "code": "view-grid",
+    "fullCode": "uugds-view-grid",
+    "prefix": "uugds",
+    "name": "View grid",
+    "keywords": [
+      "tiles",
+      "matrix",
+      "arrangement"
+    ],
+    "category": "layout",
+    "isCommon": true
+  },
+  {
+    "code": "view-list",
+    "fullCode": "uugds-view-list",
+    "prefix": "uugds",
+    "name": "View list",
+    "keywords": [
+      "rows",
+      "layout"
+    ],
+    "category": "layout",
+    "isCommon": true
+  },
+  {
+    "code": "view-summary",
+    "fullCode": "uugdsstencil-layout-view-summary",
+    "prefix": "uugdsstencil",
+    "name": "View summary",
+    "keywords": [
+      "rows",
+      "layout",
+      "three",
+      "3"
+    ],
+    "category": "layout"
+  },
+  {
+    "code": "waterdrop",
+    "fullCode": "uugdsstencil-weather-waterdrop",
+    "prefix": "uugdsstencil",
+    "name": "Waterdrop",
+    "keywords": [
+      "aquadrop",
+      "rain",
+      "liquid"
+    ],
+    "category": "weather"
+  },
+  {
+    "code": "wave",
+    "fullCode": "uugdsstencil-chart-wave",
+    "prefix": "uugdsstencil",
+    "name": "Wave",
+    "keywords": [
+      "curve"
+    ],
+    "category": "chart",
+    "rtlDisabled": true
+  },
+  {
+    "code": "web",
+    "fullCode": "uugds-web",
+    "prefix": "uugds",
+    "name": "Web",
+    "keywords": [
+      "website",
+      "www",
+      "http",
+      "webpage",
+      "site",
+      "globe",
+      "world"
+    ],
+    "category": "it",
+    "isCommon": true
+  },
+  {
+    "code": "wifi",
+    "fullCode": "uugdsstencil-it-wifi",
+    "prefix": "uugdsstencil",
+    "name": "Wifi",
+    "keywords": [
+      "signal",
+      "wireless",
+      "connection",
+      "network"
+    ],
+    "category": "it"
+  },
+  {
+    "code": "wifi-off",
+    "fullCode": "uugds-wifi-off",
+    "prefix": "uugds",
+    "name": "Wifi off",
+    "keywords": [
+      "disconnected",
+      "connection",
+      "wireless",
+      "disabled",
+      "lost",
+      "signal"
+    ],
+    "category": "it",
+    "isCommon": true,
+    "rtlDisabled": true
+  },
+  {
+    "code": "wind",
+    "fullCode": "uugdsstencil-weather-wind",
+    "prefix": "uugdsstencil",
+    "name": "Wind",
+    "keywords": [
+      "breeze",
+      "airflow",
+      "blow",
+      "air"
+    ],
+    "category": "weather"
+  },
+  {
+    "code": "wip",
+    "fullCode": "uugdsstencil-edit-wip",
+    "prefix": "uugdsstencil",
+    "name": "Wip",
+    "keywords": [
+      "showel",
+      "work",
+      "progress",
+      "unfinished"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "world-time",
+    "fullCode": "uugdsstencil-time-world-time",
+    "prefix": "uugdsstencil",
+    "name": "World time",
+    "keywords": [
+      "global",
+      "clock",
+      "watch",
+      "time zone"
+    ],
+    "category": "time"
+  },
+  {
+    "code": "wrap-in",
+    "fullCode": "uugdsstencil-edit-wrap-in",
+    "prefix": "uugdsstencil",
+    "name": "Wrap in",
+    "keywords": [
+      "enclose",
+      "around",
+      "pack",
+      "contain",
+      "cover"
+    ],
+    "category": "edit"
+  },
+  {
+    "code": "xml",
+    "fullCode": "uugds-xml",
+    "prefix": "uugds",
+    "name": "Xml",
+    "keywords": [
+      "code",
+      "markup",
+      "data",
+      "document",
+      "format",
+      "syntax",
+      "tags",
+      "file"
+    ],
+    "category": "it",
+    "isCommon": true,
+    "rtlDisabled": true
+  },
+  {
+    "code": "zip",
+    "fullCode": "uugdsstencil-media-zip",
+    "prefix": "uugdsstencil",
+    "name": "Zip",
+    "keywords": [
+      "archive",
+      "package"
+    ],
+    "category": "media"
+  },
+  {
+    "code": "zoom-in",
+    "fullCode": "uugds-zoom-in",
+    "prefix": "uugds",
+    "name": "Zoom in",
+    "keywords": [
+      "magnify",
+      "enlarge"
+    ],
+    "category": "media",
+    "isCommon": true
+  },
+  {
+    "code": "zoom-out",
+    "fullCode": "uugds-zoom-out",
+    "prefix": "uugds",
+    "name": "Zoom out",
+    "keywords": [
+      "reduce",
+      "minimize"
+    ],
+    "category": "media",
+    "isCommon": true
+  }
+]

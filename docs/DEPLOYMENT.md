@@ -25,6 +25,7 @@ By the end you will have:
 | 2 | **Supabase** (EU) | Auth + Postgres + RLS | $0 (1 project, ~50k MAU) |
 | 3 | **Google Cloud Console** | OAuth client for Google sign-in | $0 |
 | 4 | **DeepL API** | translation source | $0 (500k chars/month) |
+| 4b | **Anthropic API** (optional) | multiple meanings for ambiguous words (e.g. `sušička`) via `claude-haiku-4-5` | pay-as-you-go (~$0.0001–0.0003 per lookup, ~$5 credit lasts months) |
 | 5 | **Vercel** | serverless API + content bundle | $0 (hobby plan) |
 | 6 | **Expo / EAS** | mobile build pipeline | $0 (limited builds/month) |
 | 7 | **Apple Developer** ($99/yr) | only if you want **TestFlight** on iOS | paid |
@@ -290,6 +291,17 @@ service-role key never leave Vercel** — that's why they live on the server.
    (`backend/api/translate.ts`) auto-picks `api-free.deepl.com` from that
    suffix.
 
+### 3.1.1 Get an Anthropic key (optional — *Další významy*)
+
+The *Hledat* screen has a **„Další významy"** button that fetches up to four disambiguated senses of an ambiguous word (e.g. `sušička` → `asciugatrice` / `essiccatore` / `asciugacapelli`). It is backed by `backend/api/translate-meanings.ts` calling Anthropic Claude Haiku.
+
+1. Sign up at [console.anthropic.com](https://console.anthropic.com).
+2. **Settings → API Keys → Create Key** — copy `sk-ant-…`.
+3. **Billing & Plans** → add a few dollars of credit (each lookup is fractions of a cent).
+4. Set `ANTHROPIC_API_KEY` on Vercel (§3.3).
+
+When the key is unset the endpoint returns `503` and the mobile app **hides the button** — DeepL translate keeps working. Override the model with `ANTHROPIC_MODEL` (default `claude-haiku-4-5`).
+
 ### 3.2 First deploy
 
 ```bash
@@ -321,6 +333,8 @@ These are the variables every deployed function will read at runtime:
 | Key | Value | Used by |
 |-----|-------|---------|
 | `DEEPL_API_KEY` | DeepL API key (`xxxxxxx:fx`) | `api/translate.ts` |
+| `ANTHROPIC_API_KEY` *(optional)* | Anthropic key (`sk-ant-…`) | `api/translate-meanings.ts` — *Další významy* button. When unset the endpoint returns 503 and the mobile UI hides the button. |
+| `ANTHROPIC_MODEL` *(optional)* | Override default `claude-haiku-4-5` | `api/translate-meanings.ts` |
 | `CONTENT_VERSION` | `2` for the first deploy; bump (`3`, `4`, …) every time you change `backend/content/*.json` | `api/content-manifest.ts` |
 | `SUPABASE_URL` | `https://<ref>.supabase.co` | `api/translate.ts` (auth gate) and `api/account/*` |
 | `SUPABASE_ANON_KEY` | Supabase **anon** key | `api/translate.ts` and `api/account/*` (verifies user JWT) |
@@ -359,6 +373,8 @@ cd backend
 # Repeat for every environment you want to populate.
 vercel env add DEEPL_API_KEY               production
 vercel env add DEEPL_API_KEY               preview
+# Optional — "Další významy" button (Anthropic Claude Haiku). Skip both lines to disable.
+vercel env add ANTHROPIC_API_KEY           production preview
 vercel env add CONTENT_VERSION             production preview
 vercel env add SUPABASE_URL                production preview
 vercel env add SUPABASE_ANON_KEY           production preview
@@ -450,6 +466,7 @@ A successful seed flips the version to an ISO timestamp.
 |----------|---------|------|
 | `GET /api/version` | API semver from `backend/package.json` (+ optional Vercel ids) | Public |
 | `POST /api/translate` | DeepL proxy used by Hledat (Search) screen | **Bearer JWT** (Supabase) — protects paid DeepL quota |
+| `POST /api/translate-meanings` | Anthropic Claude Haiku → up to 4 disambiguated senses (*Další významy* button). Returns **503** when `ANTHROPIC_API_KEY` is unset → mobile UI hides the button. | **Bearer JWT** (Supabase) — protects paid LLM quota |
 | `GET /api/content-manifest` | Bundle manifest (versions) | Public |
 | `GET /api/content-bundle?bundle=…` | Single JSON bundle | Public |
 | `POST/DELETE /api/account/delete` | Delete user (verifies JWT, then `auth.admin.deleteUser` with service role) | **Bearer JWT** |
@@ -692,6 +709,7 @@ Info.plist) still require a fresh `eas build`.
 | `EXPO_PUBLIC_SUPABASE_URL` | ✅ | — | — | ✅ |
 | `EXPO_PUBLIC_SUPABASE_ANON_KEY` | ✅ | — | — | ✅ (anon key is not secret) |
 | `DEEPL_API_KEY` | ❌ | ✅ | — | ❌ |
+| `ANTHROPIC_API_KEY` *(optional)* | ❌ | ✅ | — | ❌ |
 | `SUPABASE_URL` (server) | — | ✅ | — | ❌ |
 | `SUPABASE_ANON_KEY` (server) | — | ✅ | — | ❌ |
 | `SUPABASE_SERVICE_ROLE_KEY` | ❌❌ NEVER | ✅ (serverless only) | — | ❌ |
@@ -709,6 +727,8 @@ Info.plist) still require a fresh `eas build`.
 |---------|--------------|-----|
 | *Hledat* spinner forever, then "Vypršel čas (10 s)" | App points at a host the phone can't reach | Use the Vercel HTTPS URL in `.env`, then `npx expo start -c` (or rebuild with EAS). |
 | "Server vrátil 500/503" on translate | Missing `DEEPL_API_KEY` on Vercel | Add it under Settings → Env Vars and **Redeploy**. |
+| *Další významy* button missing in app | Backend has no `ANTHROPIC_API_KEY` (endpoint returns 503) | Add the key in Vercel envs and redeploy; the button reappears on the next lookup. |
+| *Další významy* "Anthropic 401" | Invalid / revoked Anthropic key | Rotate at [console.anthropic.com](https://console.anthropic.com) → Settings → API Keys, then update Vercel env. |
 | *Hledat* shows "Vyhledávání slovíček vyžaduje přihlášení" | User isn't signed in (translate endpoint requires Bearer JWT) | Tap **Přejít na profil** and sign in with Google. |
 | Translate returns 401 even when signed in | `SUPABASE_URL` / `SUPABASE_ANON_KEY` missing on Vercel, or token expired | Add the env vars and **Redeploy**; in the app sign out and back in. |
 | Google sign-in returns *Unsupported provider* | Provider not enabled or wrong project | Re-check §2.3 (toggle ON, Web Client ID + Secret). |
@@ -729,6 +749,7 @@ Info.plist) still require a fresh `eas build`.
 | Vercel | <100 GB bandwidth/month, hobby usage | high traffic |
 | Expo / EAS | a few builds/month | priority queue, more concurrency |
 | DeepL Free | <500k characters/month | DeepL Pro |
+| Anthropic (Claude Haiku) | optional feature; no free tier — pay-as-you-go | $5 prepaid covers thousands of *Další významy* lookups (one ≈ $0.0001–0.0003) |
 | Apple Dev | — | $99/year (TestFlight + App Store) |
 | Google Play | — | $25 one-off (Play Store) |
 

@@ -1,0 +1,45 @@
+---
+alwaysApply: true
+---
+
+# Introduction
+We are working together on a proprietary framework based on JavaScript. However, the framework employs patterns that might contradict what you are used to in standard JavaScript projects. There are many differences between standard JavaScript practices.
+
+As this is a proprietary framework, you will encounter multiple rules that describe the practices, patterns, and standards in this framework. You must follow these rules strictly and only use your general knowledge if you cannot find the answer in the rules. If the rules ask you to confirm something with me, do so consistently. Don't make any assumptions. It's better to ask me more questions than to do something wrong.
+
+Humans write the rules. As such, they might be contradictory and sometimes wrong. If you encounter rules that contradict each other, ALWAYS ask me for confirmation.
+
+You will also discover certain patterns and rules from the codebase. Unfortunately, these rules might contradict the written rules. If you encounter this situation, ALWAYS ask me for confirmation on whether you must use the written rules or the rules based on the codebase.
+
+# General Rules
+
+These are the general rules you must follow when implementing any new functionality or extending the existing one. This rule consists of several linked markdown files distributed into the sections where each briefly describes rules for the given area (i.e. clean code principles, documentation, naming conventions, etc,...)
+You must STRICTLY follow all these rules during the whole implementation process.
+
+## Code Modification Rules
+
+⚠️ **CRITICAL: THESE RULES ARE MANDATORY AND MUST BE FOLLOWED STRICTLY** ⚠️
+
+🚨 **IMPORTANT**: When making changes to the codebase, you MUST follow these rules without exception. These are not suggestions - they are mandatory requirements.
+
+- **Minimal changes**: Always do as minimal changes as possible unless asked. This includes not fixing formatting and code structure unless explicitly requested.
+- **Preserve existing code**: Do not remove unnecessary existing code in the codebase unless asked.
+- **No reformatting**: Do not reformat other code unless asked.
+- **Code quality**: Write pure functions and nicely styled code.
+- **Documentation files**: NEVER create documentation files (*.md, README, docs/) unless the user explicitly says "create documentation" or "write a README".
+- **Task-specific behavior**:
+  - Extraction tasks = copy code only
+  - Organization tasks = organize code only
+  - Implementation tasks = write code only
+- **Emojis**: Do not use emojis in code unless specifically asked.
+- **Comments**: Do not overuse comments in code, be clear.
+
+⚠️ **REMINDER**: These rules take precedence and must be followed in ALL situations. If you are unsure, ask for confirmation rather than violating these rules.
+
+## Content
+- clean code principles - [clean-code.md](mdc:docs/general-rules/clean-code.md)
+- naming conventions - [naming-conventions.md](mdc:docs/general-rules/naming-conventions.md)
+- style guidelines - [style-guidelines.md](mdc:docs/general-rules/style-guidelines.md)
+- error handling - [error-handling.md](mdc:docs/general-rules/error-handling.md)
+- code organization - [code-organization.md](mdc:docs/general-rules/code-organization.md)
+- documentation standards - [documentation-standards.md](mdc:docs/general-rules/documentation-standards.md)

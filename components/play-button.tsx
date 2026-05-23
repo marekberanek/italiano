@@ -1,7 +1,8 @@
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Pressable, StyleSheet, type ViewStyle } from "react-native";
 
-import { Palette, Radius } from "@/constants/theme";
+import { Radius } from "@/constants/theme";
+import { useTheme } from "@/lib/theme/theme-context";
 
 type Props = {
   onPress: () => void;
@@ -18,11 +19,13 @@ const sizes = {
 };
 
 export function PlayButton({ onPress, size = "md", tone = "soft", disabled, style }: Props) {
+  const { palette } = useTheme();
+  const styles = createStyles();
   const dim = sizes[size];
-  const palette =
+  const colors =
     tone === "soft"
-      ? { bg: Palette.brandSoft, fg: Palette.brandDark }
-      : { bg: "rgba(255,255,255,0.18)", fg: Palette.textInverse };
+      ? { bg: palette.brandSoft, fg: palette.brandDark }
+      : { bg: "rgba(255,255,255,0.18)", fg: palette.textInverse };
 
   return (
     <Pressable
@@ -32,24 +35,26 @@ export function PlayButton({ onPress, size = "md", tone = "soft", disabled, styl
         {
           width: dim.box,
           height: dim.box,
-          backgroundColor: palette.bg,
+          backgroundColor: colors.bg,
         },
         pressed && !disabled && styles.pressed,
         disabled && styles.disabled,
         style,
       ]}
     >
-      <MaterialIcons name="volume-up" size={dim.icon} color={palette.fg} />
+      <MaterialIcons name="volume-up" size={dim.icon} color={colors.fg} />
     </Pressable>
   );
 }
 
-const styles = StyleSheet.create({
-  base: {
-    borderRadius: Radius.pill,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  pressed: { opacity: 0.7 },
-  disabled: { opacity: 0.4 },
-});
+function createStyles() {
+  return StyleSheet.create({
+    base: {
+      borderRadius: Radius.pill,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    pressed: { opacity: 0.7 },
+    disabled: { opacity: 0.4 },
+  });
+}
