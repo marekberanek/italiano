@@ -4,7 +4,6 @@ import { StyleSheet, Text, View } from "react-native";
 import alphabetFallback from "@/assets/data/alphabet.json";
 import pronRulesFallback from "@/assets/data/pron-rules.json";
 import type { AlphabetData, PronunciationData } from "@/assets/data/types";
-import { BackLink } from "@/components/back-link";
 import { CategoryChip } from "@/components/category-chip";
 import { PlayButton } from "@/components/play-button";
 import { Screen } from "@/components/screen";
@@ -30,8 +29,7 @@ export default function AlphabetScreen() {
 
   return (
     <Screen>
-      <BackLink />
-      <ScreenHeader title="Abeceda" subtitle="21 italských písmen + pravidla výslovnosti" />
+      <ScreenHeader title="Abeceda" subtitle="21 italských písmen + pravidla výslovnosti" showBack />
 
       <View style={styles.chipsRow}>
         <CategoryChip

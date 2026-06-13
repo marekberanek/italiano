@@ -2,7 +2,6 @@ import { StyleSheet, Text, View } from "react-native";
 
 import monthsFallback from "@/assets/data/months.json";
 import type { MonthsData } from "@/assets/data/types";
-import { BackLink } from "@/components/back-link";
 import { PlayButton } from "@/components/play-button";
 import { Screen } from "@/components/screen";
 import { ScreenHeader } from "@/components/screen-header";
@@ -20,8 +19,7 @@ export default function MonthsScreen() {
   const tts = useItalianTts();
   return (
     <Screen>
-      <BackLink />
-      <ScreenHeader title="Měsíce" subtitle="Gennaio … dicembre" />
+      <ScreenHeader title="Měsíce" subtitle="Gennaio … dicembre" showBack />
 
       <SectionCard title="Italské měsíce" tone="ochre">
         <View style={{ gap: Spacing.sm + 2 }}>

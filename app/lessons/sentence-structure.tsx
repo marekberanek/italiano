@@ -3,7 +3,6 @@ import { ScrollView, StyleSheet, Text, View } from "react-native";
 
 import grammarFallback from "@/assets/data/grammar.json";
 import type { GrammarData, GrammarRule } from "@/assets/data/types";
-import { BackLink } from "@/components/back-link";
 import { CategoryChip } from "@/components/category-chip";
 import { PlayButton } from "@/components/play-button";
 import { Screen } from "@/components/screen";
@@ -42,8 +41,8 @@ export default function SentenceStructureScreen() {
 
   return (
     <Screen>
-      <BackLink />
       <ScreenHeader
+        showBack
         title="Stavba věty"
         subtitle="Pravidla, předložky, časy a další gramatické jevy"
       />

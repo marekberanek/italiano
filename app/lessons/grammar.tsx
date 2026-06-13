@@ -12,7 +12,6 @@ import {
 
 import grammarFallback from "@/assets/data/grammar.json";
 import type { GrammarData, VerbConjugation, VerbTense, VerbTenseId } from "@/assets/data/types";
-import { BackLink } from "@/components/back-link";
 import { CategoryChip } from "@/components/category-chip";
 import { PlayButton } from "@/components/play-button";
 import { Screen } from "@/components/screen";
@@ -140,8 +139,7 @@ export default function GrammarScreen() {
 
   return (
     <Screen>
-      <BackLink />
-      <ScreenHeader title="Slovesa" subtitle="Časování: 7 časů a způsobů" />
+      <ScreenHeader title="Slovesa" subtitle="Časování: 7 časů a způsobů" showBack />
 
       {verbs.length > 0 ? (
         <>

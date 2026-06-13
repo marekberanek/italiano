@@ -2,7 +2,6 @@ import { StyleSheet, Text, View } from "react-native";
 
 import weekdaysFallback from "@/assets/data/weekdays.json";
 import type { WeekdaysData } from "@/assets/data/types";
-import { BackLink } from "@/components/back-link";
 import { PlayButton } from "@/components/play-button";
 import { Screen } from "@/components/screen";
 import { ScreenHeader } from "@/components/screen-header";
@@ -20,8 +19,7 @@ export default function WeekdaysScreen() {
   const tts = useItalianTts();
   return (
     <Screen>
-      <BackLink />
-      <ScreenHeader title="Dny v týdnu" subtitle="Lunedì … domenica" />
+      <ScreenHeader title="Dny v týdnu" subtitle="Lunedì … domenica" showBack />
 
       <SectionCard title="Italské dny" tone="brand">
         <View style={{ gap: Spacing.sm + 2 }}>

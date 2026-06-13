@@ -3,7 +3,6 @@ import { StyleSheet, Text, View } from "react-native";
 
 import numbersFallback from "@/assets/data/numbers.json";
 import type { NumbersData } from "@/assets/data/types";
-import { BackLink } from "@/components/back-link";
 import { CategoryChip } from "@/components/category-chip";
 import { PlayButton } from "@/components/play-button";
 import { Screen } from "@/components/screen";
@@ -26,8 +25,7 @@ export default function NumbersScreen() {
 
   return (
     <Screen>
-      <BackLink />
-      <ScreenHeader title="Číslovky" subtitle="0–1000 + skládání" />
+      <ScreenHeader title="Číslovky" subtitle="0–1000 + skládání" showBack />
 
       <View style={styles.chipsRow}>
         <CategoryChip

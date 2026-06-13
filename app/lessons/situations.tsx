@@ -3,7 +3,6 @@ import { StyleSheet, Text, View } from "react-native";
 
 import situationsFallback from "@/assets/data/situations.json";
 import type { SituationsData } from "@/assets/data/types";
-import { BackLink } from "@/components/back-link";
 import { CategoryChip } from "@/components/category-chip";
 import { PlayButton } from "@/components/play-button";
 import { Screen } from "@/components/screen";
@@ -31,8 +30,7 @@ export default function SituationsScreen() {
 
   return (
     <Screen>
-      <BackLink />
-      <ScreenHeader title="Situace" subtitle="Užitečné fráze pro každý den" />
+      <ScreenHeader title="Situace" subtitle="Užitečné fráze pro každý den" showBack />
 
       <View style={styles.chipsRow}>
         {data.categories.map((cat) => (

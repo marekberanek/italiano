@@ -4,7 +4,6 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import curatedVocabFallback from "@/assets/data/curated-vocab.json";
 import type { CuratedVocabData, CuratedVocabItem } from "@/assets/data/types";
-import { BackLink } from "@/components/back-link";
 import { CategoryChip } from "@/components/category-chip";
 import { PlayButton } from "@/components/play-button";
 import { Screen } from "@/components/screen";
@@ -78,8 +77,8 @@ export default function CuratedVocabScreen() {
 
   return (
     <Screen>
-      <BackLink />
       <ScreenHeader
+        showBack
         title="Výběr slovíček"
         subtitle={
           filter === ALL_FILTER

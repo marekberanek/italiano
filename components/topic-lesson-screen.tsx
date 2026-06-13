@@ -2,7 +2,6 @@ import { useMemo, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 
 import type { TopicLessonData } from "@/assets/data/types";
-import { BackLink } from "@/components/back-link";
 import { CategoryChip } from "@/components/category-chip";
 import { PlayButton } from "@/components/play-button";
 import { Screen } from "@/components/screen";
@@ -45,8 +44,7 @@ export function TopicLessonScreen({ bundleId, fallback, title, subtitle }: Props
 
   return (
     <Screen>
-      <BackLink />
-      <ScreenHeader title={title} subtitle={subtitle} />
+      <ScreenHeader title={title} subtitle={subtitle} showBack />
 
       {showChips ? (
         <ScrollView
