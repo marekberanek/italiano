@@ -89,10 +89,11 @@ function createStyles(p: ColorPalette) {
   grid: {
     flexDirection: "row",
     flexWrap: "wrap",
-    gap: Spacing.sm + 2,
+    justifyContent: "space-between",
+    rowGap: Spacing.sm + 2,
   },
   cell: {
-    width: "47.5%",
+    width: "48%",
     flexDirection: "row",
     alignItems: "center",
     gap: Spacing.sm,

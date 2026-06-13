@@ -93,10 +93,11 @@ function createStyles(p: ColorPalette) {
   grid: {
     flexDirection: "row",
     flexWrap: "wrap",
-    gap: Spacing.sm + 2,
+    justifyContent: "space-between",
+    rowGap: Spacing.sm + 2,
   },
   tile: {
-    width: "30%",
+    width: "32%",
     backgroundColor: p.navySoft,
     borderRadius: Radius.md,
     padding: Spacing.sm + 2,
