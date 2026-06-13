@@ -1,6 +1,6 @@
 /**
  * Generates assets/data/grammar.json with:
- * - Present indicative for common regular + irregular Italian verbs
+ * - Seven tenses for common regular + irregular Italian verbs
  * - Grammar rules (Czech explanations + Italian examples)
  *
  * Run: node scripts/generate-grammar.mjs
@@ -9,7 +9,9 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { IRREGULAR_META } from "./lib/irregular-verbs-meta.mjs";
 import { bracket, italianToCzechPron } from "./lib/italian-pron.mjs";
+import { buildRegularVerb, buildVerb, PERSONS } from "./lib/verb-engine.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const outPath = path.join(__dirname, "..", "assets", "data", "grammar.json");
@@ -19,70 +21,72 @@ function pron(it) {
   return bracket(italianToCzechPron(it));
 }
 
-const persons = ["io", "tu", "lui/lei", "noi", "voi", "loro"];
-
-/** @param {[string,string,string][]} rows */
-function verb(id, title, rows) {
-  return {
-    id,
-    title,
-    rows: rows.map(([person, it, cz]) => [person, it, cz, pron(it)]),
-  };
+/** @param {string} id @param {string} title @param {[string,string,string][]} rows */
+function irregularVerb(id, title, rows) {
+  const meta = IRREGULAR_META[id] ?? {};
+  return buildVerb(id, title, rows, meta, pron);
 }
 
 function conjAre(inf, czTitle, cz) {
-  const stem = inf.slice(0, -3);
-  const it = [stem + "o", stem + "i", stem + "a", stem + "iamo", stem + "ate", stem + "ano"];
-  return verb(
-    inf.replace(/[^a-z]/gi, "_"),
+  const id = inf.replace(/[^a-z]/gi, "_");
+  return buildRegularVerb(
+    id,
     `${inf.toUpperCase()} (-are) — ${czTitle}`,
-    persons.map((p, i) => [p, it[i], cz[i]]),
+    inf,
+    "are",
+    czTitle,
+    cz,
+    pron,
   );
 }
 
 function conjEre(inf, czTitle, cz) {
-  const stem = inf.slice(0, -3);
-  const it = [stem + "o", stem + "i", stem + "e", stem + "iamo", stem + "ete", stem + "ono"];
-  return verb(
-    inf.replace(/[^a-z]/gi, "_"),
+  const id = inf.replace(/[^a-z]/gi, "_");
+  return buildRegularVerb(
+    id,
     `${inf.toUpperCase()} (-ere) — ${czTitle}`,
-    persons.map((p, i) => [p, it[i], cz[i]]),
+    inf,
+    "ere",
+    czTitle,
+    cz,
+    pron,
   );
 }
 
 function conjIre(inf, czTitle, cz) {
-  const stem = inf.slice(0, -3);
-  const it = [stem + "o", stem + "i", stem + "e", stem + "iamo", stem + "ite", stem + "ono"];
-  return verb(
-    inf.replace(/[^a-z]/gi, "_"),
+  const id = inf.replace(/[^a-z]/gi, "_");
+  return buildRegularVerb(
+    id,
     `${inf.toUpperCase()} (-ire) — ${czTitle}`,
-    persons.map((p, i) => [p, it[i], cz[i]]),
+    inf,
+    "ire",
+    czTitle,
+    cz,
+    pron,
   );
 }
 
 function conjIreIsco(inf, czTitle, cz) {
-  const stem = inf.slice(0, -3);
-  const it = [
-    stem + "isco",
-    stem + "isci",
-    stem + "isce",
-    stem + "iamo",
-    stem + "ite",
-    stem + "iscono",
-  ];
-  return verb(
-    inf.replace(/[^a-z]/gi, "_"),
+  const id = inf.replace(/[^a-z]/gi, "_");
+  return buildRegularVerb(
+    id,
     `${inf.toUpperCase()} (-ire, -isco) — ${czTitle}`,
-    persons.map((p, i) => [p, it[i], cz[i]]),
+    inf,
+    "ire_isco",
+    czTitle,
+    cz,
+    pron,
   );
 }
 
 function verbCareGare(id, title, itForms, cz) {
-  return verb(id, title, persons.map((p, i) => [p, itForms[i], cz[i]]));
+  const rows = PERSONS.map((p, i) => [p, itForms[i], cz[i]]);
+  const meta = IRREGULAR_META[id] ?? {};
+  return buildVerb(id, title, rows, meta, pron);
 }
 
 const irregularVerbs = [
-  verb("essere", "ESSERE — být", [
+  irregularVerb("essere", "ESSERE — být", [
     ["io", "sono", "jsem"],
     ["tu", "sei", "jsi"],
     ["lui/lei", "è", "je"],
@@ -90,7 +94,7 @@ const irregularVerbs = [
     ["voi", "siete", "jste"],
     ["loro", "sono", "jsou"],
   ]),
-  verb("avere", "AVERE — mít", [
+  irregularVerb("avere", "AVERE — mít", [
     ["io", "ho", "mám"],
     ["tu", "hai", "máš"],
     ["lui/lei", "ha", "má"],
@@ -98,7 +102,7 @@ const irregularVerbs = [
     ["voi", "avete", "máte"],
     ["loro", "hanno", "mají"],
   ]),
-  verb("andare", "ANDARE — jít", [
+  irregularVerb("andare", "ANDARE — jít", [
     ["io", "vado", "jdu"],
     ["tu", "vai", "jdeš"],
     ["lui/lei", "va", "jde"],
@@ -106,7 +110,7 @@ const irregularVerbs = [
     ["voi", "andate", "jdete"],
     ["loro", "vanno", "jdou"],
   ]),
-  verb("dare", "DARE — dát", [
+  irregularVerb("dare", "DARE — dát", [
     ["io", "do", "dávám"],
     ["tu", "dai", "dáváš"],
     ["lui/lei", "dà", "dává"],
@@ -114,7 +118,7 @@ const irregularVerbs = [
     ["voi", "date", "dáváte"],
     ["loro", "danno", "dávají"],
   ]),
-  verb("fare", "FARE — dělat", [
+  irregularVerb("fare", "FARE — dělat", [
     ["io", "faccio", "dělám"],
     ["tu", "fai", "děláš"],
     ["lui/lei", "fa", "dělá"],
@@ -122,7 +126,7 @@ const irregularVerbs = [
     ["voi", "fate", "děláte"],
     ["loro", "fanno", "dělají"],
   ]),
-  verb("stare", "STARE — být (stav) / stát", [
+  irregularVerb("stare", "STARE — být (stav) / stát", [
     ["io", "sto", "jsem / stojím"],
     ["tu", "stai", "jsi / stojíš"],
     ["lui/lei", "sta", "je / stojí"],
@@ -130,7 +134,7 @@ const irregularVerbs = [
     ["voi", "state", "jste / stojíte"],
     ["loro", "stanno", "jsou / stojí"],
   ]),
-  verb("dire", "DIRE — říct", [
+  irregularVerb("dire", "DIRE — říct", [
     ["io", "dico", "říkám"],
     ["tu", "dici", "říkáš"],
     ["lui/lei", "dice", "říká"],
@@ -138,7 +142,7 @@ const irregularVerbs = [
     ["voi", "dite", "říkáte"],
     ["loro", "dicono", "říkají"],
   ]),
-  verb("uscire", "USCÍRE — vyjít", [
+  irregularVerb("uscire", "USCÍRE — vyjít", [
     ["io", "esco", "vyjdu"],
     ["tu", "esci", "vyjdeš"],
     ["lui/lei", "esce", "vyjde"],
@@ -146,7 +150,7 @@ const irregularVerbs = [
     ["voi", "uscite", "vyjdete"],
     ["loro", "escono", "vyjdou"],
   ]),
-  verb("venire", "VENIRE — přijít", [
+  irregularVerb("venire", "VENIRE — přijít", [
     ["io", "vengo", "přicházím"],
     ["tu", "vieni", "přicházíš"],
     ["lui/lei", "viene", "přichází"],
@@ -154,7 +158,7 @@ const irregularVerbs = [
     ["voi", "venite", "přicházíte"],
     ["loro", "vengono", "přicházejí"],
   ]),
-  verb("bere", "BERE — pít", [
+  irregularVerb("bere", "BERE — pít", [
     ["io", "bevo", "piju"],
     ["tu", "bevi", "piješ"],
     ["lui/lei", "beve", "pije"],
@@ -162,7 +166,7 @@ const irregularVerbs = [
     ["voi", "bevete", "pijete"],
     ["loro", "bevono", "pijí"],
   ]),
-  verb("sapere", "SAPERE — vědět / umět", [
+  irregularVerb("sapere", "SAPERE — vědět / umět", [
     ["io", "so", "vím"],
     ["tu", "sai", "víš"],
     ["lui/lei", "sa", "ví"],
@@ -170,7 +174,7 @@ const irregularVerbs = [
     ["voi", "sapete", "víte"],
     ["loro", "sanno", "vědí"],
   ]),
-  verb("dovere", "DOVERE — muset", [
+  irregularVerb("dovere", "DOVERE — muset", [
     ["io", "devo", "musím"],
     ["tu", "devi", "musíš"],
     ["lui/lei", "deve", "musí"],
@@ -178,7 +182,7 @@ const irregularVerbs = [
     ["voi", "dovete", "musíte"],
     ["loro", "devono", "musí"],
   ]),
-  verb("potere", "POTERE — moci", [
+  irregularVerb("potere", "POTERE — moci", [
     ["io", "posso", "mohu"],
     ["tu", "puoi", "můžeš"],
     ["lui/lei", "può", "může"],
@@ -186,7 +190,7 @@ const irregularVerbs = [
     ["voi", "potete", "můžete"],
     ["loro", "possono", "mohou"],
   ]),
-  verb("volere", "VOLERE — chtít", [
+  irregularVerb("volere", "VOLERE — chtít", [
     ["io", "voglio", "chci"],
     ["tu", "vuoi", "chceš"],
     ["lui/lei", "vuole", "chce"],
@@ -194,7 +198,7 @@ const irregularVerbs = [
     ["voi", "volete", "chcete"],
     ["loro", "vogliono", "chtějí"],
   ]),
-  verb("vedere", "VEDERE — vidět", [
+  irregularVerb("vedere", "VEDERE — vidět", [
     ["io", "vedo", "vidím"],
     ["tu", "vedi", "vidíš"],
     ["lui/lei", "vede", "vidí"],
@@ -202,7 +206,7 @@ const irregularVerbs = [
     ["voi", "vedete", "vidíte"],
     ["loro", "vedono", "vidí"],
   ]),
-  verb("tenere", "TENERE — držet / mít", [
+  irregularVerb("tenere", "TENERE — držet / mít", [
     ["io", "tengo", "držím"],
     ["tu", "tieni", "držíš"],
     ["lui/lei", "tiene", "drží"],
@@ -210,7 +214,7 @@ const irregularVerbs = [
     ["voi", "tenete", "držíte"],
     ["loro", "tengono", "drží"],
   ]),
-  verb("rimanere", "RIMANERE — zůstat", [
+  irregularVerb("rimanere", "RIMANERE — zůstat", [
     ["io", "rimango", "zůstávám"],
     ["tu", "rimani", "zůstáváš"],
     ["lui/lei", "rimane", "zůstává"],
@@ -218,7 +222,7 @@ const irregularVerbs = [
     ["voi", "rimanete", "zůstáváte"],
     ["loro", "rimangono", "zůstávají"],
   ]),
-  verb("salire", "SALIRE — stoupat / nastoupit", [
+  irregularVerb("salire", "SALIRE — stoupat / nastoupit", [
     ["io", "salgo", "stoupám"],
     ["tu", "sali", "stoupáš"],
     ["lui/lei", "sale", "stoupá"],
@@ -226,7 +230,7 @@ const irregularVerbs = [
     ["voi", "salite", "stoupáte"],
     ["loro", "salgono", "stoupají"],
   ]),
-  verb("morire", "MORIRE — umírat", [
+  irregularVerb("morire", "MORIRE — umírat", [
     ["io", "muoio", "umírám"],
     ["tu", "muori", "umíráš"],
     ["lui/lei", "muore", "umírá"],
@@ -234,7 +238,7 @@ const irregularVerbs = [
     ["voi", "morite", "umíráte"],
     ["loro", "muoiono", "umírají"],
   ]),
-  verb("scegliere", "SCEGLIERE — vybrat", [
+  irregularVerb("scegliere", "SCEGLIERE — vybrat", [
     ["io", "scelgo", "vybírám"],
     ["tu", "scegli", "vybíráš"],
     ["lui/lei", "sceglie", "vybírá"],
@@ -242,7 +246,7 @@ const irregularVerbs = [
     ["voi", "scegliete", "vybíráte"],
     ["loro", "scelgono", "vybírají"],
   ]),
-  verb("cogliere", "COGLIERE — sklidit", [
+  irregularVerb("cogliere", "COGLIERE — sklidit", [
     ["io", "colgo", "sklízím"],
     ["tu", "cogli", "sklízíš"],
     ["lui/lei", "coglie", "sklízí"],
@@ -250,7 +254,7 @@ const irregularVerbs = [
     ["voi", "cogliete", "sklízíte"],
     ["loro", "colgono", "sklízejí"],
   ]),
-  verb("porre", "PORRE — položit", [
+  irregularVerb("porre", "PORRE — položit", [
     ["io", "pongo", "kladu"],
     ["tu", "poni", "kladeš"],
     ["lui/lei", "pone", "klade"],
@@ -258,7 +262,7 @@ const irregularVerbs = [
     ["voi", "ponete", "kláděte"],
     ["loro", "pongono", "kladou"],
   ]),
-  verb("trarre", "TRARRE — táhnout / vytáhnout", [
+  irregularVerb("trarre", "TRARRE — táhnout / vytáhnout", [
     ["io", "traggo", "táhnu"],
     ["tu", "trai", "táhneš"],
     ["lui/lei", "trae", "táhne"],
@@ -266,7 +270,7 @@ const irregularVerbs = [
     ["voi", "traete", "táhnete"],
     ["loro", "traggono", "táhnou"],
   ]),
-  verb("piacere", "PIACERE — líbit se", [
+  irregularVerb("piacere", "PIACERE — líbit se", [
     ["io", "piaccio", "líbím se"],
     ["tu", "piaci", "líbíš se"],
     ["lui/lei", "piace", "líbí se"],
@@ -274,7 +278,7 @@ const irregularVerbs = [
     ["voi", "piacete", "líbíte se"],
     ["loro", "piacciono", "líbí se"],
   ]),
-  verb("valere", "VALERE — mít cenu", [
+  irregularVerb("valere", "VALERE — mít cenu", [
     ["io", "valgo", "mám cenu"],
     ["tu", "vali", "máš cenu"],
     ["lui/lei", "vale", "má cenu"],
@@ -282,7 +286,7 @@ const irregularVerbs = [
     ["voi", "valete", "máte cenu"],
     ["loro", "valgono", "mají cenu"],
   ]),
-  verb("cuocere", "CUOCERE — vařit / péci", [
+  irregularVerb("cuocere", "CUOCERE — vařit / péci", [
     ["io", "cuocio", "vařím"],
     ["tu", "cuoci", "vaříš"],
     ["lui/lei", "cuoce", "vaří"],
@@ -290,7 +294,7 @@ const irregularVerbs = [
     ["voi", "cocete", "vaříte"],
     ["loro", "cuociono", "vaří"],
   ]),
-  verb("giungere", "GIUNGERE — dorazit", [
+  irregularVerb("giungere", "GIUNGERE — dorazit", [
     ["io", "giungo", "dorazím"],
     ["tu", "giungi", "dorazíš"],
     ["lui/lei", "giunge", "dorazí"],
@@ -298,7 +302,7 @@ const irregularVerbs = [
     ["voi", "giungete", "dorazíte"],
     ["loro", "giungono", "dorazí"],
   ]),
-  verb("cadere", "CADERE — padat", [
+  irregularVerb("cadere", "CADERE — padat", [
     ["io", "cado", "padám"],
     ["tu", "cadi", "padáš"],
     ["lui/lei", "cade", "padá"],
@@ -306,7 +310,7 @@ const irregularVerbs = [
     ["voi", "cadete", "padáte"],
     ["loro", "cadono", "padají"],
   ]),
-  verb("conoscere", "CONOSCERE — znát", [
+  irregularVerb("conoscere", "CONOSCERE — znát", [
     ["io", "conosco", "znám"],
     ["tu", "conosci", "znáš"],
     ["lui/lei", "conosce", "zná"],
@@ -314,7 +318,7 @@ const irregularVerbs = [
     ["voi", "conoscete", "znáte"],
     ["loro", "conoscono", "znají"],
   ]),
-  verb("parere", "PARERE — zdát se", [
+  irregularVerb("parere", "PARERE — zdát se", [
     ["io", "paio", "zdám se"],
     ["tu", "pari", "zdáš se"],
     ["lui/lei", "pare", "zdá se"],
@@ -322,7 +326,7 @@ const irregularVerbs = [
     ["voi", "parete", "zdáte se"],
     ["loro", "paiono", "zdají se"],
   ]),
-  verb("correre", "CORRERE — běžet", [
+  irregularVerb("correre", "CORRERE — běžet", [
     ["io", "corro", "běžím"],
     ["tu", "corri", "běžíš"],
     ["lui/lei", "corre", "běží"],
@@ -330,7 +334,7 @@ const irregularVerbs = [
     ["voi", "correte", "běžíte"],
     ["loro", "corrono", "běží"],
   ]),
-  verb("accendere", "ACCENDERE — zapnout", [
+  irregularVerb("accendere", "ACCENDERE — zapnout", [
     ["io", "accendo", "zapínám"],
     ["tu", "accendi", "zapínáš"],
     ["lui/lei", "accende", "zapíná"],
@@ -338,7 +342,7 @@ const irregularVerbs = [
     ["voi", "accendete", "zapínáte"],
     ["loro", "accendono", "zapínají"],
   ]),
-  verb("spegnere", "SPEGNERE — vypnout", [
+  irregularVerb("spegnere", "SPEGNERE — vypnout", [
     ["io", "spengo", "vypínám"],
     ["tu", "spegni", "vypínáš"],
     ["lui/lei", "spegne", "vypíná"],
@@ -346,7 +350,7 @@ const irregularVerbs = [
     ["voi", "spegnete", "vypínáte"],
     ["loro", "spengono", "vypínají"],
   ]),
-  verb("nascere", "NASCERE — narodit se / vzniknout", [
+  irregularVerb("nascere", "NASCERE — narodit se / vzniknout", [
     ["io", "nasco", "rodím se"],
     ["tu", "nasci", "rodíš se"],
     ["lui/lei", "nasce", "rodí se"],
@@ -354,7 +358,7 @@ const irregularVerbs = [
     ["voi", "nascete", "rodíte se"],
     ["loro", "nascono", "rodí se"],
   ]),
-  verb("vincere", "VINCERE — vyhrát", [
+  irregularVerb("vincere", "VINCERE — vyhrát", [
     ["io", "vinco", "vyhrávám"],
     ["tu", "vinci", "vyhráváš"],
     ["lui/lei", "vince", "vyhrává"],
@@ -362,7 +366,7 @@ const irregularVerbs = [
     ["voi", "vincete", "vyhráváte"],
     ["loro", "vincono", "vyhrávají"],
   ]),
-  verb("apparire", "APPARIRE — objevit se", [
+  irregularVerb("apparire", "APPARIRE — objevit se", [
     ["io", "appaio", "objevuji se"],
     ["tu", "appari", "objevuješ se"],
     ["lui/lei", "appare", "objevuje se"],
@@ -370,7 +374,7 @@ const irregularVerbs = [
     ["voi", "apparite", "objevujete se"],
     ["loro", "appaiono", "objevují se"],
   ]),
-  verb("condurre", "CONDURRE — vést / řídit", [
+  irregularVerb("condurre", "CONDURRE — vést / řídit", [
     ["io", "conduco", "vedu"],
     ["tu", "conduci", "vedeš"],
     ["lui/lei", "conduce", "vede"],
@@ -378,7 +382,7 @@ const irregularVerbs = [
     ["voi", "conducete", "vedete"],
     ["loro", "conducono", "vedou"],
   ]),
-  verb("tradurre", "TRADURRE — přeložit", [
+  irregularVerb("tradurre", "TRADURRE — přeložit", [
     ["io", "traduco", "překládám"],
     ["tu", "traduci", "překládáš"],
     ["lui/lei", "traduce", "překládá"],
@@ -386,7 +390,7 @@ const irregularVerbs = [
     ["voi", "traducete", "překládáte"],
     ["loro", "traducono", "překládají"],
   ]),
-  verb("produrre", "PRODURRE — vyrábět", [
+  irregularVerb("produrre", "PRODURRE — vyrábět", [
     ["io", "produco", "vyrábím"],
     ["tu", "produci", "vyrábíš"],
     ["lui/lei", "produce", "vyrábí"],
@@ -394,7 +398,7 @@ const irregularVerbs = [
     ["voi", "producete", "vyrábíte"],
     ["loro", "producono", "vyrábějí"],
   ]),
-  verb("piangere", "PIANGERE — plakat", [
+  irregularVerb("piangere", "PIANGERE — plakat", [
     ["io", "piango", "pláču"],
     ["tu", "piangi", "pláčeš"],
     ["lui/lei", "piange", "pláče"],
@@ -402,7 +406,7 @@ const irregularVerbs = [
     ["voi", "piangete", "pláčete"],
     ["loro", "piangono", "pláčou"],
   ]),
-  verb("decidere", "DECIDERE — rozhodnout se", [
+  irregularVerb("decidere", "DECIDERE — rozhodnout se", [
     ["io", "decido", "rozhodnu se"],
     ["tu", "decidi", "rozhodneš se"],
     ["lui/lei", "decide", "rozhodne se"],
@@ -603,6 +607,7 @@ const rules = [
 const rulesWithPron = rules.map((r) => ({ ...r, p: pron(r.example) }));
 const payload = { verbs, rules: rulesWithPron };
 const serialized = JSON.stringify(payload, null, 2);
+fs.mkdirSync(path.dirname(backendOutPath), { recursive: true });
 fs.writeFileSync(outPath, serialized, "utf8");
 fs.writeFileSync(backendOutPath, serialized, "utf8");
 console.log(`Wrote ${verbs.length} verbs and ${rules.length} rules to:\n  ${outPath}\n  ${backendOutPath}`);

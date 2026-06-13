@@ -1,10 +1,27 @@
 /** [person, italian, czech, czech-friendly pronunciation in brackets] */
 export type VerbRow = [string, string, string, string];
 
+export type VerbTenseId =
+  | "presente"
+  | "imperfetto"
+  | "passato_prossimo"
+  | "futuro"
+  | "condizionale"
+  | "congiuntivo"
+  | "imperativo";
+
+export type VerbTense = {
+  id: VerbTenseId;
+  label: string;
+  rows: VerbRow[];
+};
+
 export type VerbConjugation = {
   id: string;
   title: string;
-  rows: VerbRow[];
+  tenses: VerbTense[];
+  /** @deprecated Present tense only — kept for older cached grammar bundles. */
+  rows?: VerbRow[];
 };
 
 export type GrammarRule = {
