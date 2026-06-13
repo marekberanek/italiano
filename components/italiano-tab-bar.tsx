@@ -1,11 +1,11 @@
 import type { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { BlurView } from "expo-blur";
 import * as Haptics from "expo-haptics";
-import { Platform, Pressable, StyleSheet, Text, View } from "react-native";
+import { Platform, Pressable, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import type { ColorPalette, ThemeShadows } from "@/constants/theme";
-import { FontFamily, Radius, Spacing, TabBarMetrics } from "@/constants/theme";
+import { Radius, Spacing, TabBarMetrics } from "@/constants/theme";
 import { useThemedStyles } from "@/hooks/use-themed-styles";
 import { useTheme } from "@/lib/theme/theme-context";
 
@@ -51,7 +51,6 @@ export function ItalianoTabBar({ state, descriptors, navigation }: BottomTabBarP
             const isFocused = state.index === index;
             const label = resolveLabel(options, route.name);
             const iconColor = isFocused ? styles.iconActive.color : styles.iconInactive.color;
-            const labelColor = isFocused ? styles.labelActive.color : styles.labelInactive.color;
 
             const onPress = () => {
               if (Platform.OS === "ios") {
@@ -95,13 +94,6 @@ export function ItalianoTabBar({ state, descriptors, navigation }: BottomTabBarP
                     focused: isFocused,
                   })}
                 </View>
-                <Text
-                  style={[styles.label, { color: labelColor }]}
-                  numberOfLines={1}
-                  allowFontScaling={false}
-                >
-                  {label}
-                </Text>
               </Pressable>
             );
           })}
@@ -156,9 +148,7 @@ function createStyles(p: ColorPalette, s: ThemeShadows) {
     item: {
       flex: 1,
       alignItems: "center",
-      justifyContent: "flex-start",
-      paddingTop: 2,
-      gap: TabBarMetrics.itemGap,
+      justifyContent: "center",
     },
     itemPressed: { opacity: 0.85 },
     iconPill: {
@@ -174,14 +164,5 @@ function createStyles(p: ColorPalette, s: ThemeShadows) {
     },
     iconActive: { color: p.textInverse },
     iconInactive: { color: p.tabIconInactive },
-    labelActive: { color: p.textStrong },
-    labelInactive: { color: p.textMuted },
-    label: {
-      fontFamily: FontFamily.bold,
-      fontSize: TabBarMetrics.labelSize,
-      lineHeight: 14,
-      letterSpacing: 0.4,
-      textTransform: "uppercase",
-    },
   });
 }

@@ -238,15 +238,13 @@ export const Typography = {
 } as const;
 
 export const TabBarMetrics = {
-  barHeight: 72,
+  barHeight: 54,
   barPaddingH: 12,
-  barPaddingV: 6,
+  barPaddingV: 9,
   iconSize: 26,
-  labelSize: 11,
-  itemGap: 4,
   iconPillHeight: 36,
-  iconPillMinWidth: 56,
-  iconPillPaddingH: 14,
+  iconPillMinWidth: 44,
+  iconPillPaddingH: 12,
 } as const;
 
 export const SearchFieldMetrics = {

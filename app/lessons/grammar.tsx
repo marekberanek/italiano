@@ -1,5 +1,5 @@
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import {
   Platform,
   Pressable,
@@ -60,6 +60,8 @@ function speakablePhrase(pronoun: string, form: string): string {
   return `${cleanedPronoun} ${form}`.trim();
 }
 
+const CHIP_ROW_PADDING = 2;
+
 export default function GrammarScreen() {
   const styles = useThemedStyles(createStyles);
   const { palette } = useTheme();
@@ -106,13 +108,34 @@ export default function GrammarScreen() {
 
   const scrollRef = useRef<ScrollView>(null);
   const offsetsRef = useRef<Record<string, number>>({});
+  const scrollAfterLayoutRef = useRef(true);
+
+  /** Align the selected chip with the left edge of the horizontal scroll viewport. */
+  const scrollToVerb = useCallback((id: string) => {
+    const x = offsetsRef.current[id];
+    if (typeof x !== "number") return false;
+    requestAnimationFrame(() => {
+      scrollRef.current?.scrollTo({
+        x: Math.max(0, x - CHIP_ROW_PADDING),
+        animated: true,
+      });
+    });
+    scrollAfterLayoutRef.current = false;
+    return true;
+  }, []);
+
+  useLayoutEffect(() => {
+    offsetsRef.current = {};
+    scrollAfterLayoutRef.current = true;
+  }, [searchQuery]);
+
+  useEffect(() => {
+    scrollAfterLayoutRef.current = true;
+    if (selectedId) scrollToVerb(selectedId);
+  }, [selectedId, searchQuery, scrollToVerb]);
 
   const onSelect = (id: string) => {
     setSelectedId(id);
-    const x = offsetsRef.current[id];
-    if (typeof x === "number") {
-      scrollRef.current?.scrollTo({ x: Math.max(0, x - 16), animated: true });
-    }
   };
 
   return (
@@ -170,6 +193,9 @@ export default function GrammarScreen() {
                     onPress={() => onSelect(verb.id)}
                     onLayoutX={(x) => {
                       offsetsRef.current[verb.id] = x;
+                      if (verb.id === selectedId && scrollAfterLayoutRef.current) {
+                        scrollToVerb(verb.id);
+                      }
                     }}
                   />
                 );
