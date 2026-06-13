@@ -11,6 +11,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { Platform } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { useVocabReminders } from "@/hooks/use-vocab-reminders";
@@ -58,6 +59,7 @@ export default function RootLayout() {
 
   useEffect(() => {
     if (!loaded) return;
+    if (Platform.OS === "web") return;
     // Cold-start case: app was opened by tapping a notification while killed.
     Notifications.getLastNotificationResponseAsync()
       .then((res) => openQuizForNotification(res?.notification))
@@ -89,6 +91,7 @@ function RootNavigation() {
           <RemindersScheduler />
           <Stack screenOptions={{ contentStyle: { backgroundColor: palette.background } }}>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="auth/callback" options={{ headerShown: false }} />
           <Stack.Screen
             name="lessons/grammar"
             options={{ title: "Slovesa", headerShown: false }}

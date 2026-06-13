@@ -3,6 +3,7 @@ import { Platform } from "react-native";
 
 import type { LookupResult } from "@/assets/data/types";
 import { getAccessToken } from "@/lib/auth/supabase";
+import { getWebApiOrigin } from "@/lib/api/vercel-origin";
 import { italianToCzechPron } from "@/lib/pronunciation/italian-pron";
 
 type Extra = {
@@ -11,8 +12,14 @@ type Extra = {
 
 const extra = (Constants.expoConfig?.extra ?? {}) as Extra;
 
-const rawEndpoint = process.env.EXPO_PUBLIC_TRANSLATE_ENDPOINT ?? extra.translateEndpoint ?? "";
-const ENDPOINT = typeof rawEndpoint === "string" ? rawEndpoint.trim() : "";
+function resolveTranslateEndpoint(): string {
+  const webOrigin = getWebApiOrigin();
+  if (webOrigin) return `${webOrigin}/api/translate`;
+  const rawEndpoint = process.env.EXPO_PUBLIC_TRANSLATE_ENDPOINT ?? extra.translateEndpoint ?? "";
+  return typeof rawEndpoint === "string" ? rawEndpoint.trim() : "";
+}
+
+const ENDPOINT = resolveTranslateEndpoint();
 
 const isLikelyCzech = (text: string) =>
   /[áčďéěíňóřšťúůýž]/i.test(text) || /[a-z]+(at|ovat|out|et|it|nout)$/i.test(text);

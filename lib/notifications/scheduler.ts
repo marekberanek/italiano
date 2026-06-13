@@ -31,6 +31,7 @@ let handlerInstalled = false;
  * Safe to call multiple times.
  */
 export function installNotificationHandler(): void {
+  if (Platform.OS === "web") return;
   if (handlerInstalled) return;
   handlerInstalled = true;
   Notifications.setNotificationHandler({
@@ -209,6 +210,7 @@ function buildRandomSlots(now: Date, perDay: 1 | 2 | 3): Date[] {
  * - schedule mode with no weekdays selected
  */
 export async function scheduleVocabReminders(state: VocabReminderState): Promise<void> {
+  if (Platform.OS === "web") return;
   await cancelVocabReminders();
 
   const settings = await readReminderSettings();

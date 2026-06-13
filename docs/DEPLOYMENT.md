@@ -28,6 +28,7 @@ By the end you will have:
 | 4b | **Anthropic API** (optional) | multiple meanings for ambiguous words (e.g. `sušička`) via `claude-haiku-4-5` | pay-as-you-go (~$0.0001–0.0003 per lookup, ~$5 credit lasts months) |
 | 5 | **Vercel** | serverless API + content bundle | $0 (hobby plan) |
 | 6 | **Expo / EAS** | mobile build pipeline | $0 (limited builds/month) |
+| 6b | **Vercel (web root)** | PWA static export + `/api` rewrite | $0 (hobby plan) |
 | 7 | **Apple Developer** ($99/yr) | only if you want **TestFlight** on iOS | paid |
 | 8 | **Google Play console** ($25 once) | only if you want a **Play track** on Android | paid |
 
@@ -673,6 +674,21 @@ Info.plist) still require a fresh `eas build`.
 
 ---
 
+## 5b. Web / PWA — browser install (no Apple Dev)
+
+Full step-by-step guide: **[WEB-DEPLOYMENT.md](./WEB-DEPLOYMENT.md)** (Vercel web
+project, Supabase redirect URLs, local dev, smoke tests, troubleshooting).
+
+Summary: deploy from **repo root** as Vercel project **`italiano-prod`**
+(`https://italiano-prod.vercel.app`); API stays on
+**`italiano-api`** (`backend/`). Root [`vercel.json`](../vercel.json) rewrites
+`/api/*` to the backend. Web Vercel env needs only `EXPO_PUBLIC_SUPABASE_URL` and
+`EXPO_PUBLIC_SUPABASE_ANON_KEY`.
+
+```bash
+npm run build:web && npx vercel --prod   # manual deploy from root
+```
+
 ## 6. End-to-end smoke test (on the phone)
 
 1. Open *italiano*.
@@ -695,6 +711,7 @@ Info.plist) still require a fresh `eas build`.
 | Backend code (`backend/api/*.ts`) | `git push` — Vercel auto-redeploys `main` to production, PRs get preview URLs. |
 | Lesson JSON (`backend/content/*.json`) | Bump `CONTENT_VERSION` in Vercel envs **and** redeploy, so manifest hash changes and clients refetch. |
 | Mobile JS (UI, hooks) | `eas update --branch preview` — instant. |
+| Web / PWA UI | `git push` — Vercel redeploys root project (`npm run build:web`). |
 | Native deps / new plugin | `eas build` again. |
 | Supabase schema | Add a new file in `supabase/migrations/`, `supabase db push`. |
 
@@ -707,7 +724,7 @@ Info.plist) still require a fresh `eas build`.
 | `EXPO_PUBLIC_TRANSLATE_ENDPOINT` | ✅ | — | — | ✅ (URL only) |
 | `EXPO_PUBLIC_CONTENT_BASE_URL` | ✅ | — | — | ✅ |
 | `EXPO_PUBLIC_SUPABASE_URL` | ✅ | — | — | ✅ |
-| `EXPO_PUBLIC_SUPABASE_ANON_KEY` | ✅ | — | — | ✅ (anon key is not secret) |
+| `EXPO_PUBLIC_SUPABASE_ANON_KEY` | ✅ | ✅ (web Vercel project) | — | ✅ (anon key is not secret) |
 | `DEEPL_API_KEY` | ❌ | ✅ | — | ❌ |
 | `ANTHROPIC_API_KEY` *(optional)* | ❌ | ✅ | — | ❌ |
 | `SUPABASE_URL` (server) | — | ✅ | — | ❌ |
@@ -738,6 +755,9 @@ Info.plist) still require a fresh `eas build`.
 | Vocab not syncing across devices | User signed-in on only one device, or RLS blocks | Profile → Synchronizovat; check Supabase logs. |
 | Lessons empty / *Bundle not yet seeded* (HTTP 503) | `content_bundles` is empty | Run `npm run db:migrate && npm run content:push` (§ 2.6). |
 | `/api/content-manifest` returns `version: "fallback"` | DB unreachable or `SUPABASE_URL` / `SUPABASE_ANON_KEY` not set on Vercel | Add the env vars (§ 3.3) and redeploy; also re-run `content:push` if the table is empty. |
+| Web PWA: *Invalid redirect URL* after Google login | Web origin not in Supabase allow-list | Add `https://italiano-prod.vercel.app/**` and `http://localhost:8081/**` — see [WEB-DEPLOYMENT.md §2.3](./WEB-DEPLOYMENT.md). |
+| Web PWA: translate 404 / CORS error | Rewrite missing or wrong backend URL in root `vercel.json` | Confirm `/api/:path*` rewrite points at `italiano-api.vercel.app` (§ 5b). |
+| Web PWA: offline lessons empty | First visit was offline before SW installed | Open online once so `sw.js` precaches bundles; or check DevTools → Application → Cache Storage. |
 
 ---
 

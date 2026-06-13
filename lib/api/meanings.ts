@@ -2,6 +2,7 @@ import Constants from "expo-constants";
 
 import type { WordMeaning } from "@/assets/data/types";
 import { getAccessToken } from "@/lib/auth/supabase";
+import { getWebApiOrigin } from "@/lib/api/vercel-origin";
 
 /**
  * Calls `POST /api/translate-meanings` to fetch a list of disambiguated senses
@@ -15,17 +16,18 @@ type Extra = {
 
 const extra = (Constants.expoConfig?.extra ?? {}) as Extra;
 
-const rawEndpoint = process.env.EXPO_PUBLIC_TRANSLATE_ENDPOINT ?? extra.translateEndpoint ?? "";
-const TRANSLATE_ENDPOINT = typeof rawEndpoint === "string" ? rawEndpoint.trim() : "";
-
 /**
- * Derives the meanings endpoint from `EXPO_PUBLIC_TRANSLATE_ENDPOINT` so the
- * mobile app only needs to configure one URL. Swaps the trailing path segment
- * `translate` → `translate-meanings` and keeps everything else intact.
+ * Derives the meanings endpoint from translate URL. On web uses same-origin
+ * `/api/translate-meanings`; on native swaps the trailing path segment of
+ * `EXPO_PUBLIC_TRANSLATE_ENDPOINT`.
  */
 function resolveMeaningsEndpoint(): string {
-  if (!TRANSLATE_ENDPOINT) return "";
-  return TRANSLATE_ENDPOINT.replace(/\/translate(?:\/?$)/, "/translate-meanings");
+  const webOrigin = getWebApiOrigin();
+  if (webOrigin) return `${webOrigin}/api/translate-meanings`;
+  const rawEndpoint = process.env.EXPO_PUBLIC_TRANSLATE_ENDPOINT ?? extra.translateEndpoint ?? "";
+  const translateEndpoint = typeof rawEndpoint === "string" ? rawEndpoint.trim() : "";
+  if (!translateEndpoint) return "";
+  return translateEndpoint.replace(/\/translate(?:\/?$)/, "/translate-meanings");
 }
 
 const MEANINGS_ENDPOINT = resolveMeaningsEndpoint();

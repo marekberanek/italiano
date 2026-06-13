@@ -3,6 +3,7 @@ import { useCallback, useMemo, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
+  Platform,
   Pressable,
   StyleSheet,
   Text,
@@ -134,7 +135,7 @@ export default function ProfileScreen() {
           and we don't want anonymous installs to schedule background work. */}
       <AppearanceCard />
 
-      {user ? <RemindersCard /> : null}
+      {user && Platform.OS !== "web" ? <RemindersCard /> : null}
 
       {!user ? (
         <View style={styles.actions}>

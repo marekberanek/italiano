@@ -36,6 +36,13 @@ WebBrowser.maybeCompleteAuthSession();
  * (no path) so Supabase allow-lists that already list `italiano://` keep working.
  */
 function oauthRedirectUri(): string {
+  if (Platform.OS === "web") {
+    if (typeof window !== "undefined" && window.location?.origin) {
+      // Dedicated path — iOS home-screen PWA mishandles bare-origin redirects.
+      return `${window.location.origin}/auth/callback`;
+    }
+    return "";
+  }
   if (Constants.executionEnvironment === ExecutionEnvironment.StoreClient) {
     return makeRedirectUri({ path: "auth/callback" });
   }
@@ -222,6 +229,30 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return;
     }
     const redirectTo = oauthRedirectUri();
+    if (Platform.OS === "web") {
+      if (!redirectTo) {
+        Alert.alert("Přihlášení", "Nelze určit návratovou URL prohlížeče.");
+        return;
+      }
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: { redirectTo, skipBrowserRedirect: true },
+      });
+      if (error) {
+        Alert.alert("Přihlášení", error.message);
+        return;
+      }
+      const url = data?.url;
+      if (!url) {
+        Alert.alert("Přihlášení", "Nepodařilo se získat OAuth URL.");
+        return;
+      }
+      // Full-page navigation (not popup) — required for iOS standalone PWA.
+      if (typeof window !== "undefined") {
+        window.location.replace(url);
+      }
+      return;
+    }
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: { redirectTo, skipBrowserRedirect: true },
