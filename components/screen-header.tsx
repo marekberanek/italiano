@@ -8,6 +8,8 @@ import { Spacing, Typography } from "@/constants/theme";
 import { useThemedStyles } from "@/hooks/use-themed-styles";
 import { useAuth } from "@/lib/auth/use-auth";
 
+const AVATAR_SIZE = 44;
+
 type Props = {
   title: string;
   subtitle?: string;
@@ -18,25 +20,15 @@ type Props = {
 export function ScreenHeader({ title, subtitle, showBack = false, backLabel }: Props) {
   const { user } = useAuth();
   const styles = useThemedStyles(createStyles);
-  const trailing = user ? <UserAvatar size={44} /> : <AppLogo variant="badge" size={44} />;
-
-  if (showBack) {
-    return (
-      <View style={styles.stack}>
-        <View style={styles.toolbar}>
-          <BackLink label={backLabel} />
-          {trailing}
-        </View>
-        <View style={styles.textWrap}>
-          <Text style={styles.title}>{title}</Text>
-          {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
-        </View>
-      </View>
-    );
-  }
+  const trailing = user ? (
+    <UserAvatar size={AVATAR_SIZE} />
+  ) : (
+    <AppLogo variant="badge" size={AVATAR_SIZE} />
+  );
 
   return (
     <View style={styles.container}>
+      {showBack ? <BackLink label={backLabel} iconOnly size={AVATAR_SIZE} /> : null}
       <View style={styles.textWrap}>
         <Text style={styles.title}>{title}</Text>
         {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
@@ -53,17 +45,9 @@ function createStyles(p: ColorPalette) {
       alignItems: "center",
       justifyContent: "space-between",
       gap: Spacing.md,
+      minHeight: AVATAR_SIZE,
     },
-    stack: {
-      gap: Spacing.sm,
-    },
-    toolbar: {
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "space-between",
-      gap: Spacing.md,
-    },
-    textWrap: { flex: 1, gap: 2 },
+    textWrap: { flex: 1, gap: 2, minWidth: 0 },
     title: { ...Typography.title, color: p.textStrong },
     subtitle: { ...Typography.small, color: p.textMuted },
   });
