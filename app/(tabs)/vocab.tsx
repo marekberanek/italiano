@@ -24,7 +24,7 @@ import { ScreenHeader } from "@/components/screen-header";
 import { StatTile } from "@/components/stat-tile";
 import { VocabRow } from "@/components/vocab-row";
 import type { ColorPalette, ThemeShadows } from "@/constants/theme";
-import { Radius, Spacing, Typography } from "@/constants/theme";
+import { Radius, SearchFieldMetrics, Spacing, Typography } from "@/constants/theme";
 import { useThemedStyles } from "@/hooks/use-themed-styles";
 import { useTheme } from "@/lib/theme/theme-context";
 import { useItalianTts } from "@/hooks/use-italian-tts";
@@ -484,7 +484,14 @@ function createStyles(p: ColorPalette, s: ThemeShadows) {
     borderWidth: 1,
     borderColor: p.border,
   },
-  searchField: { flex: 1, ...Typography.body, color: p.textStrong },
+  searchField: {
+    flex: 1,
+    fontFamily: Typography.body.fontFamily,
+    fontSize: Platform.OS === "web" ? 16 : SearchFieldMetrics.fontSize,
+    lineHeight: SearchFieldMetrics.lineHeight,
+    color: p.textStrong,
+    ...Platform.select({ web: { outlineStyle: "none" } as object }),
+  },
   list: { gap: Spacing.sm + 2 },
   empty: { alignItems: "center", paddingVertical: Spacing.xxl },
   emptyText: { ...Typography.body, color: p.textMuted, fontStyle: "italic" },
@@ -530,7 +537,14 @@ function createStyles(p: ColorPalette, s: ThemeShadows) {
     borderRadius: Radius.pill,
     minHeight: 48,
   },
-  modalSearchField: { flex: 1, ...Typography.body, color: p.textStrong },
+  modalSearchField: {
+    flex: 1,
+    fontFamily: Typography.body.fontFamily,
+    fontSize: Platform.OS === "web" ? 16 : SearchFieldMetrics.fontSize,
+    lineHeight: SearchFieldMetrics.lineHeight,
+    color: p.textStrong,
+    ...Platform.select({ web: { outlineStyle: "none" } as object }),
+  },
   searchBtn: {
     backgroundColor: p.brand,
     paddingHorizontal: Spacing.lg,
