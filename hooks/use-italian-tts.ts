@@ -4,6 +4,7 @@ import { Platform } from "react-native";
 
 import { fetchNeuralTtsAudio } from "@/lib/api/tts";
 import {
+  getCachedItalianVoiceId,
   primeItalianVoiceResolution,
   resolveItalianVoiceId,
 } from "@/lib/tts/resolve-italian-voice";
@@ -39,6 +40,15 @@ function ttsRewrite(text: string): string {
   return phonetic ?? text;
 }
 
+/** iOS Safari blocks `audio.play()` after an async fetch (user-gesture expires). */
+function isIosWeb(): boolean {
+  if (Platform.OS !== "web" || typeof navigator === "undefined") return false;
+  return (
+    /iPad|iPhone|iPod/i.test(navigator.userAgent) ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
+  );
+}
+
 const audioCache = new Map<string, string>();
 let webAudio: HTMLAudioElement | null = null;
 
@@ -49,29 +59,49 @@ function stopWebAudio(): void {
   webAudio = null;
 }
 
+function invalidateCachedAudio(text: string): void {
+  const rewritten = ttsRewrite(text);
+  const url = audioCache.get(rewritten);
+  if (url) {
+    URL.revokeObjectURL(url);
+    audioCache.delete(rewritten);
+  }
+}
+
 async function playNeuralWebAudio(text: string, onDone: () => void): Promise<boolean> {
   const rewritten = ttsRewrite(text);
-  let url = audioCache.get(rewritten);
-  if (!url) {
-    const blob = await fetchNeuralTtsAudio(rewritten);
-    if (!blob) return false;
-    url = URL.createObjectURL(blob);
-    audioCache.set(rewritten, url);
-  }
+  try {
+    let url = audioCache.get(rewritten);
+    if (!url) {
+      const blob = await fetchNeuralTtsAudio(rewritten);
+      if (!blob) return false;
+      url = URL.createObjectURL(blob);
+      audioCache.set(rewritten, url);
+    }
 
-  stopWebAudio();
-  const audio = new Audio(url);
-  webAudio = audio;
-  audio.onended = () => {
-    if (webAudio === audio) webAudio = null;
+    stopWebAudio();
+    const audio = new Audio(url);
+    webAudio = audio;
+
+    await new Promise<void>((resolve, reject) => {
+      audio.onended = () => {
+        if (webAudio === audio) webAudio = null;
+        onDone();
+        resolve();
+      };
+      audio.onerror = () => {
+        if (webAudio === audio) webAudio = null;
+        onDone();
+        reject(new Error("audio playback error"));
+      };
+      void audio.play().catch(reject);
+    });
+    return true;
+  } catch {
+    invalidateCachedAudio(text);
     onDone();
-  };
-  audio.onerror = () => {
-    if (webAudio === audio) webAudio = null;
-    onDone();
-  };
-  await audio.play();
-  return true;
+    return false;
+  }
 }
 
 export function useItalianTts(): ItalianTts {
@@ -92,9 +122,9 @@ export function useItalianTts(): ItalianTts {
     };
   }, []);
 
-  const speakLocal = useCallback(async (text: string) => {
+  const speakLocal = useCallback((text: string) => {
     const rewritten = ttsRewrite(text);
-    const voiceId = await resolveItalianVoiceId();
+    const voiceId = getCachedItalianVoiceId();
     Speech.stop();
     Speech.speak(rewritten, {
       language: LANGUAGE,
@@ -125,26 +155,22 @@ export function useItalianTts(): ItalianTts {
     (text: string) => {
       if (!text?.trim()) return;
 
-      const run = async () => {
-        stopWebAudio();
-        Speech.stop();
+      stopWebAudio();
+      Speech.stop();
 
-        if (Platform.OS === "web") {
-          speakingRef.current = true;
-          setIsSpeaking(true);
-          const played = await playNeuralWebAudio(text, () => {
-            speakingRef.current = false;
-            setIsSpeaking(false);
-          });
-          if (played) return;
+      if (Platform.OS === "web" && !isIosWeb()) {
+        speakingRef.current = true;
+        setIsSpeaking(true);
+        void playNeuralWebAudio(text, () => {
           speakingRef.current = false;
           setIsSpeaking(false);
-        }
+        }).then((played) => {
+          if (!played) speakLocal(text);
+        });
+        return;
+      }
 
-        await speakLocal(text);
-      };
-
-      void run();
+      speakLocal(text);
     },
     [speakLocal],
   );

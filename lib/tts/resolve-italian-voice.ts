@@ -56,19 +56,30 @@ export function pickBestItalianVoice(voices: Speech.Voice[]): Speech.Voice | nul
 }
 
 let resolvePromise: Promise<string | null> | null = null;
+let cachedVoiceId: string | null = null;
 
 /** Resolves once per app session; re-runs if the first call returned no voice. */
 export async function resolveItalianVoiceId(): Promise<string | null> {
   if (!resolvePromise) {
     resolvePromise = Speech.getAvailableVoicesAsync()
-      .then((voices) => pickBestItalianVoice(voices)?.identifier ?? null)
+      .then((voices) => {
+        const id = pickBestItalianVoice(voices)?.identifier ?? null;
+        cachedVoiceId = id;
+        return id;
+      })
       .catch(() => null);
   }
   const voiceId = await resolvePromise;
   if (!voiceId) {
     resolvePromise = null;
+    cachedVoiceId = null;
   }
   return voiceId;
+}
+
+/** Sync read — use in `speak()` so iOS web keeps the user-gesture chain for TTS. */
+export function getCachedItalianVoiceId(): string | null {
+  return cachedVoiceId;
 }
 
 export function primeItalianVoiceResolution(): void {
@@ -76,6 +87,7 @@ export function primeItalianVoiceResolution(): void {
   if (typeof window !== "undefined" && window.speechSynthesis) {
     const handler = () => {
       resolvePromise = null;
+      cachedVoiceId = null;
       void resolveItalianVoiceId();
     };
     window.speechSynthesis.addEventListener("voiceschanged", handler);
