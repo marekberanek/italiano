@@ -1,7 +1,7 @@
 {
   "name": "italiano",
   "main": "expo-router/entry",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "scripts": {
     "start": "expo start",
     "generate:grammar": "node ./scripts/generate-grammar.mjs",
