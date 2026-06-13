@@ -131,9 +131,9 @@ function createStyles(p: ColorPalette) {
   },
   pron: {
     ...Typography.small,
-    color: p.textMuted,
+    color: p.text,
     fontStyle: "italic",
-    fontSize: 11,
+    fontSize: 13,
     marginTop: 2,
   },
   });

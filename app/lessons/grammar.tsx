@@ -342,7 +342,7 @@ function createStyles(p: ColorPalette) {
     },
     cellPron: {
       ...Typography.small,
-      color: p.textMuted,
+      color: p.text,
       fontStyle: "italic",
       fontSize: 13,
       marginTop: 2,

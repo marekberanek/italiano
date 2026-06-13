@@ -72,9 +72,9 @@ function createStyles(p: ColorPalette) {
   cz: { ...Typography.body, color: p.text, fontSize: 14 },
   pron: {
     ...Typography.small,
-    color: p.textMuted,
+    color: p.text,
     fontStyle: "italic",
-    fontSize: 12,
+    fontSize: 13,
   },
   noteIt: {
     ...Typography.bodyStrong,

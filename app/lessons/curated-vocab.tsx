@@ -232,7 +232,7 @@ function createStyles(p: ColorPalette) {
     fontStyle: "italic",
   },
   cz: { ...Typography.body, color: p.text, fontSize: 14 },
-  pron: { ...Typography.small, color: p.textMuted, fontStyle: "italic", fontSize: 12 },
+  pron: { ...Typography.small, color: p.text, fontStyle: "italic", fontSize: 13 },
   addBtn: {
     width: 36,
     height: 36,

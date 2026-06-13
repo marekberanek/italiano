@@ -109,15 +109,16 @@ function createStyles(p: ColorPalette) {
     color: p.navy,
   },
   name: {
+    fontFamily: Typography.bodyStrong.fontFamily,
     ...Typography.small,
-    color: p.text,
-    fontSize: 11,
+    color: p.textStrong,
+    fontSize: 13,
   },
   pron: {
     ...Typography.small,
-    color: p.textMuted,
+    color: p.text,
     fontStyle: "italic",
-    fontSize: 11,
+    fontSize: 12,
   },
   ruleRow: {
     flexDirection: "row",
