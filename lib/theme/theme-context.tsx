@@ -15,6 +15,7 @@ import {
   type AppearanceSettings,
 } from "@/lib/theme/appearance-settings";
 import { resolveColorScheme, type ResolvedColorScheme } from "@/lib/theme/resolve-appearance";
+import { syncWebChrome } from "@/lib/theme/sync-web-chrome";
 
 type ThemeContextValue = {
   colorScheme: ResolvedColorScheme;
@@ -67,6 +68,11 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   const palette = useMemo(() => getPalette(colorScheme), [colorScheme]);
   const shadows = useMemo(() => getShadows(colorScheme), [colorScheme]);
+
+  useEffect(() => {
+    if (!hydrated) return;
+    syncWebChrome(colorScheme);
+  }, [colorScheme, hydrated]);
 
   const setAppearanceMode = useCallback(async (mode: AppearanceMode) => {
     const next = { mode };

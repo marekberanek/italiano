@@ -19,8 +19,8 @@ type Props = {
   style?: ViewStyle;
 };
 
-/** Fixed tab bar + home indicator + extra scroll breathing room. */
-const TAB_BAR_SAFE_PADDING = TabBarMetrics.barHeight + 48;
+/** Fixed tab bar + floating gap + home indicator + extra scroll breathing room. */
+const TAB_BAR_SAFE_PADDING = TabBarMetrics.barHeight + Spacing.lg + 48;
 
 export function Screen({ children, scroll = true, style }: Props) {
   const { palette } = useTheme();

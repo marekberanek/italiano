@@ -126,6 +126,32 @@ the second hop back to your app using the Redirect URLs from §2.3.
 Provider credentials (Client ID + Secret) are configured in **Supabase →
 Authentication → Providers → Google**, not in Vercel.
 
+### 2.5 Neural TTS (optional, recommended for web)
+
+On-device voices in Safari PWA sound robotic. For natural Italian pronunciation,
+enable **cloud TTS** on the **API** project (`italiano-api`), not on `italiano-prod`.
+
+**Vercel → italiano-api → Settings → Environment Variables** — add for **Production**
+and **Preview**:
+
+| Key | Value | Notes |
+|-----|-------|-------|
+| `OPENAI_API_KEY` | `sk-…` | From [OpenAI API keys](https://platform.openai.com/api-keys). When unset, `/api/tts` returns **503** and the web app falls back to the OS synthesizer (same robotic voice as before). |
+| `OPENAI_TTS_MODEL` *(optional)* | `tts-1-hd` | Default if omitted. `tts-1` is cheaper; `tts-1-hd` sounds better. |
+| `OPENAI_TTS_VOICE` *(optional)* | `nova` | Default if omitted. Multilingual; works well for Italian. |
+
+After adding the key, **redeploy `italiano-api`**. The web app calls
+`italiano-prod.vercel.app/api/tts` (rewrite → backend). **Sign-in is required**
+— the endpoint uses the same Supabase Bearer JWT as translate.
+
+**Cost (rough):** short words are fractions of a cent with `tts-1-hd`; audio is
+cached in the browser for the session so repeated plays of the same word are free.
+
+**Local backend:** add the same keys to `backend/.env` (see
+[`backend/.env.example`](../backend/.env.example)), then `cd backend && npx vercel dev`.
+
+Full backend env reference: **[DEPLOYMENT.md §3.3](./DEPLOYMENT.md)**.
+
 ---
 
 ## 3. Deploy
@@ -197,9 +223,13 @@ unless you use `vercel dev` instead.
 3. **Lekce** — open any lesson (rewrite + content API).
 4. **Profil → Přihlásit Googlem** — redirect to Google, return signed-in.
 5. **Hledat → postel** — result `letto` (rewrite + DeepL + JWT).
-6. **Slovíčka** — add a word, reload — still there (`localStorage`).
-7. **Offline** — after one online visit: DevTools → Network → Offline → reload.
-   Lessons, vocab, and quiz work; search shows a network error.
+6. **TTS** — while signed in, tap play on a word; with `OPENAI_API_KEY` on
+   `italiano-api` the voice should sound natural (neural). Without the key, OS
+   voice fallback is unchanged.
+7. **Slovíčka** — add a word, reload — still there (`localStorage`).
+8. **Offline** — after one online visit: DevTools → Network → Offline → reload.
+   Lessons, vocab, and quiz work; search shows a network error. Neural TTS needs
+   network; cached words in the same session may still play from memory.
 
 ### Install on device
 
@@ -236,6 +266,8 @@ unless you use `vercel dev` instead.
 | Lessons empty offline | First visit was offline | Open online once so service worker precaches bundles |
 | Přihlášení OK but not signed in on localhost | Stale session / cache | Hard refresh; restart with `npx expo start --web -c` |
 | Service Worker not registered (DevTools empty) | Broken `sw.js` on deploy (build placeholder bug) | Redeploy after fix; open `/sw.js` — must **not** contain `__PRECACHE_URLS__`; check Console for errors |
+| TTS still robotic on web | `OPENAI_API_KEY` missing on `italiano-api` or not signed in | Add key (§2.5), redeploy API, sign in, hard refresh; check Network → `POST /api/tts` returns `audio/mpeg` not 503 |
+| TTS silent / no play | 401 (expired session) or blocked autoplay | Re-login in Profil; tap play again (user gesture) |
 | Can't find **Authentication** in dashboard | Wrong product (e.g. Vercel) | Use [supabase.com/dashboard](https://supabase.com/dashboard), not vercel.com |
 
 Direct Supabase links (replace `<ref>`):
@@ -253,9 +285,10 @@ Direct Supabase links (replace `<ref>`):
 | `EXPO_PUBLIC_SUPABASE_ANON_KEY` | ✅ | — | ✅ | ✅ |
 | `EXPO_PUBLIC_TRANSLATE_ENDPOINT` | — | — | ✅ | ✅ |
 | `DEEPL_API_KEY` | ❌ | ✅ | ❌ | ❌ |
+| `OPENAI_API_KEY` *(optional, neural TTS)* | ❌ | ✅ | ❌ | ❌ |
 | `SUPABASE_SERVICE_ROLE_KEY` | ❌ | ✅ | ❌ | ❌ |
 
 ---
 
 *Last updated for PWA layout: root `vercel.json`, `npm run build:web`,
-`public/sw.js`, Supabase PKCE web auth.*
+`public/sw.js`, Supabase PKCE web auth, optional OpenAI neural TTS (`/api/tts`).*

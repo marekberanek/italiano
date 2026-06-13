@@ -31,6 +31,9 @@ export type ColorPalette = {
   overlayLighter: string;
   tabIconActive: string;
   tabIconInactive: string;
+  glassBar: string;
+  glassHighlight: string;
+  glassEdge: string;
 };
 
 export const PaletteLight: ColorPalette = {
@@ -62,6 +65,9 @@ export const PaletteLight: ColorPalette = {
   overlayLighter: "rgba(255, 255, 255, 0.07)",
   tabIconActive: "#009246",
   tabIconInactive: "#A89884",
+  glassBar: "rgba(255, 255, 255, 0.55)",
+  glassHighlight: "rgba(255, 255, 255, 0.65)",
+  glassEdge: "rgba(255, 255, 255, 0.70)",
 };
 
 /** Dark palette aligned with splash `dark.backgroundColor` (#2A1A0F). */
@@ -94,6 +100,9 @@ export const PaletteDark: ColorPalette = {
   overlayLighter: "rgba(255, 255, 255, 0.07)",
   tabIconActive: "#2ECC71",
   tabIconInactive: "#8A7A68",
+  glassBar: "rgba(26, 18, 8, 0.45)",
+  glassHighlight: "rgba(255, 255, 255, 0.10)",
+  glassEdge: "rgba(255, 255, 255, 0.14)",
 };
 
 /** @deprecated Use `useTheme().palette` or `PaletteLight` / `PaletteDark`. */
@@ -241,10 +250,10 @@ export const TabBarMetrics = {
 } as const;
 
 export const SearchFieldMetrics = {
-  minHeight: 64,
-  iconSize: 24,
-  fontSize: 17,
-  lineHeight: 24,
-  paddingH: 20,
-  gap: 12,
+  minHeight: 44,
+  iconSize: 20,
+  fontSize: 15,
+  lineHeight: 20,
+  paddingH: 14,
+  gap: 8,
 } as const;

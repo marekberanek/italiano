@@ -1,5 +1,12 @@
 import * as Speech from "expo-speech";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Platform } from "react-native";
+
+import { fetchNeuralTtsAudio } from "@/lib/api/tts";
+import {
+  primeItalianVoiceResolution,
+  resolveItalianVoiceId,
+} from "@/lib/tts/resolve-italian-voice";
 
 export type ItalianTts = {
   speak: (text: string) => void;
@@ -32,47 +39,120 @@ function ttsRewrite(text: string): string {
   return phonetic ?? text;
 }
 
+const audioCache = new Map<string, string>();
+let webAudio: HTMLAudioElement | null = null;
+
+function stopWebAudio(): void {
+  if (!webAudio) return;
+  webAudio.pause();
+  webAudio.currentTime = 0;
+  webAudio = null;
+}
+
+async function playNeuralWebAudio(text: string, onDone: () => void): Promise<boolean> {
+  const rewritten = ttsRewrite(text);
+  let url = audioCache.get(rewritten);
+  if (!url) {
+    const blob = await fetchNeuralTtsAudio(rewritten);
+    if (!blob) return false;
+    url = URL.createObjectURL(blob);
+    audioCache.set(rewritten, url);
+  }
+
+  stopWebAudio();
+  const audio = new Audio(url);
+  webAudio = audio;
+  audio.onended = () => {
+    if (webAudio === audio) webAudio = null;
+    onDone();
+  };
+  audio.onerror = () => {
+    if (webAudio === audio) webAudio = null;
+    onDone();
+  };
+  await audio.play();
+  return true;
+}
+
 export function useItalianTts(): ItalianTts {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [voiceAvailable, setVoiceAvailable] = useState(true);
+  const speakingRef = useRef(false);
 
   useEffect(() => {
+    primeItalianVoiceResolution();
     let cancelled = false;
-    Speech.getAvailableVoicesAsync()
-      .then((voices) => {
-        if (cancelled) return;
-        setVoiceAvailable(voices.some((v) => v.language?.toLowerCase().startsWith("it")));
-      })
-      .catch(() => {
-        if (!cancelled) setVoiceAvailable(true);
-      });
+    void resolveItalianVoiceId().then((voiceId) => {
+      if (!cancelled) setVoiceAvailable(voiceId != null);
+    });
     return () => {
       cancelled = true;
+      stopWebAudio();
       Speech.stop();
     };
   }, []);
 
-  const speak = useCallback((text: string) => {
-    if (!text?.trim()) return;
+  const speakLocal = useCallback(async (text: string) => {
+    const rewritten = ttsRewrite(text);
+    const voiceId = await resolveItalianVoiceId();
     Speech.stop();
-    Speech.speak(ttsRewrite(text), {
+    Speech.speak(rewritten, {
       language: LANGUAGE,
-      rate: 0.9,
+      ...(voiceId ? { voice: voiceId } : null),
+      rate: 0.92,
       pitch: 1.0,
-      // iOS-only: by default `AVSpeechSynthesizer` uses the app's audio session
-      // which is `.soloAmbient` (silenced by the physical Ring/Silent switch).
-      // Setting this to false lets the synthesizer use its own `.playback`
-      // session so TTS plays even when the phone is muted.
       useApplicationAudioSession: false,
-      onStart: () => setIsSpeaking(true),
-      onDone: () => setIsSpeaking(false),
-      onStopped: () => setIsSpeaking(false),
-      onError: () => setIsSpeaking(false),
+      onStart: () => {
+        speakingRef.current = true;
+        setIsSpeaking(true);
+      },
+      onDone: () => {
+        speakingRef.current = false;
+        setIsSpeaking(false);
+      },
+      onStopped: () => {
+        speakingRef.current = false;
+        setIsSpeaking(false);
+      },
+      onError: () => {
+        speakingRef.current = false;
+        setIsSpeaking(false);
+      },
     });
   }, []);
 
+  const speak = useCallback(
+    (text: string) => {
+      if (!text?.trim()) return;
+
+      const run = async () => {
+        stopWebAudio();
+        Speech.stop();
+
+        if (Platform.OS === "web") {
+          speakingRef.current = true;
+          setIsSpeaking(true);
+          const played = await playNeuralWebAudio(text, () => {
+            speakingRef.current = false;
+            setIsSpeaking(false);
+          });
+          if (played) return;
+          speakingRef.current = false;
+          setIsSpeaking(false);
+        }
+
+        await speakLocal(text);
+      };
+
+      void run();
+    },
+    [speakLocal],
+  );
+
   const stop = useCallback(() => {
+    stopWebAudio();
     Speech.stop();
+    speakingRef.current = false;
     setIsSpeaking(false);
   }, []);
 

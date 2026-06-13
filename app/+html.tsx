@@ -1,6 +1,8 @@
 import { ScrollViewStyleReset } from "expo-router/html";
 import { type PropsWithChildren } from "react";
 
+import { bootWebChromeScript, WEB_THEME_COLOR_DARK, WEB_THEME_COLOR_LIGHT } from "@/lib/theme/sync-web-chrome";
+
 /**
  * Root HTML for static web export. PWA meta tags and service worker registration
  * live here so they ship with every page without touching native layouts.
@@ -15,7 +17,10 @@ export default function Root({ children }: PropsWithChildren) {
           name="viewport"
           content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover"
         />
-        <meta name="theme-color" content="#009246" />
+        <meta name="color-scheme" content="light dark" />
+        <meta name="theme-color" content={WEB_THEME_COLOR_LIGHT} media="(prefers-color-scheme: light)" />
+        <meta name="theme-color" content={WEB_THEME_COLOR_DARK} media="(prefers-color-scheme: dark)" />
+        <meta name="theme-color" content={WEB_THEME_COLOR_LIGHT} />
         <meta name="description" content="Procvičuj italská slovíčka" />
         <link rel="manifest" href="/manifest.json" />
         <link rel="icon" href="/favicon.ico" />
@@ -23,6 +28,7 @@ export default function Root({ children }: PropsWithChildren) {
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Italiano" />
+        <script dangerouslySetInnerHTML={{ __html: bootWebChromeScript() }} />
         <ScrollViewStyleReset />
       </head>
       <body>

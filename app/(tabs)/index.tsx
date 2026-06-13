@@ -1,7 +1,7 @@
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { Platform, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
 import type { LookupResult, VocabKind, WordMeaning } from "@/assets/data/types";
 import { AppLogo } from "@/components/app-logo";
@@ -204,7 +204,13 @@ export default function LookupScreen() {
             </Pressable>
           ) : null}
         </View>
-        <PrimaryButton label="Hledat" size="lg" onPress={submit} loading={loading} />
+        <PrimaryButton
+          label="Hledat"
+          size="md"
+          onPress={submit}
+          loading={loading}
+          style={styles.searchBtn}
+        />
       </View>
 
       {error ? (
@@ -383,7 +389,8 @@ export default function LookupScreen() {
 
 function createStyles(p: ColorPalette, s: ThemeShadows) {
   return StyleSheet.create({
-  searchRow: { flexDirection: "row", gap: Spacing.sm + 2, alignItems: "stretch" },
+  searchRow: { flexDirection: "row", gap: Spacing.sm, alignItems: "center" },
+  searchBtn: { minHeight: 44, paddingVertical: Spacing.sm },
   input: {
     flex: 1,
     flexDirection: "row",
@@ -392,16 +399,21 @@ function createStyles(p: ColorPalette, s: ThemeShadows) {
     paddingHorizontal: SearchFieldMetrics.paddingH,
     backgroundColor: p.surface,
     borderRadius: Radius.pill,
-    borderWidth: 1.5,
+    borderWidth: 1,
     borderColor: p.border,
     minHeight: SearchFieldMetrics.minHeight,
   },
   inputField: {
     flex: 1,
     fontFamily: Typography.body.fontFamily,
-    fontSize: SearchFieldMetrics.fontSize,
+    // iOS Safari auto-zooms into inputs whose font is < 16px, which shifts and
+    // widens the page on focus. Keep 16px on web to suppress that; native keeps
+    // the compact size.
+    fontSize: Platform.OS === "web" ? 16 : SearchFieldMetrics.fontSize,
     lineHeight: SearchFieldMetrics.lineHeight,
     color: p.textStrong,
+    // Remove the browser's blue focus rectangle that react-native-web adds.
+    ...Platform.select({ web: { outlineStyle: "none" } as object }),
   },
   clearBtn: {
     width: 22,

@@ -336,6 +336,9 @@ These are the variables every deployed function will read at runtime:
 | `DEEPL_API_KEY` | DeepL API key (`xxxxxxx:fx`) | `api/translate.ts` |
 | `ANTHROPIC_API_KEY` *(optional)* | Anthropic key (`sk-ant-…`) | `api/translate-meanings.ts` — *Další významy* button. When unset the endpoint returns 503 and the mobile UI hides the button. |
 | `ANTHROPIC_MODEL` *(optional)* | Override default `claude-haiku-4-5` | `api/translate-meanings.ts` |
+| `OPENAI_API_KEY` *(optional)* | OpenAI key (`sk-…`) | `api/tts.ts` — neural TTS for web/PWA. When unset returns 503; app falls back to on-device OS voices. See **[WEB-DEPLOYMENT.md §2.5](./WEB-DEPLOYMENT.md)**. |
+| `OPENAI_TTS_MODEL` *(optional)* | Override default `tts-1-hd` | `api/tts.ts` |
+| `OPENAI_TTS_VOICE` *(optional)* | Override default `nova` | `api/tts.ts` |
 | `CONTENT_VERSION` | `2` for the first deploy; bump (`3`, `4`, …) every time you change `backend/content/*.json` | `api/content-manifest.ts` |
 | `SUPABASE_URL` | `https://<ref>.supabase.co` | `api/translate.ts` (auth gate) and `api/account/*` |
 | `SUPABASE_ANON_KEY` | Supabase **anon** key | `api/translate.ts` and `api/account/*` (verifies user JWT) |
@@ -376,6 +379,8 @@ vercel env add DEEPL_API_KEY               production
 vercel env add DEEPL_API_KEY               preview
 # Optional — "Další významy" button (Anthropic Claude Haiku). Skip both lines to disable.
 vercel env add ANTHROPIC_API_KEY           production preview
+# Optional — neural TTS for web/PWA (OpenAI). Skip to keep OS voice fallback.
+vercel env add OPENAI_API_KEY              production preview
 vercel env add CONTENT_VERSION             production preview
 vercel env add SUPABASE_URL                production preview
 vercel env add SUPABASE_ANON_KEY           production preview
@@ -468,6 +473,7 @@ A successful seed flips the version to an ISO timestamp.
 | `GET /api/version` | API semver from `backend/package.json` (+ optional Vercel ids) | Public |
 | `POST /api/translate` | DeepL proxy used by Hledat (Search) screen | **Bearer JWT** (Supabase) — protects paid DeepL quota |
 | `POST /api/translate-meanings` | Anthropic Claude Haiku → up to 4 disambiguated senses (*Další významy* button). Returns **503** when `ANTHROPIC_API_KEY` is unset → mobile UI hides the button. | **Bearer JWT** (Supabase) — protects paid LLM quota |
+| `POST /api/tts` | OpenAI neural TTS (MP3) for web/PWA play buttons. Returns **503** when `OPENAI_API_KEY` is unset → app uses on-device `expo-speech`. | **Bearer JWT** (Supabase) — protects paid TTS quota |
 | `GET /api/content-manifest` | Bundle manifest (versions) | Public |
 | `GET /api/content-bundle?bundle=…` | Single JSON bundle | Public |
 | `POST/DELETE /api/account/delete` | Delete user (verifies JWT, then `auth.admin.deleteUser` with service role) | **Bearer JWT** |
@@ -727,6 +733,7 @@ npm run build:web && npx vercel --prod   # manual deploy from root
 | `EXPO_PUBLIC_SUPABASE_ANON_KEY` | ✅ | ✅ (web Vercel project) | — | ✅ (anon key is not secret) |
 | `DEEPL_API_KEY` | ❌ | ✅ | — | ❌ |
 | `ANTHROPIC_API_KEY` *(optional)* | ❌ | ✅ | — | ❌ |
+| `OPENAI_API_KEY` *(optional, neural TTS)* | ❌ | ✅ | — | ❌ |
 | `SUPABASE_URL` (server) | — | ✅ | — | ❌ |
 | `SUPABASE_ANON_KEY` (server) | — | ✅ | — | ❌ |
 | `SUPABASE_SERVICE_ROLE_KEY` | ❌❌ NEVER | ✅ (serverless only) | — | ❌ |
@@ -746,6 +753,7 @@ npm run build:web && npx vercel --prod   # manual deploy from root
 | "Server vrátil 500/503" on translate | Missing `DEEPL_API_KEY` on Vercel | Add it under Settings → Env Vars and **Redeploy**. |
 | *Další významy* button missing in app | Backend has no `ANTHROPIC_API_KEY` (endpoint returns 503) | Add the key in Vercel envs and redeploy; the button reappears on the next lookup. |
 | *Další významy* "Anthropic 401" | Invalid / revoked Anthropic key | Rotate at [console.anthropic.com](https://console.anthropic.com) → Settings → API Keys, then update Vercel env. |
+| TTS still robotic on web/PWA | `OPENAI_API_KEY` missing on Vercel | Add key (§3.3), redeploy `italiano-api`, sign in; see **[WEB-DEPLOYMENT.md §2.5](./WEB-DEPLOYMENT.md)**. |
 | *Hledat* shows "Vyhledávání slovíček vyžaduje přihlášení" | User isn't signed in (translate endpoint requires Bearer JWT) | Tap **Přejít na profil** and sign in with Google. |
 | Translate returns 401 even when signed in | `SUPABASE_URL` / `SUPABASE_ANON_KEY` missing on Vercel, or token expired | Add the env vars and **Redeploy**; in the app sign out and back in. |
 | Google sign-in returns *Unsupported provider* | Provider not enabled or wrong project | Re-check §2.3 (toggle ON, Web Client ID + Secret). |

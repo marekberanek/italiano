@@ -1,11 +1,13 @@
 import type { BottomTabBarProps } from "@react-navigation/bottom-tabs";
+import { BlurView } from "expo-blur";
 import * as Haptics from "expo-haptics";
 import { Platform, Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import type { ColorPalette, ThemeShadows } from "@/constants/theme";
-import { FontFamily, TabBarMetrics } from "@/constants/theme";
+import { FontFamily, Radius, Spacing, TabBarMetrics } from "@/constants/theme";
 import { useThemedStyles } from "@/hooks/use-themed-styles";
+import { useTheme } from "@/lib/theme/theme-context";
 
 function resolveLabel(
   options: BottomTabBarProps["descriptors"][string]["options"],
@@ -17,8 +19,10 @@ function resolveLabel(
 
 export function ItalianoTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
   const insets = useSafeAreaInsets();
+  const { colorScheme } = useTheme();
   const styles = useThemedStyles(createStyles);
   const iconPillRadius = TabBarMetrics.iconPillHeight / 2;
+  const blurTint = colorScheme === "dark" ? "dark" : "light";
 
   const focusedRoute = state.routes[state.index];
   const focusedOptions = focusedRoute ? descriptors[focusedRoute.key]?.options : undefined;
@@ -30,68 +34,79 @@ export function ItalianoTabBar({ state, descriptors, navigation }: BottomTabBarP
   return (
     <View
       pointerEvents="box-none"
-      style={[styles.shell, { paddingBottom: insets.bottom }]}
+      style={[styles.shell, { paddingBottom: insets.bottom + Spacing.md }]}
     >
-      <View style={styles.bar}>
-        {state.routes.map((route, index) => {
-          const { options } = descriptors[route.key];
-          const isFocused = state.index === index;
-          const label = resolveLabel(options, route.name);
-          const iconColor = isFocused ? styles.iconActive.color : styles.iconInactive.color;
-          const labelColor = isFocused ? styles.labelActive.color : styles.labelInactive.color;
+      <View style={styles.panelShadow}>
+        <View style={styles.panel}>
+          <BlurView
+            intensity={60}
+            tint={blurTint}
+            style={StyleSheet.absoluteFill}
+          />
+          <View style={styles.glassOverlay} />
+          <View style={styles.glassHighlight} />
+          <View style={styles.bar}>
+          {state.routes.map((route, index) => {
+            const { options } = descriptors[route.key];
+            const isFocused = state.index === index;
+            const label = resolveLabel(options, route.name);
+            const iconColor = isFocused ? styles.iconActive.color : styles.iconInactive.color;
+            const labelColor = isFocused ? styles.labelActive.color : styles.labelInactive.color;
 
-          const onPress = () => {
-            if (Platform.OS === "ios") {
-              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-            }
-            const event = navigation.emit({
-              type: "tabPress",
-              target: route.key,
-              canPreventDefault: true,
-            });
-            if (!isFocused && !event.defaultPrevented) {
-              navigation.navigate(route.name);
-            }
-          };
+            const onPress = () => {
+              if (Platform.OS === "ios") {
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              }
+              const event = navigation.emit({
+                type: "tabPress",
+                target: route.key,
+                canPreventDefault: true,
+              });
+              if (!isFocused && !event.defaultPrevented) {
+                navigation.navigate(route.name);
+              }
+            };
 
-          const onLongPress = () => {
-            navigation.emit({ type: "tabLongPress", target: route.key });
-          };
+            const onLongPress = () => {
+              navigation.emit({ type: "tabLongPress", target: route.key });
+            };
 
-          return (
-            <Pressable
-              key={route.key}
-              accessibilityRole="button"
-              accessibilityState={{ selected: isFocused }}
-              accessibilityLabel={options.tabBarAccessibilityLabel ?? label}
-              testID={options.tabBarButtonTestID}
-              onPress={onPress}
-              onLongPress={onLongPress}
-              style={({ pressed }) => [styles.item, pressed && styles.itemPressed]}
-            >
-              <View
-                style={[
-                  styles.iconPill,
-                  { borderRadius: iconPillRadius },
-                  isFocused && styles.iconPillActive,
-                ]}
+            return (
+              <Pressable
+                key={route.key}
+                accessibilityRole="button"
+                accessibilityState={{ selected: isFocused }}
+                accessibilityLabel={options.tabBarAccessibilityLabel ?? label}
+                testID={options.tabBarButtonTestID}
+                onPress={onPress}
+                onLongPress={onLongPress}
+                style={({ pressed }) => [styles.item, pressed && styles.itemPressed]}
               >
-                {options.tabBarIcon?.({
-                  color: iconColor,
-                  size: TabBarMetrics.iconSize,
-                  focused: isFocused,
-                })}
-              </View>
-              <Text
-                style={[styles.label, { color: labelColor }]}
-                numberOfLines={1}
-                allowFontScaling={false}
-              >
-                {label}
-              </Text>
-            </Pressable>
-          );
-        })}
+                <View
+                  style={[
+                    styles.iconPill,
+                    { borderRadius: iconPillRadius },
+                    isFocused && styles.iconPillActive,
+                  ]}
+                >
+                  {options.tabBarIcon?.({
+                    color: iconColor,
+                    size: TabBarMetrics.iconSize,
+                    focused: isFocused,
+                  })}
+                </View>
+                <Text
+                  style={[styles.label, { color: labelColor }]}
+                  numberOfLines={1}
+                  allowFontScaling={false}
+                >
+                  {label}
+                </Text>
+              </Pressable>
+            );
+          })}
+          </View>
+        </View>
       </View>
     </View>
   );
@@ -104,10 +119,31 @@ function createStyles(p: ColorPalette, s: ThemeShadows) {
       left: 0,
       right: 0,
       bottom: 0,
-      backgroundColor: p.surface,
-      borderTopWidth: 1,
-      borderTopColor: p.border,
-      ...s.tabBar,
+      paddingHorizontal: Spacing.lg,
+      backgroundColor: "transparent",
+    },
+    panelShadow: {
+      borderRadius: Radius.xl,
+      ...s.pop,
+    },
+    panel: {
+      borderRadius: Radius.xl,
+      overflow: "hidden",
+      borderWidth: 1,
+      borderColor: p.glassEdge,
+    },
+    glassOverlay: {
+      ...StyleSheet.absoluteFillObject,
+      backgroundColor: p.glassBar,
+    },
+    glassHighlight: {
+      position: "absolute",
+      top: 0,
+      left: 0,
+      right: 0,
+      height: "40%",
+      backgroundColor: p.glassHighlight,
+      pointerEvents: "none",
     },
     bar: {
       flexDirection: "row",
@@ -115,6 +151,7 @@ function createStyles(p: ColorPalette, s: ThemeShadows) {
       paddingHorizontal: TabBarMetrics.barPaddingH,
       paddingVertical: TabBarMetrics.barPaddingV,
       alignItems: "stretch",
+      zIndex: 1,
     },
     item: {
       flex: 1,
