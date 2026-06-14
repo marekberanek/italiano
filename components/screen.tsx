@@ -1,5 +1,9 @@
+import { useFocusEffect } from "expo-router";
+import { useCallback, useRef, type ReactNode } from "react";
 import {
   KeyboardAvoidingView,
+  type NativeScrollEvent,
+  type NativeSyntheticEvent,
   Platform,
   ScrollView,
   StyleSheet,
@@ -11,20 +15,67 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import type { ColorPalette } from "@/constants/theme";
 import { Spacing, TabBarMetrics } from "@/constants/theme";
 import { useThemedStyles } from "@/hooks/use-themed-styles";
+import { useTabBarScroll } from "@/lib/navigation/tab-bar-scroll-context";
 import { useTheme } from "@/lib/theme/theme-context";
 
 type Props = {
-  children: React.ReactNode;
+  children: ReactNode;
   scroll?: boolean;
   style?: ViewStyle;
 };
 
 /** Fixed tab bar + floating gap + home indicator + extra scroll breathing room. */
 const TAB_BAR_SAFE_PADDING = TabBarMetrics.barHeight + Spacing.lg + 48;
+const SCROLL_DIRECTION_THRESHOLD = 18;
+const TOP_RESET_OFFSET = 12;
 
 export function Screen({ children, scroll = true, style }: Props) {
   const { palette } = useTheme();
+  const { setCompact } = useTabBarScroll();
   const styles = useThemedStyles(createStyles);
+  const lastScrollYRef = useRef(0);
+  const scrollDirectionRef = useRef<"down" | "up" | null>(null);
+  const accumulatedDeltaRef = useRef(0);
+
+  useFocusEffect(
+    useCallback(() => {
+      lastScrollYRef.current = 0;
+      scrollDirectionRef.current = null;
+      accumulatedDeltaRef.current = 0;
+      setCompact(false);
+    }, [setCompact]),
+  );
+
+  const handleScroll = useCallback(
+    (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+      const y = Math.max(0, event.nativeEvent.contentOffset.y);
+      const delta = y - lastScrollYRef.current;
+      lastScrollYRef.current = y;
+
+      if (y <= TOP_RESET_OFFSET) {
+        scrollDirectionRef.current = null;
+        accumulatedDeltaRef.current = 0;
+        setCompact(false);
+        return;
+      }
+
+      if (Math.abs(delta) < 1) return;
+
+      const direction = delta > 0 ? "down" : "up";
+      if (scrollDirectionRef.current !== direction) {
+        scrollDirectionRef.current = direction;
+        accumulatedDeltaRef.current = Math.abs(delta);
+      } else {
+        accumulatedDeltaRef.current += Math.abs(delta);
+      }
+
+      if (accumulatedDeltaRef.current < SCROLL_DIRECTION_THRESHOLD) return;
+
+      setCompact(direction === "down");
+      accumulatedDeltaRef.current = 0;
+    },
+    [setCompact],
+  );
 
   const inner = scroll ? (
     <ScrollView
@@ -33,6 +84,8 @@ export function Screen({ children, scroll = true, style }: Props) {
       keyboardShouldPersistTaps="handled"
       automaticallyAdjustKeyboardInsets
       contentInsetAdjustmentBehavior="automatic"
+      onScroll={handleScroll}
+      scrollEventThrottle={16}
     >
       {children}
     </ScrollView>
