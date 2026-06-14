@@ -1,13 +1,19 @@
 import type { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { BlurView } from "expo-blur";
 import * as Haptics from "expo-haptics";
-import { Platform, Pressable, StyleSheet, View } from "react-native";
+import { useEffect, useRef } from "react";
+import { Animated, Easing, Platform, Pressable, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import type { ColorPalette, ThemeShadows } from "@/constants/theme";
 import { Radius, Spacing, TabBarMetrics } from "@/constants/theme";
 import { useThemedStyles } from "@/hooks/use-themed-styles";
+import { useTabBarScroll } from "@/lib/navigation/tab-bar-scroll-context";
 import { useTheme } from "@/lib/theme/theme-context";
+
+const COMPACT_BAR_HEIGHT = 46;
+const COMPACT_ICON_PILL_HEIGHT = 28;
+const COMPACT_ICON_SCALE = 0.88;
 
 function resolveLabel(
   options: BottomTabBarProps["descriptors"][string]["options"],
@@ -20,9 +26,36 @@ function resolveLabel(
 export function ItalianoTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
   const insets = useSafeAreaInsets();
   const { colorScheme } = useTheme();
+  const { compact } = useTabBarScroll();
   const styles = useThemedStyles(createStyles);
-  const iconPillRadius = TabBarMetrics.iconPillHeight / 2;
   const blurTint = colorScheme === "dark" ? "dark" : "light";
+  const compactAnim = useRef(new Animated.Value(compact ? 1 : 0)).current;
+
+  useEffect(() => {
+    Animated.timing(compactAnim, {
+      toValue: compact ? 1 : 0,
+      duration: 180,
+      easing: Easing.out(Easing.cubic),
+      useNativeDriver: false,
+    }).start();
+  }, [compact, compactAnim]);
+
+  const shellPaddingBottom = compactAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [insets.bottom + Spacing.md, insets.bottom + Spacing.xs],
+  });
+  const barHeight = compactAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [TabBarMetrics.barHeight, COMPACT_BAR_HEIGHT],
+  });
+  const iconPillHeight = compactAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [TabBarMetrics.iconPillHeight, COMPACT_ICON_PILL_HEIGHT],
+  });
+  const iconScale = compactAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [1, COMPACT_ICON_SCALE],
+  });
 
   const focusedRoute = state.routes[state.index];
   const focusedOptions = focusedRoute ? descriptors[focusedRoute.key]?.options : undefined;
@@ -32,9 +65,9 @@ export function ItalianoTabBar({ state, descriptors, navigation }: BottomTabBarP
   if (focusedTabBarStyle?.display === "none") return null;
 
   return (
-    <View
+    <Animated.View
       pointerEvents="box-none"
-      style={[styles.shell, { paddingBottom: insets.bottom + Spacing.md }]}
+      style={[styles.shell, { paddingBottom: shellPaddingBottom }]}
     >
       <View style={styles.panelShadow}>
         <View style={styles.panel}>
@@ -45,62 +78,66 @@ export function ItalianoTabBar({ state, descriptors, navigation }: BottomTabBarP
           />
           <View style={styles.glassOverlay} />
           <View style={styles.glassHighlight} />
-          <View style={styles.bar}>
-          {state.routes.map((route, index) => {
-            const { options } = descriptors[route.key];
-            const isFocused = state.index === index;
-            const label = resolveLabel(options, route.name);
-            const iconColor = isFocused ? styles.iconActive.color : styles.iconInactive.color;
+          <Animated.View style={[styles.bar, { height: barHeight }]}>
+            {state.routes.map((route, index) => {
+              const { options } = descriptors[route.key];
+              const isFocused = state.index === index;
+              const label = resolveLabel(options, route.name);
+              const iconColor = isFocused ? styles.iconActive.color : styles.iconInactive.color;
 
-            const onPress = () => {
-              if (Platform.OS === "ios") {
-                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-              }
-              const event = navigation.emit({
-                type: "tabPress",
-                target: route.key,
-                canPreventDefault: true,
-              });
-              if (!isFocused && !event.defaultPrevented) {
-                navigation.navigate(route.name);
-              }
-            };
+              const onPress = () => {
+                if (Platform.OS === "ios") {
+                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                }
+                const event = navigation.emit({
+                  type: "tabPress",
+                  target: route.key,
+                  canPreventDefault: true,
+                });
+                if (!isFocused && !event.defaultPrevented) {
+                  navigation.navigate(route.name);
+                }
+              };
 
-            const onLongPress = () => {
-              navigation.emit({ type: "tabLongPress", target: route.key });
-            };
+              const onLongPress = () => {
+                navigation.emit({ type: "tabLongPress", target: route.key });
+              };
 
-            return (
-              <Pressable
-                key={route.key}
-                accessibilityRole="button"
-                accessibilityState={{ selected: isFocused }}
-                accessibilityLabel={options.tabBarAccessibilityLabel ?? label}
-                testID={options.tabBarButtonTestID}
-                onPress={onPress}
-                onLongPress={onLongPress}
-                style={({ pressed }) => [styles.item, pressed && styles.itemPressed]}
-              >
-                <View
-                  style={[
-                    styles.iconPill,
-                    { borderRadius: iconPillRadius },
-                    isFocused && styles.iconPillActive,
-                  ]}
+              return (
+                <Pressable
+                  key={route.key}
+                  accessibilityRole="button"
+                  accessibilityState={{ selected: isFocused }}
+                  accessibilityLabel={options.tabBarAccessibilityLabel ?? label}
+                  testID={options.tabBarButtonTestID}
+                  onPress={onPress}
+                  onLongPress={onLongPress}
+                  style={({ pressed }) => [styles.item, pressed && styles.itemPressed]}
                 >
-                  {options.tabBarIcon?.({
-                    color: iconColor,
-                    size: TabBarMetrics.iconSize,
-                    focused: isFocused,
-                  })}
-                </View>
-              </Pressable>
-            );
-          })}
-          </View>
+                  <Animated.View
+                    style={[
+                      styles.iconPill,
+                      {
+                        borderRadius: TabBarMetrics.iconPillHeight / 2,
+                        height: iconPillHeight,
+                        transform: [{ scale: iconScale }],
+                      },
+                      isFocused && styles.iconPillActive,
+                    ]}
+                  >
+                    {options.tabBarIcon?.({
+                      color: iconColor,
+                      size: TabBarMetrics.iconSize,
+                      focused: isFocused,
+                    })}
+                  </Animated.View>
+                </Pressable>
+              );
+            })}
+          </Animated.View>
         </View>
       </View>
-    </View>
+    </Animated.View>
   );
 }
 
@@ -139,7 +176,6 @@ function createStyles(p: ColorPalette, s: ThemeShadows) {
     },
     bar: {
       flexDirection: "row",
-      height: TabBarMetrics.barHeight,
       paddingHorizontal: TabBarMetrics.barPaddingH,
       paddingVertical: TabBarMetrics.barPaddingV,
       alignItems: "stretch",
@@ -152,7 +188,6 @@ function createStyles(p: ColorPalette, s: ThemeShadows) {
     },
     itemPressed: { opacity: 0.85 },
     iconPill: {
-      height: TabBarMetrics.iconPillHeight,
       minWidth: TabBarMetrics.iconPillMinWidth,
       paddingHorizontal: TabBarMetrics.iconPillPaddingH,
       alignItems: "center",
