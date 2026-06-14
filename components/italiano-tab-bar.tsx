@@ -44,6 +44,10 @@ export function ItalianoTabBar({ state, descriptors, navigation }: BottomTabBarP
     inputRange: [0, 1],
     outputRange: [insets.bottom + Spacing.md, insets.bottom + Spacing.xs],
   });
+  const shellPaddingHorizontal = compactAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [Spacing.lg, Spacing.xxl],
+  });
   const barHeight = compactAnim.interpolate({
     inputRange: [0, 1],
     outputRange: [TabBarMetrics.barHeight, COMPACT_BAR_HEIGHT],
@@ -67,7 +71,13 @@ export function ItalianoTabBar({ state, descriptors, navigation }: BottomTabBarP
   return (
     <Animated.View
       pointerEvents="box-none"
-      style={[styles.shell, { paddingBottom: shellPaddingBottom }]}
+      style={[
+        styles.shell,
+        {
+          paddingBottom: shellPaddingBottom,
+          paddingHorizontal: shellPaddingHorizontal,
+        },
+      ]}
     >
       <View style={styles.panelShadow}>
         <View style={styles.panel}>
@@ -148,7 +158,6 @@ function createStyles(p: ColorPalette, s: ThemeShadows) {
       left: 0,
       right: 0,
       bottom: 0,
-      paddingHorizontal: Spacing.lg,
       backgroundColor: "transparent",
     },
     panelShadow: {
